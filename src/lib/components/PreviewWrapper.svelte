@@ -13,7 +13,7 @@
 </script>
 
 <!-- OUTER BACKGROUND LAYER -->
-<div class="fixed inset-0 flex flex-col items-center overflow-hidden font-sans">
+<div class="fixed inset-0 bg-[#0d0d0f] flex flex-col items-center overflow-hidden font-sans">
   
   <!-- Ambient Background Effects -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -28,11 +28,11 @@
       <div class="absolute bottom-[10%] left-[10%] w-[45%] h-[45%] bg-amber-900/40 rounded-full animate-mesh-4"></div>
     </div>
 
-    <!-- Texture Overlay -->
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10"></div>
+    <!-- Texture Overlay (Unified Noise) -->
+    <div class="absolute inset-0 opacity-[0.08] pointer-events-none" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"></div>
     
-    <!-- Vignette -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)]"></div>
+    <!-- Subtle Vignette -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_rgba(0,0,0,0.3)_100%)]"></div>
   </div>
 
   <!-- PLATFORM HEADER (GO!FOOD) - Desktop Only -->

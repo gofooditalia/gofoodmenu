@@ -110,7 +110,7 @@
 
 <PreviewWrapper>
    <!-- TOP FIXED NAVBAR (Platform/Restaurant context) -->
-   <div class="absolute top-0 inset-x-0 z-[60] bg-zinc-950/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5">
+   <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5">
       <div class="flex items-center gap-4">
          <!-- Restaurant Icon -->
          <div class="flex-shrink-0 bg-orange-500 p-2 rounded-xl shadow-lg shadow-orange-500/10">
@@ -176,7 +176,10 @@
    >
       {#if currentPage === 'menu'}
          <!-- Menu Content -->
-         <main class="px-6 relative z-20 pb-32 pt-8 min-h-[60vh]">
+         <main class="px-6 relative z-20 pb-32 pt-8 min-h-screen bg-[#141417]">
+            <!-- Noise texture layer for content -->
+            <div class="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay z-0" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"></div>
+            
             {#key activeCategory}
                <div 
                in:fly={{ y: 20, duration: 400, delay: 100, easing: cubicOut }}
@@ -187,7 +190,7 @@
                         {#each currentCat.dishes as dish, i}
                            <div 
                               in:fly={{ y: 30, duration: 600, delay: i * 50, easing: cubicOut }}
-                              class="group relative cursor-pointer p-7 rounded-[2.5rem] bg-zinc-900/40 border border-white/[0.03] transition-all duration-700 hover:bg-zinc-800/40 active:scale-[0.98] overflow-hidden"
+                              class="group relative cursor-pointer p-7 rounded-[2.5rem] bg-white/[0.03] border border-white/[0.05] shadow-lg shadow-black/20 transition-all duration-700 hover:bg-white/[0.06] active:scale-[0.98] overflow-hidden"
                               onclick={() => openDish(dish)}
                               onkeydown={(e) => e.key === 'Enter' && openDish(dish)}
                               role="button"
@@ -244,7 +247,7 @@
                      </div>
 
                      <!-- Info Footer -->
-                     <div class="mt-12 p-6 bg-zinc-900/30 rounded-3xl border border-zinc-800/50">
+                     <div class="mt-12 p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05]">
                         <p class="text-[10px] text-zinc-500 leading-relaxed font-medium">
                            * Gli ingredienti contrassegnati con asterisco potrebbero contenere ingredienti surgelati. 
                            Per informazioni dettagliate sugli allergeni, chiedi al nostro personale.
@@ -271,9 +274,9 @@
             </div>
 
             <div class="space-y-6">
-               <div class="p-6 rounded-2xl bg-neutral-900 border border-white/5 space-y-4 group">
-                  <div class="aspect-[16/9] bg-neutral-800 rounded-lg overflow-hidden">
-                     <div class="w-full h-full bg-gradient-to-br from-amber-900/40 to-black flex items-center justify-center">
+               <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4 group">
+                  <div class="aspect-[16/9] bg-white/[0.05] rounded-lg overflow-hidden">
+                     <div class="w-full h-full bg-gradient-to-br from-amber-900/40 to-[#141417] flex items-center justify-center">
                         <Utensils class="h-8 w-8 text-amber-600 opacity-40 group-hover:scale-110 transition-transform" />
                      </div>
                   </div>
@@ -310,7 +313,7 @@
 
  <!-- Dish Sheet (Matches Box Width on Desktop?) -->
 <Sheet.Root bind:open={sheetOpen}>
-   <Sheet.Content side="bottom" class="h-[85vh] md:max-w-[480px] md:mx-auto rounded-t-[2.5rem] p-0 overflow-hidden flex flex-col bg-neutral-900 border-neutral-800 text-white shadow-2xl shadow-black ring-0 outline-none">
+   <Sheet.Content side="bottom" class="h-[85vh] md:max-w-[480px] md:mx-auto rounded-t-[2.5rem] p-0 overflow-hidden flex flex-col bg-[#1a1a1e] border-white/5 text-white shadow-2xl shadow-black ring-0 outline-none">
       {#if selectedDish}
          <div class="relative h-72 shrink-0">
             {#if selectedDish.image_url}
@@ -360,7 +363,7 @@
             {/if}
          </div>
 
-         <div class="p-6 border-t border-white/5 bg-zinc-900">
+         <div class="p-6 border-t border-white/5 bg-[#141417]">
             <Button class="w-full h-14 text-base font-black rounded-2xl bg-orange-500 hover:bg-orange-600 text-white tracking-wide shadow-lg shadow-orange-900/20" onclick={() => sheetOpen = false}>
               Chiudi
             </Button>
@@ -371,19 +374,8 @@
 
 <style>
   :global(body) {
-    background-color: #111114;
+    background-color: #0d0d0f;
     overflow: hidden; /* Hide outer scroll on desktop */
-    position: relative;
-  }
-
-  :global(body::before) {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.1;
-    pointer-events: none;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
