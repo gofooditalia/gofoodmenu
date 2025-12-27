@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { fade, fly } from 'svelte/transition';
-  import { cubicOut } from 'svelte/easing';
+  import { fade, fly, scale } from 'svelte/transition';
+  import { cubicOut, backOut } from 'svelte/easing';
   import { Utensils, Info, Search, MapPin, Clock, ChevronRight, LayoutGrid, Leaf } from 'lucide-svelte';
   import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
@@ -102,23 +102,31 @@
     touchEnd = 0;
   }
 
-  // Haptic Feedback for Long Press
+  // Haptic & Peek State
   let hapticTimer: any;
-  function startHaptic() {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+  let peekedDish = $state<any>(null);
+
+  function startHaptic(dish: any) {
+    if (!dish.image_url) return; // Only peek if there's an image
+    
+    if (typeof navigator !== 'undefined') {
       hapticTimer = setTimeout(() => {
-         // A subtle, "Osteria-style" double-tap pulse
-         navigator.vibrate([40, 30, 30]);
+         // 1. Trigger Vibration
+         if (navigator.vibrate) navigator.vibrate([40, 30, 30]);
+         
+         // 2. Show Peek Preview
+         peekedDish = dish;
       }, 350);
     }
   }
 
   function stopHaptic() {
     clearTimeout(hapticTimer);
+    peekedDish = null;
   }
 
   function openDish(dish: any) {
-    stopHaptic(); // Ensure timer is cleared if user clicks quickly
+    stopHaptic(); // Ensure timer is cleared and peek is closed
     selectedDish = dish;
     sheetOpen = true;
   }
@@ -212,7 +220,7 @@
                                active:scale-[0.97] active:bg-white/[0.08] active:border-amber-400 active:shadow-[0_0_25px_rgba(245,158,11,0.2)]
                                hover:bg-white/[0.06] overflow-hidden"
                               onclick={() => openDish(dish)}
-                              onpointerdown={startHaptic}
+                              onpointerdown={() => startHaptic(dish)}
                               onpointerup={stopHaptic}
                               onpointerleave={stopHaptic}
                               onkeydown={(e) => e.key === 'Enter' && openDish(dish)}
@@ -332,6 +340,31 @@
       {/if}
    </div>
 </PreviewWrapper>
+
+<!-- TACTILE PEEK OVERLAY (Image Preview on Long Press) -->
+{#if peekedDish && peekedDish.image_url}
+  <div 
+     class="fixed inset-0 z-[100] flex items-center justify-center p-8 pointer-events-none"
+     transition:fade={{ duration: 200 }}
+  >
+     <!-- Backdrop Blur -->
+     <div class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
+     
+     <!-- The Peek Image -->
+     <div 
+        class="relative w-full max-w-[320px] aspect-square rounded-[2rem] overflow-hidden border-[2px] border-amber-500/50 shadow-[0_0_50px_rgba(245,158,11,0.3)]"
+        in:scale={{ duration: 400, start: 0.8, easing: backOut }}
+        out:scale={{ duration: 200, start: 1, easing: cubicOut }}
+     >
+        <img src={peekedDish.image_url} alt={peekedDish.name} class="w-full h-full object-cover" />
+        
+        <!-- Subtle Caption Overlay -->
+        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+           <h4 class="text-white font-black text-xl tracking-tight leading-none">{peekedDish.name}</h4>
+        </div>
+     </div>
+  </div>
+{/if}
 
 
  <!-- Dish Sheet (Matches Box Width on Desktop?) -->
