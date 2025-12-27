@@ -176,9 +176,9 @@
    >
       {#if currentPage === 'menu'}
          <!-- Menu Content -->
-         <main class="px-6 relative z-20 pb-32 pt-8 min-h-screen bg-[#141417]">
+         <main class="px-6 relative z-20 pb-32 pt-8 min-h-screen bg-[#16161a]">
             <!-- Noise texture layer for content -->
-            <div class="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay z-0" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"></div>
+            <div class="absolute inset-0 pointer-events-none opacity-[0.12] mix-blend-overlay z-0" style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"></div>
             
             {#key activeCategory}
                <div 
