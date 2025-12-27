@@ -2,8 +2,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-    const session = await locals.getSession();
-    if (!session) {
+    const user = await locals.getUser();
+    if (!user) {
         throw redirect(303, '/login');
     }
 
@@ -11,14 +11,14 @@ export const load: PageServerLoad = async ({ locals }) => {
     const { data: categories } = await locals.supabase
         .from('categories')
         .select('*')
-        .eq('restaurant_id', session.user.id)
+        .eq('restaurant_id', user.id)
         .order('sort_order', { ascending: true });
 
     // Fetch dishes
     const { data: dishes } = await locals.supabase
         .from('dishes')
         .select('*, categories(name)')
-        .eq('restaurant_id', session.user.id)
+        .eq('restaurant_id', user.id)
         .order('created_at', { ascending: false });
 
     return {
@@ -29,8 +29,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
     addCategory: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const name = formData.get('name') as string;
@@ -41,7 +41,7 @@ export const actions: Actions = {
             .from('categories')
             .insert({
                 name,
-                restaurant_id: session.user.id
+                restaurant_id: user.id
             });
 
         if (error) return fail(500, { error: 'Errore durante il salvataggio' });
@@ -50,8 +50,8 @@ export const actions: Actions = {
     },
 
     editCategory: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const id = formData.get('id');
@@ -63,7 +63,7 @@ export const actions: Actions = {
             .from('categories')
             .update({ name })
             .eq('id', id)
-            .eq('restaurant_id', session.user.id);
+            .eq('restaurant_id', user.id);
 
         if (error) return fail(500, { error: 'Errore durante l\'aggiornamento' });
 
@@ -71,8 +71,8 @@ export const actions: Actions = {
     },
 
     deleteCategory: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const id = formData.get('id');
@@ -81,7 +81,7 @@ export const actions: Actions = {
             .from('categories')
             .delete()
             .eq('id', id)
-            .eq('restaurant_id', session.user.id);
+            .eq('restaurant_id', user.id);
 
         if (error) return fail(500, { error: 'Errore durante l\'eliminazione' });
 
@@ -89,8 +89,8 @@ export const actions: Actions = {
     },
 
     addDish: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const name = formData.get('name') as string;
@@ -112,7 +112,7 @@ export const actions: Actions = {
         if (image && image.size > 0) {
             const fileExt = image.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${session.user.id}/${fileName}`;
+            const filePath = `${user.id}/${fileName}`;
 
             const { error: uploadError, data } = await locals.supabase.storage
                 .from('menu-images')
@@ -136,7 +136,7 @@ export const actions: Actions = {
                 description,
                 price: parseFloat(price),
                 category_id: parseInt(category_id),
-                restaurant_id: session.user.id,
+                restaurant_id: user.id,
                 image_url,
                 allergens
             });
@@ -147,8 +147,8 @@ export const actions: Actions = {
     },
 
     editDish: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const id = formData.get('id');
@@ -178,7 +178,7 @@ export const actions: Actions = {
         if (image && image.size > 0) {
             const fileExt = image.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${session.user.id}/${fileName}`;
+            const filePath = `${user.id}/${fileName}`;
 
             const { error: uploadError } = await locals.supabase.storage
                 .from('menu-images')
@@ -196,7 +196,7 @@ export const actions: Actions = {
             .from('dishes')
             .update(updates)
             .eq('id', id)
-            .eq('restaurant_id', session.user.id);
+            .eq('restaurant_id', user.id);
 
         if (error) return fail(500, { error: 'Errore durante l\'aggiornamento del piatto' });
 
@@ -204,8 +204,8 @@ export const actions: Actions = {
     },
 
     deleteDish: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) return fail(401);
+        const user = await locals.getUser();
+        if (!user) return fail(401);
 
         const formData = await request.formData();
         const id = formData.get('id');
@@ -214,7 +214,7 @@ export const actions: Actions = {
             .from('dishes')
             .delete()
             .eq('id', id)
-            .eq('restaurant_id', session.user.id);
+            .eq('restaurant_id', user.id);
 
         if (error) return fail(500, { error: 'Errore durante l\'eliminazione del piatto' });
 

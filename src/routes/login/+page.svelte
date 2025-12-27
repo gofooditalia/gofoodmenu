@@ -16,8 +16,8 @@
 <div class="min-h-screen bg-slate-50 flex items-center justify-center p-6">
   <div class="w-full max-w-md space-y-8 bg-white p-12 rounded-[3rem] shadow-xl border border-slate-100">
     <div class="text-center space-y-2">
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-3xl text-white shadow-lg shadow-orange-500/20 mb-4">
-        <LogIn size={32} />
+      <div class="mb-4">
+        <img src="/logo.svg" alt="go!foodmenu" class="h-16 w-auto mx-auto" />
       </div>
       <h1 class="text-3xl font-black text-slate-900 tracking-tight">Benvenuto</h1>
       <p class="text-slate-400 font-medium">Accedi per gestire il tuo menu digitale</p>
@@ -32,7 +32,7 @@
         return async ({ result, update }) => {
           loading = false;
           if (result.type === 'failure') {
-            errorMsg = result.data?.error || 'Credenziali non valide';
+            errorMsg = (result.data as any)?.error || 'Credenziali non valide';
           } else if (result.type === 'error') {
             errorMsg = 'Errore del server. Riprova più tardi.';
           }

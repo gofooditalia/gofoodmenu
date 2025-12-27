@@ -3,23 +3,21 @@ import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
     const session = await locals.getSession();
+    const user = await locals.getUser();
 
-    // If no session and not on public pages (handled by routing groups, but just in case)
-    // Public pages are in (public) group, which won't hit this layout.
-    if (!session) {
-        // For now, if no session, we might want to redirect to a login page
-        // but the requirement didn't specify a login page yet.
-        // Let's assume there is a /login route.
+    // If no session and not on public pages
+    if (!session || !user) {
+        // For now, we assume if no user/session, we might need to redirect
         // throw redirect(303, '/login');
     }
 
     // Check if profile exists
     let profile = null;
-    if (session) {
+    if (user) {
         const { data } = await locals.supabase
             .from('profiles')
             .select('*')
-            .eq('id', session.user.id)
+            .eq('id', user.id)
             .single();
 
         profile = data;

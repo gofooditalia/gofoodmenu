@@ -5,7 +5,7 @@
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
-  const { profile } = data;
+  let profile = $derived(data.profile);
 
   let qrDataUrl = $state('');
   let menuUrl = $state('');
@@ -14,7 +14,7 @@
     if (profile) {
       // In a real production environment, this would be your actual domain
       const baseUrl = window.location.origin;
-      menuUrl = `${baseUrl}/menu/${profile.slug}`;
+      menuUrl = `${baseUrl}/${profile.slug}`;
       
       try {
         qrDataUrl = await QRCode.toDataURL(menuUrl, {

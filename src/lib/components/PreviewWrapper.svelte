@@ -82,19 +82,22 @@
     <div 
       class="relative h-full bg-neutral-950 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]
       {viewMode === 'smartphone' 
-        ? 'w-full lg:w-auto lg:aspect-[9/19.5] lg:max-h-[85vh] lg:rounded-[3rem] lg:border-[10px]' 
-        : 'w-full lg:w-auto lg:aspect-[4/5.5] lg:max-h-[90vh] lg:rounded-[2rem] lg:border-[12px]'} 
+        ? 'w-full lg:w-[412px] lg:h-[915px] lg:max-h-[85vh] lg:rounded-[3.5rem] lg:border-[12px]' 
+        : 'w-full lg:w-[800px] lg:h-[1180px] lg:max-h-[90vh] lg:rounded-[2.5rem] lg:border-[14px]'} 
       border-neutral-900 shadow-2xl shadow-black lg:outline outline-1 outline-white/10 overflow-hidden flex flex-col"
     >
       
       <!-- Notch/Sensor simulation based on mode -->
       {#if viewMode === 'smartphone'}
-        <div class="absolute top-0 inset-x-0 h-7 z-50 pointer-events-none hidden lg:flex items-center justify-center transition-opacity duration-500">
-          <div class="w-24 h-5 bg-neutral-900 rounded-b-2xl border-x border-b border-white/5"></div>
+        <div class="absolute top-0 inset-x-0 h-10 z-50 pointer-events-none hidden lg:flex items-center justify-center transition-opacity duration-500">
+          <div class="w-32 h-6 bg-neutral-900 rounded-b-3xl border-x border-b border-white/5 flex items-center justify-center gap-3">
+             <div class="w-1 h-1 bg-white/10 rounded-full"></div>
+             <div class="w-8 h-1 bg-white/5 rounded-full"></div>
+          </div>
         </div>
       {:else}
-        <div class="absolute top-0 inset-x-0 h-10 z-50 pointer-events-none hidden lg:flex items-center justify-center opacity-40">
-          <div class="w-1.5 h-1.5 bg-neutral-800 rounded-full"></div>
+        <div class="absolute top-0 inset-x-0 h-12 z-50 pointer-events-none hidden lg:flex items-center justify-center opacity-40">
+          <div class="w-2 h-2 bg-neutral-800 rounded-full border border-white/5"></div>
         </div>
       {/if}
 

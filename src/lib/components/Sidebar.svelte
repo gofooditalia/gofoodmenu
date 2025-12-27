@@ -17,10 +17,9 @@
 
 <aside class="w-64 bg-slate-900 text-white hidden md:flex flex-col h-screen fixed">
   <div class="p-6">
-    <div class="text-2xl font-black tracking-tight text-orange-500 flex items-center gap-2">
-      <span class="bg-orange-500 text-white p-1 rounded-lg">go!</span>
-      <span>foodmenu</span>
-    </div>
+    <a href="/dashboard" class="flex items-center gap-2 group">
+      <img src="/logo.svg" alt="go!foodmenu" class="h-10 w-auto" />
+    </a>
   </div>
 
   <nav class="flex-1 px-4 space-y-1 mt-4">

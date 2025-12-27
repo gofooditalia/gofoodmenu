@@ -25,6 +25,9 @@
     </div>
 
     <div class="relative z-10">
+      <div class="mb-8">
+        <img src="/logo.svg" alt="go!foodmenu" class="h-12 w-auto" />
+      </div>
       <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-4">Iniziamo l'avventura! 🚀</h1>
       <p class="text-slate-500 text-lg font-medium mb-12">
         Configura il tuo ristorante in pochi secondi e crea il tuo menu digitale.

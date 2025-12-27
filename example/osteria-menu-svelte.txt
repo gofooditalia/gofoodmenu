@@ -1,0 +1,312 @@
+<script>
+  import { onMount } from 'svelte';
+  
+  let activeTab = 'carta';
+  let activeCategory = 'antipasti';
+  let isScrolled = false;
+  let hoveredTag = null;
+  let touchStart = 0;
+  let touchEnd = 0;
+  
+  const categories = ['antipasti', 'primi', 'secondi', 'contorni', 'dolci'];
+  
+  const categoryLabels = {
+    antipasti: 'GLI ANTIPASTI',
+    primi: 'I NOSTRI DELIZIOSI PRIMI',
+    secondi: 'I SECONDI',
+    contorni: 'I CONTORNI',
+    dolci: 'I DOLCI'
+  };
+  
+  const menuItems = {
+    antipasti: [
+      {
+        id: 1,
+        name: 'Patatine fresche fritte',
+        price: '4.00',
+        description: '',
+        tags: ['vegetariano']
+      },
+      {
+        id: 2,
+        name: 'Bruschetta classica',
+        price: '5.00',
+        description: 'Pomodoro, Olio, Sale, Pepe, Origano',
+        tags: ['vegetariano']
+      },
+      {
+        id: 3,
+        name: 'Antipasto caldo',
+        price: '6.00',
+        description: 'Patatine Fritte, Arancinette con Carne e Burro, Crostino, Panelline, Crocchè*',
+        tags: []
+      },
+      {
+        id: 4,
+        name: 'Antipasto delle fritte',
+        price: '7.00',
+        description: 'Verdure Pastellate, Crostino, Tuma, Panelle*, Crocchè*',
+        tags: ['vegetariano']
+      }
+    ],
+    primi: [
+      {
+        id: 5,
+        name: 'Carbonara',
+        price: '12.00',
+        description: 'Guanciale, Uova, Pecorino Romano, Pepe Nero',
+        tags: []
+      },
+      {
+        id: 6,
+        name: 'Cacio e Pepe',
+        price: '10.00',
+        description: 'Pecorino Romano, Pepe Nero',
+        tags: ['vegetariano']
+      }
+    ],
+    secondi: [
+      {
+        id: 7,
+        name: 'Saltimbocca alla Romana',
+        price: '16.00',
+        description: 'Vitello, Prosciutto, Salvia, Vino Bianco',
+        tags: []
+      }
+    ],
+    contorni: [
+      {
+        id: 8,
+        name: 'Insalata mista',
+        price: '5.00',
+        description: 'Lattuga, Pomodori, Olive, Carote',
+        tags: ['vegetariano']
+      }
+    ],
+    dolci: [
+      {
+        id: 9,
+        name: 'Tiramisù',
+        price: '6.00',
+        description: 'Savoiardi, Mascarpone, Caffè, Cacao',
+        tags: ['vegetariano']
+      }
+    ]
+  };
+  
+  $: currentIndex = categories.indexOf(activeCategory);
+  $: currentItems = menuItems[activeCategory] || [];
+  
+  onMount(() => {
+    const handleScroll = () => {
+      isScrolled = window.scrollY > 100;
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
+  
+  function handleTouchStart(e) {
+    touchStart = e.touches[0].clientX;
+  }
+  
+  function handleTouchMove(e) {
+    touchEnd = e.touches[0].clientX;
+  }
+  
+  function handleTouchEnd() {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isLeftSwipe && currentIndex < categories.length - 1) {
+      activeCategory = categories[currentIndex + 1];
+    }
+    
+    if (isRightSwipe && currentIndex > 0) {
+      activeCategory = categories[currentIndex - 1];
+    }
+    
+    touchStart = 0;
+    touchEnd = 0;
+  }
+  
+  function scrollCategoryIntoView(category) {
+    const button = document.getElementById(`cat-${category}`);
+    if (button) {
+      button.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }
+  
+  $: if (activeCategory) {
+    scrollCategoryIntoView(activeCategory);
+  }
+</script>
+
+<div class="min-h-screen bg-zinc-900 text-white">
+  <!-- Header -->
+  <div class="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-4">
+      <div class="flex items-center gap-4 mb-4">
+        <!-- Restaurant Icon -->
+        <div class="flex-shrink-0 bg-orange-500 p-2.5 rounded-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M7 16l4-4 4 4 6-6"></path>
+          </svg>
+        </div>
+
+        <!-- Category Pills in Header -->
+        <div class="flex-1 flex gap-3 overflow-x-auto scrollbar-hide">
+          {#each categories as category}
+            <button
+              id="cat-{category}"
+              on:click={() => activeCategory = category}
+              class="px-5 py-2 rounded-full font-medium whitespace-nowrap transition-all text-sm {activeCategory === category ? 'bg-orange-500 text-white' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-750'}"
+            >
+              {categoryLabels[category]}
+            </button>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-6 border-b border-zinc-800">
+        <button
+          on:click={() => activeTab = 'carta'}
+          class="pb-3 px-1 font-medium transition-colors {activeTab === 'carta' ? 'text-white border-b-2 border-orange-500' : 'text-zinc-500'}"
+        >
+          MENU ALLA CARTA
+        </button>
+        <button
+          on:click={() => activeTab = 'eventi'}
+          class="pb-3 px-1 font-medium transition-colors {activeTab === 'eventi' ? 'text-white border-b-2 border-orange-500' : 'text-zinc-500'}"
+        >
+          EVENTI SPECIALI
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticky Category Indicator -->
+    {#if isScrolled}
+      <div class="bg-zinc-900 border-t border-zinc-800 py-3 animate-fadeIn">
+        <div class="max-w-4xl mx-auto px-4">
+          <div class="flex items-center justify-center">
+            <span class="text-sm font-medium text-orange-500">
+              {categoryLabels[activeCategory]}
+            </span>
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
+
+  <!-- Category Navigation -->
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <!-- Menu Items with Swipe -->
+    <div
+      on:touchstart={handleTouchStart}
+      on:touchmove={handleTouchMove}
+      on:touchend={handleTouchEnd}
+      class="space-y-4"
+    >
+      {#each currentItems as item (item.id)}
+        <div class="bg-zinc-850 rounded-xl p-6 border border-zinc-800 hover:border-zinc-700 transition-all hover:shadow-lg">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <h3 class="text-lg font-semibold text-white">
+                  {item.name}
+                </h3>
+              </div>
+              {#if item.description}
+                <p class="text-zinc-400 text-sm leading-relaxed mb-3">
+                  {item.description}
+                </p>
+              {/if}
+              <!-- Icon Tags with Tooltip -->
+              {#if item.tags.length > 0}
+                <div class="flex gap-2">
+                  {#each item.tags as tag, index}
+                    <div
+                      class="relative"
+                      on:mouseenter={() => hoveredTag = `${item.id}-${index}`}
+                      on:mouseleave={() => hoveredTag = null}
+                    >
+                      {#if tag === 'vegetariano'}
+                        <div class="p-1.5 bg-green-500/20 rounded-full cursor-help">
+                          <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                          </svg>
+                        </div>
+                        {#if hoveredTag === `${item.id}-${index}`}
+                          <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-950 text-white text-xs rounded-lg whitespace-nowrap z-10 shadow-lg border border-zinc-700">
+                            Vegetariano
+                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-zinc-950"></div>
+                          </div>
+                        {/if}
+                      {/if}
+                    </div>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+            <div class="text-right flex-shrink-0">
+              <span class="text-2xl font-bold text-orange-500">
+                {item.price}
+              </span>
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
+
+    <!-- Info Footer -->
+    <div class="mt-8 p-4 bg-zinc-850 rounded-xl border border-zinc-800">
+      <p class="text-xs text-zinc-500 leading-relaxed">
+        * Gli ingredienti contrassegnati con asterisco potrebbero contenere allergeni. 
+        Per informazioni dettagliate sugli allergeni presenti nei nostri piatti, 
+        non esitate a chiedere al nostro personale.
+      </p>
+    </div>
+
+    <!-- Swipe Hint -->
+    <div class="mt-4 text-center">
+      <p class="text-xs text-zinc-600">
+        ← Scorri per navigare tra le categorie →
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+  }
+  :global(body) {
+    margin: 0;
+    padding: 0;
+  }
+</style>

@@ -4,7 +4,7 @@ import type { LayoutLoad } from './$types';
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
     depends('supabase:auth');
 
-    const supabase = createBrowserSupabaseClient();
+    const supabase = createBrowserSupabaseClient(fetch);
 
     const {
         data: { session }

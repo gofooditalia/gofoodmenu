@@ -4,8 +4,10 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/publi
 /**
  * Creates a Supabase client that can be used in the browser.
  */
-export function createBrowserSupabaseClient() {
-    return createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
+export function createBrowserSupabaseClient(customFetch?: any) {
+    return createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+        global: { fetch: customFetch }
+    });
 }
 
 /**
@@ -16,7 +18,7 @@ export function createServerSupabaseClient(event: any) {
     return createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
         cookies: {
             getAll() {
-                return parseCookieHeader(event.request.headers.get('Cookie') ?? '');
+                return event.cookies.getAll();
             },
             setAll(cookiesToSet) {
                 cookiesToSet.forEach(({ name, value, options }) =>

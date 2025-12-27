@@ -3,8 +3,8 @@ import type { Actions } from './$types';
 
 export const actions: Actions = {
     default: async ({ request, locals }) => {
-        const session = await locals.getSession();
-        if (!session) {
+        const user = await locals.getUser();
+        if (!user) {
             return fail(401, { error: 'Non autorizzato' });
         }
 
@@ -24,7 +24,7 @@ export const actions: Actions = {
         const { error } = await locals.supabase
             .from('profiles')
             .insert({
-                id: session.user.id,
+                id: user.id,
                 restaurant_name,
                 slug,
                 theme_color: 'orange'
