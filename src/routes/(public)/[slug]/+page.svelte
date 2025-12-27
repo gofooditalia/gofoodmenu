@@ -284,6 +284,8 @@
                            ← Scorri per esplorare le categorie →
                         </p>
                      </div>
+               {/if}
+               </div>
             {/key}
          </main>
       {:else}
