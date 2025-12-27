@@ -207,7 +207,7 @@
             {#key activeCategory}
                <div 
                in:fly={{ y: 20, duration: 400, delay: 100, easing: cubicOut }}
-               class="space-y-4"
+               class="space-y-4 animate-initial-bounce"
                >
                {#if currentCat}
                      <div class="grid gap-4">
@@ -284,16 +284,7 @@
                            ← Scorri per esplorare le categorie →
                         </p>
                      </div>
-               {/if}
-               </div>
             {/key}
-            
-            <!-- Floating Swipe Hint (Mobile only, shown briefly then fades) -->
-            <div class="fixed bottom-32 left-1/2 -translate-x-1/2 pointer-events-none z-50 lg:hidden animate-bounce-horizontal opacity-0 [animation-delay:1.5s] [animation-fill-mode:forwards]">
-               <div class="px-4 py-2 bg-orange-500 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center gap-2">
-                  <span>← Swipe per navigare →</span>
-               </div>
-            </div>
          </main>
       {:else}
          <!-- EVENTI SPECIALI PAGE -->
@@ -456,16 +447,16 @@
     -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
   }
 
-  @keyframes bounce-horizontal {
-    0%, 100% { transform: translateX(-50%); opacity: 0; }
-    10%, 90% { opacity: 0.8; }
-    20% { transform: translateX(-65%); }
-    40% { transform: translateX(-35%); }
-    60% { transform: translateX(-60%); }
-    80% { transform: translateX(-40%); }
+  @keyframes initial-bounce {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-15px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(2px); }
   }
 
-  .animate-bounce-horizontal {
-    animation: bounce-horizontal 2.5s cubic-bezier(0.45, 0, 0.55, 1);
+  .animate-initial-bounce {
+    animation: initial-bounce 1.2s cubic-bezier(0.45, 0, 0.55, 1);
+    animation-delay: 0.8s; /* Wait for initial fly-in to finish */
   }
 </style>
