@@ -190,7 +190,7 @@
                         {#each currentCat.dishes as dish, i}
                            <div 
                               in:fly={{ y: 30, duration: 600, delay: i * 50, easing: cubicOut }}
-                              class="group relative cursor-pointer p-7 rounded-[2.5rem] bg-white/[0.03] border-[0.5px] border-amber-500/15 shadow-lg shadow-black/20 transition-all duration-700 hover:bg-white/[0.06] hover:border-amber-500/30 active:scale-[0.98] overflow-hidden"
+                              class="group relative cursor-pointer p-7 rounded-[2.5rem] bg-white/[0.03] border border-amber-500/30 shadow-lg shadow-black/20 transition-all duration-700 hover:bg-white/[0.06] hover:border-amber-500/60 active:scale-[0.98] overflow-hidden"
                               onclick={() => openDish(dish)}
                               onkeydown={(e) => e.key === 'Enter' && openDish(dish)}
                               role="button"
