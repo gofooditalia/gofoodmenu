@@ -13,12 +13,12 @@
 </script>
 
 <!-- OUTER BACKGROUND LAYER -->
-<div class="fixed inset-0 bg-neutral-900 flex flex-col items-center overflow-hidden font-sans">
+<div class="fixed inset-0 flex flex-col items-center overflow-hidden font-sans">
   
   <!-- Ambient Background Effects -->
   <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
     <!-- Base Gradient -->
-    <div class="absolute inset-0 bg-neutral-950"></div>
+    <div class="absolute inset-0 bg-transparent"></div>
     
     <!-- Moving Mesh Orbs (Desktop Only for Performance) -->
     <div class="hidden lg:block absolute inset-0 opacity-60 filter blur-[120px]">
@@ -80,11 +80,11 @@
   <div class="relative z-10 w-full h-full flex items-center justify-center p-0 lg:p-12 overflow-hidden">
     <!-- "DEVICE" CARD CONTAINER -->
     <div 
-      class="relative h-full bg-neutral-950 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+      class="relative h-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]
       {viewMode === 'smartphone' 
         ? 'w-full lg:w-[412px] lg:h-[915px] lg:max-h-[85vh] lg:rounded-[3.5rem] lg:border-[12px]' 
         : 'w-full lg:w-[800px] lg:h-[1180px] lg:max-h-[90vh] lg:rounded-[2.5rem] lg:border-[14px]'} 
-      border-neutral-900 shadow-2xl shadow-black lg:outline outline-1 outline-white/10 overflow-hidden flex flex-col"
+      border-neutral-900/50 shadow-2xl shadow-black lg:outline outline-1 outline-white/10 overflow-hidden flex flex-col"
     >
       
       <!-- Notch/Sensor simulation based on mode -->
@@ -112,7 +112,6 @@
 
 <style>
   :global(body) {
-    background-color: #000;
     overflow: hidden;
   }
 

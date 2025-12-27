@@ -371,7 +371,7 @@
 
 <style>
   :global(body) {
-    background-color: #0d0d0f;
+    background-color: #111114;
     overflow: hidden; /* Hide outer scroll on desktop */
     position: relative;
   }
@@ -382,7 +382,7 @@
     inset: 0;
     z-index: -1;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.05;
+    opacity: 0.1;
     pointer-events: none;
   }
   .no-scrollbar::-webkit-scrollbar {
