@@ -358,9 +358,12 @@
      >
         <img src={peekedDish.image_url} alt={peekedDish.name} class="w-full h-full object-cover" />
         
-        <!-- Subtle Caption Overlay -->
-        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+        <!-- Subtle Information Overlay -->
+        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/95 via-black/70 to-transparent space-y-2">
            <h4 class="text-white font-black text-xl tracking-tight leading-none">{peekedDish.name}</h4>
+           {#if peekedDish.description}
+              <p class="text-zinc-300 text-xs leading-relaxed line-clamp-3 font-medium">{peekedDish.description}</p>
+           {/if}
         </div>
      </div>
   </div>
