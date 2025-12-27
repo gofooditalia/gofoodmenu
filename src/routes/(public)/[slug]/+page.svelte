@@ -45,7 +45,6 @@
   let isScrolled = $state(false);
   let selectedDish = $state<any>(null);
   let sheetOpen = $state(false);
-  let catSheetOpen = $state(false);
 
   // Page Navigation State
   type NavPage = 'menu' | 'events';
@@ -71,7 +70,6 @@
 
   function selectCategory(id: number) {
     activeCategory = id;
-    catSheetOpen = false;
     if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -138,12 +136,6 @@
          </div>
 
          <!-- Grid Toggle -->
-         <button 
-            onclick={() => catSheetOpen = true}
-            class="flex-shrink-0 w-9 h-9 flex items-center justify-center bg-white/5 border border-white/5 rounded-xl text-zinc-500 hover:text-white transition-all duration-300"
-         >
-            <LayoutGrid class="h-3.5 w-3.5" />
-         </button>
       </div>
 
       <!-- PAGE TABS -->
@@ -324,44 +316,8 @@
    </div>
 </PreviewWrapper>
 
-<!-- Categories Grid Sheet -->
-<Sheet.Root bind:open={catSheetOpen}>
-   <Sheet.Content side="bottom" class="h-[70vh] md:max-w-[480px] md:mx-auto rounded-t-[2.5rem] p-0 overflow-hidden flex flex-col bg-neutral-950 border-neutral-900 text-white shadow-2xl shadow-black ring-0 outline-none">
-      <div class="p-8 border-b border-white/5 shrink-0">
-         <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-white uppercase tracking-tight">Tutte le Categorie</h2>
-            <Badge variant="outline" class="border-white/10 text-[10px] text-zinc-500 uppercase tracking-widest px-2">{categories.length} Sezioni</Badge>
-         </div>
-      </div>
 
-      <div class="flex-1 overflow-y-auto p-6">
-         <div class="grid grid-cols-2 gap-3">
-            {#each categories as category}
-               <button 
-                  onclick={() => selectCategory(category.id)}
-                  class="flex flex-col items-center justify-center p-6 rounded-3xl border transition-all duration-300 text-center gap-3
-                  {activeCategory === category.id 
-                     ? 'bg-orange-500/10 border-orange-500/50 text-orange-500' 
-                     : 'bg-zinc-900 border-white/5 text-zinc-400 hover:border-white/20 hover:text-zinc-200'}"
-               >
-                  <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-white/10 transition-colors">
-                     <Utensils class="h-5 w-5 opacity-40" />
-                  </div>
-                  <span class="text-[11px] font-bold uppercase tracking-wider leading-tight">{category.name}</span>
-               </button>
-            {/each}
-         </div>
-      </div>
-
-      <div class="p-6 border-t border-white/5 bg-neutral-950 shrink-0">
-         <Button class="w-full h-12 text-base font-bold rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white border border-white/5" onclick={() => catSheetOpen = false}>
-           Chiudi
-         </Button>
-      </div>
-   </Sheet.Content>
-</Sheet.Root>
-
-<!-- Dish Sheet (Matches Box Width on Desktop?) -->
+ <!-- Dish Sheet (Matches Box Width on Desktop?) -->
 <Sheet.Root bind:open={sheetOpen}>
    <Sheet.Content side="bottom" class="h-[85vh] md:max-w-[480px] md:mx-auto rounded-t-[2.5rem] p-0 overflow-hidden flex flex-col bg-neutral-900 border-neutral-800 text-white shadow-2xl shadow-black ring-0 outline-none">
       {#if selectedDish}
