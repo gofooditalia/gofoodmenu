@@ -348,9 +348,7 @@
                </div>
             {/if}
             
-            <Button size="icon" variant="ghost" class="absolute top-6 right-6 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/10" onclick={() => sheetOpen = false}>
-               <ChevronRight class="rotate-90" />
-            </Button>
+
          </div>
 
          <div class="flex-1 overflow-y-auto p-8 space-y-6">
