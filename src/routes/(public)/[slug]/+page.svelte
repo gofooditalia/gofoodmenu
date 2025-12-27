@@ -213,18 +213,18 @@
                               <div class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
                               <div class="flex justify-between items-start gap-6 relative z-10">
-                                 <h3 class="font-bold text-[1.1rem] leading-tight text-white/90 group-hover:text-white transition-colors tracking-tight max-w-[70%]">
+                                 <h3 class="font-black text-[1.35rem] leading-tight text-white group-hover:text-amber-400 transition-colors tracking-tight max-w-[75%]">
                                     {dish.name}
                                  </h3>
                                  <div class="flex flex-col items-end">
-                                    <span class="font-black text-orange-500 text-xl tracking-tighter">
-                                       <span class="text-xs mr-0.5">€</span>{dish.price}
+                                    <span class="font-black text-orange-500 text-3xl tracking-tighter">
+                                       {dish.price}
                                     </span>
                                  </div>
                               </div>
 
                               {#if dish.description}
-                                 <p class="text-[0.85rem] text-zinc-500 leading-relaxed font-medium pr-6 mt-3 mb-5 line-clamp-2 group-hover:text-zinc-400 transition-colors relative z-10">
+                                 <p class="text-[0.95rem] text-zinc-300 leading-relaxed font-medium pr-2 mt-3 mb-6 line-clamp-3 group-hover:text-white transition-colors relative z-10">
                                  {dish.description}
                                  </p>
                               {/if}
@@ -238,8 +238,8 @@
                                           onmouseleave={() => hoveredTag = null}
                                           role="note"
                                        >
-                                          <div class="p-1.5 bg-green-500/5 border border-green-500/10 rounded-full cursor-help">
-                                             <Leaf size={12} class="text-green-500/80" />
+                                          <div class="p-2 bg-green-500/10 border border-green-500/20 rounded-full cursor-help shadow-lg shadow-green-900/20">
+                                             <Leaf size={18} class="text-green-400" />
                                           </div>
                                           {#if hoveredTag === `${dish.id}-veg`}
                                              <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-950 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg whitespace-nowrap z-[100] shadow-2xl border border-white/5" in:fade={{ duration: 200 }}>
@@ -383,7 +383,7 @@
             <div class="space-y-2">
                <h2 class="text-3xl font-black text-white tracking-tight leading-none">{selectedDish.name}</h2>
                <div class="flex items-center gap-3">
-                   <span class="text-2xl font-black text-orange-500">€{selectedDish.price}</span>
+                   <span class="text-4xl font-black text-orange-500">{selectedDish.price}</span>
                    {#if !selectedDish.is_available}
                     <Badge variant="destructive" class="bg-red-900/50 text-red-400 border-red-800 px-2 py-0.5 text-[10px]">Esaurito</Badge>
                    {/if}
