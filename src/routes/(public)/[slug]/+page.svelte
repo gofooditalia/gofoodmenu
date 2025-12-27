@@ -181,16 +181,6 @@
         </div>
       {/if}
 
-      <!-- PAGINATION DOTS (Always visible in menu page) -->
-      {#if currentPage === 'menu'}
-         <div class="flex justify-center gap-1.5 pb-4">
-            {#each categories as category, i}
-               <div 
-                  class="h-1.5 rounded-full transition-all duration-500 {activeCategory === category.id ? 'w-6 bg-orange-500' : 'w-1.5 bg-zinc-800'}"
-               ></div>
-            {/each}
-         </div>
-      {/if}
    </div>
 
    <!-- SCROLLABLE CONTENT AREA -->
