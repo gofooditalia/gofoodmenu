@@ -162,16 +162,7 @@
          </button>
       </nav>
 
-      <!-- Sticky Category Indicator -->
-      {#if isScrolled && currentPage === 'menu'}
-        <div class="bg-zinc-900 border-t border-zinc-800 py-3 -mx-6 px-6 animate-fadeIn transition-all duration-300">
-           <div class="flex items-center justify-center">
-              <span class="text-[10px] font-bold text-orange-500 uppercase tracking-widest">
-                 {currentCat?.name}
-              </span>
-           </div>
-        </div>
-      {/if}
+
 
    </div>
 
