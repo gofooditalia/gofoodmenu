@@ -180,6 +180,17 @@
            </div>
         </div>
       {/if}
+
+      <!-- PAGINATION DOTS (Always visible in menu page) -->
+      {#if currentPage === 'menu'}
+         <div class="flex justify-center gap-1.5 pb-4">
+            {#each categories as category, i}
+               <div 
+                  class="h-1.5 rounded-full transition-all duration-500 {activeCategory === category.id ? 'w-6 bg-orange-500' : 'w-1.5 bg-zinc-800'}"
+               ></div>
+            {/each}
+         </div>
+      {/if}
    </div>
 
    <!-- SCROLLABLE CONTENT AREA -->
@@ -276,6 +287,13 @@
                {/if}
                </div>
             {/key}
+            
+            <!-- Floating Swipe Hint (Mobile only, shown briefly then fades) -->
+            <div class="fixed bottom-32 left-1/2 -translate-x-1/2 pointer-events-none z-50 lg:hidden animate-bounce-horizontal opacity-0 [animation-delay:1.5s] [animation-fill-mode:forwards]">
+               <div class="px-4 py-2 bg-orange-500 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl flex items-center gap-2">
+                  <span>← Swipe per navigare →</span>
+               </div>
+            </div>
          </main>
       {:else}
          <!-- EVENTI SPECIALI PAGE -->
@@ -436,5 +454,18 @@
   .mask-fade-right {
     mask-image: linear-gradient(to right, black 85%, transparent 100%);
     -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+
+  @keyframes bounce-horizontal {
+    0%, 100% { transform: translateX(-50%); opacity: 0; }
+    10%, 90% { opacity: 0.8; }
+    20% { transform: translateX(-65%); }
+    40% { transform: translateX(-35%); }
+    60% { transform: translateX(-60%); }
+    80% { transform: translateX(-40%); }
+  }
+
+  .animate-bounce-horizontal {
+    animation: bounce-horizontal 2.5s cubic-bezier(0.45, 0, 0.55, 1);
   }
 </style>
