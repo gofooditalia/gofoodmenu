@@ -102,7 +102,23 @@
     touchEnd = 0;
   }
 
+  // Haptic Feedback for Long Press
+  let hapticTimer: any;
+  function startHaptic() {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      hapticTimer = setTimeout(() => {
+         // A subtle, "Osteria-style" double-tap pulse
+         navigator.vibrate([40, 30, 30]);
+      }, 350);
+    }
+  }
+
+  function stopHaptic() {
+    clearTimeout(hapticTimer);
+  }
+
   function openDish(dish: any) {
+    stopHaptic(); // Ensure timer is cleared if user clicks quickly
     selectedDish = dish;
     sheetOpen = true;
   }
@@ -195,6 +211,9 @@
                                active:scale-[0.97] active:bg-white/[0.08] active:border-amber-400 active:shadow-[0_0_25px_rgba(245,158,11,0.2)]
                                hover:bg-white/[0.06] overflow-hidden"
                               onclick={() => openDish(dish)}
+                              onpointerdown={startHaptic}
+                              onpointerup={stopHaptic}
+                              onpointerleave={stopHaptic}
                               onkeydown={(e) => e.key === 'Enter' && openDish(dish)}
                               role="button"
                               tabindex="0"
