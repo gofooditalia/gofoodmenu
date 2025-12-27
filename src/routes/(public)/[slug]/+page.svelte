@@ -126,7 +126,7 @@
 
 <PreviewWrapper>
    <!-- TOP FIXED NAVBAR (Platform/Restaurant context) -->
-   <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5">
+   <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5 select-none">
       <div class="flex items-center gap-4">
          <!-- Restaurant Icon -->
          <div class="flex-shrink-0 bg-orange-500 p-2 rounded-xl shadow-lg shadow-orange-500/10">
@@ -188,7 +188,8 @@
      ontouchstart={handleTouchStart}
      ontouchmove={handleTouchMove}
      ontouchend={handleTouchEnd}
-     class="h-full overflow-y-auto no-scrollbar relative w-full pt-[115px]"
+     class="h-full overflow-y-auto no-scrollbar relative w-full pt-[115px] select-none"
+     style="-webkit-touch-callout: none;"
    >
       {#if currentPage === 'menu'}
          <!-- Menu Content -->
@@ -398,6 +399,9 @@
   :global(body) {
     background-color: #0d0d0f;
     overflow: hidden; /* Hide outer scroll on desktop */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
