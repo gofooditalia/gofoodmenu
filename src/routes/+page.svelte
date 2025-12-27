@@ -37,12 +37,17 @@
       </div>
 
       <a 
-        href="/dashboard" 
+        href={data.user ? "/dashboard" : "/login"} 
         class="flex items-center justify-center w-full p-4 bg-white border border-slate-200 text-slate-700 hover:border-slate-800 rounded-xl font-semibold transition-all"
       >
-        👨‍🍳 Area Ristorante (Admin)
+        {data.user ? "👨‍🍳 Area Ristorante (Admin)" : "🔑 Accedi / Login"}
       </a>
     </div>
 
+    {#if data.user}
+      <p class="text-[10px] text-slate-400 font-medium">
+        Sei loggato come <span class="text-slate-600 font-bold">{data.user.email}</span>
+      </p>
+    {/if}
   </div>
 </div>
