@@ -6,8 +6,6 @@
   import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
   import { Badge } from "$lib/components/ui/badge";
-  import { Separator } from "$lib/components/ui/separator";
-  import * as Sheet from "$lib/components/ui/sheet";
   import PreviewWrapper from '$lib/components/PreviewWrapper.svelte';
 
   let { data } = $props<{ data: PageData }>();
@@ -43,8 +41,6 @@
 
   let currentCat = $derived(categories.find((c: any) => c.id === activeCategory));
   let isScrolled = $state(false);
-  let selectedDish = $state<any>(null);
-  let sheetOpen = $state(false);
 
   // Page Navigation State
   type NavPage = 'menu' | 'events';
@@ -107,8 +103,6 @@
   let peekedDish = $state<any>(null);
 
   function startHaptic(dish: any) {
-    if (!dish.image_url) return; // Only peek if there's an image
-    
     if (typeof navigator !== 'undefined') {
       hapticTimer = setTimeout(() => {
          // 1. Trigger Vibration
@@ -116,7 +110,7 @@
          
          // 2. Show Peek Preview
          peekedDish = dish;
-      }, 350);
+      }, 150); // Faster, more tactile response
     }
   }
 
@@ -126,9 +120,8 @@
   }
 
   function openDish(dish: any) {
-    stopHaptic(); // Ensure timer is cleared and peek is closed
-    selectedDish = dish;
-    sheetOpen = true;
+    // No longer opens a sheet, but could trigger haptic again or nothing
+    stopHaptic();
   }
 </script>
 
@@ -350,19 +343,32 @@
      <!-- Backdrop Blur -->
      <div class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
      
-     <!-- The Peek Image -->
+     <!-- The Peek Card -->
      <div 
-        class="relative w-full max-w-[320px] aspect-square rounded-[2rem] overflow-hidden border-[2px] border-amber-500/50 shadow-[0_0_50px_rgba(245,158,11,0.3)]"
+        class="relative w-full max-w-[320px] aspect-square rounded-[2rem] overflow-hidden border-[2px] border-amber-500/50 shadow-[0_0_50px_rgba(245,158,11,0.3)] bg-[#1a1a1e]"
         in:scale={{ duration: 400, start: 0.8, easing: backOut }}
-        out:scale={{ duration: 200, start: 1, easing: cubicOut }}
+        out:scale={{ duration: 200, start: 0.9, easing: cubicOut }}
      >
-        <img src={peekedDish.image_url} alt={peekedDish.name} class="w-full h-full object-cover" />
+        {#if peekedDish.image_url}
+           <img src={peekedDish.image_url} alt={peekedDish.name} class="w-full h-full object-cover" />
+        {:else}
+           <div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-4">
+              <Utensils class="h-16 w-16 text-amber-500/20" />
+              <div class="space-y-1">
+                 <p class="text-[10px] uppercase tracking-[0.2em] text-amber-500/50 font-black">Specialità della Casa</p>
+                 <h4 class="text-white font-black text-2xl tracking-tight leading-tight">{peekedDish.name}</h4>
+              </div>
+           </div>
+        {/if}
         
-        <!-- Subtle Information Overlay -->
-        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/95 via-black/70 to-transparent space-y-2">
-           <h4 class="text-white font-black text-xl tracking-tight leading-none">{peekedDish.name}</h4>
+        <!-- Information Overlay -->
+        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent space-y-3">
+           <div class="flex items-center justify-between gap-4">
+              <h4 class="text-white font-black text-2xl tracking-tight leading-none">{peekedDish.name}</h4>
+              <span class="text-3xl font-black text-orange-500 drop-shadow-lg">{peekedDish.price}</span>
+           </div>
            {#if peekedDish.description}
-              <p class="text-zinc-300 text-xs leading-relaxed line-clamp-3 font-medium">{peekedDish.description}</p>
+              <p class="text-zinc-300 text-sm leading-relaxed line-clamp-4 font-medium">{peekedDish.description}</p>
            {/if}
         </div>
      </div>
@@ -370,64 +376,7 @@
 {/if}
 
 
- <!-- Dish Sheet (Matches Box Width on Desktop?) -->
-<Sheet.Root bind:open={sheetOpen}>
-   <Sheet.Content side="bottom" class="h-[85vh] md:max-w-[480px] md:mx-auto rounded-t-[2.5rem] p-0 overflow-hidden flex flex-col bg-[#1a1a1e] border-white/5 text-white shadow-2xl shadow-black ring-0 outline-none">
-      {#if selectedDish}
-         <div class="relative h-72 shrink-0">
-            {#if selectedDish.image_url}
-               <img src={selectedDish.image_url} alt={selectedDish.name} class="w-full h-full object-cover opacity-90" />
-               <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent"></div>
-            {:else}
-               <div class="w-full h-full flex items-center justify-center bg-neutral-800 text-neutral-600">
-                  <Utensils class="h-12 w-12 opacity-20" />
-               </div>
-            {/if}
-            
 
-         </div>
-
-         <div class="flex-1 overflow-y-auto p-8 space-y-6">
-            <div class="space-y-2">
-               <h2 class="text-3xl font-black text-white tracking-tight leading-none">{selectedDish.name}</h2>
-               <div class="flex items-center gap-3">
-                   <span class="text-4xl font-black text-orange-500">{selectedDish.price}</span>
-                   {#if !selectedDish.is_available}
-                    <Badge variant="destructive" class="bg-red-900/50 text-red-400 border-red-800 px-2 py-0.5 text-[10px]">Esaurito</Badge>
-                   {/if}
-               </div>
-            </div>
-
-            {#if selectedDish.description}
-               <div class="space-y-2">
-                  <h4 class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Descrizione</h4>
-                  <p class="text-base leading-relaxed text-zinc-300 font-medium">{selectedDish.description}</p>
-               </div>
-            {/if}
-
-            {#if selectedDish.allergens && selectedDish.allergens.length > 0}
-               <Separator class="bg-white/10 my-6" />
-               <div class="space-y-3">
-                  <h4 class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Allergeni</h4>
-                  <div class="flex flex-wrap gap-2">
-                     {#each selectedDish.allergens as allergen}
-                        <div class="px-2.5 py-1 bg-zinc-800 border border-white/5 rounded-lg text-[10px] text-zinc-300 uppercase tracking-widest font-bold">
-                          {allergen}
-                        </div>
-                     {/each}
-                  </div>
-               </div>
-            {/if}
-         </div>
-
-         <div class="p-6 border-t border-white/5 bg-[#141417]">
-            <Button class="w-full h-14 text-base font-black rounded-2xl bg-orange-500 hover:bg-orange-600 text-white tracking-wide shadow-lg shadow-orange-900/20" onclick={() => sheetOpen = false}>
-              Chiudi
-            </Button>
-         </div>
-      {/if}
-   </Sheet.Content>
-</Sheet.Root>
 
 <style>
   :global(body) {
