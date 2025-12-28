@@ -2,8 +2,36 @@
   import { Plus, Trash2, Edit3, Grid, Utensils } from 'lucide-svelte';
   import type { PageData, ActionData } from './$types';
   import { enhance } from '$app/forms';
+  import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 
   let { data, form }: { data: PageData, form: ActionData } = $props();
+  let supabase = $derived(data.supabase);
+  const queryClient = useQueryClient();
+
+  // 1. Categories Query
+  const categoriesQuery = createQuery<any[]>(() => ({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const { data: categories, error } = await supabase.from('categories').select('*').order('name');
+      if (error) throw error;
+      return categories;
+    },
+    initialData: data.categories
+  }));
+
+  // 2. Dishes Query
+  const dishesQuery = createQuery<any[]>(() => ({
+    queryKey: ['dishes'],
+    queryFn: async () => {
+      const { data: dishes, error } = await supabase
+        .from('dishes')
+        .select('*, categories(name)')
+        .order('name');
+      if (error) throw error;
+      return dishes;
+    },
+    initialData: data.dishes
+  }));
 
   let showAddCategory = $state(false);
   let showAddDish = $state(false);
@@ -58,7 +86,8 @@
           use:enhance={() => {
             return async ({ update }) => {
               showAddCategory = false;
-              update();
+              await update();
+              queryClient.invalidateQueries({ queryKey: ['categories'] });
             }
           }}
           class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 space-y-3"
@@ -69,7 +98,6 @@
             placeholder="Nome (es. Antipasti)" 
             class="w-full p-3 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-xl outline-none font-bold text-sm"
             required
-            autoFocus
           />
           <div class="flex gap-2">
             <button type="submit" class="flex-1 bg-orange-500 text-white py-2 rounded-xl font-bold text-sm">Salva</button>
@@ -85,7 +113,7 @@
       {/if}
 
       <div class="space-y-2">
-        {#each data.categories as category}
+        {#each categoriesQuery.data ?? [] as category}
           <div class="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 hover:border-orange-200 transition-all hover:shadow-md">
             <span class="font-bold text-slate-700">{category.name}</span>
             <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -95,7 +123,12 @@
               >
                 <Edit3 size={16} />
               </button>
-              <form method="POST" action="?/deleteCategory" use:enhance>
+              <form method="POST" action="?/deleteCategory" use:enhance={() => {
+                return async ({ update }) => {
+                  await update();
+                  queryClient.invalidateQueries({ queryKey: ['categories'] });
+                }
+              }}>
                 <input type="hidden" name="id" value={category.id} />
                 <button type="submit" class="p-2 text-slate-400 hover:text-red-500 transition-colors">
                   <Trash2 size={16} />
@@ -115,7 +148,8 @@
                 use:enhance={() => {
                   return async ({ update }) => {
                     editingCategory = null;
-                    update();
+                    await update();
+                    queryClient.invalidateQueries({ queryKey: ['categories'] });
                   }
                 }}
                 class="space-y-4"
@@ -176,7 +210,8 @@
                 return async ({ update }) => {
                   showAddDish = false;
                   imagePreview = null;
-                  update();
+                  await update();
+                  queryClient.invalidateQueries({ queryKey: ['dishes'] });
                 }
               }} 
               class="space-y-6"
@@ -196,7 +231,7 @@
                   <label for="new_dish_cat" class="text-xs font-black uppercase tracking-wider text-slate-400">Categoria</label>
                   <select id="new_dish_cat" name="category_id" bind:value={dishCategory} class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold appearance-none" required>
                     <option value="" disabled>Scegli...</option>
-                    {#each data.categories as category}
+                    {#each categoriesQuery.data ?? [] as category}
                       <option value={category.id}>{category.name}</option>
                     {/each}
                   </select>
@@ -240,7 +275,7 @@
       {/if}
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {#each data.dishes as dish}
+        {#each dishesQuery.data ?? [] as dish}
           <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex gap-6 group hover:shadow-xl transition-all duration-300">
             <div class="w-32 h-32 bg-slate-100 rounded-2xl flex-shrink-0 relative overflow-hidden">
               {#if dish.image_url}
@@ -270,7 +305,12 @@
                 >
                   <Edit3 size={18} />
                 </button>
-                <form method="POST" action="?/deleteDish" use:enhance>
+                <form method="POST" action="?/deleteDish" use:enhance={() => {
+                  return async ({ update }) => {
+                    await update();
+                    queryClient.invalidateQueries({ queryKey: ['dishes'] });
+                  }
+                }}>
                   <input type="hidden" name="id" value={dish.id} />
                   <button type="submit" class="text-slate-400 hover:text-red-500 transition-colors">
                     <Trash2 size={18} />
@@ -299,7 +339,8 @@
                   return async ({ update }) => {
                     editingDish = null;
                     imagePreview = null;
-                    update();
+                    await update();
+                    queryClient.invalidateQueries({ queryKey: ['dishes'] });
                   }
                 }} 
                 class="space-y-6"
@@ -319,7 +360,7 @@
                   <div class="space-y-2">
                     <label for="edit_dish_cat" class="text-xs font-black uppercase tracking-wider text-slate-400">Categoria</label>
                     <select id="edit_dish_cat" name="category_id" value={editingDish.category_id} class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold appearance-none" required>
-                      {#each data.categories as category}
+                      {#each categoriesQuery.data ?? [] as category}
                         <option value={category.id}>{category.name}</option>
                       {/each}
                     </select>

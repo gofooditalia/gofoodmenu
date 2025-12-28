@@ -4,9 +4,20 @@
   import { onMount } from 'svelte';
   import type { LayoutData } from './$types';
 
+  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+
   let { data, children }: { data: LayoutData, children: any } = $props();
   let session = $derived(data.session);
   let supabase = $derived(data.supabase);
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        enabled: true,
+        staleTime: 1000 * 60 * 5, // 5 minutes default
+      },
+    },
+  });
 
   onNavigate((navigation) => {
     if (!document.startViewTransition) return;
@@ -30,4 +41,6 @@
   });
 </script>
 
-{@render children()}
+<QueryClientProvider client={queryClient}>
+  {@render children()}
+</QueryClientProvider>

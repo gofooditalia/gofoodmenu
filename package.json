@@ -51,6 +51,7 @@
 	"dependencies": {
 		"@supabase/ssr": "^0.8.0",
 		"@supabase/supabase-js": "^2.89.0",
+		"@tanstack/svelte-query": "^6.0.12",
 		"lucide-svelte": "^0.562.0",
 		"qrcode": "^1.5.4"
 	}
