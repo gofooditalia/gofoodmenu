@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { cubicOut, backOut } from 'svelte/easing';
-  import { Utensils, Info, Search, MapPin, Clock, ChevronRight, LayoutGrid, Leaf } from 'lucide-svelte';
+  import { Utensils, Info, Search, MapPin, Clock, ChevronRight, LayoutGrid, Leaf, Camera } from 'lucide-svelte';
   import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
   import { Badge } from "$lib/components/ui/badge";
@@ -231,6 +231,11 @@
                                     <span class="font-black text-orange-500 text-3xl tracking-tighter">
                                        {dish.price}
                                     </span>
+                                    {#if dish.image_url}
+                                       <div class="mt-1 opacity-40 group-hover:opacity-70 transition-opacity">
+                                          <Camera class="w-4 h-4 text-amber-500" />
+                                       </div>
+                                    {/if}
                                  </div>
                               </div>
 
