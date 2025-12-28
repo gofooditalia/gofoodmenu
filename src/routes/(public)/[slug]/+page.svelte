@@ -351,26 +351,40 @@
      >
         {#if peekedDish.image_url}
            <img src={peekedDish.image_url} alt={peekedDish.name} class="w-full h-full object-cover" />
+           
+           <!-- Information Overlay (Only for Images) -->
+           <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent space-y-3">
+              <div class="flex items-center justify-between gap-4">
+                 <h4 class="text-white font-black text-2xl tracking-tight leading-none">{peekedDish.name}</h4>
+                 <span class="text-3xl font-black text-orange-500 drop-shadow-lg">{peekedDish.price}</span>
+              </div>
+              {#if peekedDish.description}
+                 <p class="text-zinc-300 text-sm leading-relaxed line-clamp-4 font-medium">{peekedDish.description}</p>
+              {/if}
+           </div>
         {:else}
-           <div class="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-4">
-              <Utensils class="h-16 w-16 text-amber-500/20" />
-              <div class="space-y-1">
-                 <p class="text-[10px] uppercase tracking-[0.2em] text-amber-500/50 font-black">Specialità della Casa</p>
-                 <h4 class="text-white font-black text-2xl tracking-tight leading-tight">{peekedDish.name}</h4>
+           <!-- Special Design for No-Image Dishes -->
+           <div class="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-[#1a1a1e] to-[#0d0d0f] relative overflow-hidden">
+              <!-- Background Decorative Icon -->
+              <Utensils class="absolute -top-4 -right-4 h-32 w-32 text-amber-500/5 rotate-12" />
+              <Utensils class="absolute -bottom-8 -left-8 h-40 w-40 text-amber-500/5 -rotate-12" />
+              
+              <div class="relative z-10 space-y-6">
+                 <div class="space-y-2">
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-amber-500/60 font-black">L'Autentico Sapore</p>
+                    <h4 class="text-white font-black text-3xl tracking-tight leading-tight uppercase">{peekedDish.name}</h4>
+                 </div>
+                 
+                 {#if peekedDish.description}
+                    <p class="text-zinc-400 text-sm leading-relaxed font-medium px-2">{peekedDish.description}</p>
+                 {/if}
+                 
+                 <div class="pt-4">
+                    <span class="text-5xl font-black text-orange-500">{peekedDish.price}</span>
+                 </div>
               </div>
            </div>
         {/if}
-        
-        <!-- Information Overlay -->
-        <div class="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent space-y-3">
-           <div class="flex items-center justify-between gap-4">
-              <h4 class="text-white font-black text-2xl tracking-tight leading-none">{peekedDish.name}</h4>
-              <span class="text-3xl font-black text-orange-500 drop-shadow-lg">{peekedDish.price}</span>
-           </div>
-           {#if peekedDish.description}
-              <p class="text-zinc-300 text-sm leading-relaxed line-clamp-4 font-medium">{peekedDish.description}</p>
-           {/if}
-        </div>
      </div>
   </div>
 {/if}
