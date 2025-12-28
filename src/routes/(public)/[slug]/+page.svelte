@@ -335,7 +335,7 @@
 </PreviewWrapper>
 
 <!-- TACTILE PEEK OVERLAY (Image Preview on Long Press) -->
-{#if peekedDish && peekedDish.image_url}
+{#if peekedDish}
   <div 
      class="fixed inset-0 z-[100] flex items-center justify-center p-8 pointer-events-none"
      transition:fade={{ duration: 200 }}
