@@ -1,4 +1,4 @@
-import { pgTable, text, integer, timestamp, uuid, boolean, numeric, bigint } from 'drizzle-orm/pg-core';
+import { pgTable, text, integer, timestamp, uuid, boolean, numeric, bigint, jsonb } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 export const profiles = pgTable('profiles', {
@@ -6,6 +6,15 @@ export const profiles = pgTable('profiles', {
     slug: text('slug').notNull().unique(),
     restaurant_name: text('restaurant_name').notNull(),
     theme_color: text('theme_color').default('orange'),
+    address: text('address'),
+    phone: text('phone'),
+    logo_url: text('logo_url'),
+    description: text('description'),
+    instagram_url: text('instagram_url'),
+    facebook_url: text('facebook_url'),
+    whatsapp_number: text('whatsapp_number'),
+    website_url: text('website_url'),
+    opening_hours: jsonb('opening_hours'),
     created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
     updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
 });

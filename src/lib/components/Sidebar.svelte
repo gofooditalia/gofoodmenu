@@ -1,6 +1,6 @@
 ```html
 <script lang="ts">
-  import { Home, Grid, QrCode, LogOut } from 'lucide-svelte';
+  import { Home, Grid, QrCode, LogOut, Store } from 'lucide-svelte';
   import { page } from '$app/state';
   import { enhance } from '$app/forms';
 
@@ -8,6 +8,7 @@
 
   const menuItems = [
     { name: 'Dashboard', icon: Home, href: '/dashboard' },
+    { name: 'Profilo Ristorante', icon: Store, href: '/restaurant-profile' },
     { name: 'Gestione Menu', icon: Grid, href: '/menu-management' },
     { name: 'QR Code', icon: QrCode, href: '/qr-generator' },
   ];
