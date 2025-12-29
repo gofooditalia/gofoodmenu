@@ -246,26 +246,29 @@
                               {/if}
                               
                               <div class="flex items-center justify-between mt-auto relative z-10">
-                                 <div class="flex gap-2">
-                                    {#if dish.allergens?.includes('Vegetariano')}
-                                       <div 
-                                          class="relative"
-                                          onmouseenter={() => hoveredTag = `${dish.id}-veg`}
-                                          onmouseleave={() => hoveredTag = null}
-                                          role="note"
-                                       >
-                                          <div class="p-2 bg-green-500/10 border border-green-500/20 rounded-full cursor-help shadow-lg shadow-green-900/20">
-                                             <Leaf size={18} class="text-green-400" />
-                                          </div>
-                                          {#if hoveredTag === `${dish.id}-veg`}
-                                             <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-950 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg whitespace-nowrap z-[100] shadow-2xl border border-white/5" in:fade={{ duration: 200 }}>
-                                                Vegetariano
-                                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-zinc-950"></div>
-                                             </div>
-                                          {/if}
-                                       </div>
-                                    {/if}
-                                 </div>
+                                  <div class="flex gap-2">
+                                     {#each dish.allergens || [] as allergenId}
+                                        {@const allergen = (data.allergens as any[]).find((a: any) => a.id === allergenId)}
+                                        {#if allergen}
+                                           <div 
+                                              class="relative"
+                                              onmouseenter={() => hoveredTag = `${dish.id}-${allergen.id}`}
+                                              onmouseleave={() => hoveredTag = null}
+                                              role="note"
+                                           >
+                                              <div class="p-2 bg-white/5 border border-white/10 rounded-full cursor-help shadow-lg shadow-black/20 group-hover:bg-white/10 transition-colors">
+                                                 <span class="text-base leading-none block">{allergen.icon}</span>
+                                              </div>
+                                              {#if hoveredTag === `${dish.id}-${allergen.id}`}
+                                                 <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-zinc-950 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg whitespace-nowrap z-[100] shadow-2xl border border-white/5" in:fade={{ duration: 200 }}>
+                                                    {allergen.name}
+                                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-zinc-950"></div>
+                                                 </div>
+                                              {/if}
+                                           </div>
+                                        {/if}
+                                     {/each}
+                                  </div>
                                  <div class="flex gap-1.5 opacity-30">
                                     <div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div>
                                     <div class="w-1.5 h-1.5 rounded-full bg-zinc-800"></div>
@@ -377,8 +380,22 @@
               <div class="relative z-10 space-y-6">
                  <div class="space-y-2">
                     <p class="text-[10px] uppercase tracking-[0.3em] text-amber-500/60 font-black">L'Autentico Sapore</p>
-                    <h4 class="text-white font-black text-3xl tracking-tight leading-tight uppercase">{peekedDish.name}</h4>
-                 </div>
+                     <h4 class="text-white font-black text-3xl tracking-tight leading-tight uppercase mb-2">{peekedDish.name}</h4>
+                     
+                     {#if peekedDish.allergens?.length > 0}
+                        <div class="flex gap-2 mb-4">
+                           {#each peekedDish.allergens as allergenId}
+                              {@const allergen = (data.allergens as any[]).find((a: any) => a.id === allergenId)}
+                              {#if allergen}
+                                 <div class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full">
+                                    <span class="text-lg">{allergen.icon}</span>
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-white/50">{allergen.name}</span>
+                                 </div>
+                              {/if}
+                           {/each}
+                        </div>
+                     {/if}
+                  </div>
                  
                  {#if peekedDish.description}
                     <p class="text-zinc-400 text-sm leading-relaxed font-medium px-2">{peekedDish.description}</p>

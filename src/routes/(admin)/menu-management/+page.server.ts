@@ -1,5 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { db } from '$lib/db';
+import { categories as categoriesTable, dishes as dishesTable, allergens as allergensTable, profiles as profilesTable } from '$lib/db/schema';
+import { eq, asc, desc } from 'drizzle-orm';
+import { QueryClient, dehydrate } from '@tanstack/svelte-query';
 
 export const load: PageServerLoad = async ({ locals }) => {
     const user = await locals.getUser();
@@ -7,23 +11,69 @@ export const load: PageServerLoad = async ({ locals }) => {
         throw redirect(303, '/login');
     }
 
-    // Fetch categories
-    const { data: categories } = await locals.supabase
-        .from('categories')
-        .select('*')
-        .eq('restaurant_id', user.id)
-        .order('sort_order', { ascending: true });
+    // Fetch profile
+    const profile = await db.query.profiles.findFirst({
+        where: eq(profilesTable.id, user.id)
+    });
 
-    // Fetch dishes
-    const { data: dishes } = await locals.supabase
-        .from('dishes')
-        .select('*, categories(name)')
-        .eq('restaurant_id', user.id)
-        .order('created_at', { ascending: false });
+    if (!profile) {
+        throw redirect(303, '/settings');
+    }
+
+    const queryClient = new QueryClient();
+
+    // Prefetch categories
+    await queryClient.prefetchQuery({
+        queryKey: ['categories', profile.id],
+        queryFn: async () => {
+            return await db.select()
+                .from(categoriesTable)
+                .where(eq(categoriesTable.restaurant_id, profile.id))
+                .orderBy(asc(categoriesTable.sort_order));
+        }
+    });
+
+    // Prefetch dishes
+    await queryClient.prefetchQuery({
+        queryKey: ['dishes', profile.id],
+        queryFn: async () => {
+            return await db.select({
+                id: dishesTable.id,
+                name: dishesTable.name,
+                description: dishesTable.description,
+                price: dishesTable.price,
+                image_url: dishesTable.image_url,
+                is_available: dishesTable.is_available,
+                allergens: dishesTable.allergens,
+                category_id: dishesTable.category_id,
+                categories: {
+                    name: categoriesTable.name
+                }
+            })
+                .from(dishesTable)
+                .leftJoin(categoriesTable, eq(dishesTable.category_id, categoriesTable.id))
+                .where(eq(dishesTable.restaurant_id, profile.id))
+                .orderBy(desc(dishesTable.created_at));
+        }
+    });
+
+    // Prefetch allergens
+    await queryClient.prefetchQuery({
+        queryKey: ['allergens'],
+        queryFn: async () => {
+            return await db.select()
+                .from(allergensTable)
+                .orderBy(asc(allergensTable.number));
+        }
+    });
 
     return {
-        categories: categories || [],
-        dishes: dishes || []
+        profile,
+        dehydratedState: dehydrate(queryClient),
+        // Keep these for now to avoid breaking existing code while refactoring frontend
+        categories: await queryClient.getQueryData(['categories', profile.id]),
+        dishes: await queryClient.getQueryData(['dishes', profile.id]),
+        allergens: await queryClient.getQueryData(['allergens'])
     };
 };
 
@@ -37,14 +87,14 @@ export const actions: Actions = {
 
         if (!name) return fail(400, { error: 'Nome categoria obbligatorio' });
 
-        const { error } = await locals.supabase
-            .from('categories')
-            .insert({
+        try {
+            await db.insert(categoriesTable).values({
                 name,
                 restaurant_id: user.id
             });
-
-        if (error) return fail(500, { error: 'Errore durante il salvataggio' });
+        } catch (e) {
+            return fail(500, { error: 'Errore durante il salvataggio' });
+        }
 
         return { success: true };
     },
@@ -57,7 +107,7 @@ export const actions: Actions = {
         const id = formData.get('id');
         const name = formData.get('name') as string;
 
-        if (!name) return fail(400, { error: 'Nome categoria obbligatorio' });
+        if (!id || !name) return fail(400, { error: 'Dati mancanti' });
 
         const { error } = await locals.supabase
             .from('categories')
@@ -77,6 +127,8 @@ export const actions: Actions = {
         const formData = await request.formData();
         const id = formData.get('id');
 
+        if (!id) return fail(400);
+
         const { error } = await locals.supabase
             .from('categories')
             .delete()
@@ -94,54 +146,49 @@ export const actions: Actions = {
 
         const formData = await request.formData();
         const name = formData.get('name') as string;
-        const description = formData.get('description') as string;
         const price = formData.get('price') as string;
         const category_id = formData.get('category_id') as string;
-        const allergensStr = formData.get('allergens') as string;
+        const description = formData.get('description') as string;
+        const allergens = formData.get('allergens') as string;
         const image = formData.get('image') as File;
 
-        if (!name || !price || !category_id) {
-            return fail(400, { error: 'Nome, prezzo e categoria sono obbligatori' });
-        }
-
-        const allergens = allergensStr ? allergensStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+        if (!name || !price || !category_id) return fail(400, { error: 'Dati obbligatori mancanti' });
 
         let image_url = null;
-
-        // Handle Image Upload
         if (image && image.size > 0) {
             const fileExt = image.name.split('.').pop();
-            const fileName = `${Math.random()}.${fileExt}`;
-            const filePath = `${user.id}/${fileName}`;
+            const fileName = `${user.id}/${Math.random()}.${fileExt}`;
+            const { error: uploadError } = await locals.supabase.storage
+                .from('dish-images')
+                .upload(fileName, image);
 
-            const { error: uploadError, data } = await locals.supabase.storage
-                .from('menu-images')
-                .upload(filePath, image);
-
-            if (uploadError) {
-                return fail(500, { error: 'Errore durante il caricamento dell\'immagine' });
-            }
+            if (uploadError) return fail(500, { error: 'Errore upload immagine' });
 
             const { data: { publicUrl } } = locals.supabase.storage
-                .from('menu-images')
-                .getPublicUrl(filePath);
+                .from('dish-images')
+                .getPublicUrl(fileName);
 
             image_url = publicUrl;
         }
+
+        const allergensList = allergens ? allergens.split(',').map(a => a.trim()) : [];
 
         const { error } = await locals.supabase
             .from('dishes')
             .insert({
                 name,
-                description,
-                price: parseFloat(price),
+                price: parseFloat(price).toString(),
                 category_id: parseInt(category_id),
-                restaurant_id: user.id,
+                description,
                 image_url,
-                allergens
+                restaurant_id: user.id,
+                allergens: allergensList
             });
 
-        if (error) return fail(500, { error: 'Errore durante il salvataggio del piatto' });
+        if (error) {
+            console.error('Error adding dish:', error);
+            return fail(500, { error: 'Errore durante il salvataggio' });
+        }
 
         return { success: true };
     },

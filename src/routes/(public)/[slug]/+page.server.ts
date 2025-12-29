@@ -1,41 +1,39 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { db } from '$lib/db';
+import { profiles as profilesTable, categories as categoriesTable, dishes as dishesTable, allergens as allergensTable } from '$lib/db/schema';
+import { eq, asc } from 'drizzle-orm';
 
-export const load: PageServerLoad = async ({ params, locals }) => {
+export const load: PageServerLoad = async ({ params }) => {
     const { slug } = params;
 
     // Fetch restaurant profile
-    const { data: profile, error: profileError } = await locals.supabase
-        .from('profiles')
-        .select('*')
-        .eq('slug', slug)
-        .single();
+    const profile = await db.query.profiles.findFirst({
+        where: eq(profilesTable.slug, slug)
+    });
 
-    if (profileError || !profile) {
+    if (!profile) {
         throw error(404, 'Ristorante non trovato');
     }
 
     // Fetch categories with dishes
-    const { data: categories } = await locals.supabase
-        .from('categories')
-        .select(`
-      id,
-      name,
-      dishes (
-        id,
-        name,
-        description,
-        price,
-        image_url,
-        is_available,
-        allergens
-      )
-    `)
-        .eq('restaurant_id', profile.id)
-        .order('sort_order', { ascending: true });
+    // Using relational queries for cleaner nesting
+    const categories = await db.query.categories.findMany({
+        where: eq(categoriesTable.restaurant_id, profile.id),
+        orderBy: [asc(categoriesTable.sort_order)],
+        with: {
+            dishes: true
+        }
+    });
+
+    // Fetch allergens for mapping
+    const allergens = await db.query.allergens.findMany({
+        orderBy: [asc(allergensTable.number)]
+    });
 
     return {
         profile,
-        categories: categories || []
+        categories: categories || [],
+        allergens: allergens || []
     };
 };

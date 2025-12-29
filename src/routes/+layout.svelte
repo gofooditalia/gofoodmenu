@@ -3,8 +3,9 @@
   import { invalidate, onNavigate } from '$app/navigation';
   import { onMount } from 'svelte';
   import type { LayoutData } from './$types';
+  import { page } from '$app/state';
 
-  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+  import { QueryClient, QueryClientProvider, HydrationBoundary } from '@tanstack/svelte-query';
 
   let { data, children }: { data: LayoutData, children: any } = $props();
   let session = $derived(data.session);
@@ -42,5 +43,7 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
-  {@render children()}
+  <HydrationBoundary state={page.data.dehydratedState} {queryClient} options={{}}>
+    {@render children()}
+  </HydrationBoundary>
 </QueryClientProvider>

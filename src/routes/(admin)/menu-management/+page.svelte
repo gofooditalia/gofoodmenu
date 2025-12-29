@@ -10,27 +10,48 @@
 
   // 1. Categories Query
   const categoriesQuery = createQuery<any[]>(() => ({
-    queryKey: ['categories'],
+    queryKey: ['categories', data.profile?.id],
     queryFn: async () => {
-      const { data: categories, error } = await supabase.from('categories').select('*').order('name');
+      if (!data.profile?.id) return [];
+      const { data: categories, error } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('restaurant_id', data.profile.id)
+        .order('sort_order', { ascending: true });
       if (error) throw error;
       return categories;
     },
-    initialData: data.categories
+    staleTime: 1000 * 60 * 5,
   }));
 
   // 2. Dishes Query
   const dishesQuery = createQuery<any[]>(() => ({
-    queryKey: ['dishes'],
+    queryKey: ['dishes', data.profile?.id],
     queryFn: async () => {
+      if (!data.profile?.id) return [];
       const { data: dishes, error } = await supabase
         .from('dishes')
         .select('*, categories(name)')
-        .order('name');
+        .eq('restaurant_id', data.profile.id)
+        .order('created_at', { ascending: false });
       if (error) throw error;
       return dishes;
     },
-    initialData: data.dishes
+    staleTime: 1000 * 60 * 5,
+  }));
+
+  // 3. Allergens Query
+  const allergensQuery = createQuery<any[]>(() => ({
+    queryKey: ['allergens'],
+    queryFn: async () => {
+      const { data: allergens, error } = await supabase
+        .from('allergens')
+        .select('*')
+        .order('number', { ascending: true });
+      if (error) throw error;
+      return allergens;
+    },
+    staleTime: 1000 * 60 * 60,
   }));
 
   let showAddCategory = $state(false);
@@ -43,16 +64,38 @@
   let dishDescription = $state('');
   let dishPrice = $state('');
   let dishCategory = $state('');
+  let selectedAllergenIds = $state<string[]>([]);
   let imagePreview: string | null = $state(null);
 
   function handleImageChange(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => (imagePreview = e.target?.result as string);
+      reader.onload = (e) => {
+        imagePreview = e.target?.result as string;
+      };
       reader.readAsDataURL(file);
     }
   }
+
+  // 4. Reactive Hydration Sync: Ensure TanStack Query cache matches SvelteKit data
+  $effect(() => {
+    if (data.categories && data.profile?.id) {
+      queryClient.setQueryData(['categories', data.profile.id], data.categories);
+    }
+  });
+
+  $effect(() => {
+    if (data.dishes && data.profile?.id) {
+      queryClient.setQueryData(['dishes', data.profile.id], data.dishes);
+    }
+  });
+
+  $effect(() => {
+    if (data.allergens) {
+      queryClient.setQueryData(['allergens'], data.allergens);
+    }
+  });
 </script>
 
 <div class="space-y-8">
@@ -87,7 +130,7 @@
             return async ({ update }) => {
               showAddCategory = false;
               await update();
-              queryClient.invalidateQueries({ queryKey: ['categories'] });
+              queryClient.invalidateQueries({ queryKey: ['categories', data.profile?.id] });
             }
           }}
           class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 space-y-3"
@@ -126,7 +169,7 @@
               <form method="POST" action="?/deleteCategory" use:enhance={() => {
                 return async ({ update }) => {
                   await update();
-                  queryClient.invalidateQueries({ queryKey: ['categories'] });
+                  queryClient.invalidateQueries({ queryKey: ['categories', data.profile?.id] });
                 }
               }}>
                 <input type="hidden" name="id" value={category.id} />
@@ -149,9 +192,10 @@
                   return async ({ update }) => {
                     editingCategory = null;
                     await update();
-                    queryClient.invalidateQueries({ queryKey: ['categories'] });
+                    queryClient.invalidateQueries({ queryKey: ['categories', data.profile?.id] });
+                    queryClient.invalidateQueries({ queryKey: ['dishes', data.profile?.id] });
                   }
-                }}
+                }} 
                 class="space-y-4"
               >
                 <input type="hidden" name="id" value={editingCategory.id} />
@@ -184,7 +228,14 @@
           Piatti
         </h2>
         <button 
-          onclick={() => showAddDish = true}
+          onclick={() => {
+            showAddDish = true;
+            selectedAllergenIds = [];
+            dishName = '';
+            dishDescription = '';
+            dishPrice = '';
+            dishCategory = '';
+          }}
           class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-orange-500/30 transition-all flex items-center gap-2"
         >
           <Plus size={20} />
@@ -209,9 +260,14 @@
               use:enhance={() => {
                 return async ({ update }) => {
                   showAddDish = false;
+                  dishName = '';
+                  dishPrice = '';
+                  dishDescription = '';
+                  dishCategory = '';
+                  selectedAllergenIds = [];
                   imagePreview = null;
                   await update();
-                  queryClient.invalidateQueries({ queryKey: ['dishes'] });
+                  queryClient.invalidateQueries({ queryKey: ['dishes', data.profile?.id] });
                 }
               }} 
               class="space-y-6"
@@ -242,9 +298,33 @@
                   <textarea id="new_dish_desc" name="description" bind:value={dishDescription} rows="3" placeholder="Ingredienti, allergeni..." class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold"></textarea>
                 </div>
 
-                <div class="col-span-2 space-y-2">
-                  <label for="new_dish_allergens" class="text-xs font-black uppercase tracking-wider text-slate-400">Allergeni (separati da virgola)</label>
-                  <input id="new_dish_allergens" type="text" name="allergens" placeholder="es. Glutine, Lattosio" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold" />
+                <div class="col-span-2 space-y-3">
+                  <p class="text-xs font-black uppercase tracking-wider text-slate-400">Allergeni Presenti</p>
+                  <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                    {#each allergensQuery.data ?? [] as allergen}
+                      <button 
+                        type="button"
+                        onclick={() => {
+                          if (selectedAllergenIds.includes(allergen.id)) {
+                            selectedAllergenIds = selectedAllergenIds.filter(id => id !== allergen.id);
+                          } else {
+                            selectedAllergenIds = [...selectedAllergenIds, allergen.id];
+                          }
+                        }}
+                        class="flex flex-col items-center p-3 rounded-2xl border-2 transition-all group relative {selectedAllergenIds.includes(allergen.id) ? 'border-orange-500 bg-orange-50' : 'border-slate-50 bg-slate-50 hover:border-slate-200'}"
+                        title={allergen.name}
+                      >
+                        <span class="text-2xl">{allergen.icon}</span>
+                        <span class="text-[9px] font-black uppercase mt-1 text-center leading-tight text-slate-500 group-hover:text-slate-900 line-clamp-1">{allergen.name}</span>
+                        {#if selectedAllergenIds.includes(allergen.id)}
+                          <div class="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center border-2 border-white">
+                            <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+                          </div>
+                        {/if}
+                      </button>
+                    {/each}
+                  </div>
+                  <input type="hidden" name="allergens" value={selectedAllergenIds.join(', ')} />
                 </div>
 
                 <div class="col-span-2 space-y-2">
@@ -300,6 +380,7 @@
                   onclick={() => {
                     editingDish = dish;
                     imagePreview = dish.image_url;
+                    selectedAllergenIds = dish.allergens || [];
                   }}
                   class="text-slate-400 hover:text-orange-500 transition-colors"
                 >
@@ -308,7 +389,7 @@
                 <form method="POST" action="?/deleteDish" use:enhance={() => {
                   return async ({ update }) => {
                     await update();
-                    queryClient.invalidateQueries({ queryKey: ['dishes'] });
+                    queryClient.invalidateQueries({ queryKey: ['dishes', data.profile?.id] });
                   }
                 }}>
                   <input type="hidden" name="id" value={dish.id} />
@@ -340,7 +421,7 @@
                     editingDish = null;
                     imagePreview = null;
                     await update();
-                    queryClient.invalidateQueries({ queryKey: ['dishes'] });
+                    queryClient.invalidateQueries({ queryKey: ['dishes', data.profile?.id] });
                   }
                 }} 
                 class="space-y-6"
@@ -371,9 +452,33 @@
                     <textarea id="edit_dish_desc" name="description" rows="3" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold">{editingDish.description || ''}</textarea>
                   </div>
 
-                  <div class="col-span-2 space-y-2">
-                    <label for="edit_dish_allergens" class="text-xs font-black uppercase tracking-wider text-slate-400">Allergeni (separati da virgola)</label>
-                    <input id="edit_dish_allergens" type="text" name="allergens" value={editingDish.allergens?.join(', ') || ''} class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-orange-500 rounded-2xl outline-none font-bold" />
+                  <div class="col-span-2 space-y-3">
+                    <p class="text-xs font-black uppercase tracking-wider text-slate-400">Allergeni Presenti</p>
+                    <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                      {#each allergensQuery.data ?? [] as allergen}
+                        <button 
+                          type="button"
+                          onclick={() => {
+                            if (selectedAllergenIds.includes(allergen.id)) {
+                              selectedAllergenIds = selectedAllergenIds.filter(id => id !== allergen.id);
+                            } else {
+                              selectedAllergenIds = [...selectedAllergenIds, allergen.id];
+                            }
+                          }}
+                          class="flex flex-col items-center p-3 rounded-2xl border-2 transition-all group relative {selectedAllergenIds.includes(allergen.id) ? 'border-orange-500 bg-orange-50' : 'border-slate-50 bg-slate-50 hover:border-slate-200'}"
+                          title={allergen.name}
+                        >
+                          <span class="text-2xl">{allergen.icon}</span>
+                          <span class="text-[9px] font-black uppercase mt-1 text-center leading-tight text-slate-500 group-hover:text-slate-900 line-clamp-1">{allergen.name}</span>
+                          {#if selectedAllergenIds.includes(allergen.id)}
+                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center border-2 border-white">
+                              <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+                            </div>
+                          {/if}
+                        </button>
+                      {/each}
+                    </div>
+                    <input type="hidden" name="allergens" value={selectedAllergenIds.join(', ')} />
                   </div>
 
                   <div class="col-span-2 space-y-2">
