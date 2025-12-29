@@ -11,6 +11,40 @@
   
   let profile = $state(data.profile || {});
   let isSaving = $state(false);
+  let isUploading = $state(false);
+  let fileInput: HTMLInputElement;
+
+  async function uploadLogo(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    try {
+      isUploading = true;
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${data.session?.user.id}/logo-${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { data: uploadData, error: uploadError } = await data.supabase.storage
+        .from('menu-images')
+        .upload(filePath, file, {
+          upsert: true
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = data.supabase.storage
+        .from('menu-images')
+        .getPublicUrl(filePath);
+
+      profile.logo_url = publicUrl;
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+      alert('Errore durante il caricamento del logo');
+    } finally {
+      isUploading = false;
+    }
+  }
 
   // Initialize opening hours if empty
   const daysOfWeek = [
@@ -117,16 +151,29 @@
             <div class="flex flex-col md:flex-row gap-8 items-start">
                 <div class="relative group">
                     <div class="w-32 h-32 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-400 overflow-hidden relative">
-                        {#if profile.logo_url}
+                        {#if isUploading}
+                            <div class="w-8 h-8 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
+                        {:else if profile.logo_url}
                             <img src={profile.logo_url} alt="Logo" class="w-full h-full object-cover" />
                         {:else}
                             <Camera size={28} />
                             <span class="text-[10px] uppercase font-bold mt-2">Logo</span>
                         {/if}
                     </div>
-                    <button type="button" class="absolute -bottom-2 -right-2 bg-orange-500 text-white p-2 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform">
+                    <button 
+                        type="button" 
+                        onclick={() => fileInput.click()}
+                        class="absolute -bottom-2 -right-2 bg-orange-500 text-white p-2 rounded-xl shadow-lg transform group-hover:scale-110 transition-transform"
+                    >
                         <Plus size={16} />
                     </button>
+                    <input 
+                        type="file" 
+                        bind:this={fileInput} 
+                        onchange={uploadLogo} 
+                        accept="image/*" 
+                        class="hidden" 
+                    />
                     <input type="hidden" name="logo_url" value={profile.logo_url || ''} />
                 </div>
 

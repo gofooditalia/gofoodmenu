@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { fade, fly, scale } from 'svelte/transition';
   import { cubicOut, backOut } from 'svelte/easing';
-  import { Utensils, Info, Search, MapPin, Clock, ChevronRight, LayoutGrid, Leaf, Camera } from 'lucide-svelte';
+  import { Utensils, Info, Search, MapPin, Clock, ChevronRight, LayoutGrid, Leaf, Camera, Phone, Globe, Instagram, Facebook } from 'lucide-svelte';
   import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
   import { Badge } from "$lib/components/ui/badge";
@@ -12,7 +12,7 @@
   let profile = $derived(data.profile);
   let categories = $derived(data.categories);
 
-  let activeCategory = $state<number | undefined>(undefined);
+  let activeCategory = $state<number | undefined>(data.categories?.[0]?.id);
   
   // Swipe State
   let touchStart = $state(0);
@@ -21,12 +21,7 @@
   // Category Refs for centering
   let categoryRefs = $state<Record<number, HTMLElement>>({});
   
-  // Set initial category once data is available
-  $effect(() => {
-    if (activeCategory === undefined && categories.length > 0) {
-      activeCategory = categories[0].id;
-    }
-  });
+  // Set initial category once data is available (already handled in initialization above)
 
   // Auto-center the active category pill
   $effect(() => {
@@ -130,8 +125,12 @@
    <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5 select-none">
       <div class="flex items-center gap-4">
          <!-- Restaurant Icon -->
-         <div class="flex-shrink-0 bg-orange-500 p-2 rounded-xl shadow-lg shadow-orange-500/10">
-            <Utensils class="w-4 h-4 text-white" />
+         <div class="flex-shrink-0 bg-orange-500 rounded-xl shadow-lg shadow-orange-500/10 overflow-hidden w-10 h-10 flex items-center justify-center">
+            {#if profile.logo_url}
+               <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
+            {:else}
+               <Utensils class="w-5 h-5 text-white" />
+            {/if}
          </div>
 
          <!-- Categories Pills -->
@@ -279,8 +278,110 @@
                      </div>
 
                      <!-- Info Footer -->
-                     <div class="mt-12 p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05]">
-                        <p class="text-[10px] text-zinc-500 leading-relaxed font-medium">
+                     <div class="mt-12 space-y-8">
+                        <!-- Basic Info & Description -->
+                        <div class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/[0.05] space-y-4">
+                           <div class="flex items-center gap-4">
+                              <div class="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                 <Info class="text-white w-6 h-6" />
+                              </div>
+                              <div>
+                                 <h4 class="text-white font-black text-xl tracking-tight uppercase">{profile.restaurant_name}</h4>
+                                 <p class="text-[10px] text-orange-500 font-bold uppercase tracking-widest">Informazioni sul locale</p>
+                              </div>
+                           </div>
+                           {#if profile.description}
+                              <p class="text-sm text-zinc-400 leading-relaxed font-medium">{profile.description}</p>
+                           {/if}
+                        </div>
+
+                        <!-- Contact & Location -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div class="p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05] space-y-4">
+                              <div class="flex items-center gap-3 text-orange-500">
+                                 <MapPin size={18} />
+                                 <span class="text-[10px] font-black uppercase tracking-widest">Indirizzo</span>
+                              </div>
+                              <p class="text-white font-bold text-sm">{profile.address || 'Indirizzo non specificato'}</p>
+                              {#if profile.address}
+                                 <a 
+                                    href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(profile.address)}" 
+                                    target="_blank"
+                                    class="inline-block text-[10px] font-black uppercase tracking-[0.2em] text-white bg-white/5 px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
+                                 >
+                                    Apri Mappa
+                                 </a>
+                              {/if}
+                           </div>
+
+                           <div class="p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05] space-y-4">
+                              <div class="flex items-center gap-3 text-orange-500">
+                                 <Phone size={18} />
+                                 <span class="text-[10px] font-black uppercase tracking-widest">Contatti</span>
+                              </div>
+                              <div class="space-y-2">
+                                 {#if profile.phone}
+                                    <p class="text-white font-bold text-sm tracking-widest">{profile.phone}</p>
+                                 {/if}
+                                 <div class="flex gap-2">
+                                    {#if profile.whatsapp_number}
+                                       <a 
+                                          href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}" 
+                                          target="_blank"
+                                          class="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500/20 transition-colors"
+                                       >
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                       </a>
+                                    {/if}
+                                    {#if profile.instagram_url}
+                                       <a href={profile.instagram_url} target="_blank" class="p-2 bg-pink-500/10 text-pink-500 rounded-xl hover:bg-pink-500/20 transition-colors">
+                                          <Instagram size={18} />
+                                       </a>
+                                    {/if}
+                                    {#if profile.facebook_url}
+                                       <a href={profile.facebook_url} target="_blank" class="p-2 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500/20 transition-colors">
+                                          <Facebook size={18} />
+                                       </a>
+                                    {/if}
+                                    {#if profile.website_url}
+                                       <a href={profile.website_url} target="_blank" class="p-2 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-colors">
+                                          <Globe size={18} />
+                                       </a>
+                                    {/if}
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <!-- Opening Hours -->
+                        {#if profile.opening_hours && Array.isArray(profile.opening_hours)}
+                           <div class="p-8 bg-white/[0.02] rounded-[2.5rem] border border-white/[0.05] space-y-6">
+                              <div class="flex items-center gap-3 text-orange-500">
+                                 <Clock size={18} />
+                                 <span class="text-[10px] font-black uppercase tracking-widest">Orari di Apertura</span>
+                              </div>
+                              <div class="grid grid-cols-1 gap-3">
+                                 {#each profile.opening_hours as day}
+                                    <div class="flex justify-between items-center py-2 border-b border-white/[0.02] last:border-0">
+                                       <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{day.day}</span>
+                                       {#if day.isOpen}
+                                          <div class="flex gap-2">
+                                             {#each day.periods as period}
+                                                <span class="text-[10px] font-black text-white bg-white/5 px-2 py-1 rounded-md tracking-tighter">
+                                                   {period.open} — {period.close}
+                                                </span>
+                                             {/each}
+                                          </div>
+                                       {:else}
+                                          <span class="text-[10px] font-black text-zinc-700 uppercase tracking-widest italic">Chiuso</span>
+                                       {/if}
+                                    </div>
+                                 {/each}
+                              </div>
+                           </div>
+                        {/if}
+
+                        <p class="text-[10px] text-zinc-600 leading-relaxed font-medium text-center pt-4 opacity-50">
                            * Gli ingredienti contrassegnati con asterisco potrebbero contenere ingredienti surgelati. 
                            Per informazioni dettagliate sugli allergeni, chiedi al nostro personale.
                         </p>
