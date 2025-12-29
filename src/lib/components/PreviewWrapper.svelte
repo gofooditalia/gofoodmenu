@@ -80,6 +80,7 @@
   <div class="relative z-10 w-full h-full flex items-center justify-center p-0 lg:p-12 overflow-hidden">
     <!-- "DEVICE" CARD CONTAINER -->
     <div 
+      id="preview-device-frame"
       class="relative h-full transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]
       {viewMode === 'smartphone' 
         ? 'w-full lg:w-[412px] lg:h-[915px] lg:max-h-[85vh] lg:rounded-[3.5rem] lg:border-[12px]' 

@@ -6,6 +6,7 @@
   import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
   import { Badge } from "$lib/components/ui/badge";
+  import * as Sheet from "$lib/components/ui/sheet/index.js";
   import PreviewWrapper from '$lib/components/PreviewWrapper.svelte';
 
   let { data } = $props<{ data: PageData }>();
@@ -124,14 +125,133 @@
    <!-- TOP FIXED NAVBAR (Platform/Restaurant context) -->
    <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5 select-none">
       <div class="flex items-center gap-4">
-         <!-- Restaurant Icon -->
-         <div class="flex-shrink-0 bg-orange-500 rounded-xl shadow-lg shadow-orange-500/10 overflow-hidden w-10 h-10 flex items-center justify-center">
-            {#if profile.logo_url}
-               <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
-            {:else}
-               <Utensils class="w-5 h-5 text-white" />
-            {/if}
-         </div>
+         <!-- Restaurant Icon / Sidebar Trigger -->
+         <Sheet.Root>
+            <Sheet.Trigger class="flex-shrink-0 bg-orange-500 rounded-xl shadow-lg shadow-orange-500/10 overflow-hidden w-10 h-10 flex items-center justify-center hover:scale-105 transition-transform active:scale-95">
+               {#if profile.logo_url}
+                  <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
+               {:else}
+                  <Utensils class="w-5 h-5 text-white" />
+               {/if}
+            </Sheet.Trigger>
+            <Sheet.Content 
+               side="left" 
+               portalProps={{ to: "#preview-device-frame" }}
+               overlayProps={{ class: "absolute" }}
+               class="absolute w-[300px] sm:w-[350px] bg-[#141417] border-white/5 p-0 overflow-y-auto no-scrollbar"
+            >
+               <div class="p-8 space-y-10">
+                  <!-- Header -->
+                  <div class="space-y-4">
+                     <div class="w-16 h-16 bg-orange-500 rounded-2xl shadow-xl shadow-orange-500/20 flex items-center justify-center overflow-hidden">
+                        {#if profile.logo_url}
+                           <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
+                        {:else}
+                           <Utensils class="w-8 h-8 text-white" />
+                        {/if}
+                     </div>
+                     <div>
+                        <h2 class="text-2xl font-black text-white tracking-tight leading-none mb-2">{profile.restaurant_name}</h2>
+                        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500">Premium Restaurant</span>
+                     </div>
+                  </div>
+
+                  <!-- Contact & Actions -->
+                  <div class="space-y-6">
+                     {#if profile.description}
+                        <p class="text-sm text-zinc-400 leading-relaxed font-medium">{profile.description}</p>
+                     {/if}
+
+                     <div class="space-y-4 pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-4 group">
+                           <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                              <MapPin size={18} />
+                           </div>
+                           <div class="flex-1">
+                              <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">Indirizzo</p>
+                              <p class="text-white text-sm font-bold truncate">{profile.address || '—'}</p>
+                           </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 group">
+                           <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                              <Phone size={18} />
+                           </div>
+                           <div class="flex-1">
+                              <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">Telefono</p>
+                              <p class="text-white text-sm font-bold">{profile.phone || '—'}</p>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="grid grid-cols-2 gap-3 pt-4">
+                        {#if profile.phone}
+                           <a href="tel:{profile.phone}" class="flex items-center justify-center gap-2 h-12 bg-white/5 rounded-xl text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-colors">
+                              <Phone size={14} /> Chiama
+                           </a>
+                        {/if}
+                        {#if profile.whatsapp_number}
+                           <a href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}" target="_blank" class="flex items-center justify-center gap-2 h-12 bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500/20 transition-colors">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                              WhatsApp
+                           </a>
+                        {/if}
+                     </div>
+                  </div>
+
+                  <!-- Opening Hours -->
+                  {#if profile.opening_hours && Array.isArray(profile.opening_hours)}
+                     <div class="space-y-4 pt-8 border-t border-white/5">
+                        <div class="flex items-center gap-3 text-orange-500 mb-2">
+                           <Clock size={16} />
+                           <span class="text-[10px] font-black uppercase tracking-[0.2em]">Orari di Apertura</span>
+                        </div>
+                        <div class="space-y-3">
+                           {#each profile.opening_hours as day}
+                              <div class="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0 opacity-80">
+                                 <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{day.day}</span>
+                                 {#if day.isOpen}
+                                    <div class="flex flex-col items-end">
+                                       {#each day.periods as period}
+                                          <span class="text-[10px] font-black text-white tracking-tighter">
+                                             {period.open} — {period.close}
+                                          </span>
+                                       {/each}
+                                    </div>
+                                 {:else}
+                                    <span class="text-[10px] font-black text-zinc-700 uppercase tracking-widest italic">Chiuso</span>
+                                 {/if}
+                              </div>
+                           {/each}
+                        </div>
+                     </div>
+                  {/if}
+
+                  <!-- Social Links -->
+                  <div class="flex justify-start gap-4 pt-10 border-t border-white/5">
+                     {#if profile.instagram_url}
+                        <a href={profile.instagram_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-pink-500/10 hover:text-pink-500 transition-all">
+                           <Instagram size={20} />
+                        </a>
+                     {/if}
+                     {#if profile.facebook_url}
+                        <a href={profile.facebook_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-blue-500/10 hover:text-blue-500 transition-all">
+                           <Facebook size={20} />
+                        </a>
+                     {/if}
+                     {#if profile.website_url}
+                        <a href={profile.website_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-all">
+                           <Globe size={20} />
+                        </a>
+                     {/if}
+                  </div>
+
+                  <div class="pt-10 opacity-20">
+                     <p class="text-[9px] font-bold text-center text-zinc-500 uppercase tracking-[0.25em]">Powered by GO!FOODMENU</p>
+                  </div>
+               </div>
+            </Sheet.Content>
+         </Sheet.Root>
 
          <!-- Categories Pills -->
          <div class="flex-1 overflow-x-auto no-scrollbar mask-fade-right">
@@ -280,108 +400,14 @@
                      <!-- Info Footer -->
                      <div class="mt-12 space-y-8">
                         <!-- Basic Info & Description -->
-                        <div class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/[0.05] space-y-4">
-                           <div class="flex items-center gap-4">
-                              <div class="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0">
-                                 <Info class="text-white w-6 h-6" />
-                              </div>
-                              <div>
-                                 <h4 class="text-white font-black text-xl tracking-tight uppercase">{profile.restaurant_name}</h4>
-                                 <p class="text-[10px] text-orange-500 font-bold uppercase tracking-widest">Informazioni sul locale</p>
-                              </div>
-                           </div>
-                           {#if profile.description}
-                              <p class="text-sm text-zinc-400 leading-relaxed font-medium">{profile.description}</p>
-                           {/if}
-                        </div>
-
-                        <!-- Contact & Location -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                           <div class="p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05] space-y-4">
-                              <div class="flex items-center gap-3 text-orange-500">
-                                 <MapPin size={18} />
-                                 <span class="text-[10px] font-black uppercase tracking-widest">Indirizzo</span>
-                              </div>
-                              <p class="text-white font-bold text-sm">{profile.address || 'Indirizzo non specificato'}</p>
-                              {#if profile.address}
-                                 <a 
-                                    href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(profile.address)}" 
-                                    target="_blank"
-                                    class="inline-block text-[10px] font-black uppercase tracking-[0.2em] text-white bg-white/5 px-4 py-2 rounded-full hover:bg-white/10 transition-colors"
-                                 >
-                                    Apri Mappa
-                                 </a>
-                              {/if}
+                           <div class="p-[2.5rem] bg-orange-500/10 rounded-[2.5rem] border border-orange-500/20 text-center space-y-3">
+                              <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500">Benvenuti da</span>
+                              <h4 class="text-white font-black text-3xl tracking-tight leading-none uppercase">{profile.restaurant_name}</h4>
+                              <p class="text-[10px] font-bold text-orange-500 uppercase tracking-[0.2em] opacity-80">Toccca il logo in alto per info e contatti</p>
                            </div>
 
-                           <div class="p-6 bg-white/[0.02] rounded-3xl border border-white/[0.05] space-y-4">
-                              <div class="flex items-center gap-3 text-orange-500">
-                                 <Phone size={18} />
-                                 <span class="text-[10px] font-black uppercase tracking-widest">Contatti</span>
-                              </div>
-                              <div class="space-y-2">
-                                 {#if profile.phone}
-                                    <p class="text-white font-bold text-sm tracking-widest">{profile.phone}</p>
-                                 {/if}
-                                 <div class="flex gap-2">
-                                    {#if profile.whatsapp_number}
-                                       <a 
-                                          href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}" 
-                                          target="_blank"
-                                          class="p-2 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500/20 transition-colors"
-                                       >
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                       </a>
-                                    {/if}
-                                    {#if profile.instagram_url}
-                                       <a href={profile.instagram_url} target="_blank" class="p-2 bg-pink-500/10 text-pink-500 rounded-xl hover:bg-pink-500/20 transition-colors">
-                                          <Instagram size={18} />
-                                       </a>
-                                    {/if}
-                                    {#if profile.facebook_url}
-                                       <a href={profile.facebook_url} target="_blank" class="p-2 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500/20 transition-colors">
-                                          <Facebook size={18} />
-                                       </a>
-                                    {/if}
-                                    {#if profile.website_url}
-                                       <a href={profile.website_url} target="_blank" class="p-2 bg-white/5 text-white rounded-xl hover:bg-white/10 transition-colors">
-                                          <Globe size={18} />
-                                       </a>
-                                    {/if}
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
 
-                        <!-- Opening Hours -->
-                        {#if profile.opening_hours && Array.isArray(profile.opening_hours)}
-                           <div class="p-8 bg-white/[0.02] rounded-[2.5rem] border border-white/[0.05] space-y-6">
-                              <div class="flex items-center gap-3 text-orange-500">
-                                 <Clock size={18} />
-                                 <span class="text-[10px] font-black uppercase tracking-widest">Orari di Apertura</span>
-                              </div>
-                              <div class="grid grid-cols-1 gap-3">
-                                 {#each profile.opening_hours as day}
-                                    <div class="flex justify-between items-center py-2 border-b border-white/[0.02] last:border-0">
-                                       <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{day.day}</span>
-                                       {#if day.isOpen}
-                                          <div class="flex gap-2">
-                                             {#each day.periods as period}
-                                                <span class="text-[10px] font-black text-white bg-white/5 px-2 py-1 rounded-md tracking-tighter">
-                                                   {period.open} — {period.close}
-                                                </span>
-                                             {/each}
-                                          </div>
-                                       {:else}
-                                          <span class="text-[10px] font-black text-zinc-700 uppercase tracking-widest italic">Chiuso</span>
-                                       {/if}
-                                    </div>
-                                 {/each}
-                              </div>
-                           </div>
-                        {/if}
-
-                        <p class="text-[10px] text-zinc-600 leading-relaxed font-medium text-center pt-4 opacity-50">
+                        <p class="text-[10px] text-zinc-600 leading-relaxed font-medium text-center pt-8 opacity-50 pb-12">
                            * Gli ingredienti contrassegnati con asterisco potrebbero contenere ingredienti surgelati. 
                            Per informazioni dettagliate sugli allergeni, chiedi al nostro personale.
                         </p>
