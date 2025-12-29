@@ -144,8 +144,8 @@
             <Sheet.Content 
                side="left" 
                portalProps={{ to: "#preview-device-frame" }}
-               overlayProps={{ class: "absolute" }}
-               class="absolute w-[300px] sm:w-[350px] bg-[#141417] border-white/5 p-0 overflow-y-auto no-scrollbar"
+               overlayProps={{ class: "absolute z-[90]" }}
+               class="absolute z-[100] w-[300px] sm:w-[350px] bg-[#141417] border-white/5 p-0 overflow-y-auto no-scrollbar"
             >
                <div class="p-8 space-y-8">
                   <!-- Navigation Section -->
@@ -562,10 +562,6 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-  .mask-fade-right {
-    mask-image: linear-gradient(to right, black 85%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
   }
 
   @keyframes initial-bounce {
