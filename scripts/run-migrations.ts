@@ -9,15 +9,15 @@ const sql = postgres(connectionString, { max: 1 });
 const db = drizzle(sql);
 
 async function main() {
-    console.log('Running migrations...');
-    try {
-        await migrate(db, { migrationsFolder: './supabase/migrations/drizzle' });
-        console.log('Migrations completed successfully.');
-    } catch (e) {
-        console.error('Migration failed:', e);
-    } finally {
-        await sql.end();
-    }
+	console.log('Running migrations...');
+	try {
+		await migrate(db, { migrationsFolder: './supabase/migrations/drizzle' });
+		console.log('Migrations completed successfully.');
+	} catch (e) {
+		console.error('Migration failed:', e);
+	} finally {
+		await sql.end();
+	}
 }
 
 main();

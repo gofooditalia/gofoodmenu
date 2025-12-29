@@ -6,16 +6,16 @@ const connectionString = process.env.DATABASE_URL!;
 const sql = postgres(connectionString);
 
 async function main() {
-    console.log('Deep audit of public schema...');
-    try {
-        const tables = await sql`
+	console.log('Deep audit of public schema...');
+	try {
+		const tables = await sql`
       SELECT table_name, table_type
       FROM information_schema.tables
       WHERE table_schema = 'public';
     `;
-        console.log('Tables:', JSON.stringify(tables, null, 2));
+		console.log('Tables:', JSON.stringify(tables, null, 2));
 
-        const checkConstraints = await sql`
+		const checkConstraints = await sql`
       SELECT 
           tc.table_name, 
           conname as constraint_name,
@@ -26,27 +26,26 @@ async function main() {
       JOIN information_schema.table_constraints tc ON tc.constraint_name = conname
       WHERE n.nspname = 'public' AND contype = 'c';
     `;
-        console.log('Check Constraints:', JSON.stringify(checkConstraints, null, 2));
+		console.log('Check Constraints:', JSON.stringify(checkConstraints, null, 2));
 
-        const triggers = await sql`
+		const triggers = await sql`
       SELECT trigger_name, event_manipulation, event_object_table, action_statement
       FROM information_schema.triggers
       WHERE trigger_schema = 'public';
     `;
-        console.log('Triggers:', JSON.stringify(triggers, null, 2));
+		console.log('Triggers:', JSON.stringify(triggers, null, 2));
 
-        const views = await sql`
+		const views = await sql`
       SELECT table_name
       FROM information_schema.views
       WHERE table_schema = 'public';
     `;
-        console.log('Views:', JSON.stringify(views, null, 2));
-
-    } catch (e) {
-        console.error('Audit failed:', e);
-    } finally {
-        await sql.end();
-    }
+		console.log('Views:', JSON.stringify(views, null, 2));
+	} catch (e) {
+		console.error('Audit failed:', e);
+	} finally {
+		await sql.end();
+	}
 }
 
 main();

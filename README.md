@@ -38,7 +38,9 @@ You can preview the production build with `npm run preview`.
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
 ## Credenziali di Test
+
 Per scopi di test e sviluppo, puoi utilizzare le seguenti credenziali:
+
 - **Email**: `demo@demo.it`
 - **Password**: `demo`
 - **URL Menu Demo**: [http://localhost:5173/demo](http://localhost:5173/demo)

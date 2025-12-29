@@ -1,6 +1,6 @@
 4. Database Schema (Supabase)
-Table: profiles (Restaurants)
-id: uuid (Primary Key, refs auth.users)
+   Table: profiles (Restaurants)
+   id: uuid (Primary Key, refs auth.users)
 
 slug: text (Unique, used for URL e.g. /menu/bistrot107)
 
@@ -39,8 +39,8 @@ is_available: boolean (default: true)
 allergens: text[]
 
 5. Functional Requirements
-A. Public Menu (Client Side)
-Performance First: Must load instantly on 4G. Use SSR (Server Side Rendering).
+   A. Public Menu (Client Side)
+   Performance First: Must load instantly on 4G. Use SSR (Server Side Rendering).
 
 View: Fetch restaurant data based on [slug] from URL.
 
@@ -62,7 +62,7 @@ Image Upload via Supabase Storage bucket menu-images.
 QR Code: Auto-generate QR code pointing to https://gofoodmenu.it/menu/{slug}.
 
 6. UI/UX Guidelines
-Primary Color: Orange-500 (#f97316).
+   Primary Color: Orange-500 (#f97316).
 
 Fonts: Sans-serif (Inter or similar system font).
 
@@ -71,7 +71,7 @@ Admin Style: Clean, dense data display, sidebar navigation.
 Public Style: Big touch targets, high contrast, appetizing visuals.
 
 7. Instructions for AI Developer
-Always use SvelteKit Form Actions for data mutation (POST/PUT/DELETE). Do not use client-side fetch for form submissions unless necessary for optimistic UI.
+   Always use SvelteKit Form Actions for data mutation (POST/PUT/DELETE). Do not use client-side fetch for form submissions unless necessary for optimistic UI.
 
 Type Safety: Generate TypeScript interfaces for all Supabase tables.
 
