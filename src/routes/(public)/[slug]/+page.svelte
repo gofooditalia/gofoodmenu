@@ -13,7 +13,12 @@
   let profile = $derived(data.profile);
   let categories = $derived(data.categories);
 
-  let activeCategory = $state<number | undefined>(data.categories?.[0]?.id);
+  let activeCategory = $state<number | undefined>();
+  $effect(() => {
+    if (!activeCategory && data.categories?.length) {
+      activeCategory = data.categories[0].id;
+    }
+  });
   
   // Swipe State
   let touchStart = $state(0);
@@ -39,8 +44,9 @@
   let isScrolled = $state(false);
 
   // Page Navigation State
-  type NavPage = 'menu' | 'events';
+  type NavPage = 'menu' | 'events' | 'contacts';
   let currentPage = $state<NavPage>('menu');
+  let isSidebarOpen = $state(false);
 
   let hoveredTag = $state<string | null>(null);
   let scrollContainer = $state<HTMLElement>();
@@ -122,11 +128,12 @@
 </script>
 
 <PreviewWrapper>
-   <!-- TOP FIXED NAVBAR (Platform/Restaurant context) -->
-   <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 px-6 gap-5 select-none">
-      <div class="flex items-center gap-4">
+   <!-- TOP FIXED NAVBAR -->
+   <div class="absolute top-0 inset-x-0 z-[60] bg-[#141417]/80 backdrop-blur-xl border-b border-white/5 flex flex-col pt-4 select-none">
+      <!-- Identity Row -->
+      <div class="flex items-center gap-4 px-6 pb-4">
          <!-- Restaurant Icon / Sidebar Trigger -->
-         <Sheet.Root>
+         <Sheet.Root bind:open={isSidebarOpen}>
             <Sheet.Trigger class="flex-shrink-0 bg-orange-500 rounded-xl shadow-lg shadow-orange-500/10 overflow-hidden w-10 h-10 flex items-center justify-center hover:scale-105 transition-transform active:scale-95">
                {#if profile.logo_url}
                   <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
@@ -140,166 +147,70 @@
                overlayProps={{ class: "absolute" }}
                class="absolute w-[300px] sm:w-[350px] bg-[#141417] border-white/5 p-0 overflow-y-auto no-scrollbar"
             >
-               <div class="p-8 space-y-10">
-                  <!-- Header -->
+               <div class="p-8 space-y-8">
+                  <!-- Navigation Section -->
                   <div class="space-y-4">
-                     <div class="w-16 h-16 bg-orange-500 rounded-2xl shadow-xl shadow-orange-500/20 flex items-center justify-center overflow-hidden">
-                        {#if profile.logo_url}
-                           <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover" />
-                        {:else}
-                           <Utensils class="w-8 h-8 text-white" />
-                        {/if}
+                     <div class="flex items-center gap-3 text-orange-500 mb-2">
+                        <LayoutGrid size={16} />
+                        <span class="text-[10px] font-black uppercase tracking-[0.2em]">Navigazione</span>
                      </div>
-                     <div>
-                        <h2 class="text-2xl font-black text-white tracking-tight leading-none mb-2">{profile.restaurant_name}</h2>
-                        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500">Premium Restaurant</span>
-                     </div>
-                  </div>
-
-                  <!-- Contact & Actions -->
-                  <div class="space-y-6">
-                     {#if profile.description}
-                        <p class="text-sm text-zinc-400 leading-relaxed font-medium">{profile.description}</p>
-                     {/if}
-
-                     <div class="space-y-4 pt-4 border-t border-white/5">
-                        <div class="flex items-center gap-4 group">
-                           <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all">
-                              <MapPin size={18} />
-                           </div>
-                           <div class="flex-1">
-                              <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">Indirizzo</p>
-                              <p class="text-white text-sm font-bold truncate">{profile.address || '—'}</p>
-                           </div>
-                        </div>
-
-                        <div class="flex items-center gap-4 group">
-                           <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all">
-                              <Phone size={18} />
-                           </div>
-                           <div class="flex-1">
-                              <p class="text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">Telefono</p>
-                              <p class="text-white text-sm font-bold">{profile.phone || '—'}</p>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="grid grid-cols-2 gap-3 pt-4">
-                        {#if profile.phone}
-                           <a href="tel:{profile.phone}" class="flex items-center justify-center gap-2 h-12 bg-white/5 rounded-xl text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-colors">
-                              <Phone size={14} /> Chiama
-                           </a>
-                        {/if}
-                        {#if profile.whatsapp_number}
-                           <a href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}" target="_blank" class="flex items-center justify-center gap-2 h-12 bg-emerald-500/10 rounded-xl text-emerald-500 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500/20 transition-colors">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                              WhatsApp
-                           </a>
-                        {/if}
-                     </div>
-                  </div>
-
-                  <!-- Opening Hours -->
-                  {#if profile.opening_hours && Array.isArray(profile.opening_hours)}
-                     <div class="space-y-4 pt-8 border-t border-white/5">
-                        <div class="flex items-center gap-3 text-orange-500 mb-2">
-                           <Clock size={16} />
-                           <span class="text-[10px] font-black uppercase tracking-[0.2em]">Orari di Apertura</span>
-                        </div>
-                        <div class="space-y-3">
-                           {#each profile.opening_hours as day}
-                              <div class="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0 opacity-80">
-                                 <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{day.day}</span>
-                                 {#if day.isOpen}
-                                    <div class="flex flex-col items-end">
-                                       {#each day.periods as period}
-                                          <span class="text-[10px] font-black text-white tracking-tighter">
-                                             {period.open} — {period.close}
-                                          </span>
-                                       {/each}
-                                    </div>
-                                 {:else}
-                                    <span class="text-[10px] font-black text-zinc-700 uppercase tracking-widest italic">Chiuso</span>
-                                 {/if}
-                              </div>
-                           {/each}
-                        </div>
-                     </div>
-                  {/if}
-
-                  <!-- Social Links -->
-                  <div class="flex justify-start gap-4 pt-10 border-t border-white/5">
-                     {#if profile.instagram_url}
-                        <a href={profile.instagram_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-pink-500/10 hover:text-pink-500 transition-all">
-                           <Instagram size={20} />
-                        </a>
-                     {/if}
-                     {#if profile.facebook_url}
-                        <a href={profile.facebook_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-blue-500/10 hover:text-blue-500 transition-all">
-                           <Facebook size={20} />
-                        </a>
-                     {/if}
-                     {#if profile.website_url}
-                        <a href={profile.website_url} target="_blank" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-all">
-                           <Globe size={20} />
-                        </a>
-                     {/if}
-                  </div>
-
-                  <div class="pt-10 opacity-20">
-                     <p class="text-[9px] font-bold text-center text-zinc-500 uppercase tracking-[0.25em]">Powered by GO!FOODMENU</p>
+                     <nav class="grid gap-2">
+                        <button 
+                           onclick={() => { currentPage = 'menu'; isSidebarOpen = false; }}
+                           class="flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 group
+                           {currentPage === 'menu' ? 'bg-orange-500 text-white' : 'text-zinc-400 hover:bg-white/5 hover:text-white'}"
+                        >
+                           <Utensils size={18} class={currentPage === 'menu' ? 'text-white' : 'text-orange-500'} />
+                           <span class="font-bold text-sm">Il Nostro Menù</span>
+                        </button>
+                        <button 
+                           onclick={() => { currentPage = 'events'; isSidebarOpen = false; }}
+                           class="flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 group
+                           {currentPage === 'events' ? 'bg-orange-500 text-white' : 'text-zinc-400 hover:bg-white/5 hover:text-white'}"
+                        >
+                           <Clock size={18} class={currentPage === 'events' ? 'text-white' : 'text-orange-500'} />
+                           <span class="font-bold text-sm">Eventi Speciali</span>
+                        </button>
+                        <button 
+                           onclick={() => { currentPage = 'contacts'; isSidebarOpen = false; }}
+                           class="flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 group
+                           {currentPage === 'contacts' ? 'bg-orange-500 text-white' : 'text-zinc-400 hover:bg-white/5 hover:text-white'}"
+                        >
+                           <Info size={18} class={currentPage === 'contacts' ? 'text-white' : 'text-orange-500'} />
+                           <span class="font-bold text-sm">Contatti & Info</span>
+                        </button>
+                     </nav>
                   </div>
                </div>
             </Sheet.Content>
          </Sheet.Root>
 
-         <!-- Categories Pills -->
-         <div class="flex-1 overflow-x-auto no-scrollbar mask-fade-right">
-            <div class="flex gap-2.5 pb-1">
+         <div class="flex flex-col">
+            <h1 class="text-white font-black text-sm tracking-tight leading-none uppercase">{profile.restaurant_name}</h1>
+            <p class="text-[9px] text-orange-500 font-bold uppercase tracking-widest mt-0.5">Menu Digitale</p>
+         </div>
+      </div>
+
+      <!-- Categories Tabs -->
+      {#if currentPage === 'menu'}
+         <div class="px-6 overflow-x-auto no-scrollbar border-t border-white/5" in:fade>
+            <div class="flex gap-8 pt-4">
                {#each categories as category}
                   <button 
                      bind:this={categoryRefs[category.id]}
                      onclick={() => selectCategory(category.id)}
-                     class="px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-500 whitespace-nowrap
-                     {activeCategory === category.id 
-                        ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20 scale-105' 
-                        : 'bg-white/5 text-zinc-500 hover:text-zinc-300'}"
+                     class="text-[10px] font-black uppercase tracking-[0.2em] pb-3 transition-all relative shrink-0
+                     {activeCategory === category.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}"
                   >
                      {category.name}
+                     {#if activeCategory === category.id}
+                        <div class="absolute bottom-0 inset-x-0 h-[2px] bg-orange-500" in:fade></div>
+                     {/if}
                   </button>
                {/each}
             </div>
          </div>
-
-         <!-- Grid Toggle -->
-      </div>
-
-      <!-- PAGE TABS -->
-      <nav class="flex gap-10 border-b border-transparent pb-1">
-         <button 
-            onclick={() => currentPage = 'menu'}
-            class="text-[10px] font-black uppercase tracking-[0.25em] pb-3 transition-all relative
-            {currentPage === 'menu' ? 'text-white' : 'text-zinc-600 hover:text-zinc-400'}"
-         >
-            MENU ALLA CARTA
-            {#if currentPage === 'menu'}
-               <div class="absolute bottom-0 inset-x-0 h-[1.5px] bg-orange-500" in:fade></div>
-            {/if}
-         </button>
-         <button 
-            onclick={() => currentPage = 'events'}
-            class="text-[10px] font-black uppercase tracking-[0.25em] pb-3 transition-all relative
-            {currentPage === 'events' ? 'text-white' : 'text-zinc-600 hover:text-zinc-400'}"
-         >
-            EVENTI SPECIALI
-            {#if currentPage === 'events'}
-               <div class="absolute bottom-0 inset-x-0 h-[1.5px] bg-orange-500" in:fade></div>
-            {/if}
-         </button>
-      </nav>
-
-
-
+      {/if}
    </div>
 
    <!-- SCROLLABLE CONTENT AREA -->
@@ -308,7 +219,7 @@
      ontouchstart={handleTouchStart}
      ontouchmove={handleTouchMove}
      ontouchend={handleTouchEnd}
-     class="h-full overflow-y-auto no-scrollbar relative w-full pt-[115px] select-none"
+     class="h-full overflow-y-auto no-scrollbar relative w-full pt-[135px] select-none"
      style="-webkit-touch-callout: none;"
    >
       {#if currentPage === 'menu'}
@@ -424,42 +335,138 @@
             {/key}
          </main>
       {:else}
-         <!-- EVENTI SPECIALI PAGE -->
+         <!-- OTHER PAGES -->
          <div class="px-6 py-12 space-y-12" in:fade>
-            <div class="text-center space-y-4">
-               <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500">News & Specialities</span>
-               <h2 class="text-4xl font-black text-white leading-tight tracking-tight">Cosa bolle in pentola?</h2>
-               <p class="text-sm text-zinc-400 max-w-[280px] mx-auto leading-relaxed font-medium">Scopri le nostre iniziative speciali, i menu degustazione e le serate dedicate alla tradizione.</p>
-            </div>
+            {#if currentPage === 'events'}
+               <div class="text-center space-y-4">
+                  <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500">News & Specialities</span>
+                  <h2 class="text-4xl font-black text-white leading-tight tracking-tight">Cosa bolle in pentola?</h2>
+                  <p class="text-sm text-zinc-400 max-w-[280px] mx-auto leading-relaxed font-medium">Scopri le nostre iniziative speciali, i menu degustazione e le serate dedicate alla tradizione.</p>
+               </div>
 
-            <div class="space-y-6">
-               <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4 group">
-                  <div class="aspect-[16/9] bg-white/[0.05] rounded-lg overflow-hidden">
-                     <div class="w-full h-full bg-gradient-to-br from-amber-900/40 to-[#141417] flex items-center justify-center">
-                        <Utensils class="h-8 w-8 text-amber-600 opacity-40 group-hover:scale-110 transition-transform" />
+               <div class="space-y-6">
+                  <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4 group">
+                     <div class="aspect-[16/9] bg-white/[0.05] rounded-lg overflow-hidden">
+                        <div class="w-full h-full bg-gradient-to-br from-amber-900/40 to-[#141417] flex items-center justify-center">
+                           <Utensils class="h-8 w-8 text-amber-600 opacity-40 group-hover:scale-110 transition-transform" />
+                        </div>
+                     </div>
+                     <div class="space-y-2">
+                        <h3 class="text-lg font-serif italic text-white group-hover:text-amber-500 transition-colors">Menu Capodanno 2026</h3>
+                        <p class="text-xs text-neutral-500 leading-relaxed">Una selezione esclusiva dei nostri piatti iconici rivisitati per la notte più magica dell'anno.</p>
+                        <div class="pt-2">
+                           <Badge class="bg-amber-600/20 text-amber-500 border-amber-900/30 text-[9px] uppercase tracking-widest px-2">Presto Disponibile</Badge>
+                        </div>
                      </div>
                   </div>
-                  <div class="space-y-2">
-                     <h3 class="text-lg font-serif italic text-white group-hover:text-amber-500 transition-colors">Menu Capodanno 2026</h3>
-                     <p class="text-xs text-neutral-500 leading-relaxed">Una selezione esclusiva dei nostri piatti iconici rivisitati per la notte più magica dell'anno.</p>
-                     <div class="pt-2">
-                        <Badge class="bg-amber-600/20 text-amber-500 border-amber-900/30 text-[9px] uppercase tracking-widest px-2">Presto Disponibile</Badge>
+
+                  <div class="p-6 rounded-2xl bg-neutral-900 border border-white/5 space-y-4 group">
+                     <div class="aspect-[16/9] bg-neutral-800 rounded-lg overflow-hidden">
+                        <div class="w-full h-full bg-gradient-to-br from-purple-900/40 to-black flex items-center justify-center">
+                           <Clock class="h-8 w-8 text-purple-600 opacity-40 group-hover:scale-110 transition-transform" />
+                        </div>
+                     </div>
+                     <div class="space-y-2">
+                        <h3 class="text-lg font-serif italic text-white group-hover:text-amber-500 transition-colors">Fuori Carta della Settimana</h3>
+                        <p class="text-xs text-neutral-500 leading-relaxed">Ogni martedì il nostro Chef propone un piatto speciale basato sugli ingredienti più freschi del mercato.</p>
                      </div>
                   </div>
                </div>
+            {:else if currentPage === 'contacts'}
+               <div class="space-y-12" in:fly={{ y: 20, duration: 600 }}>
+                  <div class="text-center space-y-4">
+                     <div class="w-20 h-20 bg-orange-500 rounded-3xl mx-auto flex items-center justify-center shadow-2xl shadow-orange-500/20">
+                        {#if profile.logo_url}
+                           <img src={profile.logo_url} alt={profile.restaurant_name} class="w-full h-full object-cover rounded-3xl" />
+                        {:else}
+                           <Utensils class="text-white w-10 h-10" />
+                        {/if}
+                     </div>
+                     <div class="space-y-2">
+                        <h2 class="text-4xl font-black text-white leading-tight tracking-tight uppercase">{profile.restaurant_name}</h2>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-orange-500">Contatti & Info</span>
+                     </div>
+                     <p class="text-sm text-zinc-400 max-w-[280px] mx-auto leading-relaxed font-medium">
+                        {profile.description || 'Siamo qui per accoglierti. Trova tutte le informazioni per raggiungerci e contattarci.'}
+                     </p>
+                  </div>
 
-               <div class="p-6 rounded-2xl bg-neutral-900 border border-white/5 space-y-4 group">
-                  <div class="aspect-[16/9] bg-neutral-800 rounded-lg overflow-hidden">
-                     <div class="w-full h-full bg-gradient-to-br from-purple-900/40 to-black flex items-center justify-center">
-                        <Clock class="h-8 w-8 text-purple-600 opacity-40 group-hover:scale-110 transition-transform" />
+                  <div class="grid grid-cols-1 gap-4">
+                     <!-- Location Card -->
+                     <div class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/[0.05] space-y-6">
+                        <div class="flex items-center gap-4 text-orange-500">
+                           <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-orange-500">
+                              <MapPin size={24} />
+                           </div>
+                           <div>
+                              <p class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Dove trovarci</p>
+                              <p class="text-white font-black text-lg">{profile.address || 'Indirizzo non specificato'}</p>
+                           </div>
+                        </div>
+                        {#if profile.address}
+                           <a 
+                              href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(profile.address)}" 
+                              target="_blank"
+                              class="flex items-center justify-center gap-2 w-full h-14 bg-white/5 rounded-2xl text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/10 transition-colors border border-white/5"
+                           >
+                              Apri su Google Maps <ChevronRight size={14} />
+                           </a>
+                        {/if}
+                     </div>
+
+                     <!-- Contacts Grid -->
+                     <div class="grid grid-cols-1 gap-4">
+                        <div class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/[0.05] space-y-6">
+                           <div class="flex items-center gap-4 text-orange-500">
+                              <div class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-orange-500">
+                                 <Phone size={24} />
+                              </div>
+                              <div>
+                                 <p class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Contatti diretti</p>
+                                 <p class="text-white font-black text-lg">{profile.phone || '—'}</p>
+                              </div>
+                           </div>
+                           <div class="grid grid-cols-2 gap-3">
+                              {#if profile.phone}
+                                 <a href="tel:{profile.phone}" class="flex flex-col items-center justify-center gap-2 h-20 bg-white/5 rounded-2xl text-white hover:bg-white/10 transition-colors border border-white/5">
+                                    <Phone size={20} class="text-orange-500" />
+                                    <span class="text-[9px] font-black uppercase tracking-widest">Chiama</span>
+                                 </a>
+                              {/if}
+                              {#if profile.whatsapp_number}
+                                 <a href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}" target="_blank" class="flex flex-col items-center justify-center gap-2 h-20 bg-emerald-500/5 rounded-2xl text-emerald-500 hover:bg-emerald-500/10 transition-colors border border-emerald-500/10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    <span class="text-[9px] font-black uppercase tracking-widest">WhatsApp</span>
+                                 </a>
+                              {/if}
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Socials & Website -->
+                     <div class="p-8 bg-white/[0.03] rounded-[2.5rem] border border-white/[0.05]">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 text-center mb-6">Seguici sui social</p>
+                        <div class="flex justify-center gap-6">
+                           {#if profile.instagram_url}
+                              <a href={profile.instagram_url} target="_blank" class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-pink-500/10 hover:text-pink-500 transition-all border border-white/5">
+                                 <Instagram size={28} />
+                              </a>
+                           {/if}
+                           {#if profile.facebook_url}
+                              <a href={profile.facebook_url} target="_blank" class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-blue-500/10 hover:text-blue-500 transition-all border border-white/5">
+                                 <Facebook size={28} />
+                              </a>
+                           {/if}
+                           {#if profile.website_url}
+                              <a href={profile.website_url} target="_blank" class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-white/10 hover:text-white transition-all border border-white/5">
+                                 <Globe size={28} />
+                              </a>
+                           {/if}
+                        </div>
                      </div>
                   </div>
-                  <div class="space-y-2">
-                     <h3 class="text-lg font-serif italic text-white group-hover:text-amber-500 transition-colors">Fuori Carta della Settimana</h3>
-                     <p class="text-xs text-neutral-500 leading-relaxed">Ogni martedì il nostro Chef propone un piatto speciale basato sugli ingredienti più freschi del mercato.</p>
-                  </div>
                </div>
-            </div>
+            {/if}
 
             <div class="pt-10 flex justify-center opacity-30">
                <Utensils class="h-6 w-6 text-neutral-500" />
