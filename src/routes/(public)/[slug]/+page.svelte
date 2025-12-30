@@ -33,7 +33,12 @@
 		
 		const container = tabsContainer;
 		const target = categoryRefs[activeCategory];
-		const scrollTarget = target.offsetLeft - (container.offsetWidth / 2) + (target.offsetWidth / 2);
+		
+		// The scroll position is (target's center relative to container's start) - (half container width)
+		// offsetLeft in a simple flex container should work, but let's be absolute:
+		const targetCenter = target.offsetLeft + (target.offsetWidth / 2);
+		const containerCenter = container.offsetWidth / 2;
+		const scrollTarget = targetCenter - containerCenter;
 		
 		container.scrollTo({
 			left: scrollTarget,
@@ -43,10 +48,11 @@
 
 	let mounted = $state(false);
 	onMount(() => {
+		// A slightly longer delay ensures all responsive layout shifts (hydration, etc) are done
 		setTimeout(() => {
 			mounted = true;
 			centerActiveTab(false);
-		}, 60);
+		}, 150);
 	});
 
 	// Auto-center the active category pill
@@ -150,30 +156,34 @@
 	<!-- Categories Tabs -->
 	<div 
 		bind:this={tabsContainer} 
-		class="no-scrollbar overflow-x-auto relative z-0"
+		class="no-scrollbar overflow-x-auto relative z-0 w-full"
 	>
 		<!-- Flex container with spacers for true "dial" centering -->
-		<div class="flex items-center gap-14 py-4">
-			<!-- Leading Spacer -->
-			<div class="w-[50%] shrink-0"></div>
+		<div class="flex items-center py-4">
+			<!-- Leading Spacer: Exactly half the container width -->
+			<div class="min-w-[50%] w-[50%] shrink-0 h-px"></div>
 
 			{#each categories as category (category.id)}
 				{@const isActive = activeCategory === category.id}
-				<button
+				<div 
 					bind:this={categoryRefs[category.id]}
-					onclick={() => selectCategory(category.id)}
-					class="relative shrink-0 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ease-out
-					 {isActive ? 'scale-125 text-white' : 'text-zinc-500 opacity-40 hover:text-zinc-300 hover:opacity-80'}"
+					class="flex shrink-0 items-center justify-center px-6"
 				>
-					{category.name}
-					{#if isActive}
-						<div class="absolute inset-x-[-8px] -bottom-2 h-[2.5px] bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]" in:fade></div>
-					{/if}
-				</button>
+					<button
+						onclick={() => selectCategory(category.id)}
+						class="relative text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ease-out
+						 {isActive ? 'scale-125 text-white' : 'text-zinc-500 opacity-40 hover:text-zinc-300 hover:opacity-80'}"
+					>
+						{category.name}
+						{#if isActive}
+							<div class="absolute inset-x-[-8px] -bottom-2 h-[2.5px] bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]" in:fade></div>
+						{/if}
+					</button>
+				</div>
 			{/each}
 
 			<!-- Trailing Spacer -->
-			<div class="w-[50%] shrink-0"></div>
+			<div class="min-w-[50%] w-[50%] shrink-0 h-px"></div>
 		</div>
 	</div>
 </div>
