@@ -4,10 +4,11 @@
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { page } from '$app/state';
+	import type { Snippet } from 'svelte';
 
 	import { QueryClient, QueryClientProvider, HydrationBoundary } from '@tanstack/svelte-query';
 
-	let { data, children }: { data: LayoutData; children: any } = $props();
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 	let session = $derived(data.session);
 	let supabase = $derived(data.supabase);
 
@@ -34,7 +35,7 @@
 	onMount(() => {
 		const {
 			data: { subscription }
-		} = supabase.auth.onAuthStateChange((event, _session) => {
+		} = supabase.auth.onAuthStateChange((_event, _session) => {
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}

@@ -99,6 +99,7 @@
 							<a
 								href={menuUrl}
 								target="_blank"
+								rel="noreferrer"
 								class="rounded-xl bg-white p-3 text-orange-500 transition-colors hover:bg-orange-50"
 							>
 								<ExternalLink size={20} />

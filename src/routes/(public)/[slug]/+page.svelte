@@ -5,12 +5,10 @@
 	import {
 		Utensils,
 		Info,
-		Search,
 		MapPin,
 		Clock,
 		ChevronRight,
 		LayoutGrid,
-		Leaf,
 		Camera,
 		Phone,
 		Globe,
@@ -18,11 +16,11 @@
 		Facebook
 	} from 'lucide-svelte';
 	import type { PageData } from './$types';
-	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import PreviewWrapper from '$lib/components/PreviewWrapper.svelte';
 	import GlutenFreeIcon from '$lib/components/icons/GlutenFreeIcon.svelte';
+	import type { Category, Dish, Allergen } from '$lib/db/schema';
 
 	let { data } = $props<{ data: PageData }>();
 	let profile = $derived(data.profile);
@@ -55,8 +53,7 @@
 		}
 	});
 
-	let currentCat = $derived(categories.find((c: any) => c.id === activeCategory));
-	let isScrolled = $state(false);
+	let currentCat = $derived(categories.find((c: Category) => c.id === activeCategory));
 
 	// Page Navigation State
 	type NavPage = 'menu' | 'events' | 'contacts';
@@ -70,7 +67,7 @@
 		const handleScroll = () => {
 			if (scrollContainer) {
 				// Higher threshold for sticky header feel
-				isScrolled = scrollContainer.scrollTop > 60;
+				// isScrolled = scrollContainer.scrollTop > 60;
 			}
 		};
 		if (scrollContainer) {
@@ -101,7 +98,7 @@
 		const isLeftSwipe = distance > 50;
 		const isRightSwipe = distance < -50;
 
-		const currentIndex = categories.findIndex((c: any) => c.id === activeCategory);
+		const currentIndex = categories.findIndex((c: Category) => c.id === activeCategory);
 
 		if (isLeftSwipe && currentIndex < categories.length - 1) {
 			selectCategory(categories[currentIndex + 1].id);
@@ -116,10 +113,10 @@
 	}
 
 	// Haptic & Peek State
-	let hapticTimer: any;
-	let peekedDish = $state<any>(null);
+	let hapticTimer: ReturnType<typeof setTimeout>;
+	let peekedDish = $state<Dish | null>(null);
 
-	function startHaptic(dish: any) {
+	function startHaptic(dish: Dish) {
 		if (typeof navigator !== 'undefined') {
 			hapticTimer = setTimeout(() => {
 				// 1. Trigger Vibration
@@ -136,7 +133,7 @@
 		peekedDish = null;
 	}
 
-	function openDish(dish: any) {
+	function openDish() {
 		// No longer opens a sheet, but could trigger haptic again or nothing
 		stopHaptic();
 	}
@@ -244,7 +241,7 @@
 		{#if currentPage === 'menu'}
 			<div class="no-scrollbar overflow-x-auto border-t border-white/5 px-6" in:fade>
 				<div class="flex gap-8 pt-4">
-					{#each categories as category}
+					{#each categories as category (category.id)}
 						<button
 							bind:this={categoryRefs[category.id]}
 							onclick={() => selectCategory(category.id)}
@@ -289,18 +286,18 @@
 					>
 						{#if currentCat}
 							<div class="grid gap-4">
-								{#each currentCat.dishes as dish, i}
+								{#each currentCat.dishes as dish, i (dish.id)}
 									<div
 										in:fly={{ y: 30, duration: 600, delay: i * 50, easing: cubicOut }}
 										class="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border-[1.5px] border-amber-500/50 bg-white/[0.03] p-7 shadow-lg
                                shadow-black/20 transition-all duration-300
                                ease-out hover:bg-white/[0.06] active:scale-[0.97] active:border-amber-400
                                active:bg-white/[0.08] active:shadow-[0_0_25px_rgba(245,158,11,0.2)]"
-										onclick={() => openDish(dish)}
+										onclick={() => openDish()}
 										onpointerdown={() => startHaptic(dish)}
 										onpointerup={stopHaptic}
 										onpointerleave={stopHaptic}
-										onkeydown={(e) => e.key === 'Enter' && openDish(dish)}
+										onkeydown={(e) => e.key === 'Enter' && openDish()}
 										role="button"
 										tabindex="0"
 									>
@@ -337,9 +334,9 @@
 
 										<div class="relative z-10 mt-auto flex items-center justify-between">
 											<div class="flex gap-2">
-												{#each dish.allergens || [] as allergenId}
-													{@const allergen = (data.allergens as any[]).find(
-														(a: any) => a.id === allergenId
+												{#each dish.allergens || [] as allergenId (allergenId)}
+													{@const allergen = (data.allergens as Allergen[]).find(
+														(a) => a.id === allergenId
 													)}
 													{#if allergen}
 														<div
@@ -618,6 +615,7 @@
 										<a
 											href={profile.instagram_url}
 											target="_blank"
+											rel="noreferrer"
 											class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-pink-500/10 hover:text-pink-500"
 										>
 											<Instagram size={28} />
@@ -627,6 +625,7 @@
 										<a
 											href={profile.facebook_url}
 											target="_blank"
+											rel="noreferrer"
 											class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-blue-500/10 hover:text-blue-500"
 										>
 											<Facebook size={28} />
@@ -636,6 +635,7 @@
 										<a
 											href={profile.website_url}
 											target="_blank"
+											rel="noreferrer"
 											class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-white/10 hover:text-white"
 										>
 											<Globe size={28} />
@@ -711,11 +711,11 @@
 								{peekedDish.name}
 							</h4>
 
-							{#if peekedDish.allergens?.length > 0}
+							{#if (peekedDish.allergens?.length ?? 0) > 0}
 								<div class="mb-4 flex gap-2">
-									{#each peekedDish.allergens as allergenId}
-										{@const allergen = (data.allergens as any[]).find(
-											(a: any) => a.id === allergenId
+									{#each peekedDish.allergens ?? [] as allergenId (allergenId)}
+										{@const allergen = (data.allergens as Allergen[]).find(
+											(a) => a.id === allergenId
 										)}
 										{#if allergen}
 											<div

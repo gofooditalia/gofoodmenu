@@ -23,7 +23,7 @@
 	</div>
 
 	<nav class="mt-4 flex-1 space-y-1 px-4">
-		{#each menuItems as item}
+		{#each menuItems as item (item.href)}
 			<a
 				href={item.href}
 				class="group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 {isActive(

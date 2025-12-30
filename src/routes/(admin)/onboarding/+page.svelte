@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Store, Globe, ArrowRight } from 'lucide-svelte';
+	import type { ActionData } from './$types';
 
-	let { data, form } = $props();
+	let { form }: { form: ActionData } = $props();
 
 	let restaurantName = $state('');
 	let slug = $state('');

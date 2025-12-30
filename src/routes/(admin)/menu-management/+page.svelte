@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { Plus, Trash2, Edit3, Grid, Utensils } from 'lucide-svelte';
-	import type { PageData, ActionData } from './$types';
+	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
-	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
+	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 
-	let { data, form }: { data: PageData; form: ActionData } = $props();
+	let { data }: { data: PageData & { categories: Category[], dishes: Dish[], allergens: Allergen[] } } = $props();
+	import type { Category, Dish, Allergen } from '$lib/db/schema';
 	let supabase = $derived(data.supabase);
 	const queryClient = useQueryClient();
 
 	// 1. Categories Query
-	const categoriesQuery = createQuery<any[]>(() => ({
+	const categoriesQuery = createQuery<Category[]>(() => ({
 		queryKey: ['categories', data.profile?.id],
 		queryFn: async () => {
 			if (!data.profile?.id) return [];
@@ -25,7 +26,7 @@
 	}));
 
 	// 2. Dishes Query
-	const dishesQuery = createQuery<any[]>(() => ({
+	const dishesQuery = createQuery<(Dish & { categories: { name: string } | null })[]>(() => ({
 		queryKey: ['dishes', data.profile?.id],
 		queryFn: async () => {
 			if (!data.profile?.id) return [];
@@ -41,7 +42,7 @@
 	}));
 
 	// 3. Allergens Query
-	const allergensQuery = createQuery<any[]>(() => ({
+	const allergensQuery = createQuery<Allergen[]>(() => ({
 		queryKey: ['allergens'],
 		queryFn: async () => {
 			const { data: allergens, error } = await supabase
@@ -57,8 +58,8 @@
 	let showAddCategory = $state(false);
 	let showAddDish = $state(false);
 
-	let editingCategory: any = $state(null);
-	let editingDish: any = $state(null);
+	let editingCategory = $state<Category | null>(null);
+	let editingDish = $state<(Dish & { categories: { name: string } | null }) | null>(null);
 
 	let dishName = $state('');
 	let dishDescription = $state('');
@@ -71,8 +72,8 @@
 		const file = (e.target as HTMLInputElement).files?.[0];
 		if (file) {
 			const reader = new FileReader();
-			reader.onload = (e) => {
-				imagePreview = e.target?.result as string;
+			reader.onload = (event) => {
+				imagePreview = event.target?.result as string;
 			};
 			reader.readAsDataURL(file);
 		}
@@ -160,7 +161,7 @@
 			{/if}
 
 			<div class="space-y-2">
-				{#each categoriesQuery.data ?? [] as category}
+				{#each (categoriesQuery.data as Category[]) ?? [] as category (category.id)}
 					<div
 						class="group flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-4 transition-all hover:border-orange-200 hover:shadow-md"
 					>
@@ -247,7 +248,7 @@
 					</div>
 				{/if}
 
-				{#if data.categories.length === 0}
+				{#if (data.categories as Category[]).length === 0}
 					<div
 						class="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center"
 					>
@@ -366,7 +367,7 @@
 										required
 									>
 										<option value="" disabled>Scegli...</option>
-										{#each categoriesQuery.data ?? [] as category}
+										{#each categoriesQuery.data ?? [] as category (category.id)}
 											<option value={category.id}>{category.name}</option>
 										{/each}
 									</select>
@@ -393,7 +394,7 @@
 										Allergeni Presenti
 									</p>
 									<div class="grid grid-cols-4 gap-2 sm:grid-cols-7">
-										{#each allergensQuery.data ?? [] as allergen}
+										{#each allergensQuery.data ?? [] as allergen (allergen.id)}
 											<button
 												type="button"
 												onclick={() => {
@@ -480,7 +481,7 @@
 			{/if}
 
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-				{#each dishesQuery.data ?? [] as dish}
+				{#each dishesQuery.data ?? [] as dish (dish.id)}
 					<div
 						class="group flex gap-6 rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl"
 					>
@@ -619,7 +620,7 @@
 											class="w-full appearance-none rounded-2xl border-2 border-transparent bg-slate-50 p-4 font-bold outline-none focus:border-orange-500"
 											required
 										>
-											{#each categoriesQuery.data ?? [] as category}
+											{#each categoriesQuery.data ?? [] as category (category.id)}
 												<option value={category.id}>{category.name}</option>
 											{/each}
 										</select>
@@ -645,7 +646,7 @@
 											Allergeni Presenti
 										</p>
 										<div class="grid grid-cols-4 gap-2 sm:grid-cols-7">
-											{#each allergensQuery.data ?? [] as allergen}
+											{#each allergensQuery.data ?? [] as allergen (allergen.id)}
 												<button
 													type="button"
 													onclick={() => {
@@ -738,7 +739,7 @@
 					</div>
 				{/if}
 
-				{#if data.dishes.length === 0}
+				{#if (data.dishes as Dish[]).length === 0}
 					<div
 						class="rounded-[2rem] border-2 border-dashed border-slate-100 bg-white p-16 text-center md:col-span-2"
 					>

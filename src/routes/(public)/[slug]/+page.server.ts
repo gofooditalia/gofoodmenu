@@ -4,7 +4,6 @@ import { db } from '$lib/db';
 import {
 	profiles as profilesTable,
 	categories as categoriesTable,
-	dishes as dishesTable,
 	allergens as allergensTable
 } from '$lib/db/schema';
 import { eq, asc } from 'drizzle-orm';

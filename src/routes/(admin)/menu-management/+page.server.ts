@@ -5,7 +5,8 @@ import {
 	categories as categoriesTable,
 	dishes as dishesTable,
 	allergens as allergensTable,
-	profiles as profilesTable
+	profiles as profilesTable,
+	type InsertDish
 } from '$lib/db/schema';
 import { eq, asc, desc } from 'drizzle-orm';
 import { QueryClient, dehydrate } from '@tanstack/svelte-query';
@@ -97,7 +98,7 @@ export const actions: Actions = {
 				name,
 				restaurant_id: user.id
 			});
-		} catch (e) {
+		} catch {
 			return fail(500, { error: 'Errore durante il salvataggio' });
 		}
 
@@ -215,18 +216,18 @@ export const actions: Actions = {
 
 		const allergens = allergensStr
 			? allergensStr
-					.split(',')
-					.map((s) => s.trim())
-					.filter(Boolean)
+				.split(',')
+				.map((s) => s.trim())
+				.filter(Boolean)
 			: [];
 
-		let updates: any = {
+		const updates: Partial<InsertDish> & { image_url?: string } = {
 			name,
 			description,
-			price: parseFloat(price),
+			price: parseFloat(price).toString(),
 			category_id: parseInt(category_id),
 			allergens,
-			updated_at: new Date().toISOString()
+			updated_at: new Date()
 		};
 
 		// Handle Image Upload if provided

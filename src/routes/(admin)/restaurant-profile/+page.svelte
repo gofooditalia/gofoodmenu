@@ -7,7 +7,6 @@
 		Instagram,
 		Facebook,
 		MessageCircle,
-		Clock,
 		Save,
 		Camera,
 		Plus,
@@ -18,8 +17,8 @@
 	import type { PageData, ActionData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
-
-	let profile = $state(data.profile || {});
+	const initialProfile = data.profile;
+	let profile = $state({ ...initialProfile });
 	let isSaving = $state(false);
 	let isUploading = $state(false);
 	let fileInput: HTMLInputElement;
@@ -35,7 +34,7 @@
 			const fileName = `${data.session?.user.id}/logo-${Math.random()}.${fileExt}`;
 			const filePath = `${fileName}`;
 
-			const { data: uploadData, error: uploadError } = await data.supabase.storage
+			const { error: uploadError } = await data.supabase.storage
 				.from('menu-images')
 				.upload(filePath, file, {
 					upsert: true
@@ -74,7 +73,7 @@
 
 	function removePeriod(dayIndex: number, periodIndex: number) {
 		openingHours[dayIndex].periods = openingHours[dayIndex].periods.filter(
-			(_, i) => i !== periodIndex
+			(_: unknown, i: number) => i !== periodIndex
 		);
 	}
 
@@ -320,7 +319,7 @@
 			<div
 				class="space-y-4 rounded-[2.5rem] border border-slate-100 bg-white p-8 shadow-sm lg:col-span-2"
 			>
-				{#each openingHours as day, i}
+				{#each openingHours as day, i (day.day)}
 					<div
 						class="rounded-2xl p-4 transition-all duration-300 {day.isOpen
 							? 'bg-slate-50'
@@ -330,6 +329,7 @@
 							<div class="flex items-center gap-4">
 								<button
 									type="button"
+									aria-label="Toggle day open"
 									onclick={() => toggleDay(i)}
 									class="relative h-6 w-12 rounded-full transition-colors duration-200 focus:outline-none {day.isOpen
 										? 'bg-orange-500'
@@ -353,7 +353,7 @@
 
 						{#if day.isOpen}
 							<div transition:slide class="mt-4 space-y-3">
-								{#each day.periods as period, pi}
+								{#each day.periods as period, pi (pi)}
 									<div class="flex items-center gap-3">
 										<input
 											type="time"
