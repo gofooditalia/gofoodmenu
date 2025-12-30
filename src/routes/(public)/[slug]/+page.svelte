@@ -89,13 +89,17 @@
 
 	let mounted = $state(false);
 	onMount(() => {
-		mounted = true;
+		// Ensure layout is stable before initial centering
+		setTimeout(() => {
+			mounted = true;
+			centerActiveTab(false);
+		}, 50);
 	});
 
 	// Auto-center the active category pill
 	$effect(() => {
-		if (activeCategory !== undefined && tabsContainer) {
-			centerActiveTab(mounted);
+		if (activeCategory !== undefined && mounted) {
+			centerActiveTab(true);
 		}
 	});
 
