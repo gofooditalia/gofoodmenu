@@ -42,11 +42,16 @@
 
 	let hoveredTag = $state<string | null>(null);
 
-	function selectCategory(id: number) {
+	function selectCategory(id: number, forcedDirection?: number) {
 		const newIndex = categories.findIndex((c: Category) => c.id === id);
 		const oldIndex = categories.findIndex((c: Category) => c.id === activeCategory);
 		
-		direction = newIndex > oldIndex ? 1 : -1;
+		if (forcedDirection !== undefined) {
+			direction = forcedDirection;
+		} else {
+			direction = newIndex > oldIndex ? 1 : -1;
+		}
+		
 		activeCategory = id;
 		uiState.scrollToTop();
 	}
@@ -68,12 +73,22 @@
 
 		const currentIndex = categories.findIndex((c: Category) => c.id === activeCategory);
 
-		if (isLeftSwipe && currentIndex < categories.length - 1) {
-			selectCategory(categories[currentIndex + 1].id);
+		if (isLeftSwipe) {
+			if (currentIndex < categories.length - 1) {
+				selectCategory(categories[currentIndex + 1].id, 1);
+			} else {
+				// Wrap to start
+				selectCategory(categories[0].id, 1);
+			}
 		}
 
-		if (isRightSwipe && currentIndex > 0) {
-			selectCategory(categories[currentIndex - 1].id);
+		if (isRightSwipe) {
+			if (currentIndex > 0) {
+				selectCategory(categories[currentIndex - 1].id, -1);
+			} else {
+				// Wrap to end
+				selectCategory(categories[categories.length - 1].id, -1);
+			}
 		}
 
 		touchStart = 0;
