@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
+	import { cubicOut, backOut } from 'svelte/easing';
 	import { Utensils, Camera } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import GlutenFreeIcon from '$lib/components/icons/GlutenFreeIcon.svelte';
@@ -12,6 +12,8 @@
 	let categories = $derived(data.categories);
 
 	let activeCategory = $state<number | undefined>();
+	let direction = $state(1); // 1 = right, -1 = left
+
 	$effect(() => {
 		if (!activeCategory && data.categories?.length) {
 			activeCategory = data.categories[0].id;
@@ -41,6 +43,10 @@
 	let hoveredTag = $state<string | null>(null);
 
 	function selectCategory(id: number) {
+		const newIndex = categories.findIndex((c: Category) => c.id === id);
+		const oldIndex = categories.findIndex((c: Category) => c.id === activeCategory);
+		
+		direction = newIndex > oldIndex ? 1 : -1;
 		activeCategory = id;
 		uiState.scrollToTop();
 	}
@@ -129,113 +135,119 @@
 		style="background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);"
 	></div>
 
-	{#key activeCategory}
-		<div in:fly={{ y: 20, duration: 400, delay: 100, easing: cubicOut }} class="animate-initial-bounce space-y-4">
-			{#if currentCat}
-				<div class="grid gap-4">
-					{#each currentCat.dishes as dish, i (dish.id)}
-						{@const hasGluten = (dish.allergens as string[])?.includes('glutine')}
-						<div
-							in:fly={{ y: 30, duration: 600, delay: i * 50, easing: cubicOut }}
-							class="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border-[1.5px] p-7 shadow-lg
-							shadow-black/20 transition-all duration-500
-							ease-out active:scale-[0.97]
-							{glutenSafety.mode && hasGluten
-                                ? 'border-red-500/30 bg-red-950/20 grayscale opacity-40 scale-[0.98] pointer-events-none'
-                                : 'border-amber-500/50 bg-white/[0.03] hover:bg-white/[0.06] active:border-amber-400 active:bg-white/[0.08] active:shadow-[0_0_25px_rgba(245,158,11,0.2)]'}"
-							onpointerdown={() => !glutenSafety.mode && startHaptic(dish)}
-							onpointerup={stopHaptic}
-							onpointerleave={stopHaptic}
-							onclick={() => stopHaptic()}
-							onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && stopHaptic()}
-							role="button"
-							tabindex="0"
-						>
-							{#if glutenSafety.mode && hasGluten}
-								<div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]" in:fade>
-									<div class="rounded-full bg-red-500 p-2 shadow-lg mb-2">
-										<GlutenFreeIcon size={24} class="text-white" />
-									</div>
-									<span class="text-[10px] font-black tracking-widest text-white uppercase bg-red-500 px-3 py-1 rounded-lg">
-										Contiene Glutine
-									</span>
-								</div>
-							{/if}
-
-							<div class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"></div>
-
-							<div class="relative z-10 flex items-start justify-between gap-6">
-								<h3 class="max-w-[75%] text-[1.35rem] leading-tight font-black tracking-tight text-white transition-colors group-hover:text-amber-400">
-									{dish.name}
-								</h3>
-								<div class="flex flex-col items-end">
-									<span class="text-3xl font-black tracking-tighter text-orange-500">
-										{dish.price}
-									</span>
-									{#if dish.image_url}
-										<div class="mt-1 opacity-40 transition-opacity group-hover:opacity-70">
-											<Camera class="h-4 w-4 text-amber-500" />
+	<!-- THE KEYED SECTION: This handles the horizontal sliding -->
+	<div class="grid w-full grid-cols-1">
+		{#key activeCategory}
+			<div 
+				in:fly={{ x: 300 * direction, duration: 600, easing: cubicOut, opacity: 0 }}
+				out:fly={{ x: -300 * direction, duration: 600, easing: cubicOut, opacity: 0 }}
+				class="col-start-1 row-start-1 flex flex-col space-y-4"
+			>
+				{#if currentCat}
+					<div class="grid gap-4">
+						{#each currentCat.dishes as dish, i (dish.id)}
+							{@const hasGluten = (dish.allergens as string[])?.includes('glutine')}
+							<div
+								class="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border-[1.5px] p-7 shadow-lg
+								shadow-black/20 transition-all duration-500
+								ease-out active:scale-[0.97]
+								{glutenSafety.mode && hasGluten
+									? 'border-red-500/30 bg-red-950/20 grayscale opacity-40 scale-[0.98] pointer-events-none'
+									: 'border-amber-500/50 bg-white/[0.03] hover:bg-white/[0.06] active:border-amber-400 active:bg-white/[0.08] active:shadow-[0_0_25px_rgba(245,158,11,0.2)]'}"
+								onpointerdown={() => !glutenSafety.mode && startHaptic(dish)}
+								onpointerup={stopHaptic}
+								onpointerleave={stopHaptic}
+								onclick={() => stopHaptic()}
+								onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') stopHaptic(); }}
+								role="button"
+								tabindex="0"
+							>
+								{#if glutenSafety.mode && hasGluten}
+									<div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]" in:fade>
+										<div class="rounded-full bg-red-500 p-2 shadow-lg mb-2">
+											<GlutenFreeIcon size={24} class="text-white" />
 										</div>
-									{/if}
-								</div>
-							</div>
+										<span class="text-[10px] font-black tracking-widest text-white uppercase bg-red-500 px-3 py-1 rounded-lg">
+											Contiene Glutine
+										</span>
+									</div>
+								{/if}
 
-							{#if dish.description}
-								<p class="relative z-10 mt-3 mb-6 line-clamp-3 pr-2 text-[0.95rem] leading-relaxed font-medium text-zinc-300 transition-colors group-hover:text-white">
-									{dish.description}
-								</p>
-							{/if}
+								<div class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"></div>
 
-							<div class="relative z-10 mt-auto flex items-center justify-between">
-								<div class="flex flex-wrap gap-2">
-									{#each dish.allergens || [] as allergenId (allergenId)}
-										{@const allergen = (data.allergens as Allergen[]).find((a) => a.id === allergenId)}
-										{#if allergen}
-											<button
-												class="group/allergen relative flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1.5 pr-3 shadow-lg shadow-black/20 transition-all duration-300 hover:bg-white/10 active:scale-95
-												   {hoveredTag === `${dish.id}-${allergen.id}` ? 'border-orange-500/30 bg-orange-500/5' : ''}"
-												onmouseenter={() => (hoveredTag = `${dish.id}-${allergen.id}`)}
-												onmouseleave={() => (hoveredTag = null)}
-												onclick={(e) => {
-													e.stopPropagation();
-													hoveredTag = hoveredTag === `${dish.id}-${allergen.id}` ? null : `${dish.id}-${allergen.id}`;
-												}}
-											>
-												<div class="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-base leading-none transition-colors group-hover/allergen:bg-white/10">
-													{allergen.icon}
-												</div>
-												<span class="max-w-[0px] overflow-hidden text-[9px] font-black tracking-widest text-zinc-400 uppercase transition-all duration-500 ease-out group-hover/allergen:max-w-[120px] group-hover/allergen:text-white
-													   {hoveredTag === `${dish.id}-${allergen.id}` ? 'max-w-[120px] text-white' : ''}">
-													{allergen.name}
-												</span>
-											</button>
+								<div class="relative z-10 flex items-start justify-between gap-6">
+									<h3 class="max-w-[75%] text-[1.35rem] leading-tight font-black tracking-tight text-white transition-colors group-hover:text-amber-400">
+										{dish.name}
+									</h3>
+									<div class="flex flex-col items-end">
+										<span class="text-3xl font-black tracking-tighter text-orange-500">
+											{dish.price}
+										</span>
+										{#if dish.image_url}
+											<div class="mt-1 opacity-40 transition-opacity group-hover:opacity-70">
+												<Camera class="h-4 w-4 text-amber-500" />
+											</div>
 										{/if}
-									{/each}
+									</div>
+								</div>
+
+								{#if dish.description}
+									<p class="relative z-10 mt-3 mb-6 line-clamp-3 pr-2 text-[0.95rem] leading-relaxed font-medium text-zinc-300 transition-colors group-hover:text-white">
+										{dish.description}
+									</p>
+								{/if}
+
+								<div class="relative z-10 mt-auto flex items-center justify-between">
+									<div class="flex flex-wrap gap-2">
+										{#each dish.allergens || [] as allergenId (allergenId)}
+											{@const allergen = (data.allergens as Allergen[]).find((a) => a.id === allergenId)}
+											{#if allergen}
+												<button
+													class="group/allergen relative flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1.5 pr-3 shadow-lg shadow-black/20 transition-all duration-300 hover:bg-white/10 active:scale-95
+													   {hoveredTag === `${dish.id}-${allergen.id}` ? 'border-orange-500/30 bg-orange-500/5' : ''}"
+													onmouseenter={() => (hoveredTag = `${dish.id}-${allergen.id}`)}
+													onmouseleave={() => (hoveredTag = null)}
+													onclick={(e) => {
+														e.stopPropagation();
+														hoveredTag = hoveredTag === `${dish.id}-${allergen.id}` ? null : `${dish.id}-${allergen.id}`;
+													}}
+												>
+													<div class="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-base leading-none transition-colors group-hover/allergen:bg-white/10">
+														{allergen.icon}
+													</div>
+													<span class="max-w-[0px] overflow-hidden text-[9px] font-black tracking-widest text-zinc-400 uppercase transition-all duration-500 ease-out group-hover/allergen:max-w-[120px] group-hover/allergen:text-white
+														   {hoveredTag === `${dish.id}-${allergen.id}` ? 'max-w-[120px] text-white' : ''}">
+														{allergen.name}
+													</span>
+												</button>
+											{/if}
+										{/each}
+									</div>
 								</div>
 							</div>
-						</div>
-					{/each}
-				</div>
-
-				<!-- Info Footer -->
-				<div class="mt-12 space-y-8">
-					<div class="space-y-3 rounded-[2.5rem] border border-orange-500/20 bg-orange-500/10 p-[2.5rem] text-center">
-						<span class="text-[10px] font-black tracking-[0.4em] text-orange-500 uppercase">Benvenuti da</span>
-						<h4 class="text-3xl leading-none font-black tracking-tight text-white uppercase">{data.profile.restaurant_name}</h4>
-						<p class="text-[10px] font-bold tracking-[0.2em] text-orange-500 uppercase opacity-80">Toccca il logo in alto per info e contatti</p>
+						{/each}
 					</div>
-					<p class="pt-8 pb-12 text-center text-[10px] leading-relaxed font-medium text-zinc-600 opacity-50">
-						* Gli ingredienti contrassegnati con asterisco potrebbero contenere ingredienti surgelati. Per informazioni dettagliate sugli allergeni, chiedi al nostro personale.
-					</p>
-				</div>
 
-				<!-- Swipe Hint -->
-				<div class="mt-8 pb-12 text-center">
-					<p class="text-[10px] font-bold tracking-[0.2em] text-zinc-700 uppercase">← Scorri per esplorare le categorie →</p>
-				</div>
-			{/if}
-		</div>
-	{/key}
+					<!-- Info Footer -->
+					<div class="mt-12 space-y-8">
+						<div class="space-y-3 rounded-[2.5rem] border border-orange-500/20 bg-orange-500/10 p-[2.5rem] text-center">
+							<span class="text-[10px] font-black tracking-[0.4em] text-orange-500 uppercase">Benvenuti da</span>
+							<h4 class="text-3xl leading-none font-black tracking-tight text-white uppercase">{data.profile.restaurant_name}</h4>
+							<p class="text-[10px] font-bold tracking-[0.2em] text-orange-500 uppercase opacity-80">Toccca il logo in alto per info e contatti</p>
+						</div>
+						<p class="pt-8 pb-12 text-center text-[10px] leading-relaxed font-medium text-zinc-600 opacity-50">
+							* Gli ingredienti contrassegnati con asterisco potrebbero contenere ingredienti surgelati. Per informazioni dettagliate sugli allergeni, chiedi al nostro personale.
+						</p>
+					</div>
+
+					<!-- Swipe Hint -->
+					<div class="mt-8 pb-12 text-center">
+						<p class="text-[10px] font-bold tracking-[0.2em] text-zinc-700 uppercase">← Scorri per esplorare le categorie →</p>
+					</div>
+				{/if}
+			</div>
+		{/key}
+	</div>
 </main>
 
 <style>
@@ -245,29 +257,5 @@
 	.no-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
-	}
-
-	@keyframes initial-bounce {
-		0%,
-		100% {
-			transform: translateX(0);
-		}
-		20% {
-			transform: translateX(-15px);
-		}
-		40% {
-			transform: translateX(10px);
-		}
-		60% {
-			transform: translateX(-5px);
-		}
-		80% {
-			transform: translateX(2px);
-		}
-	}
-
-	.animate-initial-bounce {
-		animation: initial-bounce 1.2s cubic-bezier(0.45, 0, 0.55, 1);
-		animation-delay: 0.8s; /* Wait for initial fly-in to finish */
 	}
 </style>
