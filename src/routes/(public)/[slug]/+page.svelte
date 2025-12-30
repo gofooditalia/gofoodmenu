@@ -152,8 +152,11 @@
 		bind:this={tabsContainer} 
 		class="no-scrollbar overflow-x-auto relative z-0"
 	>
-		<!-- Large horizontal padding to allow any item to reach the exact center -->
-		<div class="flex gap-14 py-4 px-[50%]">
+		<!-- Flex container with spacers for true "dial" centering -->
+		<div class="flex items-center gap-14 py-4">
+			<!-- Leading Spacer -->
+			<div class="w-[50%] shrink-0"></div>
+
 			{#each categories as category (category.id)}
 				{@const isActive = activeCategory === category.id}
 				<button
@@ -168,6 +171,9 @@
 					{/if}
 				</button>
 			{/each}
+
+			<!-- Trailing Spacer -->
+			<div class="w-[50%] shrink-0"></div>
 		</div>
 	</div>
 </div>
