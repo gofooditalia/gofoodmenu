@@ -118,19 +118,24 @@
 
 <!-- STICKY CATEGORIES -->
 <div class="sticky top-[112px] z-[55] border-t border-white/5 bg-[#141417]/80 backdrop-blur-xl transition-all duration-300" in:fade>
+	<!-- Edge Fades for Carousel Focus -->
+	<div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#141417] to-transparent"></div>
+	<div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#141417] to-transparent"></div>
+
 	<!-- Categories Tabs -->
-	<div class="no-scrollbar overflow-x-auto px-6">
-		<div class="flex gap-8 pt-4">
+	<div class="no-scrollbar overflow-x-auto">
+		<!-- Dynamic Padding to allow first/last items to reach center -->
+		<div class="flex gap-10 px-[50%] pt-4">
 			{#each categories as category (category.id)}
 				<button
 					bind:this={categoryRefs[category.id]}
 					onclick={() => selectCategory(category.id)}
-					class="relative shrink-0 pb-3 text-[10px] font-black tracking-[0.2em] uppercase transition-all
-					 {activeCategory === category.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}"
+					class="relative shrink-0 pb-3 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500
+					 {activeCategory === category.id ? 'scale-110 text-white' : 'text-zinc-500 hover:text-zinc-300'}"
 				>
 					{category.name}
 					{#if activeCategory === category.id}
-						<div class="absolute inset-x-0 bottom-0 h-[2px] bg-orange-500" in:fade></div>
+						<div class="absolute inset-x-[-4px] bottom-0 h-[2px] bg-orange-500" in:fade></div>
 					{/if}
 				</button>
 			{/each}
