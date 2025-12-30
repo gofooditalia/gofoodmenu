@@ -40,6 +40,14 @@
 	// Category Refs for centering
 	let categoryRefs = $state<Record<number, HTMLElement>>({});
 
+	// Gluten Safety Mode
+	let glutenSafetyMode = $state(false);
+
+	function toggleGlutenSafety() {
+		glutenSafetyMode = !glutenSafetyMode;
+		// Small toast or visual feedback could be added here
+	}
+
 	// Set initial category once data is available (already handled in initialization above)
 
 	// Auto-center the active category pill
@@ -231,9 +239,19 @@
 
 			<!-- Right: Gluten-Free Toggle/Icon -->
 			<button
-				class="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/5 bg-white/5 shadow-lg transition-all hover:bg-white/10 active:scale-95"
+				onclick={toggleGlutenSafety}
+				class="relative flex h-16 w-16 items-center justify-center rounded-2xl border shadow-lg transition-all active:scale-95
+                       {glutenSafetyMode 
+                         ? 'bg-orange-500 border-orange-400 shadow-orange-500/20' 
+                         : 'bg-white/5 border-white/5 hover:bg-white/10'}"
+				aria-label="Filtro senza glutine"
 			>
-				<GlutenFreeIcon size={32} class="text-orange-500" />
+				<GlutenFreeIcon size={32} class={glutenSafetyMode ? 'text-white' : 'text-orange-500'} />
+				{#if glutenSafetyMode}
+					<div class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-black text-orange-600 shadow-sm" in:scale>
+						ON
+					</div>
+				{/if}
 			</button>
 		</div>
 
@@ -287,20 +305,33 @@
 						{#if currentCat}
 							<div class="grid gap-4">
 								{#each currentCat.dishes as dish, i (dish.id)}
+									{@const hasGluten = (dish.allergens as string[])?.includes('glutine')}
 									<div
 										in:fly={{ y: 30, duration: 600, delay: i * 50, easing: cubicOut }}
-										class="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border-[1.5px] border-amber-500/50 bg-white/[0.03] p-7 shadow-lg
-                               shadow-black/20 transition-all duration-300
-                               ease-out hover:bg-white/[0.06] active:scale-[0.97] active:border-amber-400
-                               active:bg-white/[0.08] active:shadow-[0_0_25px_rgba(245,158,11,0.2)]"
+										class="group relative cursor-pointer overflow-hidden rounded-[2.5rem] border-[1.5px] p-7 shadow-lg
+                                shadow-black/20 transition-all duration-500
+                                ease-out active:scale-[0.97]
+                                {glutenSafetyMode && hasGluten 
+                                    ? 'border-red-500/30 bg-red-950/20 grayscale opacity-40 scale-[0.98] pointer-events-none' 
+                                    : 'border-amber-500/50 bg-white/[0.03] hover:bg-white/[0.06] active:border-amber-400 active:bg-white/[0.08] active:shadow-[0_0_25px_rgba(245,158,11,0.2)]'}"
 										onclick={() => openDish()}
-										onpointerdown={() => startHaptic(dish)}
+										onpointerdown={() => !glutenSafetyMode && startHaptic(dish)}
 										onpointerup={stopHaptic}
 										onpointerleave={stopHaptic}
-										onkeydown={(e) => e.key === 'Enter' && openDish()}
+										onkeydown={(e) => e.key === 'Enter' && !glutenSafetyMode && openDish()}
 										role="button"
 										tabindex="0"
 									>
+										{#if glutenSafetyMode && hasGluten}
+											<div class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]" in:fade>
+												<div class="rounded-full bg-red-500 p-2 shadow-lg mb-2">
+													<GlutenFreeIcon size={24} class="text-white" />
+												</div>
+												<span class="text-[10px] font-black tracking-widest text-white uppercase bg-red-500 px-3 py-1 rounded-lg">
+													Contiene Glutine
+												</span>
+											</div>
+										{/if}
 										<!-- Subtle Card Inner Gradient -->
 										<div
 											class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100"
