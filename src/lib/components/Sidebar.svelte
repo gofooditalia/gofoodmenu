@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { Home, Grid, QrCode, LogOut, Store } from 'lucide-svelte';
 	import { page } from '$app/state';
 	import { enhance } from '$app/forms';
@@ -16,76 +15,47 @@
 	const isActive = (path: string) => page.url.pathname.includes(path);
 </script>
 
-<Sidebar.Root collapsible="icon">
-	<Sidebar.Header class="flex items-center justify-between p-4">
-		<div class="flex items-center gap-2 overflow-hidden">
-			<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-orange-500">
-				<img src="/logo.svg" alt="go!" class="h-6 w-auto brightness-0 invert" />
-			</div>
-			<div
-				class="flex flex-col gap-0.5 leading-none transition-all group-data-[collapsible=icon]:hidden"
-			>
-				<span
-					class="text-lg font-black tracking-tighter text-orange-500 underline decoration-orange-500/30 decoration-4 underline-offset-2"
-					>GO!FOOD</span
-				>
-				<span class="text-[10px] font-bold tracking-widest text-slate-500 uppercase opacity-80"
-					>Menù Manager</span
-				>
-			</div>
-		</div>
-	</Sidebar.Header>
+<aside class="fixed flex h-screen w-64 flex-col bg-slate-900 text-white hidden md:flex">
+	<div class="p-6">
+		<a href="/dashboard" class="group flex items-center gap-2">
+			<img src="/logo.svg" alt="go!foodmenu" class="h-10 w-auto" />
+		</a>
+	</div>
 
-	<Sidebar.Content>
-		<Sidebar.Group>
-			<Sidebar.GroupLabel
-				class="mb-2 px-4 text-[10px] font-black tracking-[0.2em] text-slate-400/70 uppercase"
-				>Principale</Sidebar.GroupLabel
+	<nav class="mt-4 flex-1 space-y-1 px-4">
+		{#each menuItems as item}
+			<a
+				href={item.href}
+				class="group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 {isActive(
+					item.href
+				)
+					? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+					: 'text-slate-400 hover:bg-slate-800 hover:text-white'}"
 			>
-			<Sidebar.Menu>
-				{#each menuItems as item}
-					<Sidebar.MenuItem>
-						<Sidebar.MenuButton
-							isActive={isActive(item.href)}
-							tooltip={item.name}
-							class="group h-12 rounded-xl px-4 transition-all duration-300 hover:bg-orange-50/50"
-						>
-							{#snippet child({ props })}
-								<a {...props} href={item.href} class="flex w-full items-center gap-3">
-									<item.icon
-										size={20}
-										class={isActive(item.href)
-											? 'text-orange-500'
-											: 'text-slate-400 transition-colors group-hover:text-orange-400'}
-									/>
-									<span
-										class="text-sm font-bold {isActive(item.href)
-											? 'text-slate-900'
-											: 'text-slate-600 group-hover:text-slate-900'}">{item.name}</span
-									>
-								</a>
-							{/snippet}
-						</Sidebar.MenuButton>
-					</Sidebar.MenuItem>
-				{/each}
-			</Sidebar.Menu>
-		</Sidebar.Group>
-	</Sidebar.Content>
+				<item.icon
+					size={20}
+					class={isActive(item.href)
+						? 'text-white'
+						: 'text-slate-500 transition-colors group-hover:text-orange-500'}
+				/>
+				<span class="font-medium">{item.name}</span>
+			</a>
+		{/each}
+	</nav>
 
-	<Sidebar.Footer class="border-t border-slate-100/50 p-4">
-		<form method="POST" action="/logout" use:enhance class="w-full">
+	<div class="border-t border-slate-800 p-4">
+		<form method="POST" action="/logout" class="mt-auto pt-8" use:enhance>
 			<button
 				type="submit"
-				class="group flex w-full items-center gap-3 rounded-xl px-3 py-3 font-bold text-slate-500 transition-all hover:bg-red-50/50 hover:text-red-500"
+				class="group flex w-full font-bold items-center gap-4 rounded-2xl px-4 py-4 text-slate-400 transition-all hover:bg-red-50 hover:text-red-500"
 			>
 				<div
-					class="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 transition-colors group-hover:bg-red-100"
+					class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 transition-colors group-hover:bg-red-100"
 				>
-					<LogOut size={16} />
+					<LogOut size={20} />
 				</div>
-				<span class="text-sm group-data-[collapsible=icon]:hidden">Esci</span>
+				<span>Esci</span>
 			</button>
 		</form>
-	</Sidebar.Footer>
-	<Sidebar.Rail />
-</Sidebar.Root>
+	</div>
+</aside>

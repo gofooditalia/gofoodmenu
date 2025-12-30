@@ -22,6 +22,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import PreviewWrapper from '$lib/components/PreviewWrapper.svelte';
+	import GlutenFreeIcon from '$lib/components/icons/GlutenFreeIcon.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 	let profile = $derived(data.profile);
@@ -144,14 +145,14 @@
 <PreviewWrapper>
 	<!-- TOP FIXED NAVBAR -->
 	<div
-		class="absolute inset-x-0 top-0 z-[60] flex flex-col border-b border-white/5 bg-[#141417]/80 pt-4 backdrop-blur-xl select-none"
+		class="absolute inset-x-0 top-0 z-[60] flex flex-col border-b border-white/5 bg-[#141417]/80 pt-6 backdrop-blur-xl select-none"
 	>
 		<!-- Identity Row -->
-		<div class="flex items-center gap-4 px-6 pb-4">
+		<div class="flex items-center justify-between gap-4 px-6 pb-6">
 			<!-- Restaurant Icon / Sidebar Trigger -->
 			<Sheet.Root bind:open={isSidebarOpen}>
 				<Sheet.Trigger
-					class="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-orange-500 shadow-lg shadow-orange-500/10 transition-transform hover:scale-105 active:scale-95"
+					class="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-orange-500 shadow-lg shadow-orange-500/10 transition-transform hover:scale-105 active:scale-95"
 				>
 					{#if profile.logo_url}
 						<img
@@ -160,7 +161,7 @@
 							class="h-full w-full object-cover"
 						/>
 					{:else}
-						<Utensils class="h-5 w-5 text-white" />
+						<Utensils class="h-8 w-8 text-white" />
 					{/if}
 				</Sheet.Trigger>
 				<Sheet.Content
@@ -231,14 +232,12 @@
 				</Sheet.Content>
 			</Sheet.Root>
 
-			<div class="flex flex-col">
-				<h1 class="text-sm leading-none font-black tracking-tight text-white uppercase">
-					{profile.restaurant_name}
-				</h1>
-				<p class="mt-0.5 text-[9px] font-bold tracking-widest text-orange-500 uppercase">
-					Menu Digitale
-				</p>
-			</div>
+			<!-- Right: Gluten-Free Toggle/Icon -->
+			<button
+				class="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/5 bg-white/5 shadow-lg transition-all hover:bg-white/10 active:scale-95"
+			>
+				<GlutenFreeIcon size={32} class="text-orange-500" />
+			</button>
 		</div>
 
 		<!-- Categories Tabs -->
@@ -271,7 +270,7 @@
 		ontouchstart={handleTouchStart}
 		ontouchmove={handleTouchMove}
 		ontouchend={handleTouchEnd}
-		class="no-scrollbar relative h-full w-full overflow-y-auto pt-[135px] select-none"
+		class="no-scrollbar relative h-full w-full overflow-y-auto pt-[180px] select-none"
 		style="-webkit-touch-callout: none;"
 	>
 		{#if currentPage === 'menu'}
