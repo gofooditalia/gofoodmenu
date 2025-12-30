@@ -12,14 +12,11 @@
 	let categories = $derived(data.categories);
 
 	let activeCategory = $state<number | undefined>();
-	let activeDId = $state<string | undefined>();
 	let direction = $state(1); // 1 = right, -1 = left
 
 	$effect(() => {
 		if (!activeCategory && data.categories?.length) {
-			const firstId = data.categories[0].id;
-			activeCategory = firstId;
-			activeDId = `main-${firstId}`;
+			activeCategory = data.categories[0].id;
 		}
 	});
 
@@ -28,85 +25,28 @@
 	let touchEnd = $state(0);
 
 	// Category Refs for centering
-	let categoryRefs = $state<Record<string, HTMLElement>>({});
+	let categoryRefs = $state<Record<number, HTMLElement>>({});
 	let tabsContainer = $state<HTMLElement>();
 
-	// Triple the categories for infinite appearance in the UI: [PrevSet][MainSet][NextSet]
-	let displayCategories = $derived([
-		...categories.map((c: Category) => ({ ...c, dId: `prev-${c.id}` })),
-		...categories.map((c: Category) => ({ ...c, dId: `main-${c.id}` })),
-		...categories.map((c: Category) => ({ ...c, dId: `next-${c.id}` }))
-	]);
-
 	function centerActiveTab(smooth = true) {
-		if (!activeCategory || !tabsContainer) return;
+		if (!activeCategory || !tabsContainer || !categoryRefs[activeCategory]) return;
 		
 		const container = tabsContainer;
-		const currentScroll = container.scrollLeft;
-		const containerWidth = container.offsetWidth;
-
-		// Get all versions of this category
-		const versions = [`prev-${activeCategory}`, `main-${activeCategory}`, `next-${activeCategory}`];
+		const target = categoryRefs[activeCategory];
+		const scrollTarget = target.offsetLeft - (container.offsetWidth / 2) + (target.offsetWidth / 2);
 		
-		let bestTarget: HTMLElement | null = null;
-		let bestDId: string | null = null;
-		let minDistance = Infinity;
-
-		for (const dId of versions) {
-			const target = categoryRefs[dId];
-			if (!target) continue;
-
-			const targetScroll = target.offsetLeft - (containerWidth / 2) + (target.offsetWidth / 2);
-			const distance = Math.abs(targetScroll - currentScroll);
-
-			if (distance < minDistance) {
-				minDistance = distance;
-				bestTarget = target;
-				bestDId = dId;
-			}
-		}
-
-		if (bestTarget && bestDId) {
-			activeDId = bestDId;
-			const finalScroll = bestTarget.offsetLeft - (containerWidth / 2) + (bestTarget.offsetWidth / 2);
-			container.scrollTo({
-				left: finalScroll,
-				behavior: smooth ? 'smooth' : 'auto'
-			});
-		}
-	}
-
-	function handleTabsScroll() {
-		if (!tabsContainer || categories.length === 0) return;
-		
-		const container = tabsContainer;
-		const scrollLeft = container.scrollLeft;
-		const scrollWidth = container.scrollWidth;
-		const oneSetWidth = scrollWidth / 3;
-		
-		// If we've drifted too far into the prev or next sets, snap back to the main set
-		// This is the "secret" snap that keeps the user in the infinite loop area
-		if (scrollLeft < oneSetWidth / 2) {
-			container.scrollLeft += oneSetWidth;
-			// After jump, update the activeDId to the "main" equivalent if necessary
-			if (activeDId?.startsWith('prev-')) {
-				activeDId = activeDId.replace('prev-', 'main-');
-			}
-		} else if (scrollLeft > 2.5 * oneSetWidth - container.offsetWidth) {
-			container.scrollLeft -= oneSetWidth;
-			if (activeDId?.startsWith('next-')) {
-				activeDId = activeDId.replace('next-', 'main-');
-			}
-		}
+		container.scrollTo({
+			left: scrollTarget,
+			behavior: smooth ? 'smooth' : 'auto'
+		});
 	}
 
 	let mounted = $state(false);
 	onMount(() => {
-		// Ensure layout is stable before initial centering
 		setTimeout(() => {
 			mounted = true;
 			centerActiveTab(false);
-		}, 50);
+		}, 60);
 	});
 
 	// Auto-center the active category pill
@@ -133,7 +73,6 @@
 		}
 		
 		activeCategory = id;
-		// activeDId will be updated by centerActiveTab in $effect
 		uiState.scrollToTop();
 	}
 
@@ -211,15 +150,14 @@
 	<!-- Categories Tabs -->
 	<div 
 		bind:this={tabsContainer} 
-		onscroll={handleTabsScroll}
 		class="no-scrollbar overflow-x-auto relative z-0"
 	>
-		<!-- Cloned Sets allow infinite scrolling without "rewind" visual -->
-		<div class="flex gap-12 py-4 px-12">
-			{#each displayCategories as category (category.dId)}
-				{@const isActive = activeDId === category.dId}
+		<!-- Large horizontal padding to allow any item to reach the exact center -->
+		<div class="flex gap-14 py-4 px-[50%]">
+			{#each categories as category (category.id)}
+				{@const isActive = activeCategory === category.id}
 				<button
-					bind:this={categoryRefs[category.dId]}
+					bind:this={categoryRefs[category.id]}
 					onclick={() => selectCategory(category.id)}
 					class="relative shrink-0 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ease-out
 					 {isActive ? 'scale-125 text-white' : 'text-zinc-500 opacity-40 hover:text-zinc-300 hover:opacity-80'}"
