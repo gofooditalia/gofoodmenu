@@ -7,11 +7,11 @@ export const load: LayoutLoad = async ({ fetch, depends }) => {
 	const supabase = createBrowserSupabaseClient(fetch);
 
 	const {
-		data: { session }
-	} = await supabase.auth.getSession();
+		data: { user }
+	} = await supabase.auth.getUser();
 
 	return {
 		supabase,
-		session
+		user
 	};
 };

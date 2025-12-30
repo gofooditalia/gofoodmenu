@@ -16,8 +16,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 	};
 
 	/**
-	 * Undocumented helper to get the user session.
-	 * @deprecated Use getUser() instead for security.
+	 * Returns the current session.
+	 * Note: getUser() is preferred for security as it validates the session with the server.
 	 */
 	event.locals.getSession = async () => {
 		const {
