@@ -53,7 +53,6 @@
 								<span class="text-[10px] font-black tracking-[0.2em] uppercase">Navigazione</span>
 							</div>
 							<nav class="grid gap-2">
-								<!-- svelte-ignore no-navigation-without-resolve -->
 								<a href="/{slug}"
 									onclick={() => (isSidebarOpen = false)}
 									class="group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300
@@ -67,7 +66,6 @@
 									/>
 									<span class="text-sm font-bold">Il Nostro Menù</span>
 								</a>
-								<!-- svelte-ignore no-navigation-without-resolve -->
 								<a href="/{slug}/events"
 									onclick={() => (isSidebarOpen = false)}
 									class="group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300
@@ -81,7 +79,6 @@
 									/>
 									<span class="text-sm font-bold">Eventi Speciali</span>
 								</a>
-								<!-- svelte-ignore no-navigation-without-resolve -->
 								<a href="/{slug}/contacts"
 									onclick={() => (isSidebarOpen = false)}
 									class="group flex w-full items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300

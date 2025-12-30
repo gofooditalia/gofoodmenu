@@ -40,7 +40,6 @@
 				</div>
 			</div>
 			{#if profile.address}
-				<!-- svelte-ignore svelte/no-navigation-without-resolve -->
 				<a href="https://www.google.com/maps/search/?api=1&query={encodeURIComponent(profile.address)}"
 					target="_blank"
 					class="flex h-14 w-full items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black tracking-[0.2em] text-white uppercase transition-colors hover:bg-white/10"
@@ -64,8 +63,7 @@
 				</div>
 				<div class="grid grid-cols-2 gap-3">
 					{#if profile.phone}
-						<!-- svelte-ignore svelte/no-navigation-without-resolve -->
-						<a href="tel:{profile.phone}"
+								<a href="tel:{profile.phone}"
 							class="flex h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-white transition-colors hover:bg-white/10"
 						>
 							<Phone size={20} class="text-orange-500" />
@@ -73,8 +71,7 @@
 						</a>
 					{/if}
 					{#if profile.whatsapp_number}
-						<!-- svelte-ignore svelte/no-navigation-without-resolve -->
-						<a href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}"
+								<a href="https://wa.me/39{profile.whatsapp_number?.toString().replace(/\s+/g, '')}"
 							target="_blank"
 							class="flex h-20 flex-col items-center justify-center gap-2 rounded-2xl border border-emerald-500/10 bg-emerald-500/5 text-emerald-500 transition-colors hover:bg-emerald-500/10"
 						>
@@ -93,20 +90,17 @@
 			<p class="mb-6 text-center text-[10px] font-black tracking-[0.3em] text-zinc-500 uppercase">Seguici sui social</p>
 			<div class="flex justify-center gap-6">
 				{#if profile.instagram_url}
-					<!-- svelte-ignore svelte/no-navigation-without-resolve -->
-					<a href={profile.instagram_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-pink-500/10 hover:text-pink-500">
+						<a href={profile.instagram_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-pink-500/10 hover:text-pink-500">
 						<Instagram size={28} />
 					</a>
 				{/if}
 				{#if profile.facebook_url}
-					<!-- svelte-ignore svelte/no-navigation-without-resolve -->
-					<a href={profile.facebook_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-blue-500/10 hover:text-blue-500">
+						<a href={profile.facebook_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-blue-500/10 hover:text-blue-500">
 						<Facebook size={28} />
 					</a>
 				{/if}
 				{#if profile.website_url}
-					<!-- svelte-ignore svelte/no-navigation-without-resolve -->
-					<a href={profile.website_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-white/10 hover:text-white">
+						<a href={profile.website_url} target="_blank" rel="noreferrer" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/5 bg-white/5 text-zinc-400 transition-all hover:bg-white/10 hover:text-white">
 						<Globe size={28} />
 					</a>
 				{/if}
