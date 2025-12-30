@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals, url }) => {
+	const session = await locals.getSession();
 	const user = await locals.getUser();
 
 	// Check if profile exists
@@ -12,16 +13,17 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 	}
 
 	// Redirect to onboarding if profile is missing and not already on onboarding
-	if (user && !profile && !url.pathname.includes('/onboarding')) {
+	if (session && !profile && !url.pathname.includes('/onboarding')) {
 		throw redirect(303, '/onboarding');
 	}
 
 	// Redirect away from onboarding if profile already exists
-	if (user && profile && url.pathname.includes('/onboarding')) {
+	if (session && profile && url.pathname.includes('/onboarding')) {
 		throw redirect(303, '/dashboard');
 	}
 
 	return {
+		session,
 		user,
 		profile
 	};

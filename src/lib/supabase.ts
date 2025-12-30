@@ -2,14 +2,14 @@ import {
 	createBrowserClient,
 	createServerClient,
 } from '@supabase/ssr';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public';
 import type { RequestEvent } from '@sveltejs/kit';
 
 /**
  * Creates a Supabase client that can be used in the browser.
  */
 export function createBrowserSupabaseClient(customFetch?: typeof fetch) {
-	return createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	return createBrowserClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
 		global: { fetch: customFetch }
 	});
 }
@@ -19,7 +19,7 @@ export function createBrowserSupabaseClient(customFetch?: typeof fetch) {
  * Requires event from SvelteKit hooks or load functions.
  */
 export function createServerSupabaseClient(event: RequestEvent) {
-	return createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	return createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, {
 		cookies: {
 			getAll() {
 				return event.cookies.getAll();
