@@ -1,8 +1,9 @@
+<script lang="ts">
 	import { Mail, Lock } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 
-	let { }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 	// We don't actually need 'supabase' here for the form since we use 'enhance' which posts to server actions.
 	// But if we did, we'd use data.supabase
 

@@ -16,9 +16,8 @@
 	import { fade, slide } from 'svelte/transition';
 	import type { PageData, ActionData } from './$types';
 
-	let { data, form }: { data: PageData; form: ActionData } = $props();
-	const initialProfile = data.profile;
-	let profile = $state({ ...initialProfile });
+	let props: { data: PageData; form: ActionData } = $props();
+	let profile = $state({ ...props.data.profile });
 	let isSaving = $state(false);
 	let isUploading = $state(false);
 	let fileInput: HTMLInputElement;
