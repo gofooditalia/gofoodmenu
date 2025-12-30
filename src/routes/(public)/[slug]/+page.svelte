@@ -364,35 +364,34 @@
 										{/if}
 
 										<div class="relative z-10 mt-auto flex items-center justify-between">
-											<div class="flex gap-2">
+											<div class="flex flex-wrap gap-2">
 												{#each dish.allergens || [] as allergenId (allergenId)}
 													{@const allergen = (data.allergens as Allergen[]).find(
 														(a) => a.id === allergenId
 													)}
 													{#if allergen}
-														<div
-															class="relative"
+														<button
+															class="group/allergen relative flex items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1.5 pr-3 shadow-lg shadow-black/20 transition-all duration-300 hover:bg-white/10 active:scale-95
+                                                                   {hoveredTag === `${dish.id}-${allergen.id}` ? 'border-orange-500/30 bg-orange-500/5' : ''}"
 															onmouseenter={() => (hoveredTag = `${dish.id}-${allergen.id}`)}
 															onmouseleave={() => (hoveredTag = null)}
-															role="note"
+															onclick={(e) => {
+																e.stopPropagation();
+																hoveredTag = hoveredTag === `${dish.id}-${allergen.id}` ? null : `${dish.id}-${allergen.id}`;
+															}}
 														>
 															<div
-																class="cursor-help rounded-full border border-white/10 bg-white/5 p-2 shadow-lg shadow-black/20 transition-colors group-hover:bg-white/10"
+																class="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-base leading-none transition-colors group-hover/allergen:bg-white/10"
 															>
-																<span class="block text-base leading-none">{allergen.icon}</span>
+																{allergen.icon}
 															</div>
-															{#if hoveredTag === `${dish.id}-${allergen.id}`}
-																<div
-																	class="absolute bottom-full left-1/2 z-[100] mb-2 -translate-x-1/2 transform rounded-lg border border-white/5 bg-zinc-950 px-3 py-1.5 text-[10px] font-bold tracking-widest whitespace-nowrap text-white uppercase shadow-2xl"
-																	in:fade={{ duration: 200 }}
-																>
-																	{allergen.name}
-																	<div
-																		class="absolute top-full left-1/2 -mt-1 -translate-x-1/2 transform border-4 border-transparent border-t-zinc-950"
-																	></div>
-																</div>
-															{/if}
-														</div>
+															<span
+																class="max-w-[0px] overflow-hidden text-[9px] font-black tracking-widest text-zinc-400 uppercase transition-all duration-500 ease-out group-hover/allergen:max-w-[120px] group-hover/allergen:text-white
+                                                                       {hoveredTag === `${dish.id}-${allergen.id}` ? 'max-w-[120px] text-white' : ''}"
+															>
+																{allergen.name}
+															</span>
+														</button>
 													{/if}
 												{/each}
 											</div>
