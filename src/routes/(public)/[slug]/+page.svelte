@@ -12,11 +12,14 @@
 	let categories = $derived(data.categories);
 
 	let activeCategory = $state<number | undefined>();
+	let activeDId = $state<string | undefined>();
 	let direction = $state(1); // 1 = right, -1 = left
 
 	$effect(() => {
 		if (!activeCategory && data.categories?.length) {
-			activeCategory = data.categories[0].id;
+			const firstId = data.categories[0].id;
+			activeCategory = firstId;
+			activeDId = `main-${firstId}`;
 		}
 	});
 
@@ -46,6 +49,7 @@
 		const versions = [`prev-${activeCategory}`, `main-${activeCategory}`, `next-${activeCategory}`];
 		
 		let bestTarget: HTMLElement | null = null;
+		let bestDId: string | null = null;
 		let minDistance = Infinity;
 
 		for (const dId of versions) {
@@ -58,10 +62,12 @@
 			if (distance < minDistance) {
 				minDistance = distance;
 				bestTarget = target;
+				bestDId = dId;
 			}
 		}
 
-		if (bestTarget) {
+		if (bestTarget && bestDId) {
+			activeDId = bestDId;
 			const finalScroll = bestTarget.offsetLeft - (containerWidth / 2) + (bestTarget.offsetWidth / 2);
 			container.scrollTo({
 				left: finalScroll,
@@ -79,11 +85,18 @@
 		const oneSetWidth = scrollWidth / 3;
 		
 		// If we've drifted too far into the prev or next sets, snap back to the main set
-		// We use a safe threshold to avoid snapping during a smooth scroll
+		// This is the "secret" snap that keeps the user in the infinite loop area
 		if (scrollLeft < oneSetWidth / 2) {
 			container.scrollLeft += oneSetWidth;
+			// After jump, update the activeDId to the "main" equivalent if necessary
+			if (activeDId?.startsWith('prev-')) {
+				activeDId = activeDId.replace('prev-', 'main-');
+			}
 		} else if (scrollLeft > 2.5 * oneSetWidth - container.offsetWidth) {
 			container.scrollLeft -= oneSetWidth;
+			if (activeDId?.startsWith('next-')) {
+				activeDId = activeDId.replace('next-', 'main-');
+			}
 		}
 	}
 
@@ -120,6 +133,7 @@
 		}
 		
 		activeCategory = id;
+		// activeDId will be updated by centerActiveTab in $effect
 		uiState.scrollToTop();
 	}
 
@@ -203,7 +217,7 @@
 		<!-- Cloned Sets allow infinite scrolling without "rewind" visual -->
 		<div class="flex gap-12 py-4 px-12">
 			{#each displayCategories as category (category.dId)}
-				{@const isActive = activeCategory === category.id}
+				{@const isActive = activeDId === category.dId}
 				<button
 					bind:this={categoryRefs[category.dId]}
 					onclick={() => selectCategory(category.id)}
