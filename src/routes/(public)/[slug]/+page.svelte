@@ -38,17 +38,36 @@
 	function centerActiveTab(smooth = true) {
 		if (!activeCategory || !tabsContainer) return;
 		
-		const dId = `main-${activeCategory}`;
-		const target = categoryRefs[dId];
-		if (!target) return;
-		
 		const container = tabsContainer;
-		const scrollTarget = target.offsetLeft - (container.offsetWidth / 2) + (target.offsetWidth / 2);
+		const currentScroll = container.scrollLeft;
+		const containerWidth = container.offsetWidth;
+
+		// Get all versions of this category
+		const versions = [`prev-${activeCategory}`, `main-${activeCategory}`, `next-${activeCategory}`];
 		
-		container.scrollTo({
-			left: scrollTarget,
-			behavior: smooth ? 'smooth' : 'auto'
-		});
+		let bestTarget: HTMLElement | null = null;
+		let minDistance = Infinity;
+
+		for (const dId of versions) {
+			const target = categoryRefs[dId];
+			if (!target) continue;
+
+			const targetScroll = target.offsetLeft - (containerWidth / 2) + (target.offsetWidth / 2);
+			const distance = Math.abs(targetScroll - currentScroll);
+
+			if (distance < minDistance) {
+				minDistance = distance;
+				bestTarget = target;
+			}
+		}
+
+		if (bestTarget) {
+			const finalScroll = bestTarget.offsetLeft - (containerWidth / 2) + (bestTarget.offsetWidth / 2);
+			container.scrollTo({
+				left: finalScroll,
+				behavior: smooth ? 'smooth' : 'auto'
+			});
+		}
 	}
 
 	function handleTabsScroll() {
@@ -57,15 +76,13 @@
 		const container = tabsContainer;
 		const scrollLeft = container.scrollLeft;
 		const scrollWidth = container.scrollWidth;
-		const containerWidth = container.offsetWidth;
-		
-		// If we've scrolled into the "prev" set or "next" set zones, snap back to main
-		// This happens silently when the user manually scrolls the tabs bar or swipes
 		const oneSetWidth = scrollWidth / 3;
 		
-		if (scrollLeft < oneSetWidth - containerWidth) {
+		// If we've drifted too far into the prev or next sets, snap back to the main set
+		// We use a safe threshold to avoid snapping during a smooth scroll
+		if (scrollLeft < oneSetWidth / 2) {
 			container.scrollLeft += oneSetWidth;
-		} else if (scrollLeft > 2 * oneSetWidth) {
+		} else if (scrollLeft > 2.5 * oneSetWidth - container.offsetWidth) {
 			container.scrollLeft -= oneSetWidth;
 		}
 	}
