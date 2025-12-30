@@ -25,16 +25,60 @@
 	let touchEnd = $state(0);
 
 	// Category Refs for centering
-	let categoryRefs = $state<Record<number, HTMLElement>>({});
+	let categoryRefs = $state<Record<string, HTMLElement>>({});
+	let tabsContainer = $state<HTMLElement>();
+
+	// Triple the categories for infinite appearance in the UI: [PrevSet][MainSet][NextSet]
+	let displayCategories = $derived([
+		...categories.map((c: Category) => ({ ...c, dId: `prev-${c.id}` })),
+		...categories.map((c: Category) => ({ ...c, dId: `main-${c.id}` })),
+		...categories.map((c: Category) => ({ ...c, dId: `next-${c.id}` }))
+	]);
+
+	function centerActiveTab(smooth = true) {
+		if (!activeCategory || !tabsContainer) return;
+		
+		const dId = `main-${activeCategory}`;
+		const target = categoryRefs[dId];
+		if (!target) return;
+		
+		const container = tabsContainer;
+		const scrollTarget = target.offsetLeft - (container.offsetWidth / 2) + (target.offsetWidth / 2);
+		
+		container.scrollTo({
+			left: scrollTarget,
+			behavior: smooth ? 'smooth' : 'auto'
+		});
+	}
+
+	function handleTabsScroll() {
+		if (!tabsContainer || categories.length === 0) return;
+		
+		const container = tabsContainer;
+		const scrollLeft = container.scrollLeft;
+		const scrollWidth = container.scrollWidth;
+		const containerWidth = container.offsetWidth;
+		
+		// If we've scrolled into the "prev" set or "next" set zones, snap back to main
+		// This happens silently when the user manually scrolls the tabs bar or swipes
+		const oneSetWidth = scrollWidth / 3;
+		
+		if (scrollLeft < oneSetWidth - containerWidth) {
+			container.scrollLeft += oneSetWidth;
+		} else if (scrollLeft > 2 * oneSetWidth) {
+			container.scrollLeft -= oneSetWidth;
+		}
+	}
+
+	let mounted = $state(false);
+	onMount(() => {
+		mounted = true;
+	});
 
 	// Auto-center the active category pill
 	$effect(() => {
-		if (activeCategory !== undefined && categoryRefs[activeCategory]) {
-			categoryRefs[activeCategory].scrollIntoView({
-				behavior: 'smooth',
-				block: 'nearest',
-				inline: 'center'
-			});
+		if (activeCategory !== undefined && tabsContainer) {
+			centerActiveTab(mounted);
 		}
 	});
 
@@ -43,6 +87,8 @@
 	let hoveredTag = $state<string | null>(null);
 
 	function selectCategory(id: number, forcedDirection?: number) {
+		if (id === activeCategory) return;
+		
 		const newIndex = categories.findIndex((c: Category) => c.id === id);
 		const oldIndex = categories.findIndex((c: Category) => c.id === activeCategory);
 		
@@ -117,25 +163,35 @@
 <div class="h-[112px] w-full shrink-0"></div>
 
 <!-- STICKY CATEGORIES -->
-<div class="sticky top-[112px] z-[55] border-t border-white/5 bg-[#141417]/80 backdrop-blur-xl transition-all duration-300" in:fade>
+<div 
+	class="sticky top-[112px] z-[55] border-t border-white/5 bg-[#141417]/80 backdrop-blur-xl transition-all duration-300" in:fade
+	ontouchstart={handleTouchStart}
+	ontouchmove={handleTouchMove}
+	ontouchend={handleTouchEnd}
+>
 	<!-- Edge Fades for Carousel Focus -->
-	<div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#141417] to-transparent"></div>
-	<div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#141417] to-transparent"></div>
+	<div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[#141417] via-[#141417]/40 to-transparent"></div>
+	<div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[#141417] via-[#141417]/40 to-transparent"></div>
 
 	<!-- Categories Tabs -->
-	<div class="no-scrollbar overflow-x-auto">
-		<!-- Dynamic Padding to allow first/last items to reach center -->
-		<div class="flex gap-10 px-[50%] pt-4">
-			{#each categories as category (category.id)}
+	<div 
+		bind:this={tabsContainer} 
+		onscroll={handleTabsScroll}
+		class="no-scrollbar overflow-x-auto relative z-0"
+	>
+		<!-- Cloned Sets allow infinite scrolling without "rewind" visual -->
+		<div class="flex gap-12 py-4 px-12">
+			{#each displayCategories as category (category.dId)}
+				{@const isActive = activeCategory === category.id}
 				<button
-					bind:this={categoryRefs[category.id]}
+					bind:this={categoryRefs[category.dId]}
 					onclick={() => selectCategory(category.id)}
-					class="relative shrink-0 pb-3 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500
-					 {activeCategory === category.id ? 'scale-110 text-white' : 'text-zinc-500 hover:text-zinc-300'}"
+					class="relative shrink-0 text-[10px] font-black tracking-[0.2em] uppercase transition-all duration-500 ease-out
+					 {isActive ? 'scale-125 text-white' : 'text-zinc-500 opacity-40 hover:text-zinc-300 hover:opacity-80'}"
 				>
 					{category.name}
-					{#if activeCategory === category.id}
-						<div class="absolute inset-x-[-4px] bottom-0 h-[2px] bg-orange-500" in:fade></div>
+					{#if isActive}
+						<div class="absolute inset-x-[-8px] -bottom-2 h-[2.5px] bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]" in:fade></div>
 					{/if}
 				</button>
 			{/each}
