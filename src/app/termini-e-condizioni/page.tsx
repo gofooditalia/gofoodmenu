@@ -12,10 +12,10 @@ export default function TermsPage() {
                     <div className="flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-4">
                             <Image
-                                src="https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/sign/Go%20Food/gofood-logoHD.svg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zNzE5MDI4MC1kOTI1LTQ2YmQtOTFhMC0wMTIzZTlmZDY0MDciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJHbyBGb29kL2dvZm9vZC1sb2dvSEQuc3ZnIiwiaWF0IjoxNzY0Nzk5OTg0LCJleHAiOjIwODAxNTk5ODR9.u0xvBk9SohQ53303twe_gKZ87_Bj2ga3dD1HauBaevk"
+                                src="/gofood-logoHD.svg"
                                 alt="Go!Food"
                                 width={120}
-                                height={48}
+                                height={120}
                                 className="h-10 w-auto"
                                 unoptimized
                             />

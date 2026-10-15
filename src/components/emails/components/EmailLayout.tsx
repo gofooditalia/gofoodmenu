@@ -11,6 +11,7 @@ import {
     Text,
 } from "@react-email/components";
 import * as React from "react";
+import { SITE_URL } from "@/lib/site";
 
 interface EmailLayoutProps {
     preview?: string;
@@ -27,9 +28,9 @@ export const EmailLayout = ({ preview, children }: EmailLayoutProps) => {
                     {/* Header */}
                     <Section style={{ marginTop: '32px', marginBottom: '10px', textAlign: 'center' as const }}>
                         <Img
-                            src="https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/Go%20Food/gofood-logoHD.jpg"
-                            width="300"
-                            height="66"
+                            src={`${SITE_URL}/gofood-email-logo.png`}
+                            width="80"
+                            height="80"
                             alt="Go!Food"
                             style={{ margin: '0 auto', objectFit: 'contain' }}
                         />

@@ -22,10 +22,10 @@ export default function LandingPage() {
             {/* Logo */}
             <div className="flex items-center gap-4">
               <Image
-                src="https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/sign/Go%20Food/gofood-logoHD.svg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zNzE5MDI4MC1kOTI1LTQ2YmQtOTFhMC0wMTIzZTlmZDY0MDciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJHbyBGb29kL2dvZm9vZC1sb2dvSEQuc3ZnIiwiaWF0IjoxNzY0Nzk5OTg0LCJleHAiOjIwODAxNTk5ODR9.u0xvBk9SohQ53303twe_gKZ87_Bj2ga3dD1HauBaevk"
+                src="/gofood-logoHD.svg"
                 alt="Go!Food"
-                width={150}
-                height={60}
+                width={120}
+                height={120}
                 className="h-14 w-auto"
               />
               <div className="hidden md:block h-8 w-px bg-orange-200" />
@@ -557,10 +557,10 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-12 max-w-6xl mx-auto">
             <div className="md:col-span-2">
               <Image
-                src="https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/sign/Go%20Food/gofood-logoHD.svg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zNzE5MDI4MC1kOTI1LTQ2YmQtOTFhMC0wMTIzZTlmZDY0MDciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJHbyBGb29kL2dvZm9vZC1sb2dvSEQuc3ZnIiwiaWF0IjoxNzY0Nzk5OTg0LCJleHAiOjIwODAxNTk5ODR9.u0xvBk9SohQ53303twe_gKZ87_Bj2ga3dD1HauBaevk"
+                src="/gofood-logoHD.svg"
                 alt="Go!Food"
-                width={150}
-                height={60}
+                width={120}
+                height={120}
                 className="h-12 w-auto mb-4 brightness-0 invert"
                 unoptimized
               />

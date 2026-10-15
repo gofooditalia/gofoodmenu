@@ -31,12 +31,12 @@ export function ReservationPageClient({ tenant, config }: ReservationPageClientP
                         href="https://gofoodmenu.it/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="relative w-40 h-32 mx-auto flex items-center justify-center mb-2 hover:opacity-90 transition-opacity"
+                        className="relative w-32 h-32 mx-auto flex items-center justify-center mb-2 hover:opacity-90 transition-opacity"
                     >
                         <Image
                             src="/gofood-logoHD.svg"
                             alt="Go!Food Menù"
-                            width={160}
+                            width={128}
                             height={128}
                             className="w-full h-full object-contain"
                             priority
@@ -66,7 +66,7 @@ export function ReservationPageClient({ tenant, config }: ReservationPageClientP
                     <Image
                         src="/logo-gofood-new.svg"
                         alt="Go!Food Menù Logo"
-                        width={80}
+                        width={24}
                         height={24}
                         className="h-6 w-auto"
                     />

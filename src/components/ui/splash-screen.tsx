@@ -33,7 +33,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                 }`}
         >
             <div className="text-center animate-in fade-in zoom-in duration-700 slide-in-from-bottom-4">
-                <div className="relative w-56 h-20 mb-6 mx-auto">
+                <div className="relative w-32 h-32 mb-6 mx-auto">
                     <Image
                         src="/logo-gofood-new.svg"
                         alt="Go!Food Menù"
