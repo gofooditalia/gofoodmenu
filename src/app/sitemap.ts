@@ -33,14 +33,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: tenants } = await (supabase.from('tenants') as any)
         .select('slug, updated_at')
-        .eq('subscription_status', 'active');
+        .eq('subscription_status', 'active')
+        .not('slug', 'is', null);
 
-    const tenantPages: MetadataRoute.Sitemap = (tenants || []).map((tenant: { slug: string; updated_at: string }) => ({
-        url: `${baseUrl}/${tenant.slug}`,
-        lastModified: new Date(tenant.updated_at),
-        changeFrequency: 'daily',
-        priority: 0.9,
-    }));
+    const tenantPages: MetadataRoute.Sitemap = (tenants || [])
+        .filter((tenant: { slug: string | null }) => tenant.slug)
+        .map((tenant: { slug: string; updated_at: string }) => ({
+            url: `${baseUrl}/${tenant.slug}`,
+            lastModified: new Date(tenant.updated_at),
+            changeFrequency: 'daily',
+            priority: 0.9,
+        }));
 
     return [...staticPages, ...tenantPages];
 }
