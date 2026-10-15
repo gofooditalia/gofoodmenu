@@ -28,7 +28,7 @@ export function ReservationPageClient({ tenant, config }: ReservationPageClientP
                     </div>
                 ) : (
                     <a
-                        href="https://www.gofoodmenu.it/"
+                        href="https://gofoodmenu.it/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="relative w-40 h-32 mx-auto flex items-center justify-center mb-2 hover:opacity-90 transition-opacity"

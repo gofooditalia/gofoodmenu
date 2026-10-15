@@ -8,6 +8,7 @@ import Script from 'next/script';
 import QueryProvider from "@/components/providers/QueryProvider";
 import CookieBanner from "@/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,6 +23,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Go!Food Menù - Il Menu Digitale per Ristoranti",
     template: "%s | Go!Food Menù"

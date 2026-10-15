@@ -198,7 +198,6 @@ export default async function Page({ params }: PageProps) {
               addressLocality: tenant.footer_data?.locations?.[0]?.city,
               addressCountry: 'IT'
             },
-            servesCuisine: 'Italian',
             menu: `${SITE_URL}/${slug}`,
             potentialAction: {
               '@type': 'OrderAction',
@@ -223,7 +222,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: tenant } = await (supabase.from('tenants') as any)
-    .select('restaurant_name')
+    .select('restaurant_name, logo_url, tenant_locations(city)')
     .eq('slug', slug)
     .single();
 
@@ -233,10 +232,39 @@ export async function generateMetadata({ params }: PageProps) {
     };
   }
 
-  const tenantData = tenant as { restaurant_name: string };
+  const tenantData = tenant as {
+    restaurant_name: string;
+    logo_url: string | null;
+    tenant_locations?: { city: string }[];
+  };
+
+  const city = tenantData.tenant_locations?.[0]?.city;
+  const title = `${tenantData.restaurant_name} - Menu Digitale`;
+  const description = city
+    ? `Scopri il menu di ${tenantData.restaurant_name} a ${city}: piatti, prezzi e allergeni, aggiornati in tempo reale.`
+    : `Scopri il menu di ${tenantData.restaurant_name}: piatti, prezzi e allergeni, aggiornati in tempo reale.`;
+  const pageUrl = `${SITE_URL}/${slug}`;
 
   return {
-    title: `${tenantData.restaurant_name} - Menu Digitale`,
-    description: `Menu completo di ${tenantData.restaurant_name}. Cucina tradizionale italiana con ingredienti freschi e genuini.`,
+    title,
+    description,
+    alternates: {
+      canonical: pageUrl,
+    },
+    openGraph: {
+      title: tenantData.restaurant_name,
+      description,
+      url: pageUrl,
+      type: 'website',
+      images: tenantData.logo_url
+        ? [{ url: tenantData.logo_url, alt: tenantData.restaurant_name }]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary' as const,
+      title: tenantData.restaurant_name,
+      description,
+      images: tenantData.logo_url ? [tenantData.logo_url] : undefined,
+    },
   };
 }
