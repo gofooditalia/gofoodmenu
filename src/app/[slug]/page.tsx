@@ -7,11 +7,19 @@
  * Esempio: /magna-roma
  */
 
+import type { Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { createPublicClient } from '@/lib/supabase/public';
 import type { Tenant } from '@/types/menu';
 import MenuPageClient from './MenuPageClient';
 import { SITE_URL } from '@/lib/site';
+
+// La pagina si estende sotto la barra di navigazione di Android (edge-to-edge): dietro
+// i tasti si vede lo sfondo del tema invece del colore fisso del manifest.
+// I margini in basso usano env(safe-area-inset-bottom) per non finire sotto i tasti.
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+};
 
 // Cached per slug (ISR). Purged on every menu change via revalidatePublicMenu
 // (src/app/actions/revalidate-menu.ts); the time-based revalidate is only a safety net.
