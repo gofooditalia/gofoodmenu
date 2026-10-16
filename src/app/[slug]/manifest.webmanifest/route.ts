@@ -19,10 +19,17 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     // disegna sopra tasti chiari: pickAppColor sceglie un colore del tema abbastanza scuro
     background_color: pwa.appColor,
     theme_color: pwa.appColor,
-    icons: [
-      { src: `/${slug}/app-icon/192`, sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-      { src: `/${slug}/app-icon/512`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-    ],
+    // Servono anche icone "any": con le sole "maskable" Chrome non considera la pagina
+    // installabile, niente banner, e "Aggiungi a schermata Home" crea un semplice
+    // collegamento invece dell'app (senza colori del manifest sulle barre)
+    icons: [192, 512].flatMap((size) =>
+      ['any', 'maskable'].map((purpose) => ({
+        src: `/${slug}/app-icon/${purpose}/${size}`,
+        sizes: `${size}x${size}`,
+        type: 'image/png',
+        purpose,
+      }))
+    ),
   };
 
   return new Response(JSON.stringify(manifest), {

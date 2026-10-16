@@ -4,9 +4,12 @@ import { getTenantPwaData } from '@/lib/tenant-pwa';
 const SIZES = [192, 512];
 // Formati che il renderer di next/og sa disegnare (niente WebP/AVIF)
 const SUPPORTED_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/svg+xml'];
-// Icona "maskable": Android la ritaglia (cerchio, squircle...) e garantisce visibile solo
-// il cerchio centrale dell'80%. Un logo quadrato ci sta se il lato è ≤ 80%/√2 ≈ 56%.
-const LOGO_RATIO = 0.56;
+// Quota del lato occupata dal logo. "maskable": Android ritaglia l'icona (cerchio,
+// squircle...) e garantisce visibile solo il cerchio centrale dell'80%; 62% è un
+// compromesso tra un logo grande e gli angoli di un logo quadrato (che entrerebbe
+// per intero solo fino a 80%/√2 ≈ 56%). "any": l'icona è mostrata così com'è.
+// Chrome richiede icone "any" per considerare la pagina installabile.
+const LOGO_RATIO: Record<string, number> = { maskable: 0.62, any: 0.8 };
 
 async function loadLogo(url: string): Promise<string | null> {
   try {
@@ -21,14 +24,17 @@ async function loadLogo(url: string): Promise<string | null> {
   }
 }
 
-// Icona quadrata dell'app del ristorante: il suo logo al centro, sul colore dell'app
+// Icona quadrata dell'app del ristorante (/[slug]/app-icon/{maskable|any}/{192|512}):
+// il suo logo al centro, sul colore dell'app
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ slug: string; size: string }> }
+  { params }: { params: Promise<{ slug: string; purpose: string; size: string }> }
 ) {
-  const { slug, size: sizeParam } = await params;
+  const { slug, purpose, size: sizeParam } = await params;
   const size = Number(sizeParam);
-  if (!SIZES.includes(size)) return new Response('Not found', { status: 404 });
+  if (!SIZES.includes(size) || !(purpose in LOGO_RATIO)) {
+    return new Response('Not found', { status: 404 });
+  }
 
   const pwa = await getTenantPwaData(slug);
   if (!pwa) return new Response('Not found', { status: 404 });
@@ -39,7 +45,7 @@ export async function GET(
     return Response.redirect(new URL(`/web-app-manifest-${size}x${size}.png`, _request.url), 302);
   }
 
-  const logoSize = Math.round(size * LOGO_RATIO);
+  const logoSize = Math.round(size * LOGO_RATIO[purpose]);
   return new ImageResponse(
     (
       <div
