@@ -260,6 +260,11 @@ export async function generateMetadata({ params }: PageProps) {
         ? [{ url: tenantData.logo_url, alt: tenantData.restaurant_name }]
         : undefined,
     },
+    // Icona del ristorante per la scheda del browser e per il collegamento
+    // "Aggiungi a schermata Home" (al posto del logo Go!Food)
+    icons: tenantData.logo_url
+      ? { icon: tenantData.logo_url, apple: tenantData.logo_url }
+      : undefined,
     twitter: {
       card: 'summary' as const,
       title: tenantData.restaurant_name,
