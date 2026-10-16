@@ -1,6 +1,13 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Go!Food Menù – Gestione",
+  "short_name": "Go!Food",
+  "description": "Gestisci il menu digitale del tuo ristorante.",
+  "id": "/dashboard",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#E9580C",
+  "theme_color": "#E9580C",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -14,8 +21,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  ]
 }
