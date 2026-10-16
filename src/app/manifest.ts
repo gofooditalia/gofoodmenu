@@ -9,9 +9,10 @@ export default function manifest(): MetadataRoute.Manifest {
         display: 'standalone',
         // Android usa questo colore anche per la barra di navigazione della PWA e ci disegna
         // sopra tasti chiari: su un colore chiaro (es. crema) i tasti diventano invisibili.
-        // Stesso rosso della barra di stato (theme_color), dove le icone si leggono bene.
-        background_color: '#8B0000',
-        theme_color: '#8B0000',
+        // Arancio del logo, come la barra di stato (theme_color): un tono medio su cui i
+        // tasti chiari restano leggibili.
+        background_color: '#E9580C',
+        theme_color: '#E9580C',
         icons: [
             {
                 src: '/web-app-manifest-192x192.png',
