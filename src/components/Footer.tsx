@@ -34,7 +34,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
   const socials = footerData?.socials || [];
 
   return (
-    <footer className="bg-[var(--tenant-footer-bg,var(--tenant-background,#FFF8E7))] border-t-2 border-[var(--tenant-secondary,#D4AF37)] mt-16 pb-[env(safe-area-inset-bottom)]">
+    <footer className="bg-[var(--tenant-footer-bg,var(--tenant-background,#FFF8E7))] border-t-2 border-[var(--tenant-secondary,#D4AF37)] mt-16">
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         {/* Main Footer Content */}
         <div className={`grid grid-cols-2 gap-8 mb-8 ${forceMobile ? '' : 'md:grid-cols-3'}`}>

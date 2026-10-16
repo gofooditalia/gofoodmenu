@@ -20,18 +20,6 @@ interface Tenant {
   footer_data?: FooterData;
 }
 
-// Sfondo pagina e schema colore del tema: Android colora la barra di navigazione con lo
-// sfondo di html/body e sceglie i tasti chiari/scuri in base allo schema colore.
-// Accetta solo hex (#rgb / #rrggbb) perché il valore finisce in un tag <style>.
-function pageChromeCss(background: string): string {
-  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(background.trim())?.[1];
-  if (!hex) return '';
-  const full = hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex;
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
-  const scheme = 0.299 * r + 0.587 * g + 0.114 * b < 128 ? 'dark' : 'light';
-  return `html, body { background-color: #${full}; color-scheme: ${scheme}; }`;
-}
-
 // Altezza occupata da header fisso (72px) + barra categorie: le sezioni si fermano qui sotto
 const NAV_OFFSET = 140;
 
@@ -147,7 +135,6 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
         '--tenant-accent': currentTheme.colors.accent,
       } as React.CSSProperties}
     >
-      <style>{pageChromeCss(currentTheme.colors.background)}</style>
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
 
       <Header

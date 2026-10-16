@@ -87,8 +87,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* Sito chiaro: col telefono in modalità scura i tasti di sistema restano leggibili */
-  color-scheme: light;
 }
 
 body {
