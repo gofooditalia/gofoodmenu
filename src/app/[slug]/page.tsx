@@ -12,6 +12,7 @@ import { createPublicClient } from '@/lib/supabase/public';
 import type { Tenant } from '@/types/menu';
 import MenuPageClient from './MenuPageClient';
 import { SITE_URL } from '@/lib/site';
+import { getTenantPwaData } from '@/lib/tenant-pwa';
 
 // Cached per slug (ISR). Purged on every menu change via revalidatePublicMenu
 // (src/app/actions/revalidate-menu.ts); the time-based revalidate is only a safety net.
@@ -260,6 +261,8 @@ export async function generateMetadata({ params }: PageProps) {
         ? [{ url: tenantData.logo_url, alt: tenantData.restaurant_name }]
         : undefined,
     },
+    // PWA del ristorante: Chrome propone di installare il menu come app del locale
+    manifest: `/${slug}/manifest.webmanifest`,
     // Icona del ristorante per la scheda del browser e per il collegamento
     // "Aggiungi a schermata Home" (al posto del logo Go!Food)
     icons: tenantData.logo_url
@@ -272,4 +275,12 @@ export async function generateMetadata({ params }: PageProps) {
       images: tenantData.logo_url ? [tenantData.logo_url] : undefined,
     },
   };
+}
+
+// Stesso colore del manifest del ristorante: nell'app installata il theme-color della
+// pagina prevale su quello del manifest per la barra di stato
+export async function generateViewport({ params }: PageProps) {
+  const { slug } = await params;
+  const pwa = await getTenantPwaData(slug);
+  return pwa ? { themeColor: pwa.appColor } : {};
 }
