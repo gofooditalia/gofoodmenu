@@ -263,10 +263,12 @@ export async function generateMetadata({ params }: PageProps) {
     },
     // PWA del ristorante: Chrome propone di installare il menu come app del locale
     manifest: `/${slug}/manifest.webmanifest`,
-    // Icona del ristorante per la scheda del browser e per il collegamento
-    // "Aggiungi a schermata Home" (al posto del logo Go!Food)
+    // Icona del ristorante (al posto del logo Go!Food): il logo originale per la scheda
+    // del browser; per iOS ("Aggiungi alla schermata Home" usa l'apple-touch-icon, non le
+    // icone del manifest) l'icona quadrata e opaca dell'app, perché iOS riempie di nero
+    // o bianco le parti trasparenti e deforma i loghi non quadrati
     icons: tenantData.logo_url
-      ? { icon: tenantData.logo_url, apple: tenantData.logo_url }
+      ? { icon: tenantData.logo_url, apple: `/${slug}/app-icon/any/512` }
       : undefined,
     twitter: {
       card: 'summary' as const,
