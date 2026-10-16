@@ -11,6 +11,15 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
+        // Nella PWA installata il sistema mostra già la propria splash: niente doppione
+        const isStandalone =
+            window.matchMedia('(display-mode: standalone)').matches ||
+            (navigator as Navigator & { standalone?: boolean }).standalone === true;
+        if (isStandalone) {
+            onComplete();
+            return;
+        }
+
         // Start exit animation after 2.5s (increased duration)
         const timer = setTimeout(() => {
             setIsVisible(false);
@@ -29,7 +38,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
     return (
         <div
-            className={`fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-amber-50 transition-opacity duration-700 ease-in-out ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            className={`fixed inset-0 z-[100] flex [@media(display-mode:standalone)]:hidden items-center justify-center bg-gradient-to-br from-orange-50 via-white to-amber-50 transition-opacity duration-700 ease-in-out ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
                 }`}
         >
             <div className="text-center animate-in fade-in zoom-in duration-700 slide-in-from-bottom-4">
