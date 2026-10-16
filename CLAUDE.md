@@ -24,12 +24,16 @@ Il titolare parla italiano: rispondere in italiano.
   Ristorante pilota: Villa Pensabene.
 - **Risposte automatiche** (in attesa): modello "agenzia", l'account Google italiagofood@gmail.com è
   gestore di 14 schede Business Profile. Progetto Google Cloud `gofoodmenu-recensioni` (n. 320974965020),
-  quota API a 0. Due richieste di accesso respinte automaticamente; inviata domanda all'assistenza Google,
-  caso **8-9259000041884**: non ripresentare la richiesta prima della risposta.
+  quota API a 0. Due richieste di accesso respinte automaticamente. Risposta dell'assistenza Google
+  (caso 8-9259000041884): il dominio dell'email del richiedente deve coincidere con il dominio del sito
+  della scheda (noi avevamo usato @gmail.com). Piano: account Google `info@gofoodmenu.it`, scheda
+  Business Profile di Go!Food con sito gofoodmenu.it, nuova richiesta dopo 60 giorni dalla verifica
+  rispondendo "Sì" ai 60 giorni e "No" al progetto già approvato.
 - **Pannello admin** `/admin` (PR #29): accesso via `ADMIN_EMAILS`, newsletter tramite segmento Resend
   (`RESEND_NEWSLETTER_SEGMENT_ID`). Niente CRM esterno per ora (solo clienti già iscritti, unico utente).
 
 ## Cose aperte (ottobre 2026)
 - Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
-- Attendere la risposta di Google al caso 8-9259000041884.
+- Creare e verificare la scheda Google Business di Go!Food (account info@gofoodmenu.it), poi attendere 60 giorni
+  e ripresentare la richiesta di accesso alle API.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
