@@ -38,4 +38,6 @@ Il titolare parla italiano: rispondere in italiano.
 - Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
 - Mettere online il sito statico su gofood.it, aggiornare la scheda Go!Food Italia (nome, categoria
   "Società di software", sito gofood.it), poi dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API.
+- Pagina LinkedIn aziendale "GO!FOOD ITALIA" creata il 16/10/2026 (linkedin.com/company/145327558):
+  da completare Panoramica, sito https://gofood.it, sede, eventuale nome "GO! Food Italia".
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
