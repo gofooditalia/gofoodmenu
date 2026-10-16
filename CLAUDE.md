@@ -26,14 +26,15 @@ Il titolare parla italiano: rispondere in italiano.
   gestore di 14 schede Business Profile. Progetto Google Cloud `gofoodmenu-recensioni` (n. 320974965020),
   quota API a 0. Due richieste di accesso respinte automaticamente. Risposta dell'assistenza Google
   (caso 8-9259000041884): il dominio dell'email del richiedente deve coincidere con il dominio del sito
-  della scheda (noi avevamo usato @gmail.com). Piano: account Google `info@gofoodmenu.it`, scheda
-  Business Profile di Go!Food con sito gofoodmenu.it, nuova richiesta dopo 60 giorni dalla verifica
-  rispondendo "Sì" ai 60 giorni e "No" al progetto già approvato.
+  della scheda (noi avevamo usato @gmail.com). Piano (deciso il 16/10/2026): scheda Business
+  Profile della ditta individuale **Go!Food Italia** (software, siti web, Go!Food Menù, BeMyRider), creata il
+  16/10/2026 con `info@gofood.it`, sito `https://gofood.it` (sito statico da mettere online). Nuova richiesta
+  da `info@gofood.it` dopo 60 giorni dalla verifica, rispondendo "Sì" ai 60 giorni e "No" al progetto già approvato.
 - **Pannello admin** `/admin` (PR #29): accesso via `ADMIN_EMAILS`, newsletter tramite segmento Resend
   (`RESEND_NEWSLETTER_SEGMENT_ID`). Niente CRM esterno per ora (solo clienti già iscritti, unico utente).
 
 ## Cose aperte (ottobre 2026)
 - Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
-- Creare e verificare la scheda Google Business di Go!Food (account info@gofoodmenu.it), poi attendere 60 giorni
-  e ripresentare la richiesta di accesso alle API.
+- Mettere online il sito statico su gofood.it, aggiornare la scheda Go!Food Italia (nome, categoria
+  "Società di software", sito gofood.it), poi dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
