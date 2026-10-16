@@ -54,9 +54,6 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: "#8B0000",
-  // Il sito è solo chiaro: senza questo, col telefono in modalità scura Android
-  // disegna i tasti di navigazione chiari sullo sfondo crema e diventano invisibili
-  colorScheme: "light",
 };
 
 export default function RootLayout({
