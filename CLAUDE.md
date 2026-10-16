@@ -3,6 +3,7 @@
 Piattaforma SaaS multi-tenant di menu digitali QR per ristoranti (gofoodmenu.it).
 Next.js 16 (App Router) + Supabase + Stripe + Resend, deploy su Vercel (team "Giorgio's projects").
 Il titolare parla italiano: rispondere in italiano.
+**bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
@@ -27,7 +28,7 @@ Il titolare parla italiano: rispondere in italiano.
   quota API a 0. Due richieste di accesso respinte automaticamente. Risposta dell'assistenza Google
   (caso 8-9259000041884): il dominio dell'email del richiedente deve coincidere con il dominio del sito
   della scheda (noi avevamo usato @gmail.com). Piano (deciso il 16/10/2026): scheda Business
-  Profile della ditta individuale **Go!Food Italia** (software, siti web, Go!Food Menù, BeMyRider), creata il
+  Profile della ditta individuale **Go!Food Italia** (software, siti web, Go!Food Menù, bemyrider), creata il
   16/10/2026 con `info@gofood.it`, sito `https://gofood.it` (sito statico da mettere online). Nuova richiesta
   da `info@gofood.it` dopo 60 giorni dalla verifica, rispondendo "Sì" ai 60 giorni e "No" al progetto già approvato.
 - **Pannello admin** `/admin` (PR #29): accesso via `ADMIN_EMAILS`, newsletter tramite segmento Resend
