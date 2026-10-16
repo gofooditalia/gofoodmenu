@@ -7,7 +7,10 @@ export default function manifest(): MetadataRoute.Manifest {
         description: 'Menu digitale multilingua, gestione allergeni e setup immediato.',
         start_url: '/',
         display: 'standalone',
-        background_color: '#FFF8E7',
+        // Android usa questo colore anche per la barra di navigazione della PWA e ci disegna
+        // sopra tasti chiari: su un colore chiaro (es. crema) i tasti diventano invisibili.
+        // Stesso rosso della barra di stato (theme_color), dove le icone si leggono bene.
+        background_color: '#8B0000',
         theme_color: '#8B0000',
         icons: [
             {
