@@ -4,7 +4,7 @@ Piattaforma SaaS multi-tenant di menu digitali QR per ristoranti (gofoodmenu.it)
 Next.js 16 (App Router) + Supabase + Stripe + Resend, deploy su Vercel (team "Giorgio's projects").
 Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
-La ditta è **Go!Food Italia**, senza spazio tra "!" e "Food" (mai "GO! Food").
+La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia").
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
@@ -29,7 +29,7 @@ La ditta è **Go!Food Italia**, senza spazio tra "!" e "Food" (mai "GO! Food").
   quota API a 0. Due richieste di accesso respinte automaticamente. Risposta dell'assistenza Google
   (caso 8-9259000041884): il dominio dell'email del richiedente deve coincidere con il dominio del sito
   della scheda (noi avevamo usato @gmail.com). Piano (deciso il 16/10/2026): scheda Business
-  Profile della ditta individuale **Go!Food Italia** (software, siti web, Go!Food Menù, bemyrider), creata il
+  Profile della ditta individuale **GO!Food Italia** (software, siti web, Go!Food Menù, bemyrider), creata il
   16/10/2026 con `info@gofood.it`, sito `https://gofood.it` (sito statico da mettere online). Nuova richiesta
   da `info@gofood.it` dopo 60 giorni dalla verifica, rispondendo "Sì" ai 60 giorni e "No" al progetto già approvato.
 - **Pannello admin** `/admin` (PR #29): accesso via `ADMIN_EMAILS`, newsletter tramite segmento Resend
@@ -37,7 +37,7 @@ La ditta è **Go!Food Italia**, senza spazio tra "!" e "Food" (mai "GO! Food").
 
 ## Cose aperte (ottobre 2026)
 - Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
-- Sito gofood.it online (repo gofooditalia/gofooditalia); scheda Google "Go!Food Italia" aggiornata il 17/10/2026
+- Sito gofood.it online (repo gofooditalia/gofooditalia); scheda Google "GO!Food Italia" aggiornata il 17/10/2026
   (sito https://gofood.it, categoria Web designer; social YouTube/LinkedIn/Facebook collegati).
   Dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API da info@gofood.it.
 - Pagina LinkedIn linkedin.com/company/gofooditalia completata (Panoramica, servizi, sito, telefono).
