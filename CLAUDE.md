@@ -5,6 +5,7 @@ Next.js 16 (App Router) + Supabase + Stripe + Resend, deploy su Vercel (team "Gi
 Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
 La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia"). Font del logotipo GO!Food: **Alegreya**.
+Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
