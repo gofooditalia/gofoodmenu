@@ -36,8 +36,9 @@ Il titolare parla italiano: rispondere in italiano.
 
 ## Cose aperte (ottobre 2026)
 - Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
-- Mettere online il sito statico su gofood.it, aggiornare la scheda Go!Food Italia (nome, categoria
-  "Società di software", sito gofood.it), poi dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API.
-- Pagina LinkedIn aziendale "GO!FOOD ITALIA" creata il 16/10/2026 (linkedin.com/company/145327558):
-  da completare Panoramica, sito https://gofood.it, sede, eventuale nome "GO! Food Italia".
+- Sito gofood.it online (repo gofooditalia/gofooditalia); scheda Google "Go!Food Italia" aggiornata il 17/10/2026
+  (sito https://gofood.it, categoria Web designer; social YouTube/LinkedIn/Facebook collegati).
+  Dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API da info@gofood.it.
+- Pagina LinkedIn linkedin.com/company/gofooditalia completata (Panoramica, servizi, sito, telefono).
+- Sito gofood.it: manca descrizione/link/logo di bemyrider (li deve fornire il titolare).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
