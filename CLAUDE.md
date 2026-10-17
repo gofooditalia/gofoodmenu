@@ -4,7 +4,7 @@ Piattaforma SaaS multi-tenant di menu digitali QR per ristoranti (gofoodmenu.it)
 Next.js 16 (App Router) + Supabase + Stripe + Resend, deploy su Vercel (team "Giorgio's projects").
 Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
-La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia").
+La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia"). Font del logotipo GO!Food: **Alegreya**.
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
