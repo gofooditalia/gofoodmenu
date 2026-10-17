@@ -552,7 +552,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-gray-900 text-white pt-16 pb-4">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-12 max-w-6xl mx-auto">
             <div className="md:col-span-2">
@@ -599,8 +599,21 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; {new Date().getFullYear()} Go!Food. Tutti i diritti riservati.</p>
+            <p>&copy; {new Date().getFullYear()} GO!Food Italia. Tutti i diritti riservati.</p>
             <p className="mt-2">P.IVA 06955440828 - Via Mariano Stabile 160, Palermo</p>
+            <div className="mt-8 pt-3 border-t border-gray-800 flex justify-center">
+              <a
+                href="https://gofood.it"
+                target="_blank"
+                rel="noopener"
+                title="GO!Food Italia – software e siti web a Palermo"
+                className="flex items-center gap-1 text-[10px] text-gray-500 hover:text-gray-300 transition-colors"
+              >
+                <span className="whitespace-nowrap">Un prodotto di</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/gofood-italia.svg" alt="GO!Food Italia" width={26} height={20} className="h-5 w-auto shrink-0 opacity-80" />
+              </a>
+            </div>
             <Script id="iubenda-loader-landing" strategy="lazyOnload">
               {`(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);`}
             </Script>
