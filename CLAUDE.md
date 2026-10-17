@@ -4,6 +4,7 @@ Piattaforma SaaS multi-tenant di menu digitali QR per ristoranti (gofoodmenu.it)
 Next.js 16 (App Router) + Supabase + Stripe + Resend, deploy su Vercel (team "Giorgio's projects").
 Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
+La ditta è **Go!Food Italia**, senza spazio tra "!" e "Food" (mai "GO! Food").
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
@@ -40,5 +41,6 @@ Il titolare parla italiano: rispondere in italiano.
   (sito https://gofood.it, categoria Web designer; social YouTube/LinkedIn/Facebook collegati).
   Dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API da info@gofood.it.
 - Pagina LinkedIn linkedin.com/company/gofooditalia completata (Panoramica, servizi, sito, telefono).
-- Sito gofood.it: manca descrizione/link/logo di bemyrider (li deve fornire il titolare).
+- Sito gofood.it: progetti in evidenza, portfolio e modulo contatti (`api/contact.js`, Resend con dominio gofood.it
+  verificato, mittente noreply@gofood.it, destinatario info@gofood.it; `RESEND_API_KEY` sul progetto Vercel gofooditalia).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
