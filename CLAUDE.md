@@ -38,12 +38,17 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
 - **Pannello admin** `/admin` (PR #29): accesso via `ADMIN_EMAILS`, newsletter tramite segmento Resend
   (`RESEND_NEWSLETTER_SEGMENT_ID`). Niente CRM esterno per ora (solo clienti già iscritti, unico utente).
 
-## Cose aperte (ottobre 2026)
-- Unire la PR #29 dopo aver impostato `ADMIN_EMAILS` su Vercel e verificare `/admin` con i dati reali.
-- Sito gofood.it online (repo gofooditalia/gofooditalia); scheda Google "GO!Food Italia" aggiornata il 17/10/2026
-  (sito https://gofood.it, categoria Web designer; social YouTube/LinkedIn/Facebook collegati).
-  Dopo 60 giorni (metà dicembre 2026) ripresentare la richiesta API da info@gofood.it.
-- Pagina LinkedIn linkedin.com/company/gofooditalia completata (Panoramica, servizi, sito, telefono).
-- Sito gofood.it: progetti in evidenza, portfolio e modulo contatti (`api/contact.js`, Resend con dominio gofood.it
-  verificato, mittente noreply@gofood.it, destinatario info@gofood.it; `RESEND_API_KEY` sul progetto Vercel gofooditalia).
+## Cose aperte (aggiornate al 17/10/2026)
+- PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
+- Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
+  della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
+
+## Ecosistema GO!Food Italia (altri repo, tutti su Vercel, deploy da `main`)
+- Sito della ditta: gofooditalia/gofooditalia (gofood.it). Il suo CLAUDE.md è la memoria principale per
+  brand (logotipo Alegreya, logo GO! FOOD in `brand/`), credits, Resend e siti dei clienti.
+- Siti clienti con credits "Sito realizzato da" → gofood.it: maropizzeria, osteriacilea, villapensabene,
+  sunset-barcarello, mondelloholiday, scjavuru-holiday.
+- Email dai moduli: Resend, dominio gofood.it, mittente noreply@gofood.it; `RESEND_API_KEY` come variabile
+  condivisa del team Vercel (collegata a mondelloholiday e scjavuru-holiday; gofooditalia ha la sua).
+- Pagina LinkedIn linkedin.com/company/gofooditalia e scheda Google "GO!Food Italia" completate.
