@@ -13,6 +13,8 @@ type ClientLogo = {
 };
 
 const SUPABASE = 'https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public';
+// Loghi nuovi: copia in public/images/clients, non il file nel bucket `logos` del locale,
+// che viene svuotato quando il ristoratore cambia logo dalla dashboard
 
 const CLIENT_LOGOS: ClientLogo[] = [
   {
@@ -42,7 +44,7 @@ const CLIENT_LOGOS: ClientLogo[] = [
   {
     name: 'Sunset Barcarello',
     href: '/sunset-barcarello',
-    src: `${SUPABASE}/logos/469bd103-0e3b-43e4-8fea-96e00e915a3b/logo-1789674334625.png`,
+    src: '/images/clients/sunset-barcarello.png',
     box: 'w-20 h-20 md:w-24 md:h-24',
     boxClassName: 'rounded-full bg-gray-900',
     imageClassName: 'p-3 md:p-4',
@@ -50,8 +52,14 @@ const CLIENT_LOGOS: ClientLogo[] = [
   {
     name: 'Spaghetteria da Emanuele',
     href: '/spaghetteria-da-emanuele',
-    src: `${SUPABASE}/logos/13be821f-383f-4f6a-90aa-4ab14df192a7/logo-1768242526744.jpg`,
+    src: '/images/clients/spaghetteria-da-emanuele.png',
     box: 'w-24 h-20 md:w-28 md:h-24',
+  },
+  {
+    name: 'Scjavuru',
+    href: '/scjavuru',
+    src: '/images/clients/scjavuru.png',
+    box: 'w-24 h-24 md:w-28 md:h-28',
   },
 ];
 
@@ -60,6 +68,8 @@ function LogoItem({ logo, hidden }: { logo: ClientLogo; hidden?: boolean }) {
     <li className="shrink-0 px-6 md:px-10" aria-hidden={hidden || undefined}>
       <Link
         href={logo.href}
+        // Senza prefetch: la home non deve scaricare in anticipo i menu di tutti i locali
+        prefetch={false}
         tabIndex={hidden ? -1 : undefined}
         aria-label={`Menu di ${logo.name}`}
         className="flex h-28 md:h-32 items-center justify-center transition-transform duration-300 hover:scale-110"
