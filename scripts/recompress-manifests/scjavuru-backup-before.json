@@ -1,0 +1,666 @@
+{
+  "createdAt": "2026-10-20T16:14:04.377Z",
+  "tenant": {
+    "id": "496767b3-e997-41a9-b0f8-88209e031e91",
+    "slug": "scjavuru",
+    "logo_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/logos/496767b3-e997-41a9-b0f8-88209e031e91/logo-1775576367556.png"
+  },
+  "dishes": [
+    {
+      "id": "02bf1216-2e4c-4a1c-8527-2749936666e7",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787234657632-3012a8.png"
+    },
+    {
+      "id": "0349f972-684b-4a43-bb9c-9c82c9505a41",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313518108-2dwqfc.png"
+    },
+    {
+      "id": "03b7d82c-6bda-4503-8235-2558997f0e99",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313455402-7einck.png"
+    },
+    {
+      "id": "047a819d-7b1c-43f7-bd87-a5fd07bae4cd",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316729263-lc3svkm.png"
+    },
+    {
+      "id": "048e3cf8-c321-4f99-81e3-08ff50edfed7",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317198540-2hp9x9.png"
+    },
+    {
+      "id": "05bdf559-d364-4191-8a8f-63a6d16140b3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310822931-7noqxr.png"
+    },
+    {
+      "id": "06a88b22-8218-44e4-abad-d4b6238b0d54",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787236410729-2rhw3.png"
+    },
+    {
+      "id": "08060ecd-d7e9-4678-af83-445ab7e3df32",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313926643-6vd3i.png"
+    },
+    {
+      "id": "0b99763c-2378-4202-8a1b-6e1db5e26224",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262798775-r3vd44.png"
+    },
+    {
+      "id": "0bd0e185-df29-4b7c-9712-3e6b7fdcb4bb",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263408517-xxko4r.png"
+    },
+    {
+      "id": "0be0c880-0a75-4879-985c-660661d0b1e3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313674186-1vhtt8.png"
+    },
+    {
+      "id": "0c3eee9d-3382-4114-b0c4-4d56441c7923",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313057055-p7kio.png"
+    },
+    {
+      "id": "129bc756-0afd-424f-b508-a609056eb3dd",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315357940-btgoul.png"
+    },
+    {
+      "id": "13e5e116-e5be-4b56-ab90-8d38ef3f0008",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313791959-f9j1o.png"
+    },
+    {
+      "id": "16042c88-0326-416f-b49a-a3dd1038ca20",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262865329-blp70f.png"
+    },
+    {
+      "id": "17f735a5-86f0-4d92-ba8c-98636bd127b8",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261259646-nh6w1u.png"
+    },
+    {
+      "id": "18180fed-065b-44e2-a025-574ebeb898b0",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315627906-aub5ub.png"
+    },
+    {
+      "id": "1969f193-5e28-448d-9ebc-404563964ee3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316138310-6v3wkj.png"
+    },
+    {
+      "id": "19fa393d-bbc3-46aa-b1d6-3a89c96d4281",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317757189-q3esxi.png"
+    },
+    {
+      "id": "1a88b088-4dd3-498d-b55c-4b16de45406c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255777602-iajyfk.png"
+    },
+    {
+      "id": "1ac6d09f-50aa-44d2-b71e-082f0e87e9dc",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316964094-w26dh.png"
+    },
+    {
+      "id": "1c078745-c6bb-47b3-bed3-0fdffaf41720",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316852170-v4r5wi.png"
+    },
+    {
+      "id": "1e922a98-540d-4708-a4c0-23733427e881",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264609154-u8tok.png"
+    },
+    {
+      "id": "20057f0d-f204-4503-a4d4-b0ba1e74a185",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754954157-lyzc3.png"
+    },
+    {
+      "id": "200da011-ab9b-4ef0-8fb7-cec493e64118",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312548288-vj9wla.png"
+    },
+    {
+      "id": "2815c8f7-b34b-4ab1-b0aa-d0e3988dae42",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316220494-yugldq.png"
+    },
+    {
+      "id": "2aca68d7-9787-46a6-bc15-a206278e4cff",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311458260-2lqo9.png"
+    },
+    {
+      "id": "2e68ea9d-cc68-4689-a088-13bcff0bc4ec",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262136595-d5seta.png"
+    },
+    {
+      "id": "2f881bd7-4743-4dcc-96f3-3e381bfe2d29",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310965098-q6xftl.png"
+    },
+    {
+      "id": "301efc61-eefe-48c1-8f5d-b58f9e9f7d22",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316906107-5c8bm.png"
+    },
+    {
+      "id": "30f05f4b-3094-4a88-9260-bbbf8e8291c3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312683374-mgae46.png"
+    },
+    {
+      "id": "31b0ebbe-d3c9-443e-ab80-f19f160a4730",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256795120-x2o6cj.png"
+    },
+    {
+      "id": "324d074c-f83e-40c5-8823-14ffe98184be",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263611961-tj6oic.png"
+    },
+    {
+      "id": "32ae9684-b864-4dfd-bcfa-8354f1ca5adb",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311544038-hb6yc.png"
+    },
+    {
+      "id": "32caf75e-870e-4180-a364-8ca7f3dbcb65",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754371172-5ve0z.png"
+    },
+    {
+      "id": "32dfa598-b6d5-4068-8079-81ea0d0f636d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312615708-e3zs7h.png"
+    },
+    {
+      "id": "33c6e3cb-e7f7-40b3-9612-30d4db5bb914",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255186924-cgy35.png"
+    },
+    {
+      "id": "35987260-f9fb-43da-a1ca-2207f60a7044",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312828293-j27vqf.png"
+    },
+    {
+      "id": "35a23900-df9e-47ee-8a81-1bc690f291ce",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754004700-irxo6s.png"
+    },
+    {
+      "id": "36532ceb-838b-4270-ab0f-5cbbb241f1e7",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256320075-xxv3g.png"
+    },
+    {
+      "id": "3b458913-f39d-405c-a0fb-066365413048",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312966294-tzqf.png"
+    },
+    {
+      "id": "3bd371a8-c79e-49d3-8bb1-f76efb25ca47",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316413328-sj14la.png"
+    },
+    {
+      "id": "3be77fc1-38ba-450e-a57b-fbeac5ef1986",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263992828-yvei4.png"
+    },
+    {
+      "id": "3c1a07cc-3bf3-4906-9a94-f5233059ee59",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237378712-izfcyi.png"
+    },
+    {
+      "id": "3df71526-6309-4772-b1be-27c3ea416944",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237192504-t4ul9g.png"
+    },
+    {
+      "id": "3ee2404d-de3f-44c4-a345-cef66d1772d1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311159065-5acil6.png"
+    },
+    {
+      "id": "3f228e6e-4b84-401c-b2a4-40fb8e36d396",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317612921-0jtqo.png"
+    },
+    {
+      "id": "3f88f92f-a9cf-463e-9b28-7b9154c5fdc6",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787254997686-op4xno.png"
+    },
+    {
+      "id": "41452eab-50a9-4b72-a501-7b1daacb5421",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316354474-czzgz.png"
+    },
+    {
+      "id": "4788f2f4-9701-4266-a3e3-7234fa22532d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263269958-qwxjvc.png"
+    },
+    {
+      "id": "4a84a53c-e455-45c5-810e-f79560bbacb3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255854365-tryv9h.png"
+    },
+    {
+      "id": "4bdbce96-0067-4243-9a3b-ba97800123ee",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255278924-857lwm.png"
+    },
+    {
+      "id": "4c177bde-b2a8-42fe-82cb-5ef4076eb4fa",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316785583-ji07h.png"
+    },
+    {
+      "id": "5368b247-e382-42a3-b8e6-003e61cef195",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314146234-7eih3.png"
+    },
+    {
+      "id": "53ba7d88-f395-4940-b9b9-28a103588036",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261939195-i4mggd.png"
+    },
+    {
+      "id": "56b34bd9-b7c8-4945-8be9-8da34e7ef631",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256023656-k4cg4i.png"
+    },
+    {
+      "id": "5829cba0-e877-4988-a854-520cd4bdf970",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311901053-74w68.png"
+    },
+    {
+      "id": "59c094f5-7d2d-4fbc-a37e-a45d335fd745",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310362426-mjek0i.png"
+    },
+    {
+      "id": "5a5016cc-0596-494b-8c0f-33c4b41e3bef",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313735349-m0ics.png"
+    },
+    {
+      "id": "5bf781e6-c461-4b93-8975-40441c9e6baf",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315092305-dgzzgh.png"
+    },
+    {
+      "id": "61f4ef4c-f753-408a-9ddd-527818b0787b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264517427-j46q7e.png"
+    },
+    {
+      "id": "630353a6-1f6d-423f-9838-d26d7158ad1b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314855866-lgxu8j.png"
+    },
+    {
+      "id": "6439cc41-b5b3-41b0-9488-f867fe3a5b07",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260931424-4dfk6m.png"
+    },
+    {
+      "id": "65889aae-e0f1-4430-8642-64a0ad1ab8a2",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310301796-t0zj9.png"
+    },
+    {
+      "id": "65f02b1d-27a0-4390-8cf9-4037e818ff56",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310417609-zs4aj.png"
+    },
+    {
+      "id": "66daae83-1960-46d0-b73e-c0764faf2ffd",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256642701-05jhc.png"
+    },
+    {
+      "id": "6977f6f8-1d01-49c3-8599-d2cf9c7214db",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318217719-q1iqa.png"
+    },
+    {
+      "id": "6d35e9ac-0145-4310-87a0-7a4b8758cde1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233999936-3jfans.png"
+    },
+    {
+      "id": "6dbc60fc-40c0-4216-aa39-1fd997e9ad4f",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314560302-95ssz7.png"
+    },
+    {
+      "id": "6f0d4680-ebdf-4b25-b366-a6a5a6d83ce9",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237298562-ffzov.png"
+    },
+    {
+      "id": "7040cddf-b6fa-49c1-88c5-c9711fb53056",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315152422-1rah58.png"
+    },
+    {
+      "id": "7116f1bb-51ca-4bcf-ab88-e1dbbf906947",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311294945-ytxe1.png"
+    },
+    {
+      "id": "74aaacdd-27a6-43c3-80cf-62df38c4602e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237644057-br08y9.png"
+    },
+    {
+      "id": "75de9cfe-e07a-4074-946e-cdfc4ef6d76e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319251805-apbb34.png"
+    },
+    {
+      "id": "7617e96d-519b-460b-90d9-407690fa24a1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310478385-peelsl.png"
+    },
+    {
+      "id": "791b7fa1-bb3a-4f58-815d-2f41dc41852a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315782955-vqynbw.png"
+    },
+    {
+      "id": "7a52d7e7-bf8f-441d-965c-446654b9df8a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261116992-ohwvr9.png"
+    },
+    {
+      "id": "7a723948-b45d-4470-bae1-be8bc169028a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317315822-es6ljv.png"
+    },
+    {
+      "id": "7aed50b4-25e6-4c47-a776-0a3240f00800",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255480613-fsrs1.png"
+    },
+    {
+      "id": "7e1ac892-ff94-42c0-8482-ac79d8e06e3c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256726114-m5rs09.png"
+    },
+    {
+      "id": "7e256a1a-356d-4226-b29b-2032f0b98417",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262203402-i06sdi.png"
+    },
+    {
+      "id": "800efa22-43e5-45f5-9b41-3f919a9ce566",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317365414-pdxra.png"
+    },
+    {
+      "id": "81becb18-5cae-42b8-9cc0-b346a28d99fb",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311819640-8o4n3p.png"
+    },
+    {
+      "id": "81bfe1ca-b4d3-49be-bc0d-1bb8a0ecaacd",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314774915-wmqlbi.png"
+    },
+    {
+      "id": "81e7f8c8-f058-4b45-bb83-5cfd56b055c3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319187827-lo1ibj.png"
+    },
+    {
+      "id": "824bd60a-9c91-44ef-aec4-31abcb627858",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263839782-mt14eg.png"
+    },
+    {
+      "id": "84c2057f-096e-4e7e-963c-89a3b69bf43b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313348924-m391o7.png"
+    },
+    {
+      "id": "85717978-9fc5-4643-8a6a-909f914f0828",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318410809-9ffct.png"
+    },
+    {
+      "id": "8791fd04-3747-4772-ae4a-1f2ace3c5de9",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311395592-3fg30k.png"
+    },
+    {
+      "id": "87fdcebd-d22c-448e-ad88-ed21f7e55b24",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311716470-xvycto.png"
+    },
+    {
+      "id": "89d4a84f-75ad-49b9-9208-4ba7ac807d3c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262287070-7t0rh.png"
+    },
+    {
+      "id": "8a17d7b2-b8f3-4348-befa-42e38acb6d19",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255098383-rxjbsl.png"
+    },
+    {
+      "id": "8ac0895d-2323-48eb-9ca2-8531f5894bb3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260790955-i5y84q.png"
+    },
+    {
+      "id": "8e2bd662-f0af-4436-b705-70e15ac7635a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317498741-5y7ob.png"
+    },
+    {
+      "id": "8e451b6c-848e-482a-b4e3-e4a3e10c81ec",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315522647-2lcay.png"
+    },
+    {
+      "id": "8fc09e77-4012-4315-b2b6-72ceb817fd57",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313397241-malz2w.png"
+    },
+    {
+      "id": "91188e69-11ba-47cf-b266-da54b8bd71e3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312910189-mgaauk.png"
+    },
+    {
+      "id": "93734bb7-9a4f-4012-b61a-911d7bdc7f80",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237092979-cppqv.png"
+    },
+    {
+      "id": "94eec831-6f6d-478a-99c6-1bd5ded4aa61",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752471874-8lm3sj.png"
+    },
+    {
+      "id": "966e74d0-cc79-42a8-8a3c-aae463e96266",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262071663-wl0s8o.png"
+    },
+    {
+      "id": "96849d4a-0a42-4e02-b3f4-4c3f44e1ba44",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314403358-2efesg.png"
+    },
+    {
+      "id": "9ee443b8-dcf5-4b04-adc0-a08223a89650",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263341813-rm236r.png"
+    },
+    {
+      "id": "9fc924b3-3ef7-4fc2-b4e1-ac4cdcff853d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256522136-5nptro.png"
+    },
+    {
+      "id": "a2edf1a6-2425-4cb6-8358-bb740ba17d31",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316284338-vbevp29.png"
+    },
+    {
+      "id": "a384b490-2343-4ad0-b1ea-cddaefdc5be5",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316626002-xmj3ui.png"
+    },
+    {
+      "id": "a509e372-2ba4-450e-bcc4-f91412d7e297",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752001358-ior68b.png"
+    },
+    {
+      "id": "a50e1984-219d-4cb3-8fc0-d2d0d9f4857a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310899569-e6eemd.png"
+    },
+    {
+      "id": "a5e9027d-b033-4d0b-bee9-f9478be7d135",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262008219-cpm9k.png"
+    },
+    {
+      "id": "a6b922b0-1014-4075-bd4f-11260f6568c1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264117134-4iui0q.png"
+    },
+    {
+      "id": "a79654ba-2b19-435e-ad7d-c28288f11899",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752411564-oizaji.png"
+    },
+    {
+      "id": "ab1b0ec6-f354-498c-b769-a31c1b1c40a4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233867299-sznsa.png"
+    },
+    {
+      "id": "ab32c5d6-af46-4aed-876b-95d2d47a158a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262686767-28r5p.png"
+    },
+    {
+      "id": "ac6792ae-1431-478f-a235-7d1329d181c9",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315452506-kk1bij.png"
+    },
+    {
+      "id": "acdc5d78-c33f-4340-96ee-b51af9282e4e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263721699-tu3mr8.png"
+    },
+    {
+      "id": "b248f594-6e7c-4daf-bd4b-fd2caa7e3a81",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263665466-4lt13o.png"
+    },
+    {
+      "id": "b493afaa-bc9b-4655-8338-714b6f428c25",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260857105-pqa31v.png"
+    },
+    {
+      "id": "b52cedbc-db05-44a0-a173-8dc797198a03",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262611760-erz2p.png"
+    },
+    {
+      "id": "b8b46834-79e9-476b-adf7-23ab840d423d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311227050-wjdq8h.png"
+    },
+    {
+      "id": "bbcac436-3c95-41e5-8d5d-d471c7aaa2b4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315027538-dr4i3j.png"
+    },
+    {
+      "id": "bde88ccb-51b7-45b0-a261-37992e348de1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317429207-uina9.png"
+    },
+    {
+      "id": "c0956a9c-7ede-4f39-a430-2a5670829b56",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237516652-zhpqem.png"
+    },
+    {
+      "id": "c3229d10-95fc-44a1-bbf5-bd80a070610c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311659093-cgfkoj.png"
+    },
+    {
+      "id": "c4367759-3db9-4b87-8cd3-7a5a78fe4303",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310610876-6xzabe.png"
+    },
+    {
+      "id": "c5f59fa6-ce3d-40a9-a358-195ced530bee",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315841048-jiisdb.png"
+    },
+    {
+      "id": "c63439ba-368e-4104-85ce-9b7c77f81a3f",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262935210-3xwrff.png"
+    },
+    {
+      "id": "c6fef294-5b1d-41f3-bcb2-d206ccbeb713",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233513010-ztwhpd.png"
+    },
+    {
+      "id": "c7b5af46-daae-49da-bef0-86c27b6e8f4b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261186351-cfbkxd.png"
+    },
+    {
+      "id": "c7ec8bb8-06f5-4b60-8d25-134f5f223536",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754648344-53j5it.png"
+    },
+    {
+      "id": "cbba3017-d296-44ae-8c4c-7a0968cc611c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317022313-y9mdrc.png"
+    },
+    {
+      "id": "cbdf7e30-9dd6-482f-b95d-6d16cbbc510c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260682723-df5ki8.png"
+    },
+    {
+      "id": "cdcbe65f-079b-4138-b74a-6e95899f062d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313218481-cxm8b7.png"
+    },
+    {
+      "id": "ce608406-ebcd-4816-95be-fd902ad82bf8",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263929538-yaqeej.png"
+    },
+    {
+      "id": "cf7e15e7-3f2f-4619-85b1-703bcc04d594",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262534677-7pyqs5.png"
+    },
+    {
+      "id": "d1585fe1-0489-44e3-b77f-cdc3bc3add9e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311601030-hjaygs.png"
+    },
+    {
+      "id": "d4aed174-7f79-4104-beca-76a136e1c6ad",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317560470-0ofsmb.png"
+    },
+    {
+      "id": "d929992c-6596-4203-b0b5-29e7aee7bab0",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263547540-tcluym.png"
+    },
+    {
+      "id": "da63c5d9-85b7-4208-a5df-c904b86593ed",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319128677-17yyx.png"
+    },
+    {
+      "id": "db18d4d3-a551-478d-bc3d-5f4e5f769f6c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317698213-chjj2e.png"
+    },
+    {
+      "id": "dbbd683f-e0a8-497d-a2d0-6c37d054c72a",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262352633-8golv8.png"
+    },
+    {
+      "id": "de777480-bc27-4508-978c-914ef68432f5",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317074006-6hpty.png"
+    },
+    {
+      "id": "dee5bc2c-8f02-409a-af00-7156b41735b1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237447309-znug3t.png"
+    },
+    {
+      "id": "e0954fd6-8eaa-439e-8e87-d53ec88de9ed",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314954831-21l64.png"
+    },
+    {
+      "id": "e318c3a9-8346-44cb-a9b8-b43f7a69fc46",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319072718-3lixz.png"
+    },
+    {
+      "id": "e35c024b-a9ed-44c9-b601-af47f6cfe03d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310745383-yeujfj.png"
+    },
+    {
+      "id": "e56459f3-77a0-456a-bc14-cace56764ef7",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315688248-1uzb8v.png"
+    },
+    {
+      "id": "e60f114e-c943-472c-99d7-50a0ed326743",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754649117-4xy22.png"
+    },
+    {
+      "id": "e9846e10-b7ff-488c-8a00-8410e508825c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256216906-o0yq5a.png"
+    },
+    {
+      "id": "e9fa0de0-54fe-4cef-b316-c2eb161d156b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318313498-69lkt4.png"
+    },
+    {
+      "id": "ed0b0b45-3123-4ee9-adf5-933c54254900",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312749569-k3ryef.png"
+    },
+    {
+      "id": "ed8f3f3b-4cab-4106-9a95-d84fa2430d20",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255554935-b2b32d.png"
+    },
+    {
+      "id": "eef4a2df-6deb-4e81-aa3c-792840c78ef4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317822339-sgz7ew.png"
+    },
+    {
+      "id": "f09544f0-d897-4162-a8c3-8d9f24199df5",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317257679-9hd6cd.png"
+    },
+    {
+      "id": "f31de3bd-8575-4995-849f-afc009ff333b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311099050-p84kjn.png"
+    },
+    {
+      "id": "f3debf3e-7b73-4b7d-9161-17be922772ac",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312007368-7k3rs.png"
+    },
+    {
+      "id": "f4d9d8dc-51d8-4d6a-bd1a-a2120830edf6",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255374958-k7yyn.png"
+    },
+    {
+      "id": "f4f921ef-0042-4e39-9691-245ad33b1aa4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310234690-3io0d0g.png"
+    },
+    {
+      "id": "f9329cf1-2bb2-41bd-98ad-7919201e83f5",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314485768-du4tqv.png"
+    },
+    {
+      "id": "fab6e2db-cb9f-4f77-bf71-ac7a24b8c40e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317137972-ywart9.png"
+    },
+    {
+      "id": "fac2cbf6-3794-4cb5-ae57-2521e920c793",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263478948-skhru.png"
+    },
+    {
+      "id": "fc5fb7fa-a2db-437a-999b-42344c7f4ebb",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787234458503-fs813m.png"
+    },
+    {
+      "id": "fccd36b2-6a17-473c-a966-6978878a1182",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310543368-dsffg.png"
+    },
+    {
+      "id": "fd1db6ae-4ca5-427e-bcbe-bd6463b0d381",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262742641-ezmgc4.png"
+    },
+    {
+      "id": "fd452f63-1c1f-40e1-ab32-e6d70f103c29",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754371206-1wb5mg.png"
+    },
+    {
+      "id": "fd6302b8-8580-4dba-92b8-3975e95deeef",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754815819-6ki2e.png"
+    }
+  ]
+}

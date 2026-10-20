@@ -1,0 +1,995 @@
+{
+  "tenant": "scjavuru",
+  "createdAt": "2026-10-20T16:14:11.638Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752001358-ior68b.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512852952-w05h9g.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752411564-oizaji.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512854512-svmxu7.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784752471874-8lm3sj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512855521-qb1y1w.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754004700-irxo6s.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512856698-dhi4b1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754371172-5ve0z.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512857649-ahpb19.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754371206-1wb5mg.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512858764-5jinoi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754648344-53j5it.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512859779-s37p94.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754649117-4xy22.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512860999-v55ua6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754815819-6ki2e.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512861925-ccquk2.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1784754954157-lyzc3.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512863743-26gp73.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233513010-ztwhpd.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512864680-nhsxxo.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233867299-sznsa.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512865869-lm3vf5.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787233999936-3jfans.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512866837-3zhlkh.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787234458503-fs813m.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512867750-hos6li.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787234657632-3012a8.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512869029-vxush7.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787236410729-2rhw3.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512870136-lsmwq8.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237092979-cppqv.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512871244-eiy6fm.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237192504-t4ul9g.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512872324-fgr9xv.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237298562-ffzov.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512873640-meg4q3.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237378712-izfcyi.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512874606-uyg7gk.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237447309-znug3t.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512875690-cwcvs8.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237516652-zhpqem.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512876687-xojpp2.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787237644057-br08y9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512877772-5gk413.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787254997686-op4xno.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512878947-cedczj.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255098383-rxjbsl.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512879925-21a7t4.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255186924-cgy35.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512881049-dujps5.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255278924-857lwm.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512882155-jf6hzp.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255374958-k7yyn.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512883511-2sd63r.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255480613-fsrs1.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512884717-vmsub9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255554935-b2b32d.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512885632-n5xe8s.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255777602-iajyfk.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512886685-t6pc5i.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787255854365-tryv9h.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512887864-q3zcd1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256023656-k4cg4i.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512889193-cp41t4.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256216906-o0yq5a.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512890095-b08sxr.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256320075-xxv3g.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512891186-5g2ygi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256522136-5nptro.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512892098-msrcaa.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256642701-05jhc.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512893203-h21vrx.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256726114-m5rs09.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512894349-imzh9u.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787256795120-x2o6cj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512895433-95elnd.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260682723-df5ki8.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512896472-fktsb7.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260790955-i5y84q.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512897377-p06cxq.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260857105-pqa31v.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512898470-htar4p.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787260931424-4dfk6m.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512899397-sovw01.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261116992-ohwvr9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512900526-iafcof.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261186351-cfbkxd.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512901510-qx66nk.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261259646-nh6w1u.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512902953-1g7wrv.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787261939195-i4mggd.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512903938-c2rb9w.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262008219-cpm9k.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512905170-p59984.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262071663-wl0s8o.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512906094-9qql7m.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262136595-d5seta.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512907001-b393xz.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262203402-i06sdi.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512908088-a6wdcy.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262287070-7t0rh.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512909216-g3152t.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262352633-8golv8.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512910184-ha0x2z.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262534677-7pyqs5.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512911340-m492f5.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262611760-erz2p.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512912239-xcihu0.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262686767-28r5p.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512913201-4j92hq.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262742641-ezmgc4.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512914358-mzdea2.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262798775-r3vd44.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512915232-sjdalb.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262865329-blp70f.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512916121-r2imt9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787262935210-3xwrff.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512917258-z8zr3z.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263269958-qwxjvc.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512918278-gwhvwq.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263341813-rm236r.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512919566-zldgbi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263408517-xxko4r.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512920413-du7fmf.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263478948-skhru.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512921509-aioic6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263547540-tcluym.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512922449-4t624w.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263611961-tj6oic.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512923905-3r1vhy.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263665466-4lt13o.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512924991-21268j.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263721699-tu3mr8.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512926127-0qqxwu.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263839782-mt14eg.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512927255-pz7tdg.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263929538-yaqeej.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512928442-a895vo.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787263992828-yvei4.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512929354-ykj9rz.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264117134-4iui0q.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512930248-ucvt6k.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264517427-j46q7e.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512931378-8xlmik.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787264609154-u8tok.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512932323-6323yf.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310234690-3io0d0g.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512933637-5v68ix.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310301796-t0zj9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512934588-q9i97v.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310362426-mjek0i.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512935613-o9jz5e.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310417609-zs4aj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512936759-xrc79w.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310478385-peelsl.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512937926-76zk99.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310543368-dsffg.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512939017-3bplcm.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310610876-6xzabe.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512940701-grnr1v.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310745383-yeujfj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512941844-jpm690.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310822931-7noqxr.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512943020-9a3jb1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310899569-e6eemd.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512943922-x06kfi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787310965098-q6xftl.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512945022-iylt0p.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311099050-p84kjn.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512945987-y75p55.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311159065-5acil6.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512947617-c7c2m6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311227050-wjdq8h.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512948723-hdd1he.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311294945-ytxe1.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512950073-23n16x.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311395592-3fg30k.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512951180-3u138y.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311458260-2lqo9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512952117-mc6iei.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311544038-hb6yc.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512953081-mv9zmz.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311601030-hjaygs.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512954231-atp8xb.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311659093-cgfkoj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512955375-l9qxt6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311716470-xvycto.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512956304-m90qbt.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311819640-8o4n3p.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512957429-qkos5r.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787311901053-74w68.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512958394-gbuhjg.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312007368-7k3rs.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512959312-8djecw.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312548288-vj9wla.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512960740-ib3pe1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312615708-e3zs7h.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512961737-vbok1n.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312683374-mgae46.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512962923-f71l2g.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312749569-k3ryef.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512963917-9x0unu.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312828293-j27vqf.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512964823-ozh2ia.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312910189-mgaauk.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512965905-7xpm70.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787312966294-tzqf.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512966977-k9yf7u.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313057055-p7kio.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512968058-b6ghgq.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313218481-cxm8b7.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512969177-y1qtqp.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313348924-m391o7.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512970100-rf355i.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313397241-malz2w.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512971043-nspe6v.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313455402-7einck.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512972076-65demx.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313518108-2dwqfc.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512973231-7lfi0s.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313674186-1vhtt8.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512974450-zbw8jn.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313735349-m0ics.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512975693-ibrzh6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313791959-f9j1o.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512976621-s1wzdd.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787313926643-6vd3i.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512977788-1hkxs8.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314146234-7eih3.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512978951-f1kirb.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314403358-2efesg.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512980041-6agbo8.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314485768-du4tqv.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512981001-apyl6e.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314560302-95ssz7.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512981888-ry7l4x.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314774915-wmqlbi.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512982821-q0u3u9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314855866-lgxu8j.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512983876-3ypia1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787314954831-21l64.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512985279-4s7dme.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315027538-dr4i3j.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512986178-1vtjdi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315092305-dgzzgh.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512987078-ae90j6.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315152422-1rah58.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512987997-6ww63u.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315357940-btgoul.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512989126-0ha4cu.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315452506-kk1bij.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512990512-paurbm.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315522647-2lcay.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512991661-ickxot.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315627906-aub5ub.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512992779-cxu8p2.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315688248-1uzb8v.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512993719-udzyj8.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315782955-vqynbw.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512994677-8xzkel.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787315841048-jiisdb.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512995735-bs3c1r.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316138310-6v3wkj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512996857-wxting.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316220494-yugldq.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512997736-221xsf.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316284338-vbevp29.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512998794-iwcmkc.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316354474-czzgz.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792512999677-1e8k4u.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316413328-sj14la.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513000619-gw5tyl.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316626002-xmj3ui.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513001673-ttv30y.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316729263-lc3svkm.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513002725-8bj65i.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316785583-ji07h.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513003657-xhi044.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316852170-v4r5wi.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513004784-bhkv1l.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316906107-5c8bm.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513005756-ysetcb.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787316964094-w26dh.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513006660-1nkutn.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317022313-y9mdrc.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513007843-d4pyil.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317074006-6hpty.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513008995-y3ac37.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317137972-ywart9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513010119-avsbnu.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317198540-2hp9x9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513011239-frtkd1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317257679-9hd6cd.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513012194-8cpkd0.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317315822-es6ljv.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513013362-iqfytb.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317365414-pdxra.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513014325-i8fysi.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317429207-uina9.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513015403-pc5j9b.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317498741-5y7ob.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513016589-ywcfe9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317560470-0ofsmb.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513017513-95oqx9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317612921-0jtqo.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513018535-pcbhz1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317698213-chjj2e.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513019587-7nhc15.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317757189-q3esxi.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513020485-hji838.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787317822339-sgz7ew.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513021663-2vodmd.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318217719-q1iqa.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513022871-k6590b.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318313498-69lkt4.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513023780-j5m5g1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787318410809-9ffct.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513024875-9gdfl4.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319072718-3lixz.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513025989-vj2fzt.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319128677-17yyx.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513027179-utuw06.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319187827-lo1ibj.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513028295-150t7c.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1787319251805-apbb34.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/dishes/1792513029205-hk8jwa.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "logos",
+      "path": "496767b3-e997-41a9-b0f8-88209e031e91/logo-1775576367556.png",
+      "replacedBy": "496767b3-e997-41a9-b0f8-88209e031e91/logo-1792513030876.png"
+    }
+  ]
+}
