@@ -115,13 +115,16 @@ export default function PhotoManager({ tenantId, onValidationChange, highlightUn
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: { 'image/*': [] },
-        maxSize: 10 * 1024 * 1024, // 10MB
+        // Stessi formati e soglia di prepareImageForUpload (src/lib/image-upload.ts)
+        accept: { 'image/jpeg': [], 'image/png': [], 'image/webp': [] },
+        maxSize: 20 * 1024 * 1024, // 20MB, poi ridotta a max 500 KB prima del caricamento
         onDropRejected: (fileRejections) => {
             fileRejections.forEach((rejection) => {
                 const { file, errors } = rejection;
                 if (errors[0]?.code === 'file-too-large') {
-                    toast.error(`File troppo grande: ${file.name}. Max 10MB.`);
+                    toast.error(`File troppo grande: ${file.name}. Max 20MB.`);
+                } else if (errors[0]?.code === 'file-invalid-type') {
+                    toast.error(`Formato non supportato: ${file.name}. Usa JPG, PNG o WebP.`);
                 } else {
                     toast.error(`Errore caricamento: ${file.name}`);
                 }
@@ -246,8 +249,8 @@ export default function PhotoManager({ tenantId, onValidationChange, highlightUn
                             </div>
                             <div>
                                 <p className="font-bold text-gray-900 text-base md:text-lg">Carica Foto</p>
-                                <p className="text-xs md:text-sm text-gray-500 hidden md:block">Trascina qui o clicca per caricare le foto nel tuo archivio. Max 10MB.</p>
-                                <p className="text-xs text-gray-500 md:hidden">Tocca per caricare (Max 10MB)</p>
+                                <p className="text-xs md:text-sm text-gray-500 hidden md:block">Trascina qui o clicca per caricare le foto nel tuo archivio. JPG, PNG o WebP, max 20MB: le foto vengono ottimizzate in automatico.</p>
+                                <p className="text-xs text-gray-500 md:hidden">Tocca per caricare (JPG, PNG o WebP, max 20MB)</p>
                             </div>
                         </div>
                     </div>

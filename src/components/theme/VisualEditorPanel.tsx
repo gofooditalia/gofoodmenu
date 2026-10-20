@@ -6,7 +6,7 @@ import { FrameStyle, DividerStyle } from '@/lib/theme-engine/types';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
 import { ChevronsUpDown, ChevronDown } from 'lucide-react';
-import imageCompression from 'browser-image-compression';
+import { prepareImageForUpload, uploadExtension } from '@/lib/image-upload';
 
 import {
     Accordion,
@@ -70,11 +70,6 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
         const file = e.target.files?.[0];
         if (!file || !onLogoChange) return;
 
-        if (file.size > 10 * 1024 * 1024) {
-            toast.error('Il logo deve essere inferiore a 10MB');
-            return;
-        }
-
         try {
             if (!restaurantName) {
                 toast.error('Inserisci prima il nome del ristorante');
@@ -87,51 +82,35 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
             setUploading(true);
             const supabase = createClient();
 
-            // Compression Options
-            const options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 1920,
-                useWebWorker: true,
-                initialQuality: 0.8,
-            };
+            // Ridimensionato (max 600 px, PNG, max 200 KB): il logo si vede a 56-64 px
+            const fileToUpload = await prepareImageForUpload(file, 'logo');
+            const fileName = `logo-${Date.now()}.${uploadExtension(fileToUpload)}`;
+            const filePath = `${sanitizedFolderName}/${fileName}`;
 
-            let fileToUpload = file;
-            try {
-                // Attempt compression
-                if (file.type.startsWith('image/')) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    fileToUpload = await (imageCompression as any)(file, options);
-                }
-            } catch (error) {
-                console.error("Image compression failed, uploading original:", error);
-            }
+            // 1. Upload to Supabase Storage ('logos' bucket)
+            const { error: uploadError } = await supabase.storage
+                .from('logos')
+                .upload(filePath, fileToUpload, {
+                    upsert: true,
+                    contentType: fileToUpload.type,
+                });
 
-            // 1. Clean up old logos to save space
+            if (uploadError) throw uploadError;
+
+            // 2. Clean up old logos to save space, only after the new one is uploaded.
             // Since the folder is unique to this tenant, we can safely clear it.
             const { data: existingFiles } = await supabase.storage
                 .from('logos')
                 .list(sanitizedFolderName);
 
-            if (existingFiles && existingFiles.length > 0) {
-                const filesToRemove = existingFiles.map(x => `${sanitizedFolderName}/${x.name}`);
+            const filesToRemove = (existingFiles ?? [])
+                .filter(x => x.name !== fileName)
+                .map(x => `${sanitizedFolderName}/${x.name}`);
+            if (filesToRemove.length > 0) {
                 await supabase.storage
                     .from('logos')
                     .remove(filesToRemove);
             }
-
-            // Generate clean filename
-            const fileExt = file.name.split('.').pop();
-            const fileName = `logo-${Date.now()}.${fileExt}`;
-            const filePath = `${sanitizedFolderName}/${fileName}`;
-
-            // 2. Upload to Supabase Storage ('logos' bucket)
-            const { error: uploadError } = await supabase.storage
-                .from('logos')
-                .upload(filePath, fileToUpload, {
-                    upsert: true
-                });
-
-            if (uploadError) throw uploadError;
 
             const { data } = supabase.storage
                 .from('logos')
@@ -141,7 +120,7 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
             toast.success('Logo caricato con successo!');
         } catch (error) {
             console.error('Error uploading logo:', error);
-            toast.error('Errore durante il caricamento del logo');
+            toast.error(error instanceof Error && error.message ? error.message : 'Errore durante il caricamento del logo');
         } finally {
             setUploading(false);
         }
@@ -182,11 +161,11 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                                             >
                                                 {uploading ? 'Caricamento...' : (logoUrl ? 'Cambia Logo' : 'Carica Logo')}
                                             </button>
-                                            <p className="text-[10px] text-gray-400 mt-1">Max 10MB (PNG, JPG)</p>
+                                            <p className="text-[10px] text-gray-400 mt-1">JPG, PNG o WebP (max 20MB, ottimizzato in automatico)</p>
                                             <input
                                                 ref={fileInputRef}
                                                 type="file"
-                                                accept="image/*"
+                                                accept="image/jpeg,image/png,image/webp"
                                                 className="hidden"
                                                 onChange={handleFileChange}
                                             />
