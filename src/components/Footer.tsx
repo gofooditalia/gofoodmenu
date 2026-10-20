@@ -1,12 +1,11 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
-
 import React from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { useTranslation } from '@/hooks/useTranslation';
 import { SocialIcon } from './SocialIcon';
+import TenantLogo from './TenantLogo';
 
 import { FooterData, FooterLocation } from '@/types/menu';
 
@@ -41,7 +40,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
           {/* Brand Section */}
           {showBrandColumn && (
             <div className={`col-span-2 text-center ${forceMobile ? '' : 'md:col-span-1 md:text-left'}`}>
-              <img
+              <TenantLogo
                 src={sanitizedLogoUrl}
                 alt={`${footerData?.public_name ?? (restaurantName || 'Menu Digitale')} Logo`}
                 className={`h-12 w-auto mx-auto mb-3 object-contain ${forceMobile ? '' : 'md:mx-0'}`}
@@ -89,6 +88,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
               <li>
                 <Link
                   href={slug ? `/${slug}/allergeni` : '/allergeni'}
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-[var(--tenant-primary,#8B0000)] hover:brightness-75 font-medium transition-all"
                 >
                   <span className="text-lg">🛡️</span>

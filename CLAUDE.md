@@ -42,6 +42,11 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
   Regola: ogni foto o logo caricato su Supabase deve avere un nome file NUOVO (mai sovrascrivere lo stesso
   percorso), altrimenti il menu mostra la versione vecchia fino a un mese.
   Dal 27/10/2026 il team è sulla fascia "Flat Rate CDN 10M" (20 $/mese): ~1,5M richieste/mese, metà da `/_next/image`.
+- **Performance menu pubblico** (20/10/2026, banco di prova `/magnaromatrattoria`, il menu più pesante):
+  obiettivo alleggerire tutto il progetto, non un singolo locale. Tolta la splash di 3,2 s; prime 2 foto con
+  `preload`; logo via `TenantLogo` (next/image); Inter/Playfair solo da next/font (mai doppi da Google Fonts);
+  Google Translate caricato solo se il cookie `googtrans` indica una lingua diversa dall'italiano;
+  link allergeni con `prefetch={false}`.
 
 ## Cose aperte (aggiornate al 17/10/2026)
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
