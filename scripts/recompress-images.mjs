@@ -29,7 +29,7 @@
 import { createClient } from '@supabase/supabase-js';
 import sharp from 'sharp';
 import dotenv from 'dotenv';
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -79,6 +79,47 @@ export async function recompress(input, bucket) {
 function needsRecompression(bucket, size, mime) {
   const rule = RULES[bucket];
   return size > rule.maxBytes || !rule.types.includes(mime);
+}
+
+/**
+ * Percorsi "<bucket>/<file>" scritti a mano nel codice (es. i loghi dei clienti in
+ * src/components/landing/ClientLogosMarquee.tsx): non vanno mai rinominati né cancellati,
+ * perché il codice continuerebbe a puntare al file vecchio.
+ */
+function codeReferences(dir = join(rootDir, 'src')) {
+  const refs = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const path = join(dir, entry.name);
+    if (entry.isDirectory()) refs.push(...codeReferences(path));
+    else if (/\.(tsx?|jsx?|mjs|css)$/.test(entry.name)) {
+      const text = readFileSync(path, 'utf8');
+      if (!text.includes('supabase.co/storage')) continue;
+      for (const match of text.matchAll(/\/(dishes|logos)\/([^'"`\s)]+)/g)) refs.push(decodeURIComponent(`${match[1]}/${match[2]}`));
+    }
+  }
+  return refs;
+}
+const PROTECTED = new Set(codeReferences());
+const isProtected = (bucket, path) => {
+  if (!PROTECTED.has(`${bucket}/${path}`)) return false;
+  console.log(`  ${bucket}/${path}: usato nel codice, non lo tocco`);
+  return true;
+};
+
+/**
+ * Legge tutte le righe di una select a pagine: PostgREST si ferma a 1000 righe e una lista
+ * incompleta farebbe scambiare per orfane (e cancellare) immagini in uso.
+ */
+async function selectAll(query) {
+  const PAGE = 1000;
+  const rows = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await query.range(from, from + PAGE - 1);
+    if (error) throw error;
+    rows.push(...data);
+    if (data.length < PAGE) break;
+  }
+  return rows;
 }
 
 function getClient() {
@@ -135,7 +176,7 @@ async function processTenant(supabase, slug) {
   // Foto dei piatti: anche quelle dell'archivio non assegnate, che il ristoratore vede in dashboard
   const dishPrefix = publicPrefix(supabase, 'dishes');
   const photos = await listFiles(supabase, 'dishes', `${tenant.id}/dishes`);
-  const todo = photos.filter((f) => needsRecompression('dishes', f.size, f.mime));
+  const todo = photos.filter((f) => needsRecompression('dishes', f.size, f.mime) && !isProtected('dishes', f.path));
   console.log(`Foto: ${photos.length}, da ricomprimere: ${todo.length}`);
 
   for (const file of todo) {
@@ -164,7 +205,7 @@ async function processTenant(supabase, slug) {
     const folder = logoPath.split('/').slice(0, -1).join('/');
     const logos = await listFiles(supabase, 'logos', folder);
     const logo = logos.find((f) => f.path === logoPath);
-    if (logo && needsRecompression('logos', logo.size, logo.mime)) {
+    if (logo && needsRecompression('logos', logo.size, logo.mime) && !isProtected('logos', logo.path)) {
       try {
         const result = await recompress(await download(supabase, 'logos', logo.path), 'logos');
         const targetPath = `${tenant.id}/logo-${Date.now()}.png`;
@@ -211,14 +252,15 @@ async function cleanup(supabase, manifestPath) {
 }
 
 async function orphans(supabase) {
-  const { data: tenants } = await supabase.from('tenants').select('id, logo_url, footer_data');
-  const { data: dishes } = await supabase.from('dishes').select('image_url').not('image_url', 'is', null);
-  const { data: designs } = await supabase.from('tenant_design_settings').select('theme_config');
+  const tenants = await selectAll(supabase.from('tenants').select('id, logo_url, footer_data').order('id'));
+  const dishes = await selectAll(supabase.from('dishes').select('id, image_url').not('image_url', 'is', null).order('id'));
+  const designs = await selectAll(supabase.from('tenant_design_settings').select('tenant_id, theme_config').order('tenant_id'));
   const refs = [
     ...dishes.map((d) => d.image_url),
     ...tenants.map((t) => t.logo_url ?? ''),
     ...tenants.map((t) => JSON.stringify(t.footer_data ?? '')),
     ...designs.map((d) => JSON.stringify(d.theme_config ?? '')),
+    ...PROTECTED,
   ].map((u) => decodeURIComponent(u));
   const tenantIds = new Set(tenants.map((t) => t.id));
 
