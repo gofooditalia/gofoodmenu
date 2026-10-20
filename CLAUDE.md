@@ -55,11 +55,13 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
 
 ## Cose aperte (aggiornate al 20/10/2026)
-- Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`): migrazione 038
-  applicata il 20/10/2026. Da fare: `--tenant scjavuru --apply` (164 PNG, ~151 MB → ~15 MB stimati), poi
-  `--orphans --apply` (22 file in `dishes/bistrot107/` e `logos/107-…`), dopo 25 ore `--cleanup <manifest> --apply`,
-  poi gli altri locali. Serve `SUPABASE_SERVICE_ROLE_KEY` nell'ambiente. Non toccare il bucket `Go Food`
-  (loghi della landing in `ClientLogosMarquee.tsx`).
+- Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
+  applicata il 20/10/2026). Fatto il 20/10/2026: Scjavuru (164 foto + logo, 152 MB → 14 MB; copia degli indirizzi
+  vecchi in `scripts/recompress-manifests/scjavuru-backup-before.json`) e orfani (22 file cancellati).
+  Da fare: dal 21/10/2026 ore 17:15 UTC `--cleanup scripts/recompress-manifests/scjavuru-1792513031403.json --apply`
+  (165 file vecchi), poi gli altri locali (Bistrot 107, MagnaRoma, Spaghetteria, Villa Pensabene, Osteria Cilea…),
+  ognuno con il suo manifest da committare. Serve `SUPABASE_SERVICE_ROLE_KEY` (secret key `sb_secret_…` dedicata,
+  da revocare a lavoro finito). Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
