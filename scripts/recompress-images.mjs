@@ -9,7 +9,8 @@
  * cache fino a 24 ore con gli indirizzi vecchi):
  *   1. `--tenant <slug>`: carica le versioni nuove con nomi NUOVI (cache a 31 giorni,
  *      vedi CLAUDE.md), aggiorna dishes.image_url / tenants.logo_url e scrive un
- *      manifest in scripts/recompress-manifests/ con i file vecchi.
+ *      manifest in scripts/recompress-manifests/ con i file vecchi: va committato,
+ *      perché la fase 2 può girare in un'altra sessione o su un altro computer.
  *   2. `--cleanup <manifest>`: dopo almeno 25 ore cancella i file vecchi del manifest.
  * `--orphans`: cancella i file nelle cartelle vecchie (non intestate a un tenant)
  * che nessun piatto, logo, tema o footer usa.
@@ -28,7 +29,7 @@
 import { createClient } from '@supabase/supabase-js';
 import sharp from 'sharp';
 import dotenv from 'dotenv';
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -193,7 +194,7 @@ async function processTenant(supabase, slug) {
 
 async function cleanup(supabase, manifestPath) {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-  const age = Date.now() - statSync(manifestPath).mtimeMs;
+  const age = Date.now() - new Date(manifest.createdAt).getTime();
   if (age < CLEANUP_DELAY_MS && !flag('--force')) {
     console.error(`Manifest creato da ${Math.round(age / 3600000)} ore: aspetta almeno 25 ore (cache dei menu), oppure --force`);
     process.exit(1);

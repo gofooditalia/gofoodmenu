@@ -53,5 +53,3 @@ Thumbs.db
 # log locali
 *.log
 
-# Manifest della ricompressione immagini (scripts/recompress-images.mjs)
-scripts/recompress-manifests/
