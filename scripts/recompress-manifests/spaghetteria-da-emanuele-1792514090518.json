@@ -1,0 +1,174 @@
+{
+  "tenant": "spaghetteria-da-emanuele",
+  "createdAt": "2026-10-20T16:34:19.072Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768243922787-8bvb4q.jpg",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514061776-gmtz4z.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768253967562-6anoum.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514063491-nvz9kt.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768254181602-6ulpy4.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514064892-p6j9zr.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768254363989-xhng7.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514066047-1x40u9.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768255901530-ollgfu.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514066954-n3km5k.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768255905350-9u41ki.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514067868-eg1h4c.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768256696189-cybqb.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514069017-8xa5mi.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768293573414-cod99n.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514070214-eejct6.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768294383006-ta0f84.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514071712-y5xy6d.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768297011906-a0e4dc6.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514072785-7z76qq.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768297016501-xx5r1.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514073759-kxn8hy.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768297178806-g8v4d.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514074660-jbzgyx.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768308322356-78lzvp.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514075630-oqn1ev.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768319560581-m2xje.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514076818-0pdipx.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768324736886-wa7vdh.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514077656-ioj9we.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768326894824-btbcx6.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514078700-d6s7ry.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1768327478934-dr6ys.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514079833-o4y825.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1783428323684-zs82a.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514080965-oim60h.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784026668043-owa0o.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514082454-lwxgq2.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027413995-tx8444.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514083360-nh1v5g.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027414399-kkdz3g.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514084111-nr57wn.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027414479-y270h6.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514084897-sn9wzy.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027414691-y2pg5n.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514085669-6l08as.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027414728-os9wuc.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514086477-87bgul.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027414896-fzonka.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514087465-exybua.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027415443-9lq8r5.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514088413-knb0nw.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1784027420119-f4g7ft.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514089180-mba399.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1791974497907-re4f6.png",
+      "replacedBy": "13be821f-383f-4f6a-90aa-4ab14df192a7/dishes/1792514089965-6yl8ji.webp",
+      "dishes": 1
+    }
+  ]
+}

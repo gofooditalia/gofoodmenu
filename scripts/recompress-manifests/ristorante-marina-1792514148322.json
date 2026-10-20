@@ -1,0 +1,12 @@
+{
+  "tenant": "ristorante-marina",
+  "createdAt": "2026-10-20T16:35:46.562Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "3395267f-8f7f-43b2-968c-aae81914a2c4/dishes/1766335600939-nbk7mb.png",
+      "replacedBy": "3395267f-8f7f-43b2-968c-aae81914a2c4/dishes/1792514147302-eeq2lv.webp",
+      "dishes": 1
+    }
+  ]
+}

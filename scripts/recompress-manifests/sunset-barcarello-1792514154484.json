@@ -1,0 +1,12 @@
+{
+  "tenant": "sunset-barcarello",
+  "createdAt": "2026-10-20T16:35:51.920Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "469bd103-0e3b-43e4-8fea-96e00e915a3b/dishes/1788348017253-s94eku.jpg",
+      "replacedBy": "469bd103-0e3b-43e4-8fea-96e00e915a3b/dishes/1792514153204-y8qi7m.webp",
+      "dishes": 1
+    }
+  ]
+}

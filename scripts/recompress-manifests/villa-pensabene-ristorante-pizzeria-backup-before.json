@@ -1,0 +1,154 @@
+{
+  "createdAt": "2026-10-20T16:34:51.249Z",
+  "tenant": {
+    "id": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543",
+    "slug": "villa-pensabene-ristorante-pizzeria",
+    "logo_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/logos/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/logo-1766606915523.png"
+  },
+  "dishes": [
+    {
+      "id": "0016661c-da4e-4cdb-94de-a7f67406af96",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703298-gzglnj.jpg"
+    },
+    {
+      "id": "039a034e-f895-4a05-b80d-a9817a4252dd",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276325-j42bvl.png"
+    },
+    {
+      "id": "13ecae82-1c43-4c3c-984b-251bb28092c4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127203-urhizi.jpg"
+    },
+    {
+      "id": "2c94dbc1-8325-4aa7-987c-082203c8198f",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965805-6l3m5p.jpg"
+    },
+    {
+      "id": "348d62d8-70d5-45a9-b19b-683e9b2ee67e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127203-ahblmi.jpg"
+    },
+    {
+      "id": "377a4b63-b358-44ef-b3b2-a4649ecd4ad9",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703292-z0odze.jpg"
+    },
+    {
+      "id": "3c9f9f05-cea9-4137-8afc-0285103d2af2",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703164-boaj5q.jpg"
+    },
+    {
+      "id": "495c9ea7-f98d-4093-9c43-4ec3c78c2199",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276419-ztnupj.png"
+    },
+    {
+      "id": "4a76d652-d7a9-4518-9766-370c5732eea3",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703291-pf7fx.jpg"
+    },
+    {
+      "id": "4eced246-986e-4b78-b7cf-4fbe7e38a7a1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018126891-m3l8cl.jpg"
+    },
+    {
+      "id": "55a83a60-7fe3-4230-a7a4-8da224c147b6",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771097627496-04k9j6.jpg"
+    },
+    {
+      "id": "589e0cc9-4033-45c5-8baf-358b011a6e07",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770840482749-j1f98c.jpg"
+    },
+    {
+      "id": "5f8ff09a-cb77-4b98-b4ae-eb20ab1023ac",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703258-khgpc.jpg"
+    },
+    {
+      "id": "64b633bd-3d1b-4e64-a896-e3c2a049ba2c",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-m123ak.jpg"
+    },
+    {
+      "id": "660f050f-6041-473f-bcea-fffed9871e19",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018207854-maiovy.jpg"
+    },
+    {
+      "id": "675636f6-5ac0-4d93-919c-b78f110266dc",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704057-tzwjk.jpg"
+    },
+    {
+      "id": "69877865-2c9a-40ff-b95f-3d60e8d03803",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965807-uouqn.jpg"
+    },
+    {
+      "id": "72498dee-34a6-4b4d-90c2-19a9fdc5851d",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704146-2lo6o9.jpg"
+    },
+    {
+      "id": "74eb4281-c730-426a-b51a-b66071105838",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770842446216-3lpuzr.jpg"
+    },
+    {
+      "id": "7b189d3d-3104-468f-b60e-4c84ddc53f76",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127204-whxako.jpg"
+    },
+    {
+      "id": "7fc008f8-ce54-48cd-b94a-4ba600136ad1",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704183-zkmjr8.jpg"
+    },
+    {
+      "id": "80156d0d-a208-41be-a9f2-ae53e6cfc606",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771097627495-m92tjg.jpg"
+    },
+    {
+      "id": "8b4f4f9d-7d06-4f9c-9586-edef2052ca87",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703165-1aipi9.jpg"
+    },
+    {
+      "id": "9025864b-ecae-4c40-90da-b87ecbe2a604",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843702814-29ty6t.jpg"
+    },
+    {
+      "id": "9365ed30-5dc0-4149-a73b-7bf34abce74e",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276290-cq94qf.png"
+    },
+    {
+      "id": "9d87608a-e13a-45c3-a1ca-753480c3706b",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770840482754-b8ie8r.jpg"
+    },
+    {
+      "id": "ad982db5-5c5e-4c0e-aac8-265fe625c840",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127183-iofirc.jpg"
+    },
+    {
+      "id": "cd15853a-4f1c-4b39-bcc1-c8ee66494180",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276341-u9lz8r.png"
+    },
+    {
+      "id": "d1472e71-94c5-410f-8426-8fcfe218a051",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843702837-g362is.jpg"
+    },
+    {
+      "id": "d62f9259-7063-45e3-ac42-c677a2ed3179",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703166-1yac88.jpg"
+    },
+    {
+      "id": "d8c7dba3-b659-49cb-8425-38e3bd88f925",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704167-f05hup.jpg"
+    },
+    {
+      "id": "e0212f01-59e4-4743-ba33-49ab3d920bab",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843703164-7lz68.jpg"
+    },
+    {
+      "id": "e2074bd4-086b-496f-8ab1-0b127feb9eee",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-qax11t.jpg"
+    },
+    {
+      "id": "e4cbba94-23f3-424f-9c06-ea560360b096",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704151-pxjmtv.jpg"
+    },
+    {
+      "id": "f7e17820-af11-492f-b802-996b2c6cd648",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965778-0a57bk.jpg"
+    },
+    {
+      "id": "fe42275a-d596-4f34-9957-f992655fdfd2",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770840482576-zrh8j.jpg"
+    }
+  ]
+}

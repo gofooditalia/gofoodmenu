@@ -76,9 +76,12 @@ export async function recompress(input, bucket) {
     : { buffer: last, type: 'image/webp', ext: 'webp' };
 }
 
+// Loghi JPEG già caricati sotto il limite restano come sono: le icone dell'app (next/og) leggono
+// anche il JPEG e convertirli in PNG li appesantirebbe. Il bucket accetta solo PNG per i nuovi.
+const ACCEPTED_LEGACY = { dishes: ['image/webp', 'image/jpeg'], logos: ['image/png', 'image/jpeg'] };
+
 function needsRecompression(bucket, size, mime) {
-  const rule = RULES[bucket];
-  return size > rule.maxBytes || !rule.types.includes(mime);
+  return size > RULES[bucket].maxBytes || !ACCEPTED_LEGACY[bucket].includes(mime);
 }
 
 /**

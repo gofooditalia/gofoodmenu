@@ -1,0 +1,12 @@
+{
+  "tenant": "accademia",
+  "createdAt": "2026-10-20T16:35:49.480Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "ddaa08eb-75d2-4a70-b1c1-d77aca2b10b2/dishes/1769394862098-kog2qd.png",
+      "replacedBy": "ddaa08eb-75d2-4a70-b1c1-d77aca2b10b2/dishes/1792514150255-45lnqt.webp",
+      "dishes": 1
+    }
+  ]
+}

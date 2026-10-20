@@ -1,0 +1,114 @@
+{
+  "tenant": "villa-pensabene-ristorante-pizzeria",
+  "createdAt": "2026-10-20T16:34:51.668Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769005617437-7vvwy8.png",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514092471-k59xd6.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276290-cq94qf.png",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514093596-2fkoxv.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276325-j42bvl.png",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514094619-tu3wpn.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276341-u9lz8r.png",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514095888-i9nudk.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1769705276419-ztnupj.png",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514097006-i0d9wm.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965778-0a57bk.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514099011-04n4dx.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965805-6l3m5p.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514100497-lo2pvn.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-2laitc.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514102958-amjojj.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-m123ak.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514106765-dpcbvc.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-qax11t.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514108369-ffhy8s.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770841965806-uz99ei.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514110238-847zzo.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1770843704199-m4a6vw.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514112131-86s76g.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127183-iofirc.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514114041-b8hap7.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127203-urhizi.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514116041-g4rax0.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018127204-whxako.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514117761-6tgl7g.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771018207855-8l8pq8.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514119660-36o732.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771097627495-m92tjg.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514121293-ve5wsd.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1771097627496-04k9j6.jpg",
+      "replacedBy": "15a9a2f9-bd85-4694-8d69-eb5d2c1ba543/dishes/1792514124232-k3l3cb.webp",
+      "dishes": 1
+    }
+  ]
+}
