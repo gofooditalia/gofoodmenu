@@ -5,13 +5,21 @@ import { useTheme } from './ThemeContext';
 import { MenuFrame } from './MenuFrame';
 import { TextureOverlay } from './TextureOverlay';
 
+// Font già inclusi nel sito da next/font (src/app/layout.tsx): non vanno riscaricati da Google Fonts
+const LOCAL_FONTS: Record<string, string> = {
+    'Inter': 'var(--font-inter)',
+    'Playfair Display': 'var(--font-playfair)',
+};
+
+const fontStack = (font: string) => LOCAL_FONTS[font] ?? `'${font}'`;
+
 export function ThemeWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
     const { currentTheme } = useTheme();
     const { fontHeading, fontBody, colors } = currentTheme;
 
     // Helper to construct Google Fonts URL
     const getFontUrl = () => {
-        const fonts = [fontHeading, fontBody].filter(f => f && f !== 'sans-serif' && f !== 'serif');
+        const fonts = [fontHeading, fontBody].filter(f => f && f !== 'sans-serif' && f !== 'serif' && !LOCAL_FONTS[f]);
         const uniqueFonts = [...new Set(fonts)];
         if (uniqueFonts.length === 0) return '';
 
@@ -23,7 +31,7 @@ export function ThemeWrapper({ children, className }: { children: React.ReactNod
         <div
             className={`relative w-full min-h-[600px] flex flex-col ${className || ''}`}
             style={{
-                fontFamily: fontBody,
+                fontFamily: fontStack(fontBody),
                 '--tenant-primary': colors.primary,
                 '--tenant-secondary': colors.secondary,
                 '--tenant-background': colors.background,
@@ -53,8 +61,8 @@ export function ThemeWrapper({ children, className }: { children: React.ReactNod
             )}
             <style dangerouslySetInnerHTML={{
                 __html: `
-            .theme-heading { font-family: '${fontHeading}', serif; text-shadow: var(--tenant-text-shadow); }
-            .theme-body { font-family: '${fontBody}', sans-serif; text-shadow: var(--tenant-text-shadow); }
+            .theme-heading { font-family: ${fontStack(fontHeading)}, serif; text-shadow: var(--tenant-text-shadow); }
+            .theme-body { font-family: ${fontStack(fontBody)}, sans-serif; text-shadow: var(--tenant-text-shadow); }
         `}} />
 
             {/* Texture/Pattern Layer */}

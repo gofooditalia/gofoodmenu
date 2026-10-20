@@ -53,9 +53,14 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
       }
     };
 
+    // Lingua scelta in precedenza (il cambio lingua salva il cookie e ricarica la pagina)
+    const match = document.cookie.match(/googtrans=\/it\/([a-zA-Z-]+)/);
+    const translated = !!match && match[1] !== 'it';
+
     const scriptId = 'google-translate-script';
-    // Only load script if NOT disabled (don't load translate widget in preview)
-    if (!disabled) {
+    // Lo script di Google (~100 KB) serve solo a tradurre: si carica solo se c'è una lingua
+    // diversa dall'italiano, mai nelle anteprime (disabled)
+    if (!disabled && translated) {
       if (!document.getElementById(scriptId)) {
         const script = document.createElement('script');
         script.id = scriptId;
@@ -69,8 +74,6 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
       }
     }
 
-    // Check existing cookie
-    const match = document.cookie.match(/googtrans=\/it\/([a-zA-Z-]+)/);
     if (match) {
       setCurrentLang(match[1]);
     }

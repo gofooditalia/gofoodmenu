@@ -1,9 +1,7 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
-
 import React from 'react';
-import Image from 'next/image';
+import TenantLogo from './TenantLogo';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
 
@@ -58,7 +56,7 @@ export default function Header({
 
               {/* Logo (Centro) */}
               <div className="flex-1 flex items-center justify-center px-2">
-                <img src={sanitizedLogoUrl} alt={restaurantName} className="w-auto h-auto max-h-[56px] max-w-[180px] object-contain transition-all duration-200" />
+                <TenantLogo eager src={sanitizedLogoUrl} alt={restaurantName} className="w-auto h-auto max-h-[56px] max-w-[180px] object-contain transition-all duration-200" />
               </div>
 
               {/* Lingua (Destra) */}
@@ -71,7 +69,7 @@ export default function Header({
             <>
               {/* Logo (Sinistra) */}
               <div className="flex-1 flex justify-start items-center">
-                <img src={sanitizedLogoUrl} alt={restaurantName} className="w-auto h-auto max-h-[56px] max-w-[150px] object-contain transition-all duration-200 object-left" />
+                <TenantLogo eager src={sanitizedLogoUrl} alt={restaurantName} className="w-auto h-auto max-h-[56px] max-w-[150px] object-contain transition-all duration-200 object-left" />
               </div>
 
               {/* Controlli (Destra) - Uniti */}
@@ -102,7 +100,8 @@ export default function Header({
 
           {/* Logo centrato ASSOLUTO */}
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-[280px] h-full pointer-events-none">
-            <img
+            <TenantLogo
+              eager
               src={sanitizedLogoUrl}
               alt={restaurantName}
               className="w-auto h-auto max-h-[64px] max-w-full object-contain transition-all duration-200"

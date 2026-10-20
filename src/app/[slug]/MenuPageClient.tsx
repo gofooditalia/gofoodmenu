@@ -6,7 +6,6 @@ import CategoryNav from '@/components/CategoryNav';
 import DishCard from '@/components/DishCard';
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
-import SplashScreen from '@/components/ui/splash-screen';
 import { ThemeProvider, useTheme } from '@/components/theme/ThemeContext';
 import { ThemeWrapper } from '@/components/theme/ThemeWrapper';
 import { ThemeDivider } from '@/components/theme/ThemeDivider';
@@ -48,7 +47,6 @@ interface Category {
 function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Category[] }) {
   const { currentTheme } = useTheme();
   const [activeCategory, setActiveCategory] = useState<string | null>(categories[0]?.id ?? null);
-  const [showSplash, setShowSplash] = useState(true);
   // Durante lo scroll avviato da un click sulla barra, lo scroll-spy non deve cambiare categoria
   const isManualScroll = useRef(false);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -135,8 +133,6 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
         '--tenant-accent': currentTheme.colors.accent,
       } as React.CSSProperties}
     >
-      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
-
       <Header
         restaurantName={tenant.restaurant_name}
         logoUrl={tenant.logo_url}
@@ -178,7 +174,7 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
 
       {/* Menu Sections: tutte le categorie in sequenza, navigabili con lo scroll verticale */}
       <main className="container mx-auto px-4 py-4 space-y-16">
-        {categories.map((category) => (
+        {categories.map((category, categoryIndex) => (
           <section key={category.id} id={category.id}>
             {/* Category Title with Dividers */}
             <div className="flex items-center justify-center gap-4 mb-8">
@@ -207,8 +203,13 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
 
             {/* Dishes Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {category.dishes.map((dish) => (
-                <DishCard key={dish.id} dish={dish} tenantSlug={tenant.slug} />
+              {category.dishes.map((dish, dishIndex) => (
+                <DishCard
+                  key={dish.id}
+                  dish={dish}
+                  tenantSlug={tenant.slug}
+                  priority={categoryIndex === 0 && dishIndex < 2}
+                />
               ))}
             </div>
           </section>
