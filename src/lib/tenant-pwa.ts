@@ -1,7 +1,7 @@
 /**
  * Dati per la PWA di ogni ristorante: chi apre il menu può installarlo come app
  * con nome, logo e colori del locale, che si apre direttamente sul suo menu.
- * Usati da /[slug]/manifest.webmanifest e /[slug]/app-icon/[size].
+ * Usati da /[slug]/manifest.webmanifest, /[slug]/app-icon/[size] e /[slug]/opengraph-image.
  */
 
 import { createPublicClient } from '@/lib/supabase/public';
@@ -17,6 +17,8 @@ export interface TenantPwaData {
   logoUrl: string | null;
   // Colore di barra di stato, barra di navigazione (Android 15+), splash e fondo icona
   appColor: string;
+  // Tema completo del menu (colori per l'anteprima di condivisione, /[slug]/opengraph-image)
+  theme: ThemeConfig;
 }
 
 function parseHex(color: string | undefined): [number, number, number] | null {
@@ -73,5 +75,6 @@ export async function getTenantPwaData(slug: string): Promise<TenantPwaData | nu
     name: tenant.restaurant_name,
     logoUrl: tenant.logo_url || null,
     appColor: pickAppColor(theme),
+    theme,
   };
 }
