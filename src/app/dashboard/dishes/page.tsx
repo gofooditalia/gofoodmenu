@@ -31,7 +31,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Loader2, Plus, GripVertical, Trash2, Edit, Image as ImageIcon, Check } from 'lucide-react';
-import imageCompression from 'browser-image-compression';
+import { prepareImageForUpload, uploadExtension } from '@/lib/image-upload';
 
 // Shadcn Imports
 import { Button } from '@/components/ui/button';
@@ -472,37 +472,16 @@ export default function DishesPage() {
     // NEW LOGIC: Use ONLY tenantId for folder name
     const folderName = `${tenantId}/dishes`;
 
-    // Compression Options
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-      initialQuality: 0.8,
-    };
-
-    let fileToUpload = file;
-    try {
-      // Attempt compression
-      if (file.type.startsWith('image/')) {
-        console.log(`[DishesPage] Original size: ${file.size / 1024 / 1024} MB`);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        fileToUpload = await (imageCompression as any)(file, options);
-        console.log(`[DishesPage] Compressed size: ${fileToUpload.size / 1024 / 1024} MB`);
-      }
-    } catch (error) {
-      console.error("[DishesPage] Image compression failed, uploading original:", error);
-      // Fallback to original file
-    }
-
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+    // Ridimensionata e convertita in WebP: niente originali pesanti su Supabase
+    const fileToUpload = await prepareImageForUpload(file, 'dish');
+    const fileName = `${Math.random().toString(36).substring(2)}.${uploadExtension(fileToUpload)}`;
     const filePath = `${folderName}/${fileName}`;
 
     console.log('[DishesPage] Uploading to:', filePath);
 
     const { error: uploadError } = await supabase.storage
       .from('dishes')
-      .upload(filePath, fileToUpload);
+      .upload(filePath, fileToUpload, { contentType: fileToUpload.type });
 
     if (uploadError) {
       throw uploadError;
@@ -650,16 +629,13 @@ export default function DishesPage() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const tenantData = tenant as any;
       let imageUrl = editingDish?.image_url;
+      // La foto sostituita si cancella solo a salvataggio riuscito: se il caricamento
+      // viene rifiutato o il salvataggio fallisce, il piatto non resta senza foto
+      let replacedImageUrl: string | undefined;
 
       // 1. If uploading a NEW image
       if (formData.image) {
-        // Delete OLD image if exists (STRICT CLEANUP)
-        if (imageUrl) {
-          console.log('[handleSubmit] Deleting old image before upload:', imageUrl);
-          await deleteDishImage(imageUrl);
-        }
-
-        // Upload NEW image
+        replacedImageUrl = imageUrl || undefined;
         imageUrl = await uploadImage(formData.image, tenantData.restaurant_name, tenantId);
       }
 
@@ -718,6 +694,8 @@ export default function DishesPage() {
 
         if (error) throw error;
       }
+
+      if (replacedImageUrl) await deleteDishImage(replacedImageUrl);
 
       void revalidatePublicMenu();
       resetForm();

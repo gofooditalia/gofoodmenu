@@ -47,6 +47,12 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
   `preload`; logo via `TenantLogo` (next/image); Inter/Playfair solo da next/font (mai doppi da Google Fonts);
   Google Translate caricato solo se il cookie `googtrans` indica una lingua diversa dall'italiano;
   link allergeni con `prefetch={false}`.
+- **Caricamento immagini** (20/10/2026): ogni foto/logo passa da `prepareImageForUpload` in
+  `src/lib/image-upload.ts` (unico punto: foto piatti max 1600 px / 500 KB in WebP, JPEG di riserva;
+  loghi max 600 px / 200 KB in PNG, perché `/[slug]/app-icon` usa next/og che non legge il WebP).
+  Se l'ottimizzazione fallisce il caricamento si blocca: mai caricare l'originale. Barriera lato server:
+  `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
+  allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
 
 ## Cose aperte (aggiornate al 17/10/2026)
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
