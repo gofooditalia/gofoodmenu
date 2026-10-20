@@ -11,20 +11,29 @@ export const contentType = 'image/png';
 export const alt = 'Menu digitale';
 export const revalidate = 86400;
 
-async function getCity(slug: string): Promise<string | null> {
+// Città della sede e "Nome Visualizzato" (footer_data.public_name), che nel menu prende il
+// posto del nome di registrazione (come in ./page.tsx)
+async function getShareInfo(slug: string): Promise<{ city: string | null; publicName: string | null }> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = await (createPublicClient().from('tenants') as any)
-    .select('tenant_locations(city)')
+    .select('footer_data, tenant_locations(city)')
     .eq('slug', slug)
     .single();
-  return data?.tenant_locations?.[0]?.city ?? null;
+  return {
+    city: data?.tenant_locations?.[0]?.city?.trim() || null,
+    publicName: data?.footer_data?.public_name?.trim() || null,
+  };
 }
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [pwa, city, { brandLogo, fonts }] = await Promise.all([getTenantPwaData(slug), getCity(slug), loadOgAssets()]);
+  const [pwa, { city, publicName }, { brandLogo, fonts }] = await Promise.all([
+    getTenantPwaData(slug),
+    getShareInfo(slug),
+    loadOgAssets(),
+  ]);
 
-  const name = pwa?.name.trim() || 'Menu digitale';
+  const name = publicName || pwa?.name.trim() || 'Menu digitale';
   const colors = pwa?.theme.colors;
   const background = colors?.background || '#FFF8E7';
   const panel = colors?.headerBackground || colors?.surface || '#FFFFFF';
