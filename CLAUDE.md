@@ -54,7 +54,12 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
   `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
 
-## Cose aperte (aggiornate al 17/10/2026)
+## Cose aperte (aggiornate al 20/10/2026)
+- Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`): migrazione 038
+  applicata il 20/10/2026. Da fare: `--tenant scjavuru --apply` (164 PNG, ~151 MB → ~15 MB stimati), poi
+  `--orphans --apply` (22 file in `dishes/bistrot107/` e `logos/107-…`), dopo 25 ore `--cleanup <manifest> --apply`,
+  poi gli altri locali. Serve `SUPABASE_SERVICE_ROLE_KEY` nell'ambiente. Non toccare il bucket `Go Food`
+  (loghi della landing in `ClientLogosMarquee.tsx`).
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
