@@ -257,9 +257,7 @@ export async function generateMetadata({ params }: PageProps) {
       description,
       url: pageUrl,
       type: 'website',
-      images: tenantData.logo_url
-        ? [{ url: tenantData.logo_url, alt: tenantData.restaurant_name }]
-        : undefined,
+      // Immagine di anteprima: ./opengraph-image.tsx (logo, nome e colori del locale, 1200×630)
     },
     // PWA del ristorante: Chrome propone di installare il menu come app del locale
     manifest: `/${slug}/manifest.webmanifest`,
@@ -271,10 +269,9 @@ export async function generateMetadata({ params }: PageProps) {
       ? { icon: tenantData.logo_url, apple: `/${slug}/app-icon/any/512` }
       : undefined,
     twitter: {
-      card: 'summary' as const,
+      card: 'summary_large_image' as const,
       title: tenantData.restaurant_name,
       description,
-      images: tenantData.logo_url ? [tenantData.logo_url] : undefined,
     },
   };
 }

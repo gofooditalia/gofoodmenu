@@ -34,14 +34,7 @@ export const metadata: Metadata = {
     title: "Go!Food Menù - Il Menu Digitale per Ristoranti",
     description: "La soluzione completa per il tuo ristorante: menu digitale multilingua, gestione allergeni e setup immediato. Scansiona il QR e ordina. Inizia oggi.",
     type: "website",
-    images: [
-      {
-        url: '/opengraph-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Go!Food Menù Anteprima',
-      },
-    ],
+    // Immagine di anteprima: src/app/opengraph-image.tsx (file convention di Next)
   },
   icons: {
     icon: '/favicon.ico',
