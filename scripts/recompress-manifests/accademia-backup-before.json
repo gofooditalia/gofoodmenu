@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-10-20T16:35:49.032Z",
+  "tenant": {
+    "id": "ddaa08eb-75d2-4a70-b1c1-d77aca2b10b2",
+    "slug": "accademia",
+    "logo_url": null
+  },
+  "dishes": [
+    {
+      "id": "d63e85b2-85e7-4d85-8610-ab48171bc0c4",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/ddaa08eb-75d2-4a70-b1c1-d77aca2b10b2/dishes/1769394862098-kog2qd.png"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "tenant": "osteria-cilea",
+  "createdAt": "2026-10-20T16:35:26.875Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/0ehmzou3rcys.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514128017-ntpi1w.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1770112634009-m03zad.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514129282-k7qnae.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1770113106255-0j0xza.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514130218-kh94lv.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1770113559331-bkuedc.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514131304-6tmdo2.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774280305680-r4b2e.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514132746-hyea13.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774280313759-9azk5k.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514133709-8s2t3w.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774281305401-xyak7f.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514134820-mrso3e.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774281819838-ocxv06.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514135676-snkqjs.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774281866195-kvbxz.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514136753-l25ymr.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/1774281957668-vjm1gd.png",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514137818-tcr5ed.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/a251wkgjdnp.jpg",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514140881-aw6zhj.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/fs5cxyljspo.jpg",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514142133-kr56xl.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/kdn1weqkwnf.jpg",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514143825-6ga1pv.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "2168c596-610d-408c-889a-09215cb339ab/dishes/vp13yqa61q.jpg",
+      "replacedBy": "2168c596-610d-408c-889a-09215cb339ab/dishes/1792514144923-tip49g.webp",
+      "dishes": 1
+    }
+  ]
+}

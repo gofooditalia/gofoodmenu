@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-10-20T16:35:46.166Z",
+  "tenant": {
+    "id": "3395267f-8f7f-43b2-968c-aae81914a2c4",
+    "slug": "ristorante-marina",
+    "logo_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/logos/3395267f-8f7f-43b2-968c-aae81914a2c4/logo-1766335663441.jpg"
+  },
+  "dishes": [
+    {
+      "id": "5c89d2cb-6d18-4dab-bea9-7a7756b05347",
+      "image_url": "https://sgdxmtqrjgxuajxxvajf.supabase.co/storage/v1/object/public/dishes/3395267f-8f7f-43b2-968c-aae81914a2c4/dishes/1766335600939-nbk7mb.png"
+    }
+  ]
+}

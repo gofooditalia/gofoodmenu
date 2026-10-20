@@ -56,15 +56,14 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
 
 ## Cose aperte (aggiornate al 20/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
-  applicata il 20/10/2026). Fatto il 20/10/2026: Scjavuru (164 foto + logo, 152 MB → 14 MB; copia degli indirizzi
-  vecchi in `scripts/recompress-manifests/scjavuru-backup-before.json`), orfani (22 file cancellati) e
-  Bistrot 107 (21 foto oltre il limite + logo, 53 MB → 4 MB; le altre foto erano già in regola) e MagnaRoma
-  (68 foto + logo, 27 MB → 3,6 MB).
-  Da fare dal 21/10/2026 ore 17:30 UTC: `--cleanup` con i manifest in `scripts/recompress-manifests/`
-  (`scjavuru-1792513031403.json` 165 file, `bistrot107-1792513419399.json` 22, `magnaromatrattoria-1792513815594.json` 69),
-  poi gli altri locali (Spaghetteria, Villa Pensabene, Osteria Cilea…),
-  ognuno con il suo manifest da committare. Serve `SUPABASE_SERVICE_ROLE_KEY` (secret key `sb_secret_…` dedicata,
-  da revocare a lavoro finito). Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
+  applicata il 20/10/2026). Fatto il 20/10/2026 per tutti i locali con file fuori regola (Scjavuru, Bistrot 107,
+  MagnaRoma, Spaghetteria, Villa Pensabene, Osteria Cilea, Marina, Accademia, Sunset) + 22 orfani cancellati:
+  foto in uso da 339 a 106 MB, nessuna foto o logo fuori regola. Copie degli indirizzi originali in
+  `scripts/recompress-manifests/*-backup-before.json`. I loghi JPEG sotto 200 KB restano JPEG (next/og li legge).
+  Da fare dal 21/10/2026 ore 17:45 UTC: `--cleanup` con ogni manifest `scripts/recompress-manifests/<slug>-<numero>.json`
+  (prova, poi `--apply`; ~320 file vecchi), poi revocare la secret key `sb_secret_…` dedicata e toglierla
+  dall'ambiente. Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
+  BelleEpoque usa 86 foto dal proprio sito (belleepoquepalermo.it), fuori da Supabase.
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
