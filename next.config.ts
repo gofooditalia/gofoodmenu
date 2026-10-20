@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Video della home: nomi file nuovi a ogni sostituzione, quindi cache lunga senza rischi
+  async headers() {
+    return [
+      {
+        source: '/videos/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+    ];
+  },
   images: {
     // Le foto caricate prendono sempre un nome nuovo (usePhotos, dishes, logo),
     // quindi la cache lunga è sicura: evita di ritrasformarle ogni 4 ore (default Next 16).

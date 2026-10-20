@@ -131,15 +131,19 @@ export default function LandingPage() {
                   <div className="relative rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-gray-900 bg-black">
                     {/* Screen Content */}
                     <div className="relative bg-white w-full aspect-[1206/2374]">
+                      {/* 640 px, 30 fps, senza audio, indice all'inizio (faststart): ~0,8 MB e parte subito.
+                          Il poster è il primo fotogramma, visibile mentre il video si carica.
+                          Per sostituirlo usare un nome file nuovo: /videos è in cache per un anno */}
                       <video
                         autoPlay
                         loop
                         muted
                         playsInline
+                        poster="/videos/hero-demo-poster.webp"
+                        aria-hidden="true"
                         className="absolute top-0 left-0 w-full h-full object-cover"
                       >
-                        <source src="/videos/VIDEO.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
+                        <source src="/videos/hero-demo.mp4" type="video/mp4" />
                       </video>
                     </div>
                   </div>
