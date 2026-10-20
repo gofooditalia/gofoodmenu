@@ -57,9 +57,11 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
 ## Cose aperte (aggiornate al 20/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
   applicata il 20/10/2026). Fatto il 20/10/2026: Scjavuru (164 foto + logo, 152 MB → 14 MB; copia degli indirizzi
-  vecchi in `scripts/recompress-manifests/scjavuru-backup-before.json`) e orfani (22 file cancellati).
-  Da fare: dal 21/10/2026 ore 17:15 UTC `--cleanup scripts/recompress-manifests/scjavuru-1792513031403.json --apply`
-  (165 file vecchi), poi gli altri locali (Bistrot 107, MagnaRoma, Spaghetteria, Villa Pensabene, Osteria Cilea…),
+  vecchi in `scripts/recompress-manifests/scjavuru-backup-before.json`), orfani (22 file cancellati) e
+  Bistrot 107 (21 foto oltre il limite + logo, 53 MB → 4 MB; le altre foto erano già in regola).
+  Da fare dal 21/10/2026 ore 17:25 UTC: `--cleanup` con `scripts/recompress-manifests/scjavuru-1792513031403.json`
+  (165 file vecchi) e `bistrot107-1792513419399.json` (22), poi gli altri locali (MagnaRoma, Spaghetteria,
+  Villa Pensabene, Osteria Cilea…),
   ognuno con il suo manifest da committare. Serve `SUPABASE_SERVICE_ROLE_KEY` (secret key `sb_secret_…` dedicata,
   da revocare a lavoro finito). Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).

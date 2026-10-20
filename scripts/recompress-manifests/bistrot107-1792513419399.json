@@ -1,0 +1,137 @@
+{
+  "tenant": "bistrot107",
+  "createdAt": "2026-10-20T16:23:05.497Z",
+  "oldFiles": [
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1768075377594-ishmhf.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513387189-vsmrjj.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1768076059191-dokpq.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513388791-6zfq7b.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1768565513643-slxm5.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513390918-p1xov0.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1791543847001-ersoo5.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513392435-hid60t.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/48rainjh6wo.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513394444-uf1uhh.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/5xsbbcuu8ou.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513395871-9rf8nt.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/6aar8eoi6qe.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513397457-a9tiqp.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/83k3koy49f4.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513398942-dolnc1.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/al24laqwwlo.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513400213-xblffp.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/be51uf0or8p.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513401421-t82iai.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/ca4r0rnb2gu.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513403203-bps70q.webp",
+      "dishes": 0
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/fxpq2qe2ctg.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513404692-5wg7aa.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/gglds3mhcbr.JPG",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513405895-lv57kg.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/igtrzih6vjs.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513407552-6ewo8y.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/jblgvnkgwyl.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513409015-dsuntt.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/kpgpd0bwqw.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513410244-2zlvyq.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/l2fp6frsr9.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513411888-ldv9q4.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/mafx18owfwd.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513413556-m9ajvy.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/nltluxw6u8b.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513415092-ztg47s.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/t0ti0i8hsie.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513416373-fif5vd.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "dishes",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/z4w453z2x0o.jpg",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/dishes/1792513417741-cdyyug.webp",
+      "dishes": 1
+    },
+    {
+      "bucket": "logos",
+      "path": "cf7b66ea-5324-47c5-bae6-6659af45e7de/logo-1768747377937.png",
+      "replacedBy": "cf7b66ea-5324-47c5-bae6-6659af45e7de/logo-1792513418923.png"
+    }
+  ]
+}
