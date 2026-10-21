@@ -38,9 +38,8 @@ logo (file), colori del brand, sedi/orari, se servono prenotazioni o assistente 
 Prima di proporlo, verificare che sia libero (query sotto).
 
 ### 2. Registrazione e onboarding
-Di norma lo fa il ristoratore da `/register`. Se lo fa il titolare per conto del cliente, usare
-l'email del cliente (sarà lui ad accedere alla dashboard). Nessun insert manuale in `tenants`:
-si salterebbero onboarding, trigger e Stripe.
+Il ristoratore si iscrive da solo da `/register` con la propria email e completa l'onboarding.
+Nessun insert manuale in `tenants`: si salterebbero onboarding, trigger e Stripe.
 
 ### 3. Logo e foto
 - Ogni foto o logo passa da `prepareImageForUpload` (`src/lib/image-upload.ts`): piatti max 1600 px /
@@ -56,13 +55,25 @@ Se i colori del brand sono tutti chiari, avvisare il titolare che l'app avrà ba
 e proporre un primario più scuro. Non provare a sistemarlo via CSS o viewport-fit (già scartato).
 
 ### 5. Attivazione
-Normale: il ristoratore paga dalla dashboard e il webhook attiva tutto.
-Attivare a mano via SQL (per esempio per un cliente fatturato fuori da Stripe) è possibile solo dal
-SQL Editor di Supabase, ma **solo se il titolare lo chiede esplicitamente**: in quel caso non ci sono
-righe in `tenant_billing` e il portale di fatturazione non funzionerà per quel locale. Proporre
-sempre la query e lasciarla eseguire a lui, senza lanciarla in autonomia.
+Tutti gli abbonamenti passano da Stripe: il ristoratore paga dalla dashboard e il webhook attiva
+il menu. Non proporre attivazioni manuali via SQL. Se dopo il pagamento il menu resta in 404,
+controllare `subscription_tier`/`subscription_status` e `slug` (query sotto) e i log del webhook
+su Vercel (`[STRIPE_WEBHOOK]`).
 
-### 6. Facoltativi
+### 6. QR code
+Lo genera il ristoratore dalla dashboard: card "Il tuo QR Menu" (`src/components/dashboard/QRCodeCard.tsx`,
+libreria `react-qrcode-logo`). Appare solo dopo il pagamento (senza slug c'è "Attivazione Richiesta",
+con il piano free è bloccata).
+- Il link è sempre `https://gofoodmenu.it/<slug>` (`SITE_URL` in `src/lib/site.ts`), anche se la
+  dashboard è aperta da un'anteprima Vercel.
+- Stile fisso: punti arrotondati, correzione d'errore alta (`H`), logo del locale al centro
+  (se manca, `/logo-gofood.png`). Colori e dimensioni del logo vengono da
+  `tenants.theme_options.qrCode` (default nero su bianco, logo incluso).
+- Il pulsante "Scarica QR Code (.png)" salva `<slug>-menu-qr.png` a **280×280 px**: va bene per
+  segnatavolo piccoli, per stampe grandi (locandine, vetrine) può risultare sgranato.
+- Prima di mandarlo in stampa, provarlo con almeno due telefoni: deve aprire il menu giusto.
+
+### 7. Facoltativi
 - **Prenotazioni**: turni in `reservation_shifts` (esempio: migrazione 034 per MagnaRoma).
 - **Recensioni Google**: impostazioni in `tenant_review_settings`, pagina `/dashboard/reviews`.
 - **Logo sulla landing** (`src/components/landing/ClientLogosMarquee.tsx`): copiare il logo in
@@ -99,7 +110,7 @@ o le migrazioni in `supabase/migrations/`).
 - [ ] Anteprima di condivisione (link inviato su WhatsApp) con nome e colori del locale
 - [ ] App installata da telefono: icona corretta, barre leggibili (Android) e icona su iPhone.
       Le PWA vanno provate in produzione, non nelle anteprime Vercel (protette da login)
-- [ ] QR stampato/generato sullo slug definitivo
+- [ ] QR scaricato dalla dashboard, provato con due telefoni, stampato a una dimensione adatta
 
 ## Alla fine
 Riassumere al titolare in poche righe: cosa è attivo, link del menu, cosa resta in sospeso.
