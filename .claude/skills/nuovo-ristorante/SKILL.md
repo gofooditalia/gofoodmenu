@@ -112,6 +112,10 @@ o le migrazioni in `supabase/migrations/`).
       Le PWA vanno provate in produzione, non nelle anteprime Vercel (protette da login)
 - [ ] QR scaricato dalla dashboard, provato con due telefoni, stampato a una dimensione adatta
 
+## Test automatici
+Aggiungere lo slug del nuovo locale a `LOCALI_REALI` in `e2e/locali.ts` (branch + PR): da lì i test
+Playwright controllano a ogni PR che il suo menu si apra e resti leggibile.
+
 ## Alla fine
 Riassumere al titolare in poche righe: cosa è attivo, link del menu, cosa resta in sospeso.
 Se è emersa una decisione nuova o un problema ricorrente, proporre di aggiornare `CLAUDE.md`

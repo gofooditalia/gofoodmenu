@@ -17,6 +17,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   prima della produzione. Le anteprime sono protette dal login Vercel (le PWA vanno provate in produzione).
 - Le migrazioni in `supabase/migrations/` si eseguono a mano nel SQL Editor di Supabase.
 - Controllo rapido: `npx tsc --noEmit -p .` (ESLint al momento non parte per un problema di configurazione).
+- Test del menu pubblico (Playwright + axe, anche su GitHub Actions a ogni PR): `npm run build && npm run test:e2e`.
+  Girano sui 7 locali reali in `e2e/locali.ts` (da aggiornare a ogni nuovo cliente) e falliscono anche per
+  colori illeggibili salvati da un locale: in quel caso si corregge il tema, non il test.
 - Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).
 
 ## Decisioni prese
