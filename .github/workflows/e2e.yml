@@ -20,8 +20,10 @@ jobs:
       # Chiavi pubbliche di Supabase (le stesse del browser): sola lettura dei menu pubblici
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      # src/lib/stripe.ts la richiede già in compilazione; i test non usano mai Stripe
+      # Valori finti: src/lib/stripe.ts e la rotta del webhook Stripe creano i loro client già in
+      # compilazione, ma i test non chiamano mai Stripe né usano la chiave di servizio di Supabase
       STRIPE_SECRET_KEY: sk_test_finto_solo_per_build
+      SUPABASE_SERVICE_ROLE_KEY: finta_solo_per_build
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
