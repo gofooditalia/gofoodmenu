@@ -67,10 +67,10 @@ con il piano free è bloccata).
 - Il link è sempre `https://gofoodmenu.it/<slug>` (`SITE_URL` in `src/lib/site.ts`), anche se la
   dashboard è aperta da un'anteprima Vercel.
 - Stile fisso: punti arrotondati, correzione d'errore alta (`H`), logo del locale al centro
-  (se manca, `/logo-gofood.png`). Colori e dimensioni del logo vengono da
+  (se manca, quello GO!Food `/logo-gofood-new.svg`). Colori e dimensioni del logo vengono da
   `tenants.theme_options.qrCode` (default nero su bianco, logo incluso).
-- Il pulsante "Scarica QR Code (.png)" salva `<slug>-menu-qr.png` a **280×280 px**: va bene per
-  segnatavolo piccoli, per stampe grandi (locandine, vetrine) può risultare sgranato.
+- Il pulsante "Scarica QR Code (.png)" salva `<slug>-menu-qr.png` ad alta risoluzione (QR disegnato
+  a 1200 px, circa 1285 px di lato su computer): va bene anche per locandine e vetrine.
 - Prima di mandarlo in stampa, provarlo con almeno due telefoni: deve aprire il menu giusto.
 
 ### 7. Facoltativi
