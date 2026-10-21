@@ -70,7 +70,7 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
               <div className="text-xl md:text-2xl theme-heading font-bold text-[var(--tenant-primary,#8B0000)] mb-3">
                 Fuori stagione
               </div>
-              <div className="text-sm md:text-base text-gray-700 leading-relaxed">
+              <div className="text-sm md:text-base text-[var(--tenant-text-secondary,#4B5563)] leading-relaxed">
                 Disponibile solo nel periodo stagionale
               </div>
             </div>

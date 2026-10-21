@@ -1,6 +1,92 @@
 import { ThemeConfig, ThemePreset } from './types';
 
+// Preset del Design Studio: pochi, completi in ogni colore (il menu pubblico è identico all'anteprima)
+// e con contrasti WCAG AA verificati. Contengono solo campi che hanno effetto sul menu.
 export const THEME_PRESETS: ThemePreset[] = [
+    {
+        id: 'trattoria-classica',
+        name: 'Trattoria Classica',
+        description: 'Crema caldo, rosso vino e oro antico: la tradizione italiana, pulita e leggibile.',
+        category: 'restaurant',
+        colors: {
+            primary: '#8C1C13',          // Rosso vino: titoli, pulsanti, chip allergeni
+            secondary: '#7A5A1E',        // Oro scuro: sottotitolo, descrizioni categorie, filetti
+            accent: '#B08D57',           // Oro antico: fondo dei chip allergeni
+            background: '#FBF6EC',       // Crema caldo
+            surface: '#FFFFFF',          // Card dei piatti
+            text: '#1F1A17',
+            textSecondary: '#5E554C',
+            border: '#D8C7A4',           // Divisori filigrana
+            price: '#FFFFFF',
+            success: '#15803D',
+            priceBackground: '#8C1C13',  // Prezzo bianco su rosso vino
+            badgeBackground: '#E9DCC0',
+            badgeText: '#5A4214',
+            footerBackground: '#F3EBDC',
+            footerText: '#5E554C',
+            headerBackground: '#FFFFFF',
+            headerText: '#8C1C13',
+            overlay: '#B08D57',
+            overlayOpacity: 0.12,
+        },
+        frame: 'none',
+        texture: 'none',
+        pattern: 'none',
+        fontHeading: 'Playfair Display',
+        fontBody: 'Inter',               // Entrambi già caricati da next/font: nessun download in più
+        scale: 1,
+        rounded: 'lg',
+        shadows: 'soft',
+        dividerStyle: 'filigree',
+        logoHeight: 60,
+        mobileHeaderStyle: 'left',       // Centrato, un logo largo finisce sotto il selettore lingua
+        textShadow: 'none',
+    },
+    {
+        id: 'moderno-scuro',
+        name: 'Moderno Scuro',
+        description: 'Nero profondo e oro champagne: elegante, contemporaneo, fa risaltare le foto.',
+        category: 'restaurant',
+        colors: {
+            primary: '#D9B872',          // Oro champagne: titoli, pulsanti, chip allergeni
+            secondary: '#C9A55C',        // Sottotitolo, descrizioni categorie, motivo a rombi
+            accent: '#D9B872',
+            background: '#0D0D0F',
+            surface: '#17171B',
+            text: '#F4F1EA',
+            textSecondary: '#A9A39A',
+            border: '#2C2C32',
+            price: '#141416',
+            success: '#4ADE80',
+            priceBackground: '#D9B872',  // Prezzo scuro su oro
+            badgeBackground: '#26262C',
+            badgeText: '#F4F1EA',
+            footerBackground: '#09090A',
+            footerText: '#A9A39A',
+            headerBackground: '#0D0D0F',
+            headerText: '#D9B872',
+            overlay: '#D9B872',
+            overlayOpacity: 0.06,
+        },
+        frame: 'none',
+        texture: 'none',
+        pattern: 'elegant-rhombus',
+        fontHeading: 'Montserrat',
+        fontBody: 'Inter',
+        scale: 1,
+        rounded: 'lg',
+        shadows: 'soft',
+        dividerStyle: 'gradient',
+        logoHeight: 60,
+        mobileHeaderStyle: 'left',
+        textShadow: 'none',
+    },
+];
+
+// Preset ritirati il 21/10/2026: non sono più nel Design Studio, servono solo a completare
+// i temi già salvati che partono da loro (vedi resolveTheme). Non modificarli: cambierebbe
+// l'aspetto dei menu dei locali che li usano.
+const LEGACY_PRESETS: ThemePreset[] = [
     // 1. OSTERIA ROMANA
     {
         id: 'osteria-romana',
@@ -345,7 +431,7 @@ export const DEFAULT_THEME = THEME_PRESETS[0];
  */
 export function resolveTheme(saved: Partial<ThemeConfig> | null | undefined): ThemeConfig {
     if (!saved || Object.keys(saved).length === 0) return DEFAULT_THEME;
-    const base = THEME_PRESETS.find((p) => p.id === saved.id) ?? DEFAULT_THEME;
+    const base = [...THEME_PRESETS, ...LEGACY_PRESETS].find((p) => p.id === saved.id) ?? DEFAULT_THEME;
     return {
         ...base,
         ...saved,
