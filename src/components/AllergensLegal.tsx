@@ -41,7 +41,7 @@ export default function AllergensLegal({ data, logoUrl, coverChargeValue }: Alle
       {/* Contenuto */}
       <div className="p-6 md:p-8">
         {/* Titolo principale */}
-        <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-[var(--tenant-text,#171717)] mb-6">
+        <h2 className="text-2xl md:text-3xl theme-heading font-bold text-center text-[var(--tenant-text,#171717)] mb-6">
           ELENCO ALLERGENI
         </h2>
 

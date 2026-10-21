@@ -1,4 +1,4 @@
-import { ThemePreset } from './types';
+import { ThemeConfig, ThemePreset } from './types';
 
 export const THEME_PRESETS: ThemePreset[] = [
     // 1. OSTERIA ROMANA
@@ -337,3 +337,18 @@ export const THEME_PRESETS: ThemePreset[] = [
 ];
 
 export const DEFAULT_THEME = THEME_PRESETS[0];
+
+/**
+ * Tema completo da quello salvato nel Design Studio: i campi mancanti si prendono dal preset
+ * da cui il tema è partito (come nell'anteprima), non dal tema predefinito. Prima ogni preset
+ * ereditava sfondo prezzo, badge, header e overlay di Osteria Romana nel menu pubblico.
+ */
+export function resolveTheme(saved: Partial<ThemeConfig> | null | undefined): ThemeConfig {
+    if (!saved || Object.keys(saved).length === 0) return DEFAULT_THEME;
+    const base = THEME_PRESETS.find((p) => p.id === saved.id) ?? DEFAULT_THEME;
+    return {
+        ...base,
+        ...saved,
+        colors: { ...base.colors, ...(saved.colors || {}) },
+    } as ThemeConfig;
+}

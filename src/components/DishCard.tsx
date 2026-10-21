@@ -67,7 +67,7 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
           <div className="absolute inset-0 flex flex-col items-center justify-center p-8 bg-[var(--tenant-background,#FFF8E7)]">
             <div className="text-center max-w-xs">
               <div className="text-7xl mb-6 opacity-40">🌿</div>
-              <div className="text-xl md:text-2xl font-serif font-bold text-[var(--tenant-primary,#8B0000)] mb-3">
+              <div className="text-xl md:text-2xl theme-heading font-bold text-[var(--tenant-primary,#8B0000)] mb-3">
                 Fuori stagione
               </div>
               <div className="text-sm md:text-base text-gray-700 leading-relaxed">
@@ -135,7 +135,7 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
       </div>
 
       <div className="p-4 md:p-5">
-        <h3 className="text-lg md:text-xl lg:text-2xl font-serif font-bold text-[var(--tenant-text,#171717)] mb-2 leading-tight">
+        <h3 className="text-lg md:text-xl lg:text-2xl theme-heading font-bold text-[var(--tenant-text,#171717)] mb-2 leading-tight">
           {dish.name}
         </h3>
 

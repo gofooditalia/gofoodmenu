@@ -55,7 +55,7 @@ export default function AllergensPageClient({ tenant, initialTheme }: AllergensP
                         <div className="inline-block mb-4">
                             <span className="text-5xl md:text-6xl">🛡️</span>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-serif font-bold text-[var(--tenant-primary,#8B0000)] mb-4 leading-tight">
+                        <h1 className="text-3xl md:text-5xl theme-heading font-bold text-[var(--tenant-primary,#8B0000)] mb-4 leading-tight">
                             {language === 'it' ? 'Allergeni e Intolleranze' : 'Allergens and Intolerances'}
                         </h1>
                         <p className="text-base md:text-lg text-[var(--tenant-text-secondary,#4B5563)] max-w-3xl mx-auto leading-relaxed px-4">
@@ -94,7 +94,7 @@ export default function AllergensPageClient({ tenant, initialTheme }: AllergensP
                         {activeTab === 'list' ? (
                             <div className="animate-fadeIn">
                                 <div className="text-center mb-6">
-                                    <h2 className="text-2xl md:text-3xl font-serif font-bold text-[var(--tenant-text,#171717)] mb-2">
+                                    <h2 className="text-2xl md:text-3xl theme-heading font-bold text-[var(--tenant-text,#171717)] mb-2">
                                         {language === 'it' ? '14 Allergeni Principali' : '14 Main Allergens'}
                                     </h2>
                                     <p className="text-sm md:text-base text-[var(--tenant-text-secondary,#4B5563)]">
