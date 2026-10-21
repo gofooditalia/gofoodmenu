@@ -87,14 +87,15 @@ rapporto di contrasto verificato.
 - Dopo ogni correzione rilanciare la scansione sulle stesse pagine e confrontare con il risultato precedente.
 - Le modifiche al codice seguono le convenzioni del progetto: branch, PR verso `main`, `npx tsc --noEmit -p .`.
 
-## Situazione al 21/10/2026 (`/magnaromatrattoria`, telefono)
-Pagina del menu: 42 regole superate, 3 violazioni. Pagina allergeni: 40 regole superate, 3 violazioni.
-- **Prezzi** (109 elementi, grave): testo `#ffffff` su `#C5A059` = 2,46:1. È il tema di MagnaRoma
-  (`colors.price` / `colors.priceBackground`, `src/components/DishCard.tsx:94`); con testo `#171717`
-  il rapporto sale a 7,30:1. L'editor non avvisa quando una coppia di colori non si legge.
-- **Badge "Surgelato"** (25, grave): `bg-blue-500` con testo bianco = 3,76:1 (`DishCard.tsx:127`), nel codice, quindi vale per tutti i locali.
-- **Link Cookie/Privacy Policy** nel banner (2, grave): `text-orange-600` su bianco = 3,60:1 (`src/components/CookieBanner.tsx:34,43`).
-- **Selettore lingua** (2, grave): `aria-label` "Passa all'italiano" / "Scegli altra lingua" non
-  contengono il testo visibile "IT"/"EN" (`src/components/LanguageSwitcher.tsx:168,188`). Chi usa i
-  comandi vocali dice "IT" e il comando non viene trovato.
-- **Contenuto fuori dai punti di riferimento** (media): la sezione iniziale e il testo del footer non stanno dentro `<main>`/`<footer>`.
+## Situazione al 21/10/2026
+Prima prova su `/magnaromatrattoria`, poi su 6 locali (MagnaRoma, Bistrot 107, Osteria Cilea, Marina,
+Sunset, Scjavuru). Correzioni nella PR #46:
+- `src/lib/theme-engine/contrast.ts`: il testo dei badge, quello sul colore principale
+  (`--tenant-on-primary`: pulsanti, categorie attive, selettore lingua) e quello del colore secondario
+  (sottotitolo, descrizioni categorie) resta quello del tema se si legge, altrimenti diventa scuro o bianco.
+- Il Design Studio avvisa quando una coppia di colori scelta dal ristoratore non si legge
+  (`ContrastWarnings` in `src/components/theme/VisualEditorPanel.tsx`): i nuovi controlli sui colori
+  vanno aggiunti lì.
+- Restano, perché sono colori salvati dai locali: prezzo bianco su oro (MagnaRoma, Bistrot 107,
+  Osteria Cilea), marrone su oro (Marina), bianco su fondo trasparente sopra la foto (Sunset, axe non
+  lo misura: va guardato negli screenshot). Si cambiano dal Design Studio.
