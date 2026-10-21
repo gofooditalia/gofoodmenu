@@ -112,6 +112,18 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
 - Test Playwright del Design Studio con l'account di prova del titolare: credenziali da inserire come segreti
   GitHub (mai in chat).
+- **Prenotazione tavoli e fine di GloriaFood** (scadenza: fine aprile 2027). GO!Food è partner GloriaFood per la
+  Sicilia e GloriaFood chiude: decidere se passare a un nuovo partner (es. UpMenu) o fare una soluzione interna.
+  Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,
+  `src/components/reservations/`, `src/app/actions/reservation-actions.ts`, tabelle `reservation_*` e
+  `reservations`, migrazioni 032–035), attivo solo su Villa Pensabene (5 prenotazioni in tutto al 21/10/2026).
+  Mancano: disponibilità per fascia senza doppie prenotazioni, notifiche affidabili (push/WhatsApp), conferma,
+  promemoria e annullamento via link, chiusure/ferie, widget per i siti dei clienti, privacy, test.
+  Tabella di marcia: inventario dei clienti GloriaFood e delle funzioni usate (solo prenotazioni o anche ordini
+  online e pagamenti) entro novembre 2026; decisione entro metà dicembre; sviluppo e pilota in inverno;
+  migrazione dei clienti entro febbraio–marzo 2027 (Pasqua 28/3/2027). Parere del 21/10/2026: prenotazioni
+  in-house; ordini online e pagamenti da decidere dopo l'inventario (eventuale soluzione mista). Primo passo:
+  controllo tecnico del modulo esistente con stima del lavoro.
 
 ## Ecosistema GO!Food Italia (altri repo, tutti su Vercel, deploy da `main`)
 - Sito della ditta: gofooditalia/gofooditalia (gofood.it). Il suo CLAUDE.md è la memoria principale per
