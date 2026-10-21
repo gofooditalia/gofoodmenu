@@ -116,6 +116,10 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
   };
 
   const currentFlag = LANGUAGES.find(l => l.code === currentLang)?.flag || '🇮🇹';
+  // Sigla mostrata sul pulsante delle altre lingue (anche nel suo nome accessibile)
+  const otherLangCode = currentLang === 'it' || LANGUAGES.find(l => l.code === currentLang)?.label === 'English'
+    ? 'EN'
+    : currentLang.toUpperCase().slice(0, 2);
 
   if (!mounted) {
     return (
@@ -127,7 +131,7 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
             className="px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 shadow-sm"
             style={{
               backgroundColor: 'var(--tenant-primary, #8B0000)',
-              color: 'var(--tenant-background, #FFFFFF)'
+              color: 'var(--tenant-on-primary, #FFFFFF)'
             }}
           >
             <span className="text-base notranslate">🇮🇹</span>
@@ -163,9 +167,9 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
             }`}
           style={currentLang === 'it' ? {
             backgroundColor: 'var(--tenant-primary, #8B0000)',
-            color: 'var(--tenant-background, #FFFFFF)'
+            color: 'var(--tenant-on-primary, #FFFFFF)'
           } : undefined}
-          aria-label="Passa all'italiano"
+          aria-label="IT, passa all'italiano"
           aria-pressed={currentLang === 'it'}
         >
           <span className="text-base">🇮🇹</span>
@@ -183,19 +187,16 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
                 }`}
               style={currentLang !== 'it' ? {
                 backgroundColor: 'var(--tenant-primary, #8B0000)',
-                color: 'var(--tenant-background, #FFFFFF)'
+                color: 'var(--tenant-on-primary, #FFFFFF)'
               } : undefined}
-              aria-label="Scegli altra lingua"
+              aria-label={`${otherLangCode}, scegli altra lingua`}
               aria-pressed={currentLang !== 'it'}
             >
               <span className="text-base notranslate">
                 {currentLang === 'it' ? '🇬🇧' : currentFlag}
               </span>
               <span className="notranslate">
-                {currentLang === 'it'
-                  ? 'EN'
-                  : (LANGUAGES.find(l => l.code === currentLang)?.label === 'English' ? 'EN' : currentLang.toUpperCase().slice(0, 2))
-                }
+                {otherLangCode}
               </span>
             </button>
           </DropdownMenuTrigger>

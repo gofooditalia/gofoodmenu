@@ -10,6 +10,7 @@ import { ThemeProvider, useTheme } from '@/components/theme/ThemeContext';
 import { ThemeWrapper } from '@/components/theme/ThemeWrapper';
 import { ThemeDivider } from '@/components/theme/ThemeDivider';
 import { ThemeConfig } from '@/lib/theme-engine/types';
+import { readableTextOn } from '@/lib/theme-engine/contrast';
 
 interface Tenant {
   restaurant_name: string;
@@ -116,6 +117,9 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sottotitolo e descrizioni delle categorie usano il colore secondario, spesso decorativo e chiaro
+  const secondaryText = readableTextOn(currentTheme.colors.background, currentTheme.colors.secondary);
+
   return (
     <div
       className="min-h-screen pt-[135px] select-none overflow-x-hidden relative z-10"
@@ -146,74 +150,76 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
         onCategoryClick={(id) => scrollToCategory(id)}
       />
 
-      {/* Hero Section */}
-      <section className="relative h-[25vh] sm:h-[35vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundColor: currentTheme.colors.overlay || currentTheme.colors.primary,
-            opacity: currentTheme.colors.overlayOpacity ?? 0.1
-          }}
-        />
-        {/* Optional: Add a real image back if available, currently using color overlay pattern */}
-        <div className="relative z-10 text-center px-4">
-          <h1
-            className="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-4 theme-heading"
-            style={{ color: currentTheme.colors.primary }}
-          >
-            {tenant.restaurant_name}
-          </h1>
-          <p
-            className="text-lg sm:text-xl max-w-2xl mx-auto theme-body"
-            style={{ color: currentTheme.colors.secondary }}
-          >
-            {tenant.tagline || 'Autentica cucina romana nel cuore della città'}
-          </p>
-        </div>
-      </section>
+      <main>
+        {/* Hero Section */}
+        <section className="relative h-[25vh] sm:h-[35vh] flex items-center justify-center overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundColor: currentTheme.colors.overlay || currentTheme.colors.primary,
+              opacity: currentTheme.colors.overlayOpacity ?? 0.1
+            }}
+          />
+          {/* Optional: Add a real image back if available, currently using color overlay pattern */}
+          <div className="relative z-10 text-center px-4">
+            <h1
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-4 theme-heading"
+              style={{ color: currentTheme.colors.primary }}
+            >
+              {tenant.restaurant_name}
+            </h1>
+            <p
+              className="text-lg sm:text-xl max-w-2xl mx-auto theme-body"
+              style={{ color: secondaryText }}
+            >
+              {tenant.tagline || 'Autentica cucina romana nel cuore della città'}
+            </p>
+          </div>
+        </section>
 
-      {/* Menu Sections: tutte le categorie in sequenza, navigabili con lo scroll verticale */}
-      <main className="container mx-auto px-4 py-4 space-y-16">
-        {categories.map((category, categoryIndex) => (
-          <section key={category.id} id={category.id}>
-            {/* Category Title with Dividers */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <ThemeDivider
-                dividerStyle={currentTheme.dividerStyle}
-                className={currentTheme.dividerStyle === 'gradient' ? 'flex-1' : 'max-w-[100px] w-full'}
-              />
-              <h2
-                className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-center shrink-0 px-4 theme-heading"
-                style={{ color: currentTheme.colors.primary }}
-              >
-                {category.name}
-              </h2>
-              <ThemeDivider
-                dividerStyle={currentTheme.dividerStyle}
-                className={currentTheme.dividerStyle === 'gradient' ? 'flex-1' : 'max-w-[100px] w-full'}
-              />
-            </div>
-
-            {/* Category Description */}
-            {category.description && (
-              <p className="text-center text-lg mb-8 max-w-2xl mx-auto theme-body" style={{ color: currentTheme.colors.secondary }}>
-                {category.description}
-              </p>
-            )}
-
-            {/* Dishes Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {category.dishes.map((dish, dishIndex) => (
-                <DishCard
-                  key={dish.id}
-                  dish={dish}
-                  tenantSlug={tenant.slug}
-                  priority={categoryIndex === 0 && dishIndex < 2}
+        {/* Menu Sections: tutte le categorie in sequenza, navigabili con lo scroll verticale */}
+        <div className="container mx-auto px-4 py-4 space-y-16">
+          {categories.map((category, categoryIndex) => (
+            <section key={category.id} id={category.id}>
+              {/* Category Title with Dividers */}
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <ThemeDivider
+                  dividerStyle={currentTheme.dividerStyle}
+                  className={currentTheme.dividerStyle === 'gradient' ? 'flex-1' : 'max-w-[100px] w-full'}
                 />
-              ))}
-            </div>
-          </section>
-        ))}
+                <h2
+                  className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-center shrink-0 px-4 theme-heading"
+                  style={{ color: currentTheme.colors.primary }}
+                >
+                  {category.name}
+                </h2>
+                <ThemeDivider
+                  dividerStyle={currentTheme.dividerStyle}
+                  className={currentTheme.dividerStyle === 'gradient' ? 'flex-1' : 'max-w-[100px] w-full'}
+                />
+              </div>
+
+              {/* Category Description */}
+              {category.description && (
+                <p className="text-center text-lg mb-8 max-w-2xl mx-auto theme-body" style={{ color: secondaryText }}>
+                  {category.description}
+                </p>
+              )}
+
+              {/* Dishes Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.dishes.map((dish, dishIndex) => (
+                  <DishCard
+                    key={dish.id}
+                    dish={dish}
+                    tenantSlug={tenant.slug}
+                    priority={categoryIndex === 0 && dishIndex < 2}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       </main>
 
       <Footer

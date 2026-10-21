@@ -4,6 +4,7 @@ import React from 'react';
 import { useTheme } from './ThemeContext';
 import { MenuFrame } from './MenuFrame';
 import { TextureOverlay } from './TextureOverlay';
+import { readableTextOn } from '@/lib/theme-engine/contrast';
 
 // Font già inclusi nel sito da next/font (src/app/layout.tsx): non vanno riscaricati da Google Fonts
 const LOCAL_FONTS: Record<string, string> = {
@@ -16,6 +17,13 @@ const fontStack = (font: string) => LOCAL_FONTS[font] ?? `'${font}'`;
 export function ThemeWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
     const { currentTheme } = useTheme();
     const { fontHeading, fontBody, colors } = currentTheme;
+    // Senza fondo scelto il prezzo usa la superficie delle card: trasparente finirebbe sopra la foto
+    const priceBackground = colors.priceBackground || colors.surface;
+    const badgeBackground = colors.badgeBackground || colors.accent;
+    // I colori dei badge non si scelgono dal Design Studio: se il testo non si legge si corregge qui
+    const badgeText = readableTextOn(badgeBackground, colors.badgeText ?? colors.surface);
+    // Testo su fondo colore principale (pulsanti e categorie attive): lo sfondo del menu, se si legge
+    const onPrimary = readableTextOn(colors.primary, colors.background);
 
     // Helper to construct Google Fonts URL
     const getFontUrl = () => {
@@ -44,9 +52,10 @@ export function ThemeWrapper({ children, className }: { children: React.ReactNod
                 '--tenant-success': colors.success,
 
                 // Granular Variables
-                '--tenant-price-bg': colors.priceBackground || 'transparent',
-                '--tenant-badge-bg': colors.badgeBackground || colors.accent,
-                '--tenant-badge-text': colors.badgeText ?? colors.surface,
+                '--tenant-price-bg': priceBackground,
+                '--tenant-badge-bg': badgeBackground,
+                '--tenant-badge-text': badgeText,
+                '--tenant-on-primary': onPrimary,
                 '--tenant-footer-bg': colors.footerBackground || colors.background, // Fallback to main background
                 '--tenant-footer-text': colors.footerText ?? colors.textSecondary,
                 '--tenant-header-bg': colors.headerBackground ?? colors.surface,

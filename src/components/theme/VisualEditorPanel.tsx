@@ -2,7 +2,8 @@
 
 import React, { useRef, useState } from 'react';
 import { useTheme } from './ThemeContext';
-import { FrameStyle, DividerStyle } from '@/lib/theme-engine/types';
+import { FrameStyle, DividerStyle, ThemeColors } from '@/lib/theme-engine/types';
+import { contrastRatio, MIN_TEXT_CONTRAST } from '@/lib/theme-engine/contrast';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
 import { ChevronsUpDown, ChevronDown } from 'lucide-react';
@@ -260,6 +261,8 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                     </select>
                 </div>
 
+                <ContrastWarnings colors={currentTheme.colors} />
+
                 <hr className="border-gray-100" />
 
                 <Accordion type="single" collapsible className="w-full space-y-4">
@@ -281,7 +284,7 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                                     />
                                     <ColorPicker
                                         label="Secondario"
-                                        description="Dettagli e decorazioni"
+                                        description="Sottotitolo, descrizioni categorie e decorazioni"
                                         value={currentTheme.colors.secondary}
                                         onChange={(val) => updateTheme({ colors: { ...currentTheme.colors, secondary: val } })}
                                     />
@@ -327,7 +330,7 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                                 <ColorPicker
                                     label="Sfondo Prezzo"
                                     description="Badge del prezzo"
-                                    value={currentTheme.colors.priceBackground || 'transparent'}
+                                    value={currentTheme.colors.priceBackground || currentTheme.colors.surface}
                                     onChange={(val) => updateTheme({ colors: { ...currentTheme.colors, priceBackground: val } })}
                                 />
                                 <div className="border-t border-gray-200 my-2 pt-2"></div>
@@ -551,6 +554,44 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
         </div >
     );
 });
+
+// Coppie di colori scelte dal ristoratore che i clienti potrebbero non riuscire a leggere (WCAG AA)
+function ContrastWarnings({ colors }: { colors: ThemeColors }) {
+    const checks: { label: string; fg: string | undefined; bg: string | undefined; min: number }[] = [
+        { label: 'Prezzi su Sfondo Prezzo', fg: colors.price, bg: colors.priceBackground || colors.surface, min: MIN_TEXT_CONTRAST },
+        { label: 'Titoli Piatti su Superficie Piatti', fg: colors.text, bg: colors.surface, min: MIN_TEXT_CONTRAST },
+        { label: 'Descrizioni su Superficie Piatti', fg: colors.textSecondary, bg: colors.surface, min: MIN_TEXT_CONTRAST },
+        { label: 'Titoli Piatti su Sfondo Menu', fg: colors.text, bg: colors.background, min: MIN_TEXT_CONTRAST },
+        { label: 'Secondario su Sfondo Menu (nel sottotitolo e nelle descrizioni delle categorie viene sostituito da un colore leggibile)', fg: colors.secondary, bg: colors.background, min: MIN_TEXT_CONTRAST },
+        { label: 'Testo Footer su Sfondo Menu', fg: colors.footerText ?? colors.textSecondary, bg: colors.footerBackground || colors.background, min: MIN_TEXT_CONTRAST },
+        // Titoli delle categorie e icone: testo grande o elementi grafici, basta 3:1
+        { label: 'Principale su Sfondo Menu', fg: colors.primary, bg: colors.background, min: 3 },
+        { label: 'Icona Filtro su Sfondo Header', fg: colors.headerText ?? colors.primary, bg: colors.headerBackground ?? colors.surface, min: 3 },
+    ];
+    const problems = checks
+        .map((c) => ({ ...c, ratio: contrastRatio(c.fg, c.bg) }))
+        .filter((c): c is typeof c & { ratio: number } => c.ratio !== null && c.ratio < c.min);
+    const priceOnPhoto = colors.priceBackground === 'transparent';
+
+    if (!problems.length && !priceOnPhoto) return null;
+
+    return (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" role="status">
+            <p className="font-semibold mb-1">Alcuni colori si leggono male</p>
+            <p className="text-xs mb-2">Al tavolo, dal telefono, questi testi rischiano di non leggersi. Scegli colori più contrastati:</p>
+            <ul className="text-xs space-y-1 list-disc pl-4">
+                {problems.map((p) => (
+                    <li key={p.label}>
+                        {p.label}: contrasto {p.ratio.toFixed(1).replace('.', ',')}:1 (minimo {String(p.min).replace('.', ',')}:1)
+                    </li>
+                ))}
+                {priceOnPhoto && (
+                    <li>Sfondo Prezzo trasparente: il prezzo finisce sopra la foto e su alcune foto non si legge</li>
+                )}
+            </ul>
+        </div>
+    );
+}
 
 // Enhanced Color Picker Helper
 function ColorPicker({ label, description, value, onChange }: { label: string, description?: string, value: string, onChange: (val: string) => void }) {

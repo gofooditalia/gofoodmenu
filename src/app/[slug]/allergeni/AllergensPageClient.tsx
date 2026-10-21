@@ -71,7 +71,7 @@ export default function AllergensPageClient({ tenant, initialTheme }: AllergensP
                             <button
                                 onClick={() => setActiveTab('list')}
                                 className={`px-6 py-3 rounded-md text-sm md:text-base font-medium transition-all ${activeTab === 'list'
-                                    ? 'bg-[var(--tenant-primary,#8B0000)] text-[var(--tenant-background,#FFFFFF)] shadow-lg'
+                                    ? 'bg-[var(--tenant-primary,#8B0000)] text-[var(--tenant-on-primary,#FFFFFF)] shadow-lg'
                                     : 'text-[var(--tenant-text,#171717)] hover:bg-[var(--tenant-text,#171717)] hover:bg-opacity-10'
                                     }`}
                             >
@@ -80,7 +80,7 @@ export default function AllergensPageClient({ tenant, initialTheme }: AllergensP
                             <button
                                 onClick={() => setActiveTab('legal')}
                                 className={`px-6 py-3 rounded-md text-sm md:text-base font-medium transition-all ${activeTab === 'legal'
-                                    ? 'bg-[var(--tenant-primary,#8B0000)] text-[var(--tenant-background,#FFFFFF)] shadow-lg'
+                                    ? 'bg-[var(--tenant-primary,#8B0000)] text-[var(--tenant-on-primary,#FFFFFF)] shadow-lg'
                                     : 'text-[var(--tenant-text,#171717)] hover:bg-[var(--tenant-text,#171717)] hover:bg-opacity-10'
                                     }`}
                             >
@@ -114,7 +114,7 @@ export default function AllergensPageClient({ tenant, initialTheme }: AllergensP
 
                     {/* Info Box */}
                     <div className="max-w-4xl mx-auto">
-                        <div className="bg-[var(--tenant-primary,#8B0000)] rounded-2xl p-6 md:p-8 text-[var(--tenant-background,#FFFFFF)] shadow-xl">
+                        <div className="bg-[var(--tenant-primary,#8B0000)] rounded-2xl p-6 md:p-8 text-[var(--tenant-on-primary,#FFFFFF)] shadow-xl">
                             <div className="flex items-start gap-4">
                                 <span className="text-3xl md:text-4xl flex-shrink-0">💬</span>
                                 <div>
