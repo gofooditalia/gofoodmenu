@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import { ThemeConfig, ThemePreset } from '@/lib/theme-engine/types';
-import { DEFAULT_THEME, THEME_PRESETS } from '@/lib/theme-engine/presets';
+import { THEME_PRESETS, resolveTheme } from '@/lib/theme-engine/presets';
 
 interface ThemeContextType {
     currentTheme: ThemeConfig;
@@ -15,25 +15,12 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children, initialTheme }: { children: React.ReactNode; initialTheme?: ThemeConfig }) {
-    const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(() => {
-        if (!initialTheme || Object.keys(initialTheme).length === 0) {
-            return DEFAULT_THEME;
-        }
-        return {
-            ...DEFAULT_THEME,
-            ...initialTheme,
-            colors: { ...DEFAULT_THEME.colors, ...(initialTheme.colors || {}) }
-        };
-    });
+    const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(() => resolveTheme(initialTheme));
 
     // Update state when initialTheme changes (e.g. loaded from DB)
     React.useEffect(() => {
         if (initialTheme && Object.keys(initialTheme).length > 0) {
-            setCurrentTheme((prev) => ({
-                ...DEFAULT_THEME,
-                ...initialTheme,
-                colors: { ...DEFAULT_THEME.colors, ...(initialTheme.colors || {}) }
-            }));
+            setCurrentTheme(resolveTheme(initialTheme));
         }
     }, [initialTheme]);
 

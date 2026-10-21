@@ -5,7 +5,7 @@
  */
 
 import { createPublicClient } from '@/lib/supabase/public';
-import { DEFAULT_THEME } from '@/lib/theme-engine/presets';
+import { resolveTheme } from '@/lib/theme-engine/presets';
 import type { ThemeConfig } from '@/lib/theme-engine/types';
 import { parseHex, relativeLuminance } from '@/lib/theme-engine/contrast';
 
@@ -50,11 +50,7 @@ export async function getTenantPwaData(slug: string): Promise<TenantPwaData | nu
     .single();
 
   const saved = designSettings?.theme_config as Partial<ThemeConfig> | null;
-  const theme: ThemeConfig = {
-    ...DEFAULT_THEME,
-    ...(saved || {}),
-    colors: { ...DEFAULT_THEME.colors, ...(saved?.colors || {}) },
-  };
+  const theme = resolveTheme(saved);
 
   return {
     slug,
