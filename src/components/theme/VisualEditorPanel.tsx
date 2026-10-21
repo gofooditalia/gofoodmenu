@@ -64,6 +64,7 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
     onBrandDescriptionChange
 }: VisualEditorPanelProps) {
     const { currentTheme, updateTheme, applyPreset, presets } = useTheme();
+    const isPresetTheme = presets.some((p) => p.id === currentTheme.id);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
 
@@ -250,9 +251,10 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                             }
                         }}
                         className="styled-select"
-                        value={currentTheme.id || ''}
+                        value={isPresetTheme ? currentTheme.id : ''}
                     >
-                        <option value="" disabled>Seleziona uno stile...</option>
+                        {/* Temi partiti da uno stile ritirato: altrimenti il select mostrerebbe il primo stile come attivo e sceglierlo non farebbe nulla */}
+                        <option value="" disabled>{isPresetTheme ? 'Seleziona uno stile...' : 'Stile attuale (personalizzato)'}</option>
                         {presets.map((preset) => (
                             <option key={preset.id} value={preset.id}>
                                 {preset.name} {preset.id === currentTheme.id ? '(Attivo)' : ''}

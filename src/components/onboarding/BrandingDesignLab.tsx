@@ -5,6 +5,7 @@ import { VisualEditorPanel } from '@/components/theme/VisualEditorPanel';
 import { ThemeWrapper } from '@/components/theme/ThemeWrapper';
 import { useTheme } from '@/components/theme/ThemeContext';
 import { ThemeDivider } from '@/components/theme/ThemeDivider';
+import { readableTextOn } from '@/lib/theme-engine/contrast';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import DishCard from '@/components/DishCard';
@@ -104,7 +105,7 @@ export default function BrandingDesignLab({ formData, onUpdate, onNext, onBack, 
         slug: formData.slug || "design-kitchen",
         tagline: formData.footer_data?.tagline || "",
         hero_title_color: currentTheme.colors.text === '#ffffff' || currentTheme.colors.background === '#1c1917' ? '#FFFFFF' : currentTheme.colors.primary,
-        hero_tagline_color: currentTheme.colors.text === '#ffffff' || currentTheme.colors.background === '#1c1917' ? '#E5E7EB' : currentTheme.colors.secondary,
+        hero_tagline_color: currentTheme.colors.text === '#ffffff' || currentTheme.colors.background === '#1c1917' ? '#E5E7EB' : readableTextOn(currentTheme.colors.background, currentTheme.colors.secondary), // come nel menu pubblico
     };
 
     return (
