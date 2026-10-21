@@ -124,7 +124,7 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
             </div>
           )}
           {!isDisabled && dish.is_frozen && (
-            <div className="bg-blue-500 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
+            <div className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
               <span className="font-semibold text-xs flex items-center gap-1">
                 <span>❄️</span>
                 Surgelato

@@ -7,6 +7,7 @@
 import { createPublicClient } from '@/lib/supabase/public';
 import { DEFAULT_THEME } from '@/lib/theme-engine/presets';
 import type { ThemeConfig } from '@/lib/theme-engine/types';
+import { parseHex, relativeLuminance } from '@/lib/theme-engine/contrast';
 
 // Colore di ripiego per barre e splash quando nessun colore del tema è abbastanza scuro
 const FALLBACK_APP_COLOR = '#1F1F1F';
@@ -19,21 +20,6 @@ export interface TenantPwaData {
   appColor: string;
   // Tema completo del menu (colori per l'anteprima di condivisione, /[slug]/opengraph-image)
   theme: ThemeConfig;
-}
-
-function parseHex(color: string | undefined): [number, number, number] | null {
-  const hex = color && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color.trim())?.[1];
-  if (!hex) return null;
-  const full = hex.length === 3 ? hex.split('').map((c) => c + c).join('') : hex;
-  return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16)) as [number, number, number];
-}
-
-function relativeLuminance([r, g, b]: [number, number, number]): number {
-  const [lr, lg, lb] = [r, g, b].map((v) => {
-    const c = v / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
 }
 
 // Android disegna icone e tasti di sistema chiari sopra questo colore: serve un tono

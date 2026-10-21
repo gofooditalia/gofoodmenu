@@ -23,7 +23,7 @@ export const THEME_PRESETS: ThemePreset[] = [
             // New Granular Slots
             priceBackground: '#C5A059', // Antique Gold
             badgeBackground: '#C5A059', // Antique Gold
-            badgeText: '#FFFFFF',       // White text on Gold (Verified)
+            badgeText: '#171717',       // Testo scuro: il bianco sull'oro non si legge
             // footerBackground removed to restore default gradient/background
             footerText: '#374151',      // Darker Gray (Text Secondary)
             headerBackground: '#FFFFFF', // Header is white
@@ -60,7 +60,7 @@ export const THEME_PRESETS: ThemePreset[] = [
             text: '#431407',
             textSecondary: '#78350F',
             border: '#FDBA74', // Orange Border
-            price: '#EA580C',
+            price: '#C2410C', // Arancio scuro: leggibile sulla card bianca
             success: '#16A34A',
         },
         frame: 'none',
@@ -122,7 +122,7 @@ export const THEME_PRESETS: ThemePreset[] = [
             text: '#0C4A6E',
             textSecondary: '#0369A1',
             border: '#BAE6FD',
-            price: '#0284C7',
+            price: '#0369A1', // Azzurro scuro: leggibile sulla card bianca
             success: '#059669',
         },
         frame: 'none',
@@ -153,7 +153,7 @@ export const THEME_PRESETS: ThemePreset[] = [
             text: '#1C1917',
             textSecondary: '#44403C',
             border: '#E8DCC8',
-            price: '#C9A961',
+            price: '#7C6420', // Oro scuro: leggibile sulla card bianca
             success: '#15803D',
         },
         frame: 'none',
@@ -312,7 +312,7 @@ export const THEME_PRESETS: ThemePreset[] = [
             success: '#10B981',          // Verde per messaggi di successo
 
             // Nuovi slot granulari
-            priceBackground: 'transparent',
+            priceBackground: '#000000', // Fondo nero: trasparente il prezzo finiva sulla foto
             badgeBackground: '#D4AF37',
             badgeText: '#121212',
             footerBackground: '#000000',
