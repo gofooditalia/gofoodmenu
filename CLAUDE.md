@@ -59,15 +59,19 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
 
-## Cose aperte (aggiornate al 20/10/2026)
+## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
   applicata il 20/10/2026). Fatto il 20/10/2026 per tutti i locali con file fuori regola (Scjavuru, Bistrot 107,
   MagnaRoma, Spaghetteria, Villa Pensabene, Osteria Cilea, Marina, Accademia, Sunset) + 22 orfani cancellati:
   foto in uso da 339 a 106 MB, nessuna foto o logo fuori regola. Copie degli indirizzi originali in
   `scripts/recompress-manifests/*-backup-before.json`. I loghi JPEG sotto 200 KB restano JPEG (next/og li legge).
-  Da fare dal 21/10/2026 ore 17:45 UTC: `--cleanup` con ogni manifest `scripts/recompress-manifests/<slug>-<numero>.json`
-  (prova, poi `--apply`; ~320 file vecchi), poi revocare la secret key `sb_secret_…` dedicata e toglierla
-  dall'ambiente. Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
+  Pulizia fatta il 21/10/2026: `--cleanup --apply` su tutti i manifest, cancellati i 319 file vecchi (274 MB),
+  0 piatti o loghi che puntano a file mancanti; bucket `dishes` 136 MB, `logos` 0,7 MB. I file citati nei
+  `*-backup-before.json` non esistono più (restano solo come storico). Da fare: revocare la secret key
+  `sb_secret_…` dedicata e toglierla dall'ambiente. Nelle cartelle dei locali restano file non usati da nessun
+  piatto (foto sostituite dai ristoratori; 188 file, ~30 MB al 21/10/2026, soprattutto Villa Pensabene, Bistrot 107,
+  Spaghetteria): `--orphans` non li vede, perché salta le cartelle dei locali esistenti. Da valutare se cancellarli.
+  Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
   BelleEpoque (account di prova) usa 86 foto dal sito belleepoquepalermo.it, fuori da Supabase.
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
