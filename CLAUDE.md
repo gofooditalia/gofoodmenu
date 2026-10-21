@@ -6,6 +6,10 @@ Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
 La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia"). Font del logotipo GO!Food: **Alegreya**.
 Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
+**Account di prova** (non sono locali reali, creati all'inizio del progetto): `ristorante-marina` e `belleepoquepalermo`.
+Non trattarli come clienti in controlli, prove e statistiche. Locali reali che usano il menu (21/10/2026):
+`magnaromatrattoria`, `osteria-cilea`, `bistrot107`, `spaghetteria-da-emanuele`, `scjavuru`, `sunset-barcarello`,
+`villa-pensabene-ristorante-pizzeria`.
 
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
@@ -63,7 +67,7 @@ Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofoo
   Da fare dal 21/10/2026 ore 17:45 UTC: `--cleanup` con ogni manifest `scripts/recompress-manifests/<slug>-<numero>.json`
   (prova, poi `--apply`; ~320 file vecchi), poi revocare la secret key `sb_secret_…` dedicata e toglierla
   dall'ambiente. Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
-  BelleEpoque usa 86 foto dal proprio sito (belleepoquepalermo.it), fuori da Supabase.
+  BelleEpoque (account di prova) usa 86 foto dal sito belleepoquepalermo.it, fuori da Supabase.
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).

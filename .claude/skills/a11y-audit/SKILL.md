@@ -20,7 +20,7 @@ Ogni locale ha il suo tema: i colori arrivano da `tenant_design_settings.theme_c
 variabili CSS in `src/components/theme/ThemeWrapper.tsx` (`--tenant-primary`, `--tenant-background`,
 `--tenant-text`, `--tenant-price`, `--tenant-price-bg`, `--tenant-accent`…). Lo stesso componente può
 essere leggibile su un locale e illeggibile su un altro. Per questo:
-- si controllano **più locali con temi diversi**, non uno solo;
+- si controllano **più locali reali con temi diversi**, non uno solo (gli account di prova sono elencati in `CLAUDE.md`);
 - per ogni problema si distingue se sta **nel codice** (vale per tutti i locali) o **nel tema** di un
   locale (scelta del ristoratore o del titolare).
 
@@ -88,8 +88,8 @@ rapporto di contrasto verificato.
 - Le modifiche al codice seguono le convenzioni del progetto: branch, PR verso `main`, `npx tsc --noEmit -p .`.
 
 ## Situazione al 21/10/2026
-Prima prova su `/magnaromatrattoria`, poi su 6 locali (MagnaRoma, Bistrot 107, Osteria Cilea, Marina,
-Sunset, Scjavuru). Correzioni nella PR #46:
+Prima prova su `/magnaromatrattoria`, poi su 5 locali reali (MagnaRoma, Bistrot 107, Osteria Cilea,
+Sunset, Scjavuru) più l'account di prova `ristorante-marina`. Correzioni nella PR #46:
 - `src/lib/theme-engine/contrast.ts`: il testo dei badge, quello sul colore principale
   (`--tenant-on-primary`: pulsanti, categorie attive, selettore lingua) e quello del colore secondario
   (sottotitolo, descrizioni categorie) resta quello del tema se si legge, altrimenti diventa scuro o bianco.
@@ -97,5 +97,5 @@ Sunset, Scjavuru). Correzioni nella PR #46:
   (`ContrastWarnings` in `src/components/theme/VisualEditorPanel.tsx`): i nuovi controlli sui colori
   vanno aggiunti lì.
 - Restano, perché sono colori salvati dai locali: prezzo bianco su oro (MagnaRoma, Bistrot 107,
-  Osteria Cilea), marrone su oro (Marina), bianco su fondo trasparente sopra la foto (Sunset, axe non
+  Osteria Cilea; scelta: sfondo prezzo col colore principale del locale), bianco su fondo trasparente sopra la foto (Sunset, axe non
   lo misura: va guardato negli screenshot). Si cambiano dal Design Studio.
