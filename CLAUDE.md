@@ -20,6 +20,15 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - Test del menu pubblico (Playwright + axe, anche su GitHub Actions a ogni PR): `npm run build && npm run test:e2e`.
   Girano sui 7 locali reali in `e2e/locali.ts` (da aggiornare a ogni nuovo cliente) e falliscono anche per
   colori illeggibili salvati da un locale: in quel caso si corregge il tema, non il test.
+  Segreti GitHub: `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (chiave publishable dedicata
+  `github_actions`, sola lettura). Nel workflow `STRIPE_SECRET_KEY` e `SUPABASE_SERVICE_ROLE_KEY` sono finte:
+  servono solo al build (client creati al caricamento dei moduli).
+- Skill del progetto in `.claude/skills/`: `nuovo-ristorante` (ingresso di un locale) e `a11y-audit`
+  (accessibilità su pagine reali con axe-core).
+- Branch: la cancellazione automatica dopo il merge NON è attiva su GitHub e il proxy delle sessioni cloud non
+  può cancellare branch remoti: i branch uniti si cancellano a mano da github.com/gofooditalia/gofoodmenu/branches.
+- Temi modificati direttamente nel database: il menu pubblico è in cache ISR fino a 24 h; salvando dalla
+  dashboard (o con un nuovo deploy) si aggiorna subito.
 - Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).
 
 ## Decisioni prese
@@ -61,6 +70,27 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Se l'ottimizzazione fallisce il caricamento si blocca: mai caricare l'originale. Barriera lato server:
   `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
+- **Temi e Design Studio** (21/10/2026, PR #48–#51): i preset del Design Studio sono solo due,
+  `trattoria-classica` e `moderno-scuro` (`THEME_PRESETS` in `src/lib/theme-engine/presets.ts`), completi in ogni
+  colore e con contrasti WCAG AA verificati. I 10 preset vecchi restano in `LEGACY_PRESETS`, fuori dal Design
+  Studio, solo per completare i temi già salvati (`osteria-romana`, `moderno`…): non modificarli, cambierebbe
+  l'aspetto dei locali. `resolveTheme` completa un tema salvato col preset da cui è partito (prima tutti
+  ereditavano da Osteria Romana e il menu era diverso dall'anteprima). Applicare un preset sostituisce TUTTI i
+  colori del locale. "Font titoli" vale anche per i nomi dei piatti (`theme-heading`). Nessun effetto sul menu
+  pubblico: `frame`, `rounded`, `shadows`, `scale` (`MenuFrame` non è usato), `colors.success`, e le colonne
+  `tenants.primary_color`, `hero_title_color`… che il Design Studio scrive ancora.
+- **Leggibilità** (21/10/2026, PR #46): `src/lib/theme-engine/contrast.ts` (`contrastRatio`, `readableTextOn`).
+  Si correggono da soli, se il colore del tema non si legge: testo dei badge, testo sul colore principale
+  (`--tenant-on-primary`: pulsanti, categorie attive, selettore lingua) e testo in colore Secondario
+  (sottotitolo, descrizioni categorie), anche nell'anteprima. Per i colori che il ristoratore sceglie il Design
+  Studio avvisa (`ContrastWarnings` in `VisualEditorPanel.tsx`): i nuovi controlli vanno aggiunti lì. Il
+  selettore lingua prende i colori del tema (niente pillola bianca sui temi scuri).
+- **QR code** (PR #44): si scarica dalla card della dashboard (`QRCodeCard.tsx`) disegnato a 1200 px; logo di
+  riserva `/logo-gofood-new.svg` (`/logo-gofood.png` non esiste).
+- **Layout del menu pubblico**: deciso il 21/10/2026 di non ridisegnarlo (piace ai ristoratori, test e
+  accessibilità a posto). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
+  per il menu né come guida di stile; non installata nel repo.
+- **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
@@ -80,6 +110,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
+- Test Playwright del Design Studio con l'account di prova del titolare: credenziali da inserire come segreti
+  GitHub (mai in chat).
 
 ## Ecosistema GO!Food Italia (altri repo, tutti su Vercel, deploy da `main`)
 - Sito della ditta: gofooditalia/gofooditalia (gofood.it). Il suo CLAUDE.md è la memoria principale per
