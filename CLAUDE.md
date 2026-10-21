@@ -6,7 +6,8 @@ Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
 La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia"). Font del logotipo GO!Food: **Alegreya**.
 Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
-**Account di prova** (non sono locali reali, creati all'inizio del progetto): `ristorante-marina` e `belleepoquepalermo`.
+**Account di prova** (non sono locali reali, creati all'inizio del progetto): `ristorante-marina`, `belleepoquepalermo`
+e `accademia` (piano free).
 Non trattarli come clienti in controlli, prove e statistiche. Locali reali che usano il menu (21/10/2026):
 `magnaromatrattoria`, `osteria-cilea`, `bistrot107`, `spaghetteria-da-emanuele`, `scjavuru`, `sunset-barcarello`,
 `villa-pensabene-ristorante-pizzeria`.
