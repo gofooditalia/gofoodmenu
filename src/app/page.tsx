@@ -51,7 +51,7 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-2 md:px-4 pt-10 pb-16 md:py-22">
+      <section className="container mx-auto px-4 pt-10 pb-16 md:py-22">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: Copy */}
@@ -569,7 +569,7 @@ export default function LandingPage() {
                 unoptimized
               />
               <p className="text-gray-400 mb-6 max-w-md">
-                La piattaforma più semplice per creare menu digitali professionali. Usata da centinaia di ristoranti in tutta Italia.
+                La piattaforma più semplice per creare menu digitali professionali.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-gray-800 hover:bg-orange-600 flex items-center justify-center transition-colors">
