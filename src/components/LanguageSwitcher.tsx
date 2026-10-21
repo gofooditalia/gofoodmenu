@@ -124,7 +124,7 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
   if (!mounted) {
     return (
       <div className="relative z-50">
-        <div className={`flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1.5 shadow-md border border-gray-200 ${compact ? 'scale-90' : ''}`}>
+        <div className={`flex items-center gap-1 bg-[color-mix(in_srgb,var(--tenant-surface,#FFFFFF)_90%,transparent)] backdrop-blur-sm rounded-full px-2 py-1.5 shadow-md border border-[color-mix(in_srgb,var(--tenant-text,#171717)_15%,transparent)] ${compact ? 'scale-90' : ''}`}>
           {/* Italian Button (Fixed - Default Active) */}
           <button
             disabled
@@ -141,7 +141,7 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
           {/* Dropdown Button (Default Inactive) */}
           <button
             disabled
-            className="px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 text-gray-600"
+            className="px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 text-[var(--tenant-text-secondary,#4B5563)]"
           >
             <span className="text-base notranslate">🇬🇧</span>
             <span className="notranslate">EN</span>
@@ -156,14 +156,14 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
       {/* Hidden container for Google's widget */}
       <div id="google_translate_element" className="hidden"></div>
 
-      <div className={`flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1.5 shadow-md border border-gray-200 ${compact ? 'scale-90' : ''}`}>
+      <div className={`flex items-center gap-1 bg-[color-mix(in_srgb,var(--tenant-surface,#FFFFFF)_90%,transparent)] backdrop-blur-sm rounded-full px-2 py-1.5 shadow-md border border-[color-mix(in_srgb,var(--tenant-text,#171717)_15%,transparent)] ${compact ? 'scale-90' : ''}`}>
         {/* Italian Button (Fixed) */}
         <button
           onClick={() => handleLanguageChange('it')}
           disabled={isChanging || disabled}
           className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all touch-manipulation flex items-center gap-1.5 notranslate ${currentLang === 'it'
             ? 'shadow-sm'
-            : 'text-gray-600 hover:text-gray-900 active:bg-gray-100'
+            : 'text-[var(--tenant-text-secondary,#4B5563)] hover:text-[var(--tenant-text,#111827)] active:bg-[color-mix(in_srgb,var(--tenant-text,#171717)_10%,transparent)]'
             }`}
           style={currentLang === 'it' ? {
             backgroundColor: 'var(--tenant-primary, #8B0000)',
@@ -183,7 +183,7 @@ export default function LanguageSwitcher({ compact = false, disabled = false }: 
               disabled={isChanging || disabled}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all touch-manipulation flex items-center gap-1.5 notranslate ${currentLang !== 'it'
                 ? 'shadow-sm'
-                : 'text-gray-600 hover:text-gray-900 active:bg-gray-100'
+                : 'text-[var(--tenant-text-secondary,#4B5563)] hover:text-[var(--tenant-text,#111827)] active:bg-[color-mix(in_srgb,var(--tenant-text,#171717)_10%,transparent)]'
                 }`}
               style={currentLang !== 'it' ? {
                 backgroundColor: 'var(--tenant-primary, #8B0000)',
