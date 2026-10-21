@@ -8,6 +8,12 @@ import { useTenant } from '@/hooks/useTenant';
 import { toast } from 'sonner';
 import { SITE_URL } from '@/lib/site';
 
+// Lato del QR nel modale: logoWidth/logoHeight/logoPadding salvati sono pensati per questa misura
+const MODAL_QR_SIZE = 280;
+// Lato del PNG scaricato, abbastanza grande per locandine e vetrine
+const PRINT_QR_SIZE = 1200;
+const PRINT_SCALE = PRINT_QR_SIZE / MODAL_QR_SIZE;
+
 interface QRCodeCardProps {
     slug: string | null;
     restaurantName: string;
@@ -45,7 +51,7 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
 
 
     const downloadQRCode = () => {
-        const canvas = document.getElementById('react-qrcode-logo') as HTMLCanvasElement;
+        const canvas = document.getElementById('qr-print') as HTMLCanvasElement;
         if (canvas) {
             const pngUrl = canvas.toDataURL('image/png');
             const downloadLink = document.createElement('a');
@@ -86,7 +92,7 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
     }, [logoUrl, includeLogo]);
 
     // Use the Data URL version for the QR code
-    const activeLogo = includeLogo ? (logoDataUrl || '/logo-gofood.png') : undefined;
+    const activeLogo = includeLogo ? (logoDataUrl || '/logo-gofood-new.svg') : undefined;
 
     return (
         <>
@@ -112,7 +118,7 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                     </div>
                 )}
                 <div className="absolute top-2 right-2 text-gray-300">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                 </div>
 
                 <div className="mb-3 transform group-hover:scale-105 transition-transform duration-300">
@@ -122,10 +128,10 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                         bgColor={bgColor}
                         fgColor={qrColor}
                         logoImage={activeLogo}
-                        logoWidth={logoWidth * (100 / 280)}
-                        logoHeight={logoHeight * (100 / 280)}
+                        logoWidth={logoWidth * (100 / MODAL_QR_SIZE)}
+                        logoHeight={logoHeight * (100 / MODAL_QR_SIZE)}
                         logoOpacity={1}
-                        logoPadding={logoPadding * (100 / 280)}
+                        logoPadding={logoPadding * (100 / MODAL_QR_SIZE)}
                         logoPaddingStyle="circle"
                         removeQrCodeBehindLogo={true}
                         qrStyle="dots"
@@ -138,7 +144,7 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                 <div className="text-sm font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
                     Il tuo QR Menu
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Clicca per modificare</p>
+                <p className="text-xs text-gray-500 mt-1">Clicca per scaricare</p>
             </div>
 
             {/* Modal */}
@@ -158,7 +164,7 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                         <div className="bg-white p-4 rounded-xl shadow-lg border border-gray-100 mb-8">
                             <QRCode
                                 value={fullUrl}
-                                size={280}
+                                size={MODAL_QR_SIZE}
                                 bgColor={bgColor}
                                 fgColor={qrColor}
                                 logoImage={activeLogo}
@@ -173,6 +179,26 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                                 ecLevel="H"
                                 id="react-qrcode-logo"
                             />
+                            {/* Copia ad alta risoluzione, non visibile: è quella che si scarica */}
+                            <QRCode
+                                value={fullUrl}
+                                size={PRINT_QR_SIZE}
+                                quietZone={10 * PRINT_SCALE}
+                                bgColor={bgColor}
+                                fgColor={qrColor}
+                                logoImage={activeLogo}
+                                logoWidth={logoWidth * PRINT_SCALE}
+                                logoHeight={logoHeight * PRINT_SCALE}
+                                logoOpacity={1}
+                                logoPadding={logoPadding * PRINT_SCALE}
+                                logoPaddingStyle="circle"
+                                removeQrCodeBehindLogo={true}
+                                qrStyle="dots"
+                                eyeRadius={10 * PRINT_SCALE}
+                                ecLevel="H"
+                                id="qr-print"
+                                style={{ display: 'none' }}
+                            />
                         </div>
 
                         <div className="w-full space-y-4">
@@ -183,6 +209,9 @@ export default function QRCodeCard({ slug, logoUrl, tenantId, isLocked }: QRCode
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                                 <span>Scarica QR Code (.png)</span>
                             </button>
+                            <p className="text-center text-xs text-gray-400">
+                                Alta risoluzione ({PRINT_QR_SIZE} px), adatta anche a locandine e vetrine
+                            </p>
                             <p className="text-center text-xs text-gray-400">
                                 Link diretto: <span className="font-mono">{fullUrl}</span>
                             </p>
