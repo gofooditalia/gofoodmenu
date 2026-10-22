@@ -339,21 +339,21 @@ export default function DishesPage() {
       const supabase = createClient();
       const idsToDelete = Array.from(selectedDishes);
 
-      // 1. Delete images
-      const dishesToDelete = dishes.filter(d => idsToDelete.includes(d.id));
-      for (const dish of dishesToDelete) {
-        if (dish.image_url) {
-          await deleteDishImage(dish.image_url);
-        }
-      }
-
-      // 2. Delete DB records
+      // 1. Delete DB records
       const { error } = await supabase
         .from('dishes')
         .delete()
         .in('id', idsToDelete);
 
       if (error) throw error;
+
+      // 2. Delete images, dopo i piatti: deleteDishImage salta le foto ancora usate da altri piatti
+      const imageUrls = new Set(
+        dishes.filter(d => idsToDelete.includes(d.id) && d.image_url).map(d => d.image_url as string)
+      );
+      for (const imageUrl of imageUrls) {
+        await deleteDishImage(imageUrl);
+      }
       void revalidatePublicMenu();
 
       toast.success(`${selectedDishes.size} piatti eliminati`);
@@ -498,6 +498,15 @@ export default function DishesPage() {
     if (!imageUrl) return;
     try {
       const supabase = createClient();
+
+      // Dalla libreria foto (/dashboard/media) la stessa foto si può assegnare a più piatti:
+      // se un altro piatto la usa ancora, il file resta
+      const { count, error: countError } = await supabase
+        .from('dishes')
+        .select('id', { count: 'exact', head: true })
+        .eq('image_url', imageUrl);
+      if (countError || (count ?? 0) > 0) return;
+
       const url = new URL(imageUrl);
 
       const pathParts = url.pathname.split('/dishes/');

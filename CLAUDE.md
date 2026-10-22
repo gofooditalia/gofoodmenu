@@ -101,9 +101,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Pulizia fatta il 21/10/2026: `--cleanup --apply` su tutti i manifest, cancellati i 319 file vecchi (274 MB),
   0 piatti o loghi che puntano a file mancanti; bucket `dishes` 136 MB, `logos` 0,7 MB. I file citati nei
   `*-backup-before.json` non esistono più (restano solo come storico). Da fare: revocare la secret key
-  `sb_secret_…` dedicata e toglierla dall'ambiente. Nelle cartelle dei locali restano file non usati da nessun
-  piatto (foto sostituite dai ristoratori; 188 file, ~30 MB al 21/10/2026, soprattutto Villa Pensabene, Bistrot 107,
-  Spaghetteria): `--orphans` non li vede, perché salta le cartelle dei locali esistenti. Da valutare se cancellarli.
+  `sb_secret_…` dedicata e toglierla dall'ambiente.
+  Deciso il 22/10/2026: i file non assegnati a nessun piatto in `<tenant>/dishes/` NON sono orfani, sono la libreria
+  foto del ristoratore (`/dashboard/media`, `PhotoManager`: le carica, le assegna più tardi, le elimina da sé).
+  Non cancellarli (187 foto, ~30 MB al 22/10/2026, già sotto le regole di peso); `--orphans` salta apposta le
+  cartelle dei locali. Una stessa foto può stare su più piatti: `deleteDishImage` in
+  `src/app/dashboard/dishes/page.tsx` cancella il file solo se nessun altro piatto lo usa.
   Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
   BelleEpoque (account di prova) usa 86 foto dal sito belleepoquepalermo.it, fuori da Supabase.
 - PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
