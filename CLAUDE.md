@@ -28,8 +28,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (italiagofood@gmail.com, piano free: il Design Studio non richiede premium) tramite i segreti `E2E_EMAIL` ed
   `E2E_PASSWORD`, applica l'altro stile pronto e controlla anteprima e dati salvati. Ogni scrittura verso Supabase
   viene intercettata (il database è quello di produzione): non togliere quella barriera. Trace spento in quel
-  file (conterrebbe password e token); senza segreti il test viene saltato. Runner fisso su `ubuntu-24.04`
-  (Playwright 1.56 non installa Chromium su 26.04).
+  file (conterrebbe password e token); senza segreti il test viene saltato. Playwright 1.64.1 su `ubuntu-latest`
+  (Ubuntu 26.04 richiede Playwright 1.64 o successivo; con la 1.56 il job si fermava all'installazione di Chromium).
 - Salvataggio dati del locale (`useUpdateTenant` in `src/hooks/useTenant.ts`, 22/10/2026): ogni scrittura controlla
   l'errore (prima compariva "Dati salvati!" anche col tema non salvato). Le sedi (`tenant_locations`) si salvano
   inserendo le nuove e poi cancellando le vecchie per id: se l'inserimento fallisce il locale tiene i suoi indirizzi.
