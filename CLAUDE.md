@@ -100,8 +100,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `scripts/recompress-manifests/*-backup-before.json`. I loghi JPEG sotto 200 KB restano JPEG (next/og li legge).
   Pulizia fatta il 21/10/2026: `--cleanup --apply` su tutti i manifest, cancellati i 319 file vecchi (274 MB),
   0 piatti o loghi che puntano a file mancanti; bucket `dishes` 136 MB, `logos` 0,7 MB. I file citati nei
-  `*-backup-before.json` non esistono più (restano solo come storico). Da fare: revocare la secret key
-  `sb_secret_…` dedicata e toglierla dall'ambiente.
+  `*-backup-before.json` non esistono più (restano solo come storico).
+  Chiave segreta Supabase sostituita il 22/10/2026: la `default` (usata sia da Vercel sia dall'ambiente delle
+  sessioni cloud) è stata cancellata; Vercel usa la nuova `vercel-produzione`. L'ambiente cloud non ha più
+  `SUPABASE_SERVICE_ROLE_KEY`: per gli script di manutenzione creare una chiave segreta apposta, toglierla
+  appena finito e non riusare mai quella di Vercel.
   Deciso il 22/10/2026: i file non assegnati a nessun piatto in `<tenant>/dishes/` NON sono orfani, sono la libreria
   foto del ristoratore (`/dashboard/media`, `PhotoManager`: le carica, le assegna più tardi, le elimina da sé).
   Non cancellarli (187 foto, ~30 MB al 22/10/2026, già sotto le regole di peso); `--orphans` salta apposta le
@@ -109,7 +112,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `src/app/dashboard/dishes/page.tsx` cancella il file solo se nessun altro piatto lo usa.
   Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
   BelleEpoque (account di prova) usa 86 foto dal sito belleepoquepalermo.it, fuori da Supabase.
-- PR #29 (`/admin`) unita: verificare `/admin` con i dati reali (serve `ADMIN_EMAILS` su Vercel).
+- `/admin` verificato con i dati reali il 22/10/2026. Manca `RESEND_NEWSLETTER_SEGMENT_ID` su Vercel:
+  "Sincronizza lista newsletter" non funziona finché non si aggiunge.
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
