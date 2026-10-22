@@ -24,6 +24,10 @@ jobs:
       # Valori finti: src/lib/stripe.ts e la rotta del webhook Stripe creano i loro client già in
       # compilazione, ma i test non chiamano mai Stripe né usano la chiave di servizio di Supabase
       STRIPE_SECRET_KEY: sk_test_finto_solo_per_build
+      # Account di prova per il test del Design Studio (e2e/design-studio.spec.ts): le scritture
+      # verso Supabase vengono intercettate, il tema dell'account non cambia mai
+      E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
+      E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
       SUPABASE_SERVICE_ROLE_KEY: finta_solo_per_build
     steps:
       - uses: actions/checkout@v4
