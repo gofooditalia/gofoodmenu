@@ -112,8 +112,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `src/app/dashboard/dishes/page.tsx` cancella il file solo se nessun altro piatto lo usa.
   Non toccare il bucket `Go Food` (loghi della landing in `ClientLogosMarquee.tsx`).
   BelleEpoque (account di prova) usa 86 foto dal sito belleepoquepalermo.it, fuori da Supabase.
-- `/admin` verificato con i dati reali il 22/10/2026. Manca `RESEND_NEWSLETTER_SEGMENT_ID` su Vercel:
-  "Sincronizza lista newsletter" non funziona finché non si aggiunge.
+- `/admin` verificato con i dati reali il 22/10/2026. Newsletter in attesa: manca `RESEND_NEWSLETTER_SEGMENT_ID`
+  su Vercel, quindi "Sincronizza lista newsletter" non funziona. Le credenziali dell'account Resend in cui è
+  verificato `gofoodmenu.it` le ha Gabriele. Serve, in quel team: un segmento (es. "Esercenti Go!Food Menù") e una
+  `RESEND_API_KEY` con permesso Full access (con "Sending access" non si creano contatti). Una chiave di un altro team
+  romperebbe gli invii da `help@` e `reservations@gofoodmenu.it`. Da decidere: escludere gli account di prova
+  dalla lista (oggi la sincronizzazione prende tutti gli iscritti).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
