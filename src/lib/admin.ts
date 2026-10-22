@@ -23,6 +23,9 @@ export function getSupabaseAdmin() {
     );
 }
 
+// Account di prova (vedi CLAUDE.md): restano fuori dalla newsletter. Aggiornare se ne nasce uno nuovo.
+export const TEST_TENANT_SLUGS = ['ristorante-marina', 'belleepoquepalermo', 'accademia', 'gofood'];
+
 // Oltre questa soglia senza modifiche al menu il ristorante va ricontattato
 export const STALE_MENU_DAYS = 60;
 

@@ -6,8 +6,9 @@ Il titolare parla italiano: rispondere in italiano.
 **bemyrider** (altro progetto della ditta) si scrive SEMPRE tutto minuscolo, mai "BeMyRider".
 La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (mai "GO! Food" o "Go!Food Italia"). Font del logotipo GO!Food: **Alegreya**.
 Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
-**Account di prova** (non sono locali reali, creati all'inizio del progetto): `ristorante-marina`, `belleepoquepalermo`
-e `accademia` (piano free).
+**Account di prova** (non sono locali reali): `belleepoquepalermo` (email di Gabriele), `accademia` (piano free) e
+`gofood` (italiagofood@gmail.com, usato dal test del Design Studio); `ristorante-marina` non esiste più (22/10/2026).
+Elenco nel codice: `TEST_TENANT_SLUGS` in `src/lib/admin.ts`, da aggiornare se ne nasce uno nuovo.
 Non trattarli come clienti in controlli, prove e statistiche. Locali reali che usano il menu (21/10/2026):
 `magnaromatrattoria`, `osteria-cilea`, `bistrot107`, `spaghetteria-da-emanuele`, `scjavuru`, `sunset-barcarello`,
 `villa-pensabene-ristorante-pizzeria`.
@@ -125,8 +126,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   su Vercel, quindi "Sincronizza lista newsletter" non funziona. Le credenziali dell'account Resend in cui è
   verificato `gofoodmenu.it` le ha Gabriele. Serve, in quel team: un segmento (es. "Esercenti Go!Food Menù") e una
   `RESEND_API_KEY` con permesso Full access (con "Sending access" non si creano contatti). Una chiave di un altro team
-  romperebbe gli invii da `help@` e `reservations@gofoodmenu.it`. Da decidere: escludere gli account di prova
-  dalla lista (oggi la sincronizzazione prende tutti gli iscritti).
+  romperebbe gli invii da `help@` e `reservations@gofoodmenu.it`. Gli account di prova (`TEST_TENANT_SLUGS`) sono
+  esclusi dalla sincronizzazione (22/10/2026).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
