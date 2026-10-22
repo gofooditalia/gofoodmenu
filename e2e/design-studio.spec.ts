@@ -5,6 +5,10 @@ import { THEME_PRESETS } from '../src/lib/theme-engine/presets';
 // Senza credenziali il test non parte.
 const env = (name: string) => process.env[name] ?? '';
 
+// Niente trace: registrerebbe la password digitata e i token di sessione, e il report dei test falliti
+// viene caricato su GitHub. Playwright accetta questa opzione solo al livello più alto del file.
+test.use({ trace: 'off' });
+
 interface Write {
   table: string;
   method: string;
@@ -14,9 +18,7 @@ interface Write {
 test.describe('Design Studio', () => {
   test.skip(!env('E2E_EMAIL') || !env('E2E_PASSWORD'), 'Mancano E2E_EMAIL ed E2E_PASSWORD');
   // Editor e anteprima affiancati: su telefono sono in due schede separate
-  // Niente trace: registrerebbe la password digitata e i token di sessione, e il report dei test
-  // falliti viene caricato su GitHub
-  test.use({ viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: false, trace: 'off' });
+  test.use({ viewport: { width: 1280, height: 900 }, isMobile: false, hasTouch: false });
 
   test("uno stile pronto aggiorna l'anteprima e salva tutti i suoi colori", async ({ page }) => {
     // Il database è quello di produzione: ogni scrittura viene intercettata e registrata, a Supabase
