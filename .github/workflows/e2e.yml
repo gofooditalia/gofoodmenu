@@ -14,8 +14,8 @@ concurrency:
 
 jobs:
   e2e:
-    # Fisso: ubuntu-latest è passato a 26.04 e Playwright 1.56 non vi installa Chromium
-    runs-on: ubuntu-24.04
+    # Ubuntu 26.04 richiede Playwright 1.64 o successivo
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       # Chiavi pubbliche di Supabase (le stesse del browser): sola lettura dei menu pubblici
