@@ -182,8 +182,12 @@ export function useUpdateTenant() {
                 // Sync Locations
                 const locations = locationsToSave;
                 if (locations) {
-                    // Delete old (always clear if we are updating locations)
-                    await (supabase.from('tenant_locations') as any).delete().eq('tenant_id', id);
+                    // Prima le sedi nuove, poi si cancellano le vecchie: se l'inserimento fallisce il locale
+                    // tiene i suoi indirizzi invece di restare senza
+                    const { data: oldLocations, error: oldError } = await (supabase.from('tenant_locations') as any)
+                        .select('id')
+                        .eq('tenant_id', id);
+                    if (oldError) throw oldError;
 
                     if (locations.length > 0) {
                         // Insert new
@@ -195,7 +199,16 @@ export function useUpdateTenant() {
                             opening_hours: loc.opening_hours || null,
                             is_primary: idx === 0
                         }));
-                        await (supabase.from('tenant_locations') as any).insert(locsToInsert);
+                        const { error: insertError } = await (supabase.from('tenant_locations') as any).insert(locsToInsert);
+                        if (insertError) throw insertError;
+                    }
+
+                    const oldIds = (oldLocations ?? []).map((loc: { id: string }) => loc.id);
+                    if (oldIds.length > 0) {
+                        const { error: deleteError } = await (supabase.from('tenant_locations') as any)
+                            .delete()
+                            .in('id', oldIds);
+                        if (deleteError) throw deleteError;
                     }
                 }
             }
@@ -209,11 +222,13 @@ export function useUpdateTenant() {
 
             // 2. Update Design Settings
             if (theme_options) {
-                await (supabase.from('tenant_design_settings') as any)
+                const { error: designError } = await (supabase.from('tenant_design_settings') as any)
                     .upsert({
                         tenant_id: id,
                         theme_config: theme_options
                     });
+                // Senza questo controllo compariva "Dati salvati!" anche col tema non salvato
+                if (designError) throw designError;
             }
 
             return { previousSlug: currentTenant.slug as string | null };

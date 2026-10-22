@@ -23,6 +23,15 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Segreti GitHub: `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (chiave publishable dedicata
   `github_actions`, sola lettura). Nel workflow `STRIPE_SECRET_KEY` e `SUPABASE_SERVICE_ROLE_KEY` sono finte:
   servono solo al build (client creati al caricamento dei moduli).
+  Test del Design Studio (`e2e/design-studio.spec.ts`, PR #59, 22/10/2026): accede con l'account di prova "Gofood"
+  (italiagofood@gmail.com, piano free: il Design Studio non richiede premium) tramite i segreti `E2E_EMAIL` ed
+  `E2E_PASSWORD`, applica l'altro stile pronto e controlla anteprima e dati salvati. Ogni scrittura verso Supabase
+  viene intercettata (il database è quello di produzione): non togliere quella barriera. Trace spento in quel
+  file (conterrebbe password e token); senza segreti il test viene saltato. Runner fisso su `ubuntu-24.04`
+  (Playwright 1.56 non installa Chromium su 26.04).
+- Salvataggio dati del locale (`useUpdateTenant` in `src/hooks/useTenant.ts`, 22/10/2026): ogni scrittura controlla
+  l'errore (prima compariva "Dati salvati!" anche col tema non salvato). Le sedi (`tenant_locations`) si salvano
+  inserendo le nuove e poi cancellando le vecchie per id: se l'inserimento fallisce il locale tiene i suoi indirizzi.
 - Skill del progetto in `.claude/skills/`: `nuovo-ristorante` (ingresso di un locale) e `a11y-audit`
   (accessibilità su pagine reali con axe-core).
 - Branch: la cancellazione automatica dopo il merge NON è attiva su GitHub e il proxy delle sessioni cloud non
@@ -121,8 +130,6 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
-- Test Playwright del Design Studio con l'account di prova del titolare: credenziali da inserire come segreti
-  GitHub (mai in chat).
 - **Prenotazione tavoli e fine di GloriaFood** (scadenza: fine aprile 2027). GO!Food è partner GloriaFood per la
   Sicilia e GloriaFood chiude: decidere se passare a un nuovo partner (es. UpMenu) o fare una soluzione interna.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,
