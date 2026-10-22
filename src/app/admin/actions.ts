@@ -2,7 +2,7 @@
 
 import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
-import { getAdminOverview, isAdminEmail } from '@/lib/admin';
+import { getAdminOverview, isAdminEmail, TEST_TENANT_SLUGS } from '@/lib/admin';
 
 export interface NewsletterSyncResult {
     ok: boolean;
@@ -12,6 +12,7 @@ export interface NewsletterSyncResult {
 /**
  * Aggiunge gli esercenti al segmento newsletter di Resend (RESEND_NEWSLETTER_SEGMENT_ID).
  * I contatti già presenti non vengono toccati: chi si è disiscritto resta disiscritto.
+ * Gli account di prova (TEST_TENANT_SLUGS) restano fuori.
  */
 export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
     const supabase = await createClient();
@@ -28,7 +29,12 @@ export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { tenants } = await getAdminOverview();
     const emails = new Map<string, string>();
+    let testAccounts = 0;
     for (const t of tenants) {
+        if (t.slug && TEST_TENANT_SLUGS.includes(t.slug)) {
+            testAccounts += 1;
+            continue;
+        }
         if (t.email) emails.set(t.email.toLowerCase(), t.restaurantName);
     }
 
@@ -55,6 +61,7 @@ export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
 
     return {
         ok: failed === 0,
-        message: `${added} esercenti nella lista newsletter${failed ? `, ${failed} non riusciti (vedi log)` : ''}`,
+        message: `${added} esercenti nella lista newsletter${failed ? `, ${failed} non riusciti (vedi log)` : ''}`
+            + (testAccounts ? ` (esclusi ${testAccounts} account di prova)` : ''),
     };
 }
