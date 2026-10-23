@@ -135,7 +135,13 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Prima newsletter inviata il 23/10/2026 da Resend Broadcasts (saluto `{{{FIRST_NAME|a tutto lo staff}}}`, reply-to
   `help@gofoodmenu.it`) ai 7 clienti paganti. Novità già annunciate: menu come app (PWA), risposte alle recensioni Google,
   menu più veloce e foto ottimizzate, Design Studio con due stili e avvisi di leggibilità, QR in alta risoluzione,
-  anteprima dei link condivisi, salvataggi più sicuri. La prossima riparte dalle novità successive. NON cancellare la chiave
+  anteprima dei link condivisi, salvataggi più sicuri. La prossima riparte dalle novità successive.
+  **Periodicità (decisa il 23/10/2026)**: una al mese, il **primo lunedì del mese verso le 10** (molti locali chiudono
+  il lunedì; il venerdì è giorno di lavoro pieno). Racconta le novità del mese appena chiuso. Novembre 2026 saltato
+  (troppo vicino alla prima): la seconda è lunedì 7/12/2026. Se nel mese non c'è niente di utile al ristoratore, si salta.
+  Le newsletter inviate stanno in `newsletter/AAAA-MM.html` (la prima, `2026-10.html`, è il modello: stile, saluto,
+  piè di pagina col link di disiscrizione `{{{RESEND_UNSUBSCRIBE_URL}}}`). Un'attività programmata ogni giovedì
+  controlla se il lunedì dopo è il primo del mese e, in quel caso, prepara la bozza in una pull request. NON cancellare la chiave
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
