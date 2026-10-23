@@ -128,7 +128,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Full access dello stesso team (con "Sending access" non si creano contatti; una chiave di un altro team romperebbe
   gli invii da `help@` e `reservations@gofoodmenu.it`). Gli account di prova (`TEST_TENANT_SLUGS`) sono esclusi
   dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
-  provata il 23/10/2026: tutti gli esercenti nel segmento. Da fare: cancellare su Resend la vecchia chiave "Sending access".
+  provata il 23/10/2026: tutti gli esercenti nel segmento. NON cancellare la chiave
+  "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
+  `register@gofoodmenu.it` (quasi certamente l'SMTP di Supabase Auth, non è nel codice).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
