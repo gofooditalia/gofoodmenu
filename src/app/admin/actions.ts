@@ -42,7 +42,8 @@ export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
             notPaying += 1;
             continue;
         }
-        if (t.email) emails.set(t.email.toLowerCase(), t.restaurantName);
+        // Il nome finisce nel saluto della newsletter ({{{FIRST_NAME}}}): niente spazi in più
+        if (t.email) emails.set(t.email.toLowerCase(), t.restaurantName.trim().replace(/\s+/g, ' '));
     }
 
     let added = 0;
