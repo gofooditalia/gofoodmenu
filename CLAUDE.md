@@ -8,7 +8,8 @@ La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (m
 Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
 **Account di prova** (non sono locali reali): `belleepoquepalermo` (email di Gabriele), `accademia` (piano free) e
 `gofood` (italiagofood@gmail.com, usato dal test del Design Studio); `ristorante-marina` non esiste più (22/10/2026).
-Elenco nel codice: `TEST_TENANT_SLUGS` in `src/lib/admin.ts`, da aggiornare se ne nasce uno nuovo.
+Anche `oza` (email di Gabriele, registrazione senza slug) è una prova. Elenco nel codice: `TEST_TENANT_SLUGS` e,
+per chi non ha slug, `TEST_TENANT_IDS` in `src/lib/admin.ts`, da aggiornare se ne nasce uno nuovo.
 Non trattarli come clienti in controlli, prove e statistiche. Locali reali che usano il menu (21/10/2026):
 `magnaromatrattoria`, `osteria-cilea`, `bistrot107`, `spaghetteria-da-emanuele`, `scjavuru`, `sunset-barcarello`,
 `villa-pensabene-ristorante-pizzeria`.
@@ -126,9 +127,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   membro del team Resend **gofoodmenu** (account di Gabriele, dominio `gofoodmenu.it` verificato), segmento
   "Esercenti Go!Food Menù" (`RESEND_NEWSLETTER_SEGMENT_ID` su Vercel, Production e Preview) e nuova `RESEND_API_KEY`
   Full access dello stesso team (con "Sending access" non si creano contatti; una chiave di un altro team romperebbe
-  gli invii da `help@` e `reservations@gofoodmenu.it`). Gli account di prova (`TEST_TENANT_SLUGS`) sono esclusi
+  gli invii da `help@` e `reservations@gofoodmenu.it`). Gli account di prova (`TEST_TENANT_SLUGS`, `TEST_TENANT_IDS`) sono esclusi
   dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
-  provata il 23/10/2026: tutti gli esercenti nel segmento. NON cancellare la chiave
+  provata il 23/10/2026. Dal 23/10/2026 la sincronizzazione aggiunge solo i clienti
+  con abbonamento premium attivo (`isPaying` in `src/lib/admin.ts`): niente registrazioni a metà né piano free.
+  Aggiunge e basta: chi smette di essere cliente va tolto a mano dal segmento su Resend. NON cancellare la chiave
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
