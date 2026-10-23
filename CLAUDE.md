@@ -145,6 +145,16 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
+- **Trattoria da Piero (Mondello), potenziale cliente** (23/10/2026): il titolare vuole contattarlo; il locale ha un
+  forte stile siciliano e apprezzerebbe un menu coerente. Direzione approvata: tema **"barca e limoni"** ricavato dal
+  locale (barca bianca/blu cobalto/rossa con la scritta "da Piero Mondello" in corsivo, limoni, zoccolo di maioliche,
+  tovaglie azzurre): fondo crema, blu cobalto principale, giallo limone come accento, rosso pochissimo, nome in corsivo,
+  **maiolica come fascia** (testata e tra le categorie) e non come sfondo intero (il prototipo ChatGPT tutto piastrelle
+  era troppo carico). Bozza fuori dal codice in `design/da-piero/bozza-tema.html` (+ `.png`; prezzi e testi inventati).
+  Non adatto a Bistrot 107. Prossimi passi, quando si parte: foto e menu pubblicati da lui (non le foto dei recensori),
+  stile pronto nel Design Studio con contrasti verificati e nuovo motivo maiolica (`PatternType`, `TextureOverlay.tsx`),
+  layout del menu invariato, demo PRIVATA su account di prova (niente menu pubblico col suo nome prima del sì).
+  Argomenti: il suo stile, menu in più lingue (molti turisti), polpo come piatto della casa. Da incastrare con GloriaFood.
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
