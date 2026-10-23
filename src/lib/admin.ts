@@ -25,6 +25,14 @@ export function getSupabaseAdmin() {
 
 // Account di prova (vedi CLAUDE.md): restano fuori dalla newsletter. Aggiornare se ne nasce uno nuovo.
 export const TEST_TENANT_SLUGS = ['ristorante-marina', 'belleepoquepalermo', 'accademia', 'gofood'];
+// Account di prova senza slug (registrazione mai completata), riconosciuti dall'id del tenant
+export const TEST_TENANT_IDS = [
+    'da1f52b7-4d2c-4e09-acef-f0a18df353c8', // "oza", prova di Gabriele
+];
+
+export function isTestTenant(t: { id: string; slug: string | null }): boolean {
+    return TEST_TENANT_IDS.includes(t.id) || (!!t.slug && TEST_TENANT_SLUGS.includes(t.slug));
+}
 
 // Oltre questa soglia senza modifiche al menu il ristorante va ricontattato
 export const STALE_MENU_DAYS = 60;

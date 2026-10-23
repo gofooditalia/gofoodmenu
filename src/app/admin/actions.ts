@@ -2,7 +2,7 @@
 
 import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
-import { getAdminOverview, isAdminEmail, isPaying, TEST_TENANT_SLUGS } from '@/lib/admin';
+import { getAdminOverview, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
 
 export interface NewsletterSyncResult {
     ok: boolean;
@@ -13,7 +13,7 @@ export interface NewsletterSyncResult {
  * Aggiunge al segmento newsletter di Resend (RESEND_NEWSLETTER_SEGMENT_ID) solo i clienti con abbonamento
  * premium attivo: chi ha solo iniziato la registrazione o è sul piano free resta fuori.
  * I contatti già presenti non vengono toccati: chi si è disiscritto resta disiscritto.
- * Gli account di prova (TEST_TENANT_SLUGS) restano fuori.
+ * Gli account di prova (TEST_TENANT_SLUGS e TEST_TENANT_IDS) restano fuori.
  * La sincronizzazione aggiunge e basta: chi non è più cliente va tolto a mano dal segmento su Resend.
  */
 export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
@@ -34,7 +34,7 @@ export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
     let testAccounts = 0;
     let notPaying = 0;
     for (const t of tenants) {
-        if (t.slug && TEST_TENANT_SLUGS.includes(t.slug)) {
+        if (isTestTenant(t)) {
             testAccounts += 1;
             continue;
         }
