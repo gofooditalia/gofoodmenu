@@ -130,7 +130,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
   provata il 23/10/2026: tutti gli esercenti nel segmento. NON cancellare la chiave
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
-  `register@gofoodmenu.it` (quasi certamente l'SMTP di Supabase Auth, non è nel codice).
+  `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
+  `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
