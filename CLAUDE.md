@@ -127,8 +127,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   "Esercenti Go!Food Menù" (`RESEND_NEWSLETTER_SEGMENT_ID` su Vercel, Production e Preview) e nuova `RESEND_API_KEY`
   Full access dello stesso team (con "Sending access" non si creano contatti; una chiave di un altro team romperebbe
   gli invii da `help@` e `reservations@gofoodmenu.it`). Gli account di prova (`TEST_TENANT_SLUGS`) sono esclusi
-  dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). Da fare: provare
-  "Sincronizza lista newsletter" e cancellare su Resend la vecchia chiave.
+  dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
+  provata il 23/10/2026: tutti gli esercenti nel segmento. Da fare: cancellare su Resend la vecchia chiave "Sending access".
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
