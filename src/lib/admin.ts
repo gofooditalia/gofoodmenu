@@ -73,7 +73,7 @@ async function fetchAllDishes(supabase: ReturnType<typeof getSupabaseAdmin>) {
     return { data: rows };
 }
 
-function isPaying(tier: string, status: string) {
+export function isPaying(tier: string, status: string) {
     return tier !== 'free' && status === 'active';
 }
 

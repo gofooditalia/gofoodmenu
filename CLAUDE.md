@@ -128,7 +128,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Full access dello stesso team (con "Sending access" non si creano contatti; una chiave di un altro team romperebbe
   gli invii da `help@` e `reservations@gofoodmenu.it`). Gli account di prova (`TEST_TENANT_SLUGS`) sono esclusi
   dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
-  provata il 23/10/2026: tutti gli esercenti nel segmento. NON cancellare la chiave
+  provata il 23/10/2026. Dal 23/10/2026 la sincronizzazione aggiunge solo i clienti
+  con abbonamento premium attivo (`isPaying` in `src/lib/admin.ts`): niente registrazioni a metà né piano free.
+  Aggiunge e basta: chi smette di essere cliente va tolto a mano dal segmento su Resend. NON cancellare la chiave
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
