@@ -131,7 +131,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   dalla sincronizzazione. Invio da `help@` provato con la nuova chiave il 23/10/2026 (consegnato). "Sincronizza lista newsletter"
   provata il 23/10/2026. Dal 23/10/2026 la sincronizzazione aggiunge solo i clienti
   con abbonamento premium attivo (`isPaying` in `src/lib/admin.ts`): niente registrazioni a metà né piano free.
-  Aggiunge e basta: chi smette di essere cliente va tolto a mano dal segmento su Resend. NON cancellare la chiave
+  Aggiunge e basta: chi smette di essere cliente va tolto a mano dal segmento su Resend.
+  Prima newsletter inviata il 23/10/2026 da Resend Broadcasts (saluto `{{{FIRST_NAME|a tutto lo staff}}}`, reply-to
+  `help@gofoodmenu.it`) ai 7 clienti paganti. Novità già annunciate: menu come app (PWA), risposte alle recensioni Google,
+  menu più veloce e foto ottimizzate, Design Studio con due stili e avvisi di leggibilità, QR in alta risoluzione,
+  anteprima dei link condivisi, salvataggi più sicuri. La prossima riparte dalle novità successive. NON cancellare la chiave
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
