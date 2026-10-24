@@ -208,6 +208,20 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Ha anche **pusateri.it**, servizio di QR dinamici (29–109 €/anno, pacchetti per agenzie) e kit di 10–20 supporti con
   il primo anno di servizio (169–369 € IVA e consegna incluse). Per i nostri clienti il QR dinamico non serve: il link
   `gofoodmenu.it/slug` non cambia e il menu si aggiorna da solo. NFC semplici (NFC Tools), non firmati come WaiterButton.
+- **Menu tradotti al posto di Google Translate** (24/10/2026, pilota **Magna Roma**, lingue **en, fr, de, es**):
+  traduzioni salvate in `translations` (jsonb) di `dishes`, `categories` e `tenants` (sottotitolo `tagline` e descrizione
+  `brand`), lingue attive in `tenants.menu_languages` (migrazione 039, applicata il 24/10/2026). Si generano dal pannello
+  `/admin` (pulsante "Traduci menu", `src/lib/translate-menu.ts`, OpenRouter, modello `OPENROUTER_TRANSLATE_MODEL` o
+  Gemini 2.5 Flash): traduce solo le voci nuove o cambiate e poi attiva le lingue. Regole del prompt: i nomi dei piatti
+  tipici restano in italiano, ingredienti tradotti fedelmente, niente ingredienti aggiunti. **Sicurezza**: ogni traduzione
+  tiene il testo italiano di partenza (`source`); se il ristoratore cambia nome o descrizione, il menu tradotto mostra
+  l'italiano per quel piatto finché non viene ritradotto. Allergeni ed etichette hanno testi fissi scritti a mano
+  (`src/lib/menu-i18n.ts`), mai dall'AI. Pagine `/{slug}/{lingua}` (`src/app/[slug]/[lang]`, codice comune in
+  `src/app/[slug]/menu-page.tsx`), hreflang tra le versioni, sitemap. Il middleware (`src/lib/menu-language-redirect.ts`)
+  manda chi apre `/{slug}` dal QR alla lingua del telefono (olandese o altre → inglese; italiano o nessuna → italiano);
+  la scelta fatta nel selettore (cookie `menu_lang`) vale più del telefono. Elenco dei locali tradotti letto ogni 5 min.
+  I locali senza traduzioni restano con Google Translate. Da fare dopo il pilota: traduzione automatica al salvataggio
+  del piatto, linguette di correzione nel pannello del ristoratore, pagina allergeni nelle nuove lingue.
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).

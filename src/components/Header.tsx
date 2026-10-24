@@ -3,7 +3,10 @@
 import React from 'react';
 import TenantLogo from './TenantLogo';
 import LanguageSwitcher from './LanguageSwitcher';
+import NativeLanguageSwitcher from './NativeLanguageSwitcher';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
+import { useMenuStrings } from '@/lib/menu-i18n';
+import type { MenuLang } from '@/lib/menu-languages';
 
 interface HeaderProps {
   restaurantName?: string;
@@ -12,6 +15,10 @@ interface HeaderProps {
   logoHeight?: number;
   className?: string;
   mobileHeaderStyle?: 'center' | 'left';
+  // Menu con traduzioni salvate: il selettore passa da una pagina all'altra invece di usare Google Translate
+  slug?: string;
+  menuLang?: MenuLang;
+  menuLanguages?: MenuLang[];
 }
 
 export default function Header({
@@ -21,8 +28,16 @@ export default function Header({
   logoHeight = 40,
   className,
   mobileHeaderStyle = 'left',
-  disableLanguageSwitcher = false
+  disableLanguageSwitcher = false,
+  slug,
+  menuLang = 'it',
+  menuLanguages = ['it'],
 }: HeaderProps & { disableLanguageSwitcher?: boolean }) {
+  const strings = useMenuStrings();
+  const native = !!slug && menuLanguages.length > 1 && !disableLanguageSwitcher;
+  const switcher = (compact?: boolean) => native
+    ? <NativeLanguageSwitcher slug={slug!} current={menuLang} languages={menuLanguages} compact={compact} />
+    : <LanguageSwitcher compact={compact} disabled={disableLanguageSwitcher} />;
   // Ensure logoUrl is properly encoded to handle spaces
   const sanitizedLogoUrl = logoUrl?.replace(/ /g, '%20') || '/favicon.svg';
   const { isGlutenFree, toggleGlutenFilter } = useGlutenFilter();
@@ -47,7 +62,7 @@ export default function Header({
                   onClick={toggleGlutenFilter}
                   className={`p-2 rounded-lg transition-colors ${isGlutenFree ? 'bg-[#D4AF37]/40 hover:bg-[#D4AF37]/50' : 'hover:bg-gray-100'}`}
                   style={{ color: 'var(--tenant-header-text, var(--tenant-primary, #8B0000))' }}
-                  aria-label="Filtro senza glutine"
+                  aria-label={strings.glutenFilter}
                   aria-pressed={isGlutenFree}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="m2 22 10-10m4-4-1.17 1.17M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94M8 8l-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97m-.6-6.24c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4" /><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0M16 16l-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 1.97-.98m6.24.6c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28M2 2l20 20" /></svg>
@@ -61,7 +76,7 @@ export default function Header({
 
               {/* Lingua (Destra) */}
               <div className="w-12 flex justify-end">
-                <LanguageSwitcher compact={true} disabled={disableLanguageSwitcher} />
+                {switcher(true)}
               </div>
             </>
           ) : (
@@ -79,12 +94,12 @@ export default function Header({
                   onClick={toggleGlutenFilter}
                   className={`p-2 rounded-lg transition-colors ${isGlutenFree ? 'bg-[#D4AF37]/40 hover:bg-[#D4AF37]/50' : 'hover:bg-gray-100'}`}
                   style={{ color: 'var(--tenant-header-text, var(--tenant-primary, #8B0000))' }}
-                  aria-label="Filtro senza glutine"
+                  aria-label={strings.glutenFilter}
                   aria-pressed={isGlutenFree}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="m2 22 10-10m4-4-1.17 1.17M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94M8 8l-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97m-.6-6.24c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4" /><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0M16 16l-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 1.97-.98m6.24.6c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28M2 2l20 20" /></svg>
                 </button>
-                <LanguageSwitcher compact={false} disabled={disableLanguageSwitcher} />
+                {switcher(false)}
               </div>
             </>
           )}
@@ -119,13 +134,13 @@ export default function Header({
                 : 'hover:bg-gray-100'
                 }`}
               style={{ color: 'var(--tenant-header-text, var(--tenant-primary, #8B0000))' }}
-              aria-label="Filtro senza glutine"
+              aria-label={strings.glutenFilter}
               aria-pressed={isGlutenFree}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6"><path d="m2 22 10-10m4-4-1.17 1.17M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94M8 8l-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97m-.6-6.24c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4" /><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0M16 16l-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 1.97-.98m6.24.6c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28M2 2l20 20" /></svg>
             </button>
 
-            <LanguageSwitcher disabled={disableLanguageSwitcher} />
+            {switcher()}
           </div>
         </div>
       </div>
