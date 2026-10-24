@@ -194,6 +194,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   allergeni a norma di legge, facile da gestire per il ristoratore ed economico. NON è un sito web: niente dominio del
   locale, niente pagine chi siamo / dove siamo / gallery. È per chi non ha un sito o non ne ha il pieno controllo.
   Non cercare per forza punti a favore del progetto: i punti deboli vanno detti chiaramente.
+  **Decisioni sull'identità (24/10/2026)**: (1) Go!Food Menù è un **SaaS a tutti gli effetti**: il ristoratore si
+  registra e gestisce tutto da solo; il titolare è l'assistenza, mai la porta d'accesso al servizio. Servono presenza
+  online e marketing costruiti su una comunicazione ben definita. (2) Territorio: **tutta la Sicilia**. (3) **Prodotto a
+  sé con extra** facoltativi (segnatavolo in legno, eventuale piano annuale), non un pacchetto con sito e ordini.
 - **Hardware da tavolo: Pusateri Maker** (call fissata lunedì 26/10/2026). Alessio Pusateri, artigiano del legno a
   Casteldaccia (PA): segnatavolo in legno con NFC + QR (CubOtto, Cavalletto, QR-NFC da parete), portamenu, CNC e laser.
   Ha anche **pusateri.it**, servizio di QR dinamici (29–109 €/anno, pacchetti per agenzie) e kit di 10–20 supporti con
