@@ -10,8 +10,9 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('it');
+// initialLanguage: lingua della pagina del menu (/{slug}/{lingua}); altrove resta l'italiano
+export function LanguageProvider({ children, initialLanguage = 'it' }: { children: ReactNode; initialLanguage?: Language }) {
+  const [language, setLanguage] = useState<Language>(initialLanguage);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

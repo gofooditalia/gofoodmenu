@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useMenuStrings } from '@/lib/menu-i18n';
 
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const strings = useMenuStrings();
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -32,7 +34,7 @@ export default function ScrollToTop() {
         <button
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 z-50 bg-[var(--tenant-primary,#8B0000)] hover:brightness-90 text-[var(--tenant-on-primary,#FFFFFF)] p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
-          aria-label="Torna su"
+          aria-label={strings.backToTop}
         >
           <svg
             className="w-6 h-6"

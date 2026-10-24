@@ -11,6 +11,9 @@ import { ThemeWrapper } from '@/components/theme/ThemeWrapper';
 import { ThemeDivider } from '@/components/theme/ThemeDivider';
 import { ThemeConfig } from '@/lib/theme-engine/types';
 import { readableTextOn } from '@/lib/theme-engine/contrast';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import { MenuLangProvider } from '@/lib/menu-i18n';
+import type { MenuLang } from '@/lib/menu-languages';
 
 interface Tenant {
   restaurant_name: string;
@@ -45,7 +48,7 @@ interface Category {
   dishes: Dish[];
 }
 
-function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Category[] }) {
+function MenuContent({ tenant, categories, lang, languages }: { tenant: Tenant, categories: Category[], lang: MenuLang, languages: MenuLang[] }) {
   const { currentTheme } = useTheme();
   const [activeCategory, setActiveCategory] = useState<string | null>(categories[0]?.id ?? null);
   // Durante lo scroll avviato da un click sulla barra, lo scroll-spy non deve cambiare categoria
@@ -123,6 +126,7 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
 
   return (
     <div
+      lang={lang}
       className="min-h-screen pt-[135px] select-none overflow-x-hidden relative z-10"
       style={{
         // backgroundColor: currentTheme.colors.background, // RIMOSSO PER PERMETTERE AL TEXTURE OVERLAY DI ESSERE VISIBILE
@@ -143,6 +147,9 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
         logoUrl={tenant.logo_url}
         logoHeight={currentTheme.logoHeight}
         mobileHeaderStyle={currentTheme.mobileHeaderStyle}
+        slug={tenant.slug}
+        menuLang={lang}
+        menuLanguages={languages}
       />
 
       <CategoryNav
@@ -173,7 +180,7 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
               className="text-lg sm:text-xl max-w-2xl mx-auto theme-body"
               style={{ color: secondaryText }}
             >
-              {tenant.tagline || 'Autentica cucina romana nel cuore della città'}
+              {tenant.tagline || (lang === 'it' ? 'Autentica cucina romana nel cuore della città' : '')}
             </p>
           </div>
         </section>
@@ -236,12 +243,16 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
   );
 }
 
-export default function MenuPageClient({ tenant, categories, initialTheme }: { tenant: Tenant, categories: Category[], initialTheme?: ThemeConfig }) {
+export default function MenuPageClient({ tenant, categories, initialTheme, lang = 'it', languages = ['it'] }: { tenant: Tenant, categories: Category[], initialTheme?: ThemeConfig, lang?: MenuLang, languages?: MenuLang[] }) {
   return (
-    <ThemeProvider initialTheme={initialTheme}>
-      <ThemeWrapper>
-        <MenuContent tenant={tenant} categories={categories} />
-      </ThemeWrapper>
-    </ThemeProvider>
+    <MenuLangProvider value={lang}>
+      <LanguageProvider initialLanguage={lang}>
+        <ThemeProvider initialTheme={initialTheme}>
+          <ThemeWrapper>
+            <MenuContent tenant={tenant} categories={categories} lang={lang} languages={languages} />
+          </ThemeWrapper>
+        </ThemeProvider>
+      </LanguageProvider>
+    </MenuLangProvider>
   );
 }

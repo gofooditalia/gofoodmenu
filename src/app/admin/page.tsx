@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getAdminOverview, isAdminEmail } from '@/lib/admin';
 import { NewsletterSyncButton } from './NewsletterSyncButton';
+import { TranslateMenuButton } from './TranslateMenuButton';
 
 export const metadata: Metadata = {
     title: 'Admin - Go!Food Menù',
@@ -11,6 +12,8 @@ export const metadata: Metadata = {
 
 // Dati sempre aggiornati: niente cache
 export const dynamic = 'force-dynamic';
+// La traduzione di un menu (pulsante "Traduci menu") fa più chiamate all'AI: serve più tempo del solito
+export const maxDuration = 300;
 
 const TIER_LABELS: Record<string, string> = { free: 'Free', basic: 'Basic', premium: 'Premium' };
 const STATUS_LABELS: Record<string, string> = {
@@ -95,6 +98,7 @@ export default async function AdminPage() {
                                 <th className="p-3 text-right">Piatti</th>
                                 <th className="p-3">Ultima modifica menu</th>
                                 <th className="p-3">Iscritto il</th>
+                                <th className="p-3">Lingue</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,6 +117,11 @@ export default async function AdminPage() {
                                     <td className="p-3 text-right">{t.dishCount}</td>
                                     <td className="p-3">{formatDate(t.lastMenuUpdate)}</td>
                                     <td className="p-3">{formatDate(t.createdAt)}</td>
+                                    <td className="p-3">
+                                        {t.slug && t.tier !== 'free' && t.dishCount > 0 ? (
+                                            <TranslateMenuButton tenantId={t.id} restaurantName={t.restaurantName} />
+                                        ) : '—'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

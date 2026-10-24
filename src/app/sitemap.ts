@@ -38,18 +38,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Fetch all active tenants
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: tenants } = await (supabase.from('tenants') as any)
-        .select('slug, updated_at')
+        // '*' e non l'elenco delle colonne: prima della migrazione 039 menu_languages non esiste
+        .select('*')
         .eq('subscription_status', 'active')
         .not('slug', 'is', null);
 
+    // Menu dei locali, più le versioni tradotte (/{slug}/{lingua}) per chi le ha attive
     const tenantPages: MetadataRoute.Sitemap = (tenants || [])
         .filter((tenant: { slug: string | null }) => tenant.slug)
-        .map((tenant: { slug: string; updated_at: string }) => ({
-            url: `${baseUrl}/${tenant.slug}`,
-            lastModified: new Date(tenant.updated_at),
-            changeFrequency: 'daily',
-            priority: 0.9,
-        }));
+        .flatMap((tenant: { slug: string; updated_at: string; menu_languages?: string[] | null }) =>
+            ['', ...(tenant.menu_languages || []).map((lang) => `/${lang}`)].map((suffix) => ({
+                url: `${baseUrl}/${tenant.slug}${suffix}`,
+                lastModified: new Date(tenant.updated_at),
+                changeFrequency: 'daily' as const,
+                priority: suffix ? 0.8 : 0.9,
+            }))
+        );
 
     return [...staticPages, ...tenantPages];
 }

@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { parseIngredients } from '@/utils/ingredientParser';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
 import { Leaf, Home, Snowflake } from 'lucide-react';
+import { useMenuStrings } from '@/lib/menu-i18n';
 
 interface DishCardProps {
   dish: Dish & {
@@ -23,25 +24,10 @@ interface DishCardProps {
   showPhoto?: boolean;
 }
 
-const allergenTranslations: Record<string, { it: string; en: string }> = {
-  glutine: { it: 'Glutine', en: 'Gluten' },
-  crostacei: { it: 'Crostacei', en: 'Crustaceans' },
-  uova: { it: 'Uova', en: 'Eggs' },
-  pesce: { it: 'Pesce', en: 'Fish' },
-  arachidi: { it: 'Arachidi', en: 'Peanuts' },
-  soia: { it: 'Soia', en: 'Soy' },
-  lattosio: { it: 'Lattosio', en: 'Lactose' },
-  'frutta-secca': { it: 'Frutta secca', en: 'Nuts' },
-  sedano: { it: 'Sedano', en: 'Celery' },
-  senape: { it: 'Senape', en: 'Mustard' },
-  sesamo: { it: 'Sesamo', en: 'Sesame' },
-  solfiti: { it: 'Solfiti', en: 'Sulphites' },
-  lupini: { it: 'Lupini', en: 'Lupin' },
-  molluschi: { it: 'Molluschi', en: 'Molluscs' },
-};
-
 export default function DishCard({ dish, tenantSlug, priority = false, showPhoto = true }: DishCardProps) {
   const { isGlutenFree } = useGlutenFilter();
+  // Etichette nella lingua del menu (/{slug}/{lingua}); fuori dal menu pubblico italiano
+  const strings = useMenuStrings();
   const [imageError, setImageError] = useState(false);
   const placeholderImage = '/no-image.svg';
 
@@ -71,10 +57,10 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
             <div className="text-center max-w-xs">
               <div className="text-7xl mb-6 opacity-40">🌿</div>
               <div className="text-xl md:text-2xl theme-heading font-bold text-[var(--tenant-primary,#8B0000)] mb-3">
-                Fuori stagione
+                {strings.outOfSeason}
               </div>
               <div className="text-sm md:text-base text-[var(--tenant-text-secondary,#4B5563)] leading-relaxed">
-                Disponibile solo nel periodo stagionale
+                {strings.seasonalOnly}
               </div>
             </div>
           </div>
@@ -105,7 +91,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
           <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
             <span className="font-semibold text-xs flex items-center gap-1">
               <span>🌾</span>
-              Contiene glutine
+              {strings.containsGluten}
             </span>
           </div>
         )}
@@ -122,7 +108,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
             >
               <span className="font-semibold text-xs flex items-center gap-1">
                 <span>🏠</span>
-                Fatto in casa
+                {strings.homemade}
               </span>
             </div>
           )}
@@ -130,7 +116,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
             <div className="bg-blue-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
               <span className="font-semibold text-xs flex items-center gap-1">
                 <span>❄️</span>
-                Surgelato
+                {strings.frozen}
               </span>
             </div>
           )}
@@ -167,33 +153,33 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
           {/* Senza foto, gli avvisi che stavano sull'immagine diventano etichette */}
           {!showPhoto && isSeasonalDish && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200">
-              🌿 Fuori stagione
+              🌿 {strings.outOfSeason}
             </span>
           )}
           {!showPhoto && isDisabled && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-600 text-white">
-              🌾 Contiene glutine
+              🌾 {strings.containsGluten}
             </span>
           )}
           {dish.is_vegetarian && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
-              <Leaf className="w-3 h-3" /> Vegetariano
+              <Leaf className="w-3 h-3" /> {strings.vegetarian}
             </span>
           )}
           {dish.is_vegan && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-              <Leaf className="w-3 h-3" /> Vegano
+              <Leaf className="w-3 h-3" /> {strings.vegan}
             </span>
           )}
 
           {dish.is_homemade && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-100">
-              <Home className="w-3 h-3" /> Fatto in casa
+              <Home className="w-3 h-3" /> {strings.homemade}
             </span>
           )}
           {dish.is_frozen && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-              <Snowflake className="w-3 h-3" /> Surgelato
+              <Snowflake className="w-3 h-3" /> {strings.frozen}
             </span>
           )}
         </div>
@@ -211,7 +197,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
                     borderColor: 'color-mix(in srgb, var(--tenant-accent, #d97706) 30%, transparent)'
                   }}
                 >
-                  {allergenTranslations[allergen]?.it || allergen}
+                  {strings.allergenName(allergen)}
                 </span>
               ))}
             </div>
@@ -222,7 +208,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
               style={{ color: 'var(--tenant-primary, #8B0000)' }}
             >
               <span>ℹ️</span>
-              Vedi info allergeni
+              {strings.allergenInfo}
             </Link>
           </div>
         )}
