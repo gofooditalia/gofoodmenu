@@ -19,6 +19,8 @@ interface DishCardProps {
   tenantSlug: string;
   // Le prime card visibili all'apertura: foto scaricata subito invece che in lazy loading
   priority?: boolean;
+  // false: piatto solo testo, senza riquadro foto (tema con dishPhotos 'hide')
+  showPhoto?: boolean;
 }
 
 const allergenTranslations: Record<string, { it: string; en: string }> = {
@@ -38,7 +40,7 @@ const allergenTranslations: Record<string, { it: string; en: string }> = {
   molluschi: { it: 'Molluschi', en: 'Molluscs' },
 };
 
-export default function DishCard({ dish, tenantSlug, priority = false }: DishCardProps) {
+export default function DishCard({ dish, tenantSlug, priority = false, showPhoto = true }: DishCardProps) {
   const { isGlutenFree } = useGlutenFilter();
   const [imageError, setImageError] = useState(false);
   const placeholderImage = '/no-image.svg';
@@ -61,6 +63,7 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
       ? 'opacity-50 pointer-events-none'
       : 'hover:shadow-2xl hover:-translate-y-1'
       }`}>
+      {showPhoto && (
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--tenant-background,#FFF8E7)]">
         {/* Placeholder "Fuori stagione" per piatti stagionali */}
         {isSeasonalDish ? (
@@ -133,18 +136,45 @@ export default function DishCard({ dish, tenantSlug, priority = false }: DishCar
           )}
         </div>
       </div>
+      )}
 
       <div className="p-4 md:p-5">
-        <h3 className="text-lg md:text-xl lg:text-2xl theme-heading font-bold text-[var(--tenant-text,#171717)] mb-2 leading-tight">
-          {dish.name}
-        </h3>
+        {showPhoto ? (
+          <h3 className="text-lg md:text-xl lg:text-2xl theme-heading font-bold text-[var(--tenant-text,#171717)] mb-2 leading-tight">
+            {dish.name}
+          </h3>
+        ) : (
+          // Senza foto il prezzo sta accanto al nome, come in una carta stampata
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <h3 className="text-lg md:text-xl lg:text-2xl theme-heading font-bold text-[var(--tenant-text,#171717)] leading-tight">
+              {dish.name}
+            </h3>
+            <span
+              className="shrink-0 text-[var(--tenant-price,#171717)] px-3 py-1 rounded-full font-bold text-base"
+              style={{ backgroundColor: 'var(--tenant-price-bg, var(--tenant-secondary, #D4AF37))' }}
+            >
+              €{dish.price}
+            </span>
+          </div>
+        )}
 
-        <div className="text-[var(--tenant-text-secondary,#4B5563)] text-sm md:text-base leading-relaxed mb-3 min-h-[3em]">
+        <div className={`text-[var(--tenant-text-secondary,#4B5563)] text-sm md:text-base leading-relaxed mb-3 ${showPhoto ? 'min-h-[3em]' : ''}`}>
           {parseIngredients(dish.description)}
         </div>
 
         {/* Diet & Feature Badges */}
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className={`flex flex-wrap gap-2 mb-3 ${showPhoto ? '' : 'empty:hidden'}`}>
+          {/* Senza foto, gli avvisi che stavano sull'immagine diventano etichette */}
+          {!showPhoto && isSeasonalDish && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200">
+              🌿 Fuori stagione
+            </span>
+          )}
+          {!showPhoto && isDisabled && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-600 text-white">
+              🌾 Contiene glutine
+            </span>
+          )}
           {dish.is_vegetarian && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
               <Leaf className="w-3 h-3" /> Vegetariano

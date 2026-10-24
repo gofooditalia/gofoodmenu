@@ -47,6 +47,10 @@ test.describe('Design Studio', () => {
     const presetSelect = page.locator('select').filter({ has: page.locator(`option[value="${THEME_PRESETS[0].id}"]`) });
     await expect(presetSelect).toBeVisible();
 
+    // Menu senza foto: la scelta va fatta prima dello stile, che non deve cancellarla
+    await page.getByRole('button', { name: 'Solo testo' }).click();
+    await expect(page.getByRole('button', { name: 'Solo testo' })).toHaveAttribute('aria-pressed', 'true');
+
     // Uno stile diverso da quello salvato, così l'anteprima deve per forza cambiare
     const current = await presetSelect.inputValue();
     const target = THEME_PRESETS.find((preset) => preset.id !== current)!;
@@ -65,10 +69,11 @@ test.describe('Design Studio', () => {
     const design = writes.find((w) => w.table.startsWith('tenant_design_settings'));
     expect(design, 'il tema non è stato inviato a tenant_design_settings').toBeTruthy();
     const payload = (Array.isArray(design!.body) ? design!.body[0] : design!.body) as {
-      theme_config: { id: string; colors: Record<string, unknown> };
+      theme_config: { id: string; colors: Record<string, unknown>; dishPhotos?: string };
     };
     expect(payload.theme_config.id).toBe(target.id);
     // Applicare uno stile sostituisce TUTTI i colori del locale (vedi CLAUDE.md, Temi e Design Studio)
     expect(payload.theme_config.colors).toMatchObject({ ...target.colors });
+    expect(payload.theme_config.dishPhotos).toBe('hide');
   });
 });

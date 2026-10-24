@@ -155,6 +155,25 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   stile pronto nel Design Studio con contrasti verificati e nuovo motivo maiolica (`PatternType`, `TextureOverlay.tsx`),
   layout del menu invariato, demo PRIVATA su account di prova (niente menu pubblico col suo nome prima del sì).
   Argomenti: il suo stile, menu in più lingue (molti turisti), polpo come piatto della casa. Da incastrare con GloriaFood.
+- **Concorrenza: dine.mt / CUGO** (ricerca del 24/10/2026). DINE Malta (dal 2015): guida ai ristoranti di Malta e
+  Gozo (~590 locali) + menu digitale MENU.mt/MenuGPS. Menu GRATIS per sempre (QR o link, 50+ lingue già tradotte per
+  piatto, 14 allergeni UE); ordini dal tavolo con schermo cucina a 20 €/mese + IVA o 1 % per ordine; cartoncini QR/NFC
+  da 3,50–5 € l'uno; WaiterButton (bottone di legno NFC per chiamare il cameriere, 5 €; link firmato a ogni tocco,
+  attivo solo se uno schermo del personale è aperto; per i lettini manda la posizione del cliente); chiosco Xiosk.
+  Le schede si riempiono da sole con Google (foto `gplaces_`, descrizioni AI) e poi si chiede al locale di rivendicarle.
+  In Sicilia: **CUGO** (cugo.it), 35 locali a Marina di Ragusa, tutti caricati in automatico (0 recensioni, nessun
+  sito dei locali rimanda a CUGO): oggi una vetrina, non clienti. Sito pulito e sobrio, schede curate (giudizio del
+  titolare); italiano tradotto male. Argomento contro di loro: il menu porta il marchio DINE/CUGO e mostra i "posti
+  simili" (concorrenti); con noi il menu, lo stile e l'app sono del locale. Punto a loro favore: le lingue già pronte.
+  **BlueFrog Indian Restaurant** (St Paul's Bay, Malta, 24/10/2026): proposta Go!Food fatta dal titolare di persona;
+  il gestore ha preferito dine.mt perché paga una volta (i cartoncini) e non un canone. Ha anche detto che **le foto nei
+  piatti non gli piacciono**: le trova da fast food, non da locale con un'esperienza da far vivere. Punto di vista da
+  tenere presente. Da qui l'opzione **"Foto dei Piatti: Con foto / Solo testo"** nel Design Studio (24/10/2026):
+  `dishPhotos: 'hide'` in `theme_config` (nessuna migrazione), `DishCard` senza riquadro foto e prezzo accanto al nome,
+  due colonne su schermo largo, nessuna immagine scaricata. Applicare uno stile pronto NON cambia questa scelta
+  (`applyPreset` in `ThemeContext.tsx`). Le foto caricate restano salvate. Default: con foto (nessun locale cambia).
+  Idee emerse, non decise: piano annuale pagato in anticipo; "chiama il cameriere" dal menu (utile ai lidi);
+  traduzioni salvate per piatto al posto di Google Translate. Sconsigliata la licenza una tantum (costi mensili per locale).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).

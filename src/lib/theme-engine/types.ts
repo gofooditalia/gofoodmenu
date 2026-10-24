@@ -45,6 +45,7 @@ export interface ThemeConfig {
     logoHeight?: number; // Pixel height for logo (default 40-50)
     mobileHeaderStyle?: 'center' | 'left';
     textShadow?: string; // CSS text-shadow value
+    dishPhotos?: 'show' | 'hide'; // 'hide': piatti solo testo, come una carta stampata (default 'show')
 }
 
 export interface ThemePreset extends ThemeConfig {
