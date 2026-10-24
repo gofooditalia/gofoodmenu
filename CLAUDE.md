@@ -76,6 +76,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Regola: ogni foto o logo caricato su Supabase deve avere un nome file NUOVO (mai sovrascrivere lo stesso
   percorso), altrimenti il menu mostra la versione vecchia fino a un mese.
   Dal 27/10/2026 il team è sulla fascia "Flat Rate CDN 10M" (20 $/mese): ~1,5M richieste/mese, metà da `/_next/image`.
+  Costi Vercel del team, 9–22/10/2026 (14 giorni, 33 $): Vercel Agent (AI, dal 16/10) 13,7 $ (42 %), build 5,2 $,
+  ottimizzazione immagini 8,2 $ (25 %: ~0,65 $/giorno prima, 0,20 e 0,05 $ il 21 e 22/10 dopo cache e ricompressione),
+  piano Pro 4,7 $. Le immagini NON sono la voce principale; da tenere d'occhio i build delle anteprime.
+  **Vercel Agent spento dal titolare il 24/10/2026** (rischiava 40–60 $/mese): ricontrollo dei costi fissato al 30/10/2026.
 - **Performance menu pubblico** (20/10/2026, banco di prova `/magnaromatrattoria`, il menu più pesante):
   obiettivo alleggerire tutto il progetto, non un singolo locale. Tolta la splash di 3,2 s; prime 2 foto con
   `preload`; logo via `TenantLogo` (next/image); Inter/Playfair solo da next/font (mai doppi da Google Fonts);
@@ -108,6 +112,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   accessibilità a posto). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
+  Bilingue dal 24/10/2026 (nato dalla visita a BlueFrog, Malta): `/` in italiano e `/en` in inglese scritto apposta,
+  stesso componente `src/components/landing/LandingPage.tsx`, testi in `landing-copy.ts` (ogni modifica va fatta in
+  entrambe le lingue). Pulsante IT/EN in testata, hreflang e canonical nei metadati, `/en` nella sitemap, banner
+  cookie in inglese su `/en`. In inglese: lingue del menu dichiarate "auto-translated" (sono Google Translate) e avviso
+  che il pannello del ristoratore è solo in italiano. **Lo slug `en` è occupato dalla landing**: nessun locale può
+  usarlo (le rotte statiche vincono su `/[slug]`; verificato il 24/10/2026 che nessun locale lo aveva).
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
@@ -180,6 +190,15 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (`applyPreset` in `ThemeContext.tsx`). Le foto caricate restano salvate. Default: con foto (nessun locale cambia).
   Idee emerse, non decise: piano annuale pagato in anticipo; "chiama il cameriere" dal menu (utile ai lidi);
   traduzioni salvate per piatto al posto di Google Translate. Sconsigliata la licenza una tantum (costi mensili per locale).
+- **Come si inquadra Go!Food Menù** (parole del titolare, 24/10/2026): un menu da tavolo ben fatto, con la sezione
+  allergeni a norma di legge, facile da gestire per il ristoratore ed economico. NON è un sito web: niente dominio del
+  locale, niente pagine chi siamo / dove siamo / gallery. È per chi non ha un sito o non ne ha il pieno controllo.
+  Non cercare per forza punti a favore del progetto: i punti deboli vanno detti chiaramente.
+- **Hardware da tavolo: Pusateri Maker** (call fissata lunedì 26/10/2026). Alessio Pusateri, artigiano del legno a
+  Casteldaccia (PA): segnatavolo in legno con NFC + QR (CubOtto, Cavalletto, QR-NFC da parete), portamenu, CNC e laser.
+  Ha anche **pusateri.it**, servizio di QR dinamici (29–109 €/anno, pacchetti per agenzie) e kit di 10–20 supporti con
+  il primo anno di servizio (169–369 € IVA e consegna incluse). Per i nostri clienti il QR dinamico non serve: il link
+  `gofoodmenu.it/slug` non cambia e il menu si aggiorna da solo. NFC semplici (NFC Tools), non firmati come WaiterButton.
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica
   della scheda "GO!Food Italia" (metà dicembre 2026).
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).

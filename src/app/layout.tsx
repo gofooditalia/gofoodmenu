@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     default: "Go!Food Menù - Il Menu Digitale per Ristoranti",
     template: "%s | Go!Food Menù"
   },
-  description: "La soluzione completa per il tuo ristorante: menu digitale multilingua, gestione allergeni e setup immediato. Scansiona il QR e ordina. Inizia oggi.",
+  description: "La soluzione completa per il tuo ristorante: menu digitale multilingua, gestione allergeni e setup immediato. Il cliente scansiona il QR e consulta il menu. Inizia oggi.",
   keywords: "menu digitale, ristorante, gofood, menu online, qr code, menu multilingua, gestione allergeni",
   openGraph: {
     title: "Go!Food Menù - Il Menu Digitale per Ristoranti",
-    description: "La soluzione completa per il tuo ristorante: menu digitale multilingua, gestione allergeni e setup immediato. Scansiona il QR e ordina. Inizia oggi.",
+    description: "La soluzione completa per il tuo ristorante: menu digitale multilingua, gestione allergeni e setup immediato. Il cliente scansiona il QR e consulta il menu. Inizia oggi.",
     type: "website",
     // Immagine di anteprima: src/app/opengraph-image.tsx (file convention di Next)
   },
