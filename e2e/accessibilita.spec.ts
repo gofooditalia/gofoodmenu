@@ -16,6 +16,12 @@ async function violazioni(page: Page) {
     }
     window.scrollTo(0, 0);
   });
+  // Tornando in cima la barra categorie cambia la categoria attiva: axe misurerebbe i colori a metà della
+  // transizione del pulsante (falso contrasto insufficiente). Si aspetta che le animazioni CSS finiscano.
+  // Le animazioni senza fine (es. un'icona di caricamento) non si aspettano.
+  await page.waitForFunction(() =>
+    document.getAnimations().every((a) => a.playState !== 'running' || a.effect?.getTiming().iterations === Infinity),
+  );
   const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
   // Messaggio leggibile: regola, quanti elementi, primo esempio
   return violations.map((v) => `${v.id} (${v.impact}, ${v.nodes.length} elementi): ${v.help} → ${v.nodes[0]?.target.join(' ')}`);
