@@ -119,7 +119,7 @@ async function translateBatch(items: Item[]): Promise<Map<string, Translations>>
 export async function translateTenantMenu(admin: SupabaseClient, tenantId: string): Promise<TranslateMenuResult> {
     const [{ data: tenant, error: tenantError }, { data: categories, error: catError }, { data: dishes, error: dishError }] =
         await Promise.all([
-            admin.from('tenants').select('id, tagline, footer_data, translations').eq('id', tenantId).single(),
+            admin.from('tenants').select('id, footer_data, translations').eq('id', tenantId).single(),
             admin.from('categories').select('id, name, description, translations').eq('tenant_id', tenantId),
             admin.from('dishes').select('id, name, description, translations').eq('tenant_id', tenantId),
         ]);
@@ -138,9 +138,8 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
 
     for (const c of categories ?? []) consider(`c:${c.id}`, c.name, c.description, c.translations as Translations);
     for (const d of dishes ?? []) consider(`d:${d.id}`, d.name, d.description, d.translations as Translations);
-    // Il sottotitolo può stare in tenants.tagline o in footer_data.tagline (Design Studio)
-    const footerTagline = (tenant.footer_data as { tagline?: string } | null)?.tagline;
-    const tagline = (tenant.tagline as string | null) || footerTagline || '';
+    // Il sottotitolo sta in footer_data.tagline (Design Studio): tenants non ha una colonna tagline
+    const tagline = (tenant.footer_data as { tagline?: string } | null)?.tagline ?? '';
     const tenantTranslations = (tenant.translations as Record<string, Translations> | null) ?? {};
     if (tagline.trim()) consider('t:tagline', tagline, '', tenantTranslations.tagline ?? null);
     // Descrizione del locale nel piè di pagina del menu (Design Studio: footer_data.brand_description.it)
