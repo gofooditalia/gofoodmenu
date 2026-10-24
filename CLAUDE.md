@@ -210,7 +210,7 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `gofoodmenu.it/slug` non cambia e il menu si aggiorna da solo. NFC semplici (NFC Tools), non firmati come WaiterButton.
 - **Menu tradotti al posto di Google Translate** (24/10/2026, pilota **Magna Roma**, lingue **en, fr, de, es**):
   traduzioni salvate in `translations` (jsonb) di `dishes`, `categories` e `tenants` (sottotitolo `tagline` e descrizione
-  `brand`), lingue attive in `tenants.menu_languages` (migrazione 039, da eseguire a mano). Si generano dal pannello
+  `brand`), lingue attive in `tenants.menu_languages` (migrazione 039, applicata il 24/10/2026). Si generano dal pannello
   `/admin` (pulsante "Traduci menu", `src/lib/translate-menu.ts`, OpenRouter, modello `OPENROUTER_TRANSLATE_MODEL` o
   Gemini 2.5 Flash): traduce solo le voci nuove o cambiate e poi attiva le lingue. Regole del prompt: i nomi dei piatti
   tipici restano in italiano, ingredienti tradotti fedelmente, niente ingredienti aggiunti. **Sicurezza**: ogni traduzione
