@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { test, expect } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
 import { LOCALI_REALI } from './locali';
+import { INFO_PAGE_SLUGS } from '../src/lib/tenant-info';
 
 // Stesse regole della skill a11y-audit: WCAG 2.0/2.1/2.2 livello A e AA
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
@@ -29,6 +30,14 @@ for (const slug of LOCALI_REALI) {
 
   test(`${slug}: allergeni senza violazioni WCAG`, async ({ page }) => {
     await page.goto(`/${slug}/allergeni`);
+    await expect(page.locator('main h1')).toBeVisible();
+    expect(await violazioni(page)).toEqual([]);
+  });
+}
+
+for (const slug of INFO_PAGE_SLUGS) {
+  test(`${slug}: scheda contatti senza violazioni WCAG`, async ({ page }) => {
+    await page.goto(`/${slug}/info`);
     await expect(page.locator('main h1')).toBeVisible();
     expect(await violazioni(page)).toEqual([]);
   });

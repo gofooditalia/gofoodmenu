@@ -1,5 +1,6 @@
 import { test, expect } from './fixtures';
 import { LOCALI_REALI, LOCALE_FREE } from './locali';
+import { INFO_PAGE_SLUGS } from '../src/lib/tenant-info';
 
 for (const slug of LOCALI_REALI) {
   test.describe(slug, () => {
@@ -30,5 +31,23 @@ for (const slug of LOCALI_REALI) {
 
 test('il menu di un locale col piano free non è pubblico', async ({ page }) => {
   const res = await page.goto(`/${LOCALE_FREE}`);
+  expect(res?.status()).toBe(404);
+});
+
+// Scheda contatti /{slug}/info: per ora solo i locali in prova
+for (const slug of INFO_PAGE_SLUGS) {
+  test(`${slug}: la scheda contatti porta al menu`, async ({ page }) => {
+    const res = await page.goto(`/${slug}/info`);
+    expect(res?.status()).toBe(200);
+    await expect(page.locator('main h1')).toBeVisible();
+    const menu = page.getByRole('link', { name: /sfoglia il menu/i });
+    await expect(menu).toHaveAttribute('href', `/${slug}`);
+    await expect(page.locator('a[href^="https://www.google.com/maps/"]').first()).toBeVisible();
+  });
+}
+
+test('la scheda contatti dei locali non in prova non esiste', async ({ page }) => {
+  const altro = LOCALI_REALI.find((slug) => !INFO_PAGE_SLUGS.includes(slug))!;
+  const res = await page.goto(`/${altro}/info`);
   expect(res?.status()).toBe(404);
 });
