@@ -38,6 +38,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (accessibilità su pagine reali con axe-core).
 - Branch: la cancellazione automatica dopo il merge NON è attiva su GitHub e il proxy delle sessioni cloud non
   può cancellare branch remoti: i branch uniti si cancellano a mano da github.com/gofooditalia/gofoodmenu/branches.
+- **Slug riservati** (24/10/2026): `RESERVED_SLUGS` in `src/lib/reserved-slugs.ts` elenca le rotte di primo livello
+  di `src/app/` (e cartelle di `public/`), che hanno la precedenza su `/[slug]`. Ogni nuova rotta va aggiunta lì,
+  altrimenti un locale con quel nome avrebbe il menu irraggiungibile. Lunghezza minima 3 caratteri
+  (`SLUG_MIN_LENGTH`). La route di checkout (`/api/stripe/checkout`, dove lo slug viene davvero assegnato) passa al
+  suffisso `-1`, `-2`… per uno slug riservato o troppo corto, come per uno occupato (il ristoratore non può
+  modificare lo slug proposto in `ActivationModal`); `useCheckSlug` lo segnala come non disponibile.
 - Temi modificati direttamente nel database: il menu pubblico è in cache ISR fino a 24 h; salvando dalla
   dashboard (o con un nuovo deploy) si aggiorna subito.
 - Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).
