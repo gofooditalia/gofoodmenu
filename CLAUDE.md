@@ -106,6 +106,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   accessibilità a posto). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
+  Bilingue dal 24/10/2026 (nato dalla visita a BlueFrog, Malta): `/` in italiano e `/en` in inglese scritto apposta,
+  stesso componente `src/components/landing/LandingPage.tsx`, testi in `landing-copy.ts` (ogni modifica va fatta in
+  entrambe le lingue). Pulsante IT/EN in testata, hreflang e canonical nei metadati, `/en` nella sitemap, banner
+  cookie in inglese su `/en`. In inglese: lingue del menu dichiarate "auto-translated" (sono Google Translate) e avviso
+  che il pannello del ristoratore è solo in italiano. **Lo slug `en` è occupato dalla landing**: nessun locale può
+  usarlo (le rotte statiche vincono su `/[slug]`; verificato il 24/10/2026 che nessun locale lo aveva).
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
