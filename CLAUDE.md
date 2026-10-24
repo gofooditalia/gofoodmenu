@@ -72,7 +72,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Dal 27/10/2026 il team è sulla fascia "Flat Rate CDN 10M" (20 $/mese): ~1,5M richieste/mese, metà da `/_next/image`.
   Costi Vercel del team, 9–22/10/2026 (14 giorni, 33 $): Vercel Agent (AI, dal 16/10) 13,7 $ (42 %), build 5,2 $,
   ottimizzazione immagini 8,2 $ (25 %: ~0,65 $/giorno prima, 0,20 e 0,05 $ il 21 e 22/10 dopo cache e ricompressione),
-  piano Pro 4,7 $. Le immagini NON sono la voce principale; da tenere d'occhio Vercel Agent e i build delle anteprime.
+  piano Pro 4,7 $. Le immagini NON sono la voce principale; da tenere d'occhio i build delle anteprime.
+  **Vercel Agent spento dal titolare il 24/10/2026** (rischiava 40–60 $/mese): ricontrollo dei costi fissato al 30/10/2026.
 - **Performance menu pubblico** (20/10/2026, banco di prova `/magnaromatrattoria`, il menu più pesante):
   obiettivo alleggerire tutto il progetto, non un singolo locale. Tolta la splash di 3,2 s; prime 2 foto con
   `preload`; logo via `TenantLogo` (next/image); Inter/Playfair solo da next/font (mai doppi da Google Fonts);
