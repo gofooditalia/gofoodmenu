@@ -50,16 +50,20 @@ const SYSTEM_PROMPT = `Sei un traduttore professionista di menu di ristoranti it
 Traduci ogni voce dall'italiano in inglese (en), francese (fr), tedesco (de) e spagnolo (es).
 
 Regole:
-- I nomi dei piatti tipici italiani e regionali (es. carbonara, amatriciana, cacio e pepe, arancina, supplì,
-  pasta alla Norma, tiramisù, cannolo, bruschetta) NON si traducono: restano in italiano, con le stesse maiuscole.
-  Se il nome è un piatto tipico e la descrizione è vuota, nella descrizione metti solo il tipo di piatto, molto
-  breve (es. "Traditional Roman pasta dish"), SENZA nominare ingredienti: gli ingredienti li decide il ristoratore.
-- I nomi generici si traducono ("Tagliere di salumi" → "Cured meat platter").
+- La descrizione tradotta è SOLO la traduzione della descrizione italiana, voce per voce: stessi ingredienti,
+  stesso ordine, nessuna spiegazione, nessuna frase aggiunta. Non riassumere mai un elenco di ingredienti con una
+  frase generica. Se la descrizione italiana è vuota, la descrizione tradotta è una stringa vuota.
+- I nomi dei piatti tipici italiani e regionali (es. carbonara, amatriciana, cacio e pepe, gricia, supplì,
+  arancina, saltimbocca, tiramisù, pinsa) NON si traducono: restano in italiano, con le stesse maiuscole.
+  Anche i nomi di fantasia del locale (es. "Der Pupone", "Bruciaculo", "Giulio Cesare") restano invariati.
+- I nomi generici si traducono ("Tagliere di salumi" → "Cured meat platter", "Patate al forno" → "Baked potatoes").
 - Nelle descrizioni traduci gli ingredienti in modo fedele: non aggiungere, togliere o cambiare ingredienti.
-  Usa i termini di cucina corretti nella lingua di arrivo.
+  Usa i termini di cucina corretti nella lingua di arrivo. Ingredienti italiani senza equivalente (guanciale,
+  pecorino, stracciatella, fiordilatte, porchetta, mortadella) restano in italiano.
 - Lascia invariati simboli, numeri, asterischi (*), unità di misura, prezzi e marchi.
-- Se la descrizione italiana è vuota e il piatto non è tipico, la traduzione della descrizione resta vuota.
 - Le categorie (es. "Antipasti", "I Primi della Tradizione") si traducono in modo naturale.
+- Inglese britannico e termini coerenti in tutto il menu: aubergine, courgette, draught beer, spirits;
+  "all'etto" → "per 100 g".
 - Testo breve e naturale, come in un menu stampato. Niente virgolette in più, niente note.
 
 Rispondi SOLO con JSON: {"items": {"<key>": {"en": {"name": "...", "description": "..."}, "fr": {...}, "de": {...}, "es": {...}}}}
@@ -69,9 +73,26 @@ function sameSource(a: TextPair | undefined, b: TextPair): boolean {
     return !!a && a.name === b.name && a.description === b.description;
 }
 
+/**
+ * Una descrizione tradotta deve corrispondere a quella italiana: vuota se l'italiana è vuota, e di lunghezza
+ * simile se è un elenco di ingredienti. Scarta i casi in cui il modello ha sostituito gli ingredienti con una
+ * frase generica (es. carbonara → "Traditional Roman pasta dish") o ha aggiunto spiegazioni.
+ */
+function plausibleDescription(source: string, translated: string): boolean {
+    if (!source) return translated === '';
+    if (!translated) return false;
+    if (source.length < 25) return true;
+    const ratio = translated.length / source.length;
+    return ratio >= 0.5 && ratio <= 1.8;
+}
+
 function isComplete(t: Translations | null | undefined, source: TextPair): boolean {
     if (!t || !sameSource(t.source, source)) return false;
-    return TRANSLATED_LANGS.every((lang) => !!t[lang]?.name || !source.name);
+    // Anche le traduzioni già salvate si ricontrollano: quelle non plausibili si rifanno
+    return TRANSLATED_LANGS.every((lang) => {
+        const pair = t[lang];
+        return !!pair?.name && plausibleDescription(source.description, pair.description);
+    });
 }
 
 function readPair(value: unknown): TextPair | null {
@@ -103,8 +124,9 @@ async function translateBatch(items: Item[]): Promise<Map<string, Translations>>
         let ok = true;
         for (const lang of TRANSLATED_LANGS) {
             const pair = readPair(entry[lang]);
-            // Senza nome tradotto la voce resta da tradurre: nel menu si vedrà l'italiano
-            if (!pair || (!pair.name && item.name)) {
+            // Senza nome tradotto o con una descrizione che non corrisponde all'italiano la voce resta da
+            // tradurre: nel menu si vedrà l'italiano, e il prossimo "Traduci menu" ci riprova
+            if (!pair || !pair.name || !plausibleDescription(item.description, pair.description)) {
                 ok = false;
                 break;
             }
