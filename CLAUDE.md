@@ -121,6 +121,16 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Testi riscritti il 24/10/2026 sull'identità decisa (sezione "Come si inquadra"): sezione "Quattro motivi per
   sceglierlo" (`pillars`) al posto della griglia di funzioni; chiusura "Il tuo menu online in giornata".
 
+- **Scheda contatti `/{slug}/info`** (24/10/2026, in prova solo su **Magna Roma**: `INFO_PAGE_SLUGS` in
+  `src/lib/tenant-info.ts`, gli altri locali ricevono 404). Stile Linktree, **solo link e contatti, nient'altro**:
+  logo, nome, sottotitolo, un unico pulsante "Sfoglia il menu" (niente pulsante Bevande), per ogni sede indirizzo con
+  "Indicazioni" (Google Maps), un pulsante per ogni numero di telefono, orari; social. Niente recensioni, prenotazioni,
+  app, testi o foto: non è un sito del locale. **Il QR resta sul menu**; la scheda serve per bio Instagram/TikTok,
+  scheda Google, biglietti. Per tutti i locali con link pubblico quando si apre (cioè i paganti). Dati da
+  `tenant_locations` e `footer_data.socials`; i numeri si ricavano dal campo libero del telefono (`parsePhoneNumbers`:
+  "091 7283177 - 3922151234" → due pulsanti; parti con lettere saltate). Solo in italiano per ora. Orari di Magna Roma
+  inseriti il 24/10/2026 (12:30–15:00 · 19:30–23:00, tutte le sedi). Si aggiorna con `revalidateMenuSlug`.
+
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
   applicata il 20/10/2026). Fatto il 20/10/2026 per tutti i locali con file fuori regola (Scjavuru, Bistrot 107,
