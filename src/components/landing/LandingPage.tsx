@@ -72,7 +72,7 @@ export default function LandingPage({ lang = 'it' }: { lang?: LandingLang }) {
               </div>
 
               {/* Main Headline */}
-              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight">
+              <h1 className="font-display text-5xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
                 {t.heroTitle}
                 <span className="block mt-2 bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
                   {t.heroTitleAccent}
@@ -376,30 +376,25 @@ export default function LandingPage({ lang = 'it' }: { lang?: LandingLang }) {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Perché sceglierlo: i quattro pilastri dell'identità (CLAUDE.md) */}
       <section className="pb-20 md:pb-32 pt-20 md:pt-28 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              {t.featuresTitle}
+            <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900">
+              {t.pillarsTitle}
             </h2>
-            <p className="text-xl text-gray-600">
-              {t.featuresLead}
-            </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {t.features.map((title, i) => {
-              const icons = ["📱", "✨", "🔄", "🌐", "🥜", "🎨", "📊", "⚡"];
-              return (
-                <Card key={i} className="group hover:-translate-y-1 transition-all duration-300 border-none shadow-lg hover:shadow-xl bg-orange-50/50">
-                  <CardHeader className="p-6">
-                    <div className="text-3xl mb-3">{icons[i]}</div>
-                    <CardTitle className="font-bold text-gray-900">{title}</CardTitle>
-                  </CardHeader>
-                </Card>
-              );
-            })}
+            {t.pillars.map((pillar) => (
+              <Card key={pillar.title} className="border-none shadow-lg bg-orange-50/50">
+                <CardHeader className="p-6">
+                  <div className="text-3xl mb-3" aria-hidden="true">{pillar.icon}</div>
+                  <CardTitle className="font-bold text-lg text-gray-900">{pillar.title}</CardTitle>
+                  <p className="text-gray-600 leading-relaxed mt-2">{pillar.text}</p>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
