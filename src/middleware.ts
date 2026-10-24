@@ -5,12 +5,16 @@
  * - Refresh automatico delle sessioni Supabase
  * - Protezione delle route /dashboard/* e /onboarding
  * - Redirect automatici in base allo stato di autenticazione
+ * - Menu pubblico nella lingua del telefono (/{slug} → /{slug}/{lingua} per i locali tradotti)
  */
 
 import { type NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
+import { menuLanguageRedirect } from '@/lib/menu-language-redirect';
 
 export async function middleware(request: NextRequest) {
+  const languageRedirect = await menuLanguageRedirect(request);
+  if (languageRedirect) return languageRedirect;
   return await updateSession(request);
 }
 

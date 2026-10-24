@@ -2,7 +2,9 @@
 
 import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
-import { getAdminOverview, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
+import { getAdminOverview, getSupabaseAdmin, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
+import { translateTenantMenu } from '@/lib/translate-menu';
+import { revalidateMenuSlug } from '@/lib/revalidate-menu';
 
 export interface NewsletterSyncResult {
     ok: boolean;
@@ -73,4 +75,39 @@ export async function syncNewsletterContacts(): Promise<NewsletterSyncResult> {
             + (failed ? `, ${failed} non riusciti (vedi log)` : '')
             + ` (esclusi ${notPaying} senza abbonamento e ${testAccounts} account di prova)`,
     };
+}
+
+export interface TranslateMenuActionResult {
+    ok: boolean;
+    message: string;
+}
+
+/**
+ * Traduce il menu di un locale in inglese, francese, tedesco e spagnolo (solo le voci nuove o cambiate)
+ * e attiva le pagine /{slug}/{lingua}. Per ora solo dal pannello admin: è la fase pilota (Magna Roma).
+ */
+export async function translateMenuForTenant(tenantId: string): Promise<TranslateMenuActionResult> {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user || !isAdminEmail(user.email)) {
+        return { ok: false, message: 'Non autorizzato' };
+    }
+    if (!process.env.OPENROUTER_API_KEY) {
+        return { ok: false, message: 'Configura OPENROUTER_API_KEY su Vercel' };
+    }
+
+    try {
+        const admin = getSupabaseAdmin();
+        const { data: tenant } = await admin.from('tenants').select('slug').eq('id', tenantId).single();
+        const result = await translateTenantMenu(admin, tenantId);
+        revalidateMenuSlug(tenant?.slug);
+        return {
+            ok: result.failed === 0,
+            message: `${result.translated} voci tradotte, ${result.upToDate} già aggiornate`
+                + (result.failed ? `, ${result.failed} non riuscite (restano in italiano: rilancia)` : ''),
+        };
+    } catch (error) {
+        console.error('[admin] Traduzione menu:', error);
+        return { ok: false, message: error instanceof Error ? error.message : 'Traduzione non riuscita' };
+    }
 }

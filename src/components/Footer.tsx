@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
+import { useMenuStrings } from '@/lib/menu-i18n';
 import { useTranslation } from '@/hooks/useTranslation';
 import { SocialIcon } from './SocialIcon';
 import TenantLogo from './TenantLogo';
@@ -19,6 +20,7 @@ interface FooterProps {
 
 export default function Footer({ footerData, restaurantName, logoUrl, slug, forceMobile = false }: FooterProps) {
   const { language } = useTranslation();
+  const strings = useMenuStrings();
   // Ensure logoUrl is properly encoded to handle spaces
   const sanitizedLogoUrl = logoUrl?.replace(/ /g, '%20') || '/favicon.svg';
 
@@ -46,7 +48,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
                 className={`h-12 w-auto mx-auto mb-3 object-contain ${forceMobile ? '' : 'md:mx-0'}`}
               />
               <p className="text-sm text-[var(--tenant-footer-text,var(--tenant-text-secondary,#4B5563))] leading-relaxed mb-4">
-                {footerData?.brand_description?.[language as 'it' | 'en'] || footerData?.brand_description?.it || (language === 'it'
+                {(footerData?.brand_description as Record<string, string> | undefined)?.[language] || footerData?.brand_description?.it || (language === 'it'
                   ? 'Scopri i nostri piatti e le nostre specialità.'
                   : 'Discover our dishes and specialties.')}
               </p>
@@ -56,7 +58,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
           {/* Le Nostre Sedi */}
           <div className={`text-center ${forceMobile ? '' : 'md:text-left'}`}>
             <h4 className="text-lg font-bold text-[var(--tenant-footer-text,var(--tenant-text,#171717))] mb-4">
-              {language === 'it' ? 'Le Nostre Sedi' : 'Our Locations'}
+              {strings.ourLocations}
             </h4>
             {locations.length > 0 && (
               <ul className="space-y-3 text-sm text-[var(--tenant-footer-text,var(--tenant-text-secondary,#4B5563))] mb-4">
@@ -82,7 +84,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
           {/* Links Utili - REMOVED */}
           <div className={`text-center ${forceMobile ? '' : 'md:text-left'}`}>
             <h4 className="text-lg font-bold text-[var(--tenant-footer-text,var(--tenant-text,#171717))] mb-4">
-              {language === 'it' ? 'Informazioni' : 'Information'}
+              {strings.information}
             </h4>
             <ul className="space-y-3 mb-6">
               <li>
@@ -92,7 +94,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
                   className="inline-flex items-center gap-2 text-[var(--tenant-primary,#8B0000)] hover:brightness-75 font-medium transition-all"
                 >
                   <span className="text-lg">🛡️</span>
-                  {language === 'it' ? 'Allergeni' : 'Allergens'}
+                  {strings.allergens}
                 </Link>
               </li>
             </ul>
@@ -100,7 +102,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
             {/* Social Media */}
             <div>
               <h5 className="text-sm font-semibold text-[var(--tenant-footer-text,var(--tenant-text,#171717))] mb-3">
-                {language === 'it' ? 'Seguici' : 'Follow Us'}
+                {strings.followUs}
               </h5>
               <div className={`flex gap-3 justify-center ${forceMobile ? '' : 'md:justify-start'}`}>
                 {socials.length > 0 ? (
