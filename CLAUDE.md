@@ -168,8 +168,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   **BlueFrog Indian Restaurant** (St Paul's Bay, Malta, 24/10/2026): proposta Go!Food fatta dal titolare di persona;
   il gestore ha preferito dine.mt perché paga una volta (i cartoncini) e non un canone. Ha anche detto che **le foto nei
   piatti non gli piacciono**: le trova da fast food, non da locale con un'esperienza da far vivere. Punto di vista da
-  tenere presente. Oggi Go!Food non permette un menu senza foto: `DishCard.tsx` mostra sempre il riquadro 4:3 e, senza
-  foto, un segnaposto grigio (`/no-image.svg`). Possibile opzione "menu senza foto" per locale (non è un nuovo layout).
+  tenere presente. Da qui l'opzione **"Foto dei Piatti: Con foto / Solo testo"** nel Design Studio (24/10/2026):
+  `dishPhotos: 'hide'` in `theme_config` (nessuna migrazione), `DishCard` senza riquadro foto e prezzo accanto al nome,
+  due colonne su schermo largo, nessuna immagine scaricata. Applicare uno stile pronto NON cambia questa scelta
+  (`applyPreset` in `ThemeContext.tsx`). Le foto caricate restano salvate. Default: con foto (nessun locale cambia).
   Idee emerse, non decise: piano annuale pagato in anticipo; "chiama il cameriere" dal menu (utile ai lidi);
   traduzioni salvate per piatto al posto di Google Translate. Sconsigliata la licenza una tantum (costi mensili per locale).
 - Richiesta API Google Business Profile: ripresentarla da info@gofood.it dopo 60 giorni dalla verifica

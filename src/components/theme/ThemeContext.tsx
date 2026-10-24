@@ -27,7 +27,8 @@ export function ThemeProvider({ children, initialTheme }: { children: React.Reac
     const applyPreset = (presetId: string) => {
         const preset = THEME_PRESETS.find((p) => p.id === presetId);
         if (preset) {
-            setCurrentTheme(preset);
+            // Lo stile cambia colori e font, non la scelta del locale di mostrare o no le foto
+            setCurrentTheme((prev) => ({ ...preset, dishPhotos: prev.dishPhotos }));
         }
     };
 

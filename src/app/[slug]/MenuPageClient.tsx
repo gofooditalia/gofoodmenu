@@ -119,6 +119,7 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
 
   // Sottotitolo e descrizioni delle categorie usano il colore secondario, spesso decorativo e chiaro
   const secondaryText = readableTextOn(currentTheme.colors.background, currentTheme.colors.secondary);
+  const showPhotos = currentTheme.dishPhotos !== 'hide';
 
   return (
     <div
@@ -207,13 +208,15 @@ function MenuContent({ tenant, categories }: { tenant: Tenant, categories: Categ
               )}
 
               {/* Dishes Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Senza foto le schede sono solo testo: due colonne bastano anche su schermo largo */}
+              <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${showPhotos ? 'lg:grid-cols-3' : ''}`}>
                 {category.dishes.map((dish, dishIndex) => (
                   <DishCard
                     key={dish.id}
                     dish={dish}
                     tenantSlug={tenant.slug}
                     priority={categoryIndex === 0 && dishIndex < 2}
+                    showPhoto={showPhotos}
                   />
                 ))}
               </div>

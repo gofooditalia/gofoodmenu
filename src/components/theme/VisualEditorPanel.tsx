@@ -263,6 +263,49 @@ export const VisualEditorPanel = React.memo(function VisualEditorPanel({
                     </select>
                 </div>
 
+                {/* Foto dei piatti: alcuni locali preferiscono una carta solo testo */}
+                <div>
+                    <h3 className="section-title">Foto dei Piatti</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                        <button
+                            type="button"
+                            aria-pressed={currentTheme.dishPhotos !== 'hide'}
+                            onClick={() => updateTheme({ dishPhotos: 'show' })}
+                            className={`p-2 rounded-lg border text-xs flex flex-col items-center gap-2 transition-all ${currentTheme.dishPhotos !== 'hide'
+                                ? 'border-orange-500 bg-orange-50 text-orange-700 ring-1 ring-orange-500 font-medium'
+                                : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                                }`}
+                        >
+                            <div className="flex w-full flex-col gap-1 px-2 opacity-60">
+                                <div className="w-full h-5 bg-current rounded-sm"></div>
+                                <div className="w-3/4 h-1.5 bg-gray-300 rounded-sm"></div>
+                            </div>
+                            Con foto
+                        </button>
+                        <button
+                            type="button"
+                            aria-pressed={currentTheme.dishPhotos === 'hide'}
+                            onClick={() => updateTheme({ dishPhotos: 'hide' })}
+                            className={`p-2 rounded-lg border text-xs flex flex-col items-center gap-2 transition-all ${currentTheme.dishPhotos === 'hide'
+                                ? 'border-orange-500 bg-orange-50 text-orange-700 ring-1 ring-orange-500 font-medium'
+                                : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                                }`}
+                        >
+                            <div className="flex w-full flex-col gap-1 px-2 opacity-60">
+                                <div className="flex justify-between gap-2"><div className="w-3/5 h-1.5 bg-current rounded-sm"></div><div className="w-1/5 h-1.5 bg-current rounded-sm"></div></div>
+                                <div className="w-4/5 h-1.5 bg-gray-300 rounded-sm"></div>
+                                <div className="flex justify-between gap-2"><div className="w-1/2 h-1.5 bg-current rounded-sm"></div><div className="w-1/5 h-1.5 bg-current rounded-sm"></div></div>
+                                <div className="w-3/4 h-1.5 bg-gray-300 rounded-sm"></div>
+                            </div>
+                            Solo testo
+                        </button>
+                    </div>
+                    <p className="text-[11px] text-gray-500 mt-1.5 leading-snug">
+                        Con &quot;Solo testo&quot; il menu diventa una carta: nome, descrizione e prezzo, senza immagini.
+                        Le foto caricate restano salvate.
+                    </p>
+                </div>
+
                 <ContrastWarnings colors={currentTheme.colors} />
 
                 <hr className="border-gray-100" />
