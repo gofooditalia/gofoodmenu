@@ -3,6 +3,7 @@ import { createClient as createSupabaseServerClient } from '@/lib/supabase/serve
 import { stripe } from '@/lib/stripe';
 import { getReusableCustomerId } from '@/lib/stripe-billing';
 import { createClient } from '@supabase/supabase-js';
+import { SLUG_PATTERN, SLUG_MIN_LENGTH, isReservedSlug } from '@/lib/reserved-slugs';
 
 export async function POST(req: NextRequest) {
     try {
@@ -52,16 +53,22 @@ export async function POST(req: NextRequest) {
         let finalSlug = desiredSlug;
         if (desiredSlug) {
             // Basic format check
-            if (!/^[a-z0-9-]+$/.test(desiredSlug)) {
+            if (!SLUG_PATTERN.test(desiredSlug)) {
                 return new NextResponse('Invalid slug format', { status: 400 });
             }
 
-            // Ensure uniqueness
+            // Ensure uniqueness. Slug riservati (rotte del sito) o troppo corti passano al suffisso
+            // -1, -2… come uno slug occupato: lo slug è generato dal nome e il ristoratore non può cambiarlo.
             let isUnique = false;
             let counter = 0;
 
             while (!isUnique) {
                 const checkSlug = counter === 0 ? desiredSlug : `${desiredSlug}-${counter}`;
+
+                if (isReservedSlug(checkSlug) || checkSlug.length < SLUG_MIN_LENGTH) {
+                    counter++;
+                    continue;
+                }
 
                 const { data: existing } = await supabaseAdmin
                     .from('tenants')
