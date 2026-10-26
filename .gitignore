@@ -58,3 +58,6 @@ Thumbs.db
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# note locali di Claude Code, mai nel repository
+*.local.md
