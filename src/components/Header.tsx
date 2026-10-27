@@ -19,6 +19,8 @@ interface HeaderProps {
   slug?: string;
   menuLang?: MenuLang;
   menuLanguages?: MenuLang[];
+  // Pagina del menu oltre a quella principale (es. '/allergeni'): il selettore porta alla stessa pagina nell'altra lingua
+  pathSuffix?: string;
 }
 
 export default function Header({
@@ -32,11 +34,12 @@ export default function Header({
   slug,
   menuLang = 'it',
   menuLanguages = ['it'],
+  pathSuffix,
 }: HeaderProps & { disableLanguageSwitcher?: boolean }) {
   const strings = useMenuStrings();
   const native = !!slug && menuLanguages.length > 1 && !disableLanguageSwitcher;
   const switcher = (compact?: boolean) => native
-    ? <NativeLanguageSwitcher slug={slug!} current={menuLang} languages={menuLanguages} compact={compact} />
+    ? <NativeLanguageSwitcher slug={slug!} current={menuLang} languages={menuLanguages} compact={compact} pathSuffix={pathSuffix} />
     : <LanguageSwitcher compact={compact} disabled={disableLanguageSwitcher} />;
   // Ensure logoUrl is properly encoded to handle spaces
   const sanitizedLogoUrl = logoUrl?.replace(/ /g, '%20') || '/favicon.svg';

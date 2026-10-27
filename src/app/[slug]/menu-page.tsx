@@ -33,7 +33,7 @@ function localize(original: { name: string; description?: string | null }, trans
 }
 
 /** Lingue tradotte e pubblicate per il locale (colonna menu_languages; vuota prima della migrazione 039). */
-function tenantLanguages(tenant: { menu_languages?: unknown }): TranslatedLang[] {
+export function tenantLanguages(tenant: { menu_languages?: unknown }): TranslatedLang[] {
   const value = Array.isArray(tenant.menu_languages) ? tenant.menu_languages : [];
   return TRANSLATED_LANGS.filter((lang) => value.includes(lang));
 }

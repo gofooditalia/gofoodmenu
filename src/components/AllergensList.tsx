@@ -1,18 +1,16 @@
 'use client';
 
-import { Allergen } from '@/types/menu';
-import { useTranslation } from '@/hooks/useTranslation';
+import { ALLERGEN_LIST } from '@/lib/allergens-i18n';
+import type { MenuLang } from '@/lib/menu-languages';
 
 interface AllergensListProps {
-  allergens: Allergen[];
+  lang: MenuLang;
 }
 
-export default function AllergensList({ allergens }: AllergensListProps) {
-  const { t } = useTranslation();
-
+export default function AllergensList({ lang }: AllergensListProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-      {allergens.map((allergen) => (
+      {ALLERGEN_LIST.map((allergen) => (
         <div
           key={allergen.id}
           className="bg-[var(--tenant-surface,#FFFFFF)] rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow border border-gray-100"
@@ -27,14 +25,12 @@ export default function AllergensList({ allergens }: AllergensListProps) {
                   {allergen.number}
                 </span>
                 <h3 className="text-lg font-bold text-[var(--tenant-text,#171717)] leading-tight">
-                  {allergen.name}
+                  {allergen.name[lang]}
                 </h3>
               </div>
-              {allergen.description && (
-                <p className="text-sm text-[var(--tenant-text-secondary,#4B5563)] leading-relaxed">
-                  {allergen.description}
-                </p>
-              )}
+              <p className="text-sm text-[var(--tenant-text-secondary,#4B5563)] leading-relaxed">
+                {allergen.description[lang]}
+              </p>
             </div>
           </div>
         </div>
@@ -42,4 +38,3 @@ export default function AllergensList({ allergens }: AllergensListProps) {
     </div>
   );
 }
-
