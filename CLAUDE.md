@@ -245,8 +245,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Il Reg. UE 1169/2011 non ha testo ufficiale in cinese e arabo: allergeni e note legali tradotti a mano con
   l'avviso "in caso di dubbio vale l'italiano" (`translationNote` in `allergens-i18n.ts`). **Testi fissi cinesi e
   arabi da far rileggere a un madrelingua prima di attivare queste lingue su un locale.** Prova visiva fatta su
-  telefono simulato; resta da provare su un telefono vero. Da valutare in una PR a parte: voce "Altre lingue"
-  (Google Translate) nel selettore nativo per le lingue non tradotte.
+  telefono simulato; resta da provare su un telefono vero. **Deciso il 27/10/2026: niente voce "Altre lingue" con
+  Google Translate nel selettore nativo** (darebbe l'idea di traduzioni fatte a metà): una lingua che serve si aggiunge
+  come lingua nativa.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
 - **Prenotazione tavoli** (da decidere entro aprile 2027): soluzione interna o servizio esterno.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,
