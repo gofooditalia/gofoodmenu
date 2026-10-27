@@ -92,6 +92,9 @@ Regole:
 - "Frutta secca" nei menu italiani è la frutta a guscio (noci, mandorle, nocciole, pistacchi), non la frutta
   essiccata: inglese "nuts", francese "fruits à coque", tedesco "Nüsse", spagnolo "frutos secos", polacco
   "orzechy", portoghese "frutos de casca rija". Vale anche per "granella di frutta secca" e simili.
+- "Noccioline" sono le arachidi, mai le nocciole (allergeni diversi): inglese "peanuts", francese "cacahuètes",
+  tedesco "Erdnüsse", spagnolo "cacahuetes", polacco "orzeszki ziemne", portoghese "amendoins".
+  "Nocciole" invece sono le nocciole (hazelnuts).
 - Lascia invariati simboli, numeri, asterischi (*), unità di misura, prezzi e marchi.
 - Le categorie (es. "Antipasti", "I Primi della Tradizione") si traducono in modo naturale.
 - Inglese britannico e termini coerenti in tutto il menu: aubergine, courgette, draught beer, spirits;
