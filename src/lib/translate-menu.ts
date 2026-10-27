@@ -125,7 +125,13 @@ Regole:
   In cinese e arabo i nomi dei piatti tipici e degli ingredienti che restano in italiano si scrivono in caratteri
   latini, come in italiano (es. "Carbonara", "guanciale"), dentro il testo tradotto. Numeri in cifre arabe
   occidentali (0-9). "Frutta secca" (a guscio): cinese "坚果", arabo "المكسرات". "Noccioline" (arachidi): cinese
-  "花生", arabo "الفول السوداني".
+  "花生", arabo "الفول السوداني" (anche "granella di noccioline": arabo "فول سوداني مجروش", mai "مكسرات").
+- Cinese e arabo, nomi dei piatti: un nome di fantasia (nome proprio, aggettivo o parola che non descrive il piatto,
+  es. "GOLOSO", "SFIZIOSO", "MAX", "IL SAPORITO", nomi di cocktail o di marchi) resta IDENTICO, in caratteri latini
+  e con le stesse maiuscole: non tradurlo, non traslitterarlo, anche se ha un significato in italiano. Il cliente
+  deve poter leggere al cameriere lo stesso nome del menu italiano. Si traducono solo i nomi che descrivono il
+  piatto ("Spaghetti cozze e vongole", "Filetti di orata grigliati"); se il nome mescola le due cose, la parte di
+  fantasia resta in latino (es. "Tagliatelle Goloso" → cinese "Goloso 宽面").
 - Testo breve e naturale, come in un menu stampato. Niente virgolette in più, niente note.
 
 Rispondi SOLO con JSON: {"items": {"<key>": {${example}}}}

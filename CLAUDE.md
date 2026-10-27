@@ -237,7 +237,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   casella disattiva la lingua, le traduzioni restano salvate). Traduzione automatica e cron traducono **solo le lingue
   attive del locale**. Controllo di plausibilità con soglia per lingua (`LENGTH_RATIO` in `translate-menu.ts`: il
   cinese è molto più corto). Nel prompt: caratteri semplificati, arabo standard senza harakat, nomi italiani in
-  caratteri latini, cifre 0-9. Indirizzo `/{slug}/zh` ma `lang`/hreflang `zh-Hans` (`menuLangTag`); l'arabo ha
+  caratteri latini, cifre 0-9, nomi di fantasia identici in caratteri latini (mai tradotti né traslitterati:
+  il cliente deve leggere al cameriere lo stesso nome del menu italiano; regola aggiunta il 27/10/2026). Indirizzo `/{slug}/zh` ma `lang`/hreflang `zh-Hans` (`menuLangTag`); l'arabo ha
   `dir="rtl"` su `ThemeWrapper` (`menuLangDir`, `RTL_LANGS`): nei componenti del menu usare classi logiche
   (`start-*`, `end-*`, `ms-*`, `me-*`) invece di `left`/`right`, prezzi con `dir="ltr"`. Font: **nessun font
   scaricato**, solo font di sistema dopo quello del tema (`SCRIPT_FONTS` in `ThemeWrapper.tsx`); in arabo
