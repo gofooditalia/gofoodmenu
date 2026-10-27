@@ -14,7 +14,8 @@ const LOCAL_FONTS: Record<string, string> = {
 
 const fontStack = (font: string) => LOCAL_FONTS[font] ?? `'${font}'`;
 
-export function ThemeWrapper({ children, className }: { children: React.ReactNode; className?: string }) {
+// lang: lingua della pagina tradotta (es. allergeni in polacco), per lettori di schermo e traduttori del browser
+export function ThemeWrapper({ children, className, lang }: { children: React.ReactNode; className?: string; lang?: string }) {
     const { currentTheme } = useTheme();
     const { fontHeading, fontBody, colors } = currentTheme;
     // Senza fondo scelto il prezzo usa la superficie delle card: trasparente finirebbe sopra la foto
@@ -37,6 +38,7 @@ export function ThemeWrapper({ children, className }: { children: React.ReactNod
 
     return (
         <div
+            lang={lang}
             className={`relative w-full min-h-[600px] flex flex-col ${className || ''}`}
             style={{
                 fontFamily: fontStack(fontBody),

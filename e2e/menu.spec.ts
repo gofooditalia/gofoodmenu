@@ -30,12 +30,13 @@ for (const slug of LOCALI_REALI) {
 }
 
 // Pagina allergeni nelle lingue del menu tradotto: testi fissi, link al menu nella stessa lingua
-const ALLERGENI_TRADOTTI = { en: 'Allergens and Intolerances', fr: 'Allergènes et intolérances', de: 'Allergene und Unverträglichkeiten', es: 'Alérgenos e intolerancias' };
+const ALLERGENI_TRADOTTI = { en: 'Allergens and Intolerances', fr: 'Allergènes et intolérances', de: 'Allergene und Unverträglichkeiten', es: 'Alérgenos e intolerancias', pl: 'Alergeny i nietolerancje', pt: 'Alergénios e intolerâncias' };
 for (const [lang, title] of Object.entries(ALLERGENI_TRADOTTI)) {
   test(`${LOCALE_TRADOTTO}: la pagina allergeni in ${lang}`, async ({ page }) => {
     const res = await page.goto(`/${LOCALE_TRADOTTO}/${lang}/allergeni`);
     expect(res?.status()).toBe(200);
     await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible();
+    await expect(page.locator(`[lang="${lang}"]`).first()).toBeAttached();
     await expect(page.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link')).toHaveAttribute('href', `/${LOCALE_TRADOTTO}/${lang}`);
     await expect(page.locator(`link[rel="alternate"][hreflang="it"]`)).toHaveAttribute('href', /\/allergeni$/);
   });

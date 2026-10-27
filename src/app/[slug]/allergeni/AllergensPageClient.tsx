@@ -33,7 +33,7 @@ export default function AllergensPageClient({ tenant, initialTheme, lang, langua
         <MenuLangProvider value={lang}>
             <LanguageProvider initialLanguage={lang}>
                 <ThemeProvider initialTheme={initialTheme}>
-                    <ThemeWrapper className="min-h-screen flex flex-col font-sans transition-colors duration-300">
+                    <ThemeWrapper lang={lang} className="min-h-screen flex flex-col font-sans transition-colors duration-300">
                         <Header
                             restaurantName={tenant.restaurant_name}
                             logoUrl={tenant.logo_url || undefined}
