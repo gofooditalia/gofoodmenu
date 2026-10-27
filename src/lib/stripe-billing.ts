@@ -117,3 +117,16 @@ export async function getReusableCustomerId(tenantId: string): Promise<string | 
         return null;
     }
 }
+
+/**
+ * Whether the tenant still has a subscription that will renew (live and not scheduled to cancel).
+ * "Elimina Account" is blocked until it's cancelled. Throws if Stripe can't be reached: callers must not
+ * treat that as "no subscription".
+ */
+export async function hasRenewingSubscription(tenantId: string): Promise<boolean> {
+    const customerId = await getStripeCustomerId(tenantId);
+    if (!customerId) return false;
+
+    const { data } = await stripe.subscriptions.list({ customer: customerId, status: 'all', limit: 20 });
+    return data.some(sub => LIVE_STATUSES.includes(sub.status) && !sub.cancel_at_period_end && !sub.cancel_at);
+}

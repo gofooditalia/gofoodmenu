@@ -147,8 +147,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `useSubscriptionDetails`, nessuna colonna nel database). Alla fine del periodo `subscription.deleted` porta il locale
   al piano free (pagina neutra). Il webhook avvisa `ADMIN_EMAILS` quando un ristoratore disdice o annulla la disdetta
   (`src/lib/cancellation-notice.ts`, con il motivo scelto nel portale). "Elimina Account" NON disdice l'abbonamento (scelta del
-  titolare: niente disdetta automatica): la conferma avvisa e offre "Disdici abbonamento" senza bloccare; se si
-  elimina con un abbonamento che si rinnova ancora, email agli admin con cliente e abbonamento Stripe da chiudere a mano.
+  titolare: niente disdetta automatica) ma è **bloccato finché l'abbonamento si rinnova**: la conferma offre "Disdici
+  abbonamento" e "Elimina tutto" resta disattivato; `deleteAccount` ripete il controllo su Stripe
+  (`hasRenewingSubscription` in `src/lib/stripe-billing.ts`) e si ferma anche se Stripe non risponde. Con la disdetta
+  programmata l'eliminazione è libera (nessun altro rinnovo).
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038

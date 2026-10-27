@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { revalidateMenuSlug } from '@/lib/revalidate-menu';
 import { revalidatePath } from 'next/cache';
-import { notifyAdminsOfDeletionWithSubscription } from '@/lib/cancellation-notice';
+import { hasRenewingSubscription } from '@/lib/stripe-billing';
 
 /**
  * Recursively deletes all files and subfolders within a given path in a storage bucket.
@@ -96,8 +96,19 @@ export async function deleteAccount() {
             .single();
 
         if (tenant) {
-            // L'eliminazione non disdice l'abbonamento (lo fa il ristoratore dal portale): se si rinnova ancora, avviso agli admin
-            await notifyAdminsOfDeletionWithSubscription(tenant.id, user.email);
+            // L'eliminazione non disdice l'abbonamento: finché si rinnova l'account non si elimina (prima la disdetta
+            // dal portale). Se Stripe non risponde ci si ferma. Esito restituito, non lanciato: in produzione Next
+            // nasconde il messaggio degli errori delle server action.
+            let renewing: boolean;
+            try {
+                renewing = await hasRenewingSubscription(tenant.id);
+            } catch (e) {
+                console.error('[DELETE_ACCOUNT] Subscription check failed:', e);
+                return { success: false, error: "Non è stato possibile verificare l'abbonamento: riprova tra poco." };
+            }
+            if (renewing) {
+                return { success: false, error: "Per eliminare l'account disdici prima l'abbonamento." };
+            }
 
             console.log(`[DELETE_ACCOUNT] Found tenant ${tenant.id}, starting storage cleanup...`);
             const rootFolder = tenant.id;

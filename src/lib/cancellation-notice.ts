@@ -1,15 +1,13 @@
 /**
- * Avvisi agli admin (ADMIN_EMAILS) sulla fine dell'abbonamento. Solo lato server (service role).
- * - Disdetta dal portale Stripe, o disdetta annullata: il webhook su customer.subscription.updated confronta
- *   cancel_at_period_end / cancel_at con i valori precedenti dell'evento.
- * - "Elimina Account" con un abbonamento che si rinnova ancora (l'eliminazione non lo disdice).
+ * Avviso agli admin (ADMIN_EMAILS) quando un ristoratore disdice l'abbonamento dal portale Stripe, o annulla
+ * la disdetta. Il webhook lo chiama su customer.subscription.updated, confrontando cancel_at_period_end /
+ * cancel_at con i valori precedenti dell'evento. Solo lato server (service role).
  */
 
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { SITE_URL } from '@/lib/site';
 import { adminEmails } from '@/lib/billing-grace';
-import { stripe } from '@/lib/stripe';
 
 // Valori di cancellation_details.feedback di Stripe (motivo scelto nel portale)
 const FEEDBACK_LABELS: Record<string, string> = {
@@ -115,53 +113,4 @@ export async function notifyAdminsOfCancellation(tenantId: string, change: Cance
         text: lines.join('\n'),
     });
     if (error) console.error(`[CANCELLATION] Resend error for tenant ${tenantId}:`, error);
-}
-
-/**
- * Prima di "Elimina Account": se il locale ha ancora un abbonamento che si rinnova (non disdetto), avvisa gli admin
- * con il cliente Stripe, perché l'eliminazione non lo disdice e il ristoratore non potrà più farlo dal pannello.
- * Non blocca mai l'eliminazione: in caso di errore registra e basta.
- */
-export async function notifyAdminsOfDeletionWithSubscription(tenantId: string, ownerEmail: string | null | undefined) {
-    try {
-        const admins = adminEmails();
-        const apiKey = process.env.RESEND_API_KEY;
-        if (!admins.length || !apiKey) return;
-
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-            { auth: { autoRefreshToken: false, persistSession: false } }
-        );
-        const [{ data: tenant }, { data: billing }] = await Promise.all([
-            supabase.from('tenants').select('restaurant_name, slug, subscription_tier, footer_data').eq('id', tenantId).maybeSingle(),
-            supabase.from('tenant_billing').select('stripe_customer_id, stripe_subscription_id').eq('tenant_id', tenantId).maybeSingle(),
-        ]);
-        if (!tenant || tenant.subscription_tier !== 'premium' || !billing?.stripe_subscription_id) return;
-
-        const subscription = await stripe.subscriptions.retrieve(billing.stripe_subscription_id);
-        if (!['active', 'past_due', 'unpaid', 'trialing'].includes(subscription.status)) return;
-        if (subscription.cancel_at_period_end || subscription.cancel_at) return;
-
-        const name = (tenant.footer_data?.public_name || tenant.restaurant_name) as string;
-        const { error } = await new Resend(apiKey).emails.send({
-            from: '"Go!Food Menù" <help@gofoodmenu.it>',
-            to: admins,
-            replyTo: ownerEmail ?? undefined,
-            subject: `Account eliminato con abbonamento attivo: ${name}`,
-            text: [
-                `Il ristoratore ha eliminato l'account senza disdire l'abbonamento: su Stripe continua a rinnovarsi.`,
-                ``,
-                `Locale: ${name}${tenant.slug ? ` (slug ${tenant.slug})` : ''}`,
-                `Email: ${ownerEmail ?? 'non trovata'}`,
-                `Cliente Stripe: ${billing.stripe_customer_id ?? 'non trovato'}`,
-                `Abbonamento Stripe: ${subscription.id}`,
-                ``,
-                `Il locale e i suoi dati non esistono più: l'abbonamento va gestito a mano dalla dashboard di Stripe.`,
-            ].join('\n'),
-        });
-        if (error) console.error(`[DELETE_ACCOUNT] Resend error for tenant ${tenantId}:`, error);
-    } catch (e) {
-        console.error(`[DELETE_ACCOUNT] Subscription check failed for tenant ${tenantId}:`, e);
-    }
 }
