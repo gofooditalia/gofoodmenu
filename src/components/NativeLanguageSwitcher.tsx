@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MENU_LANG_COOKIE, MENU_LANG_LABELS, type MenuLang } from '@/lib/menu-languages';
+import { MENU_LANG_COOKIE, MENU_LANG_LABELS, menuLangPath, type MenuLang } from '@/lib/menu-languages';
 import { useMenuStrings } from '@/lib/menu-i18n';
 
 interface NativeLanguageSwitcherProps {
@@ -21,6 +21,7 @@ interface NativeLanguageSwitcherProps {
   current: MenuLang;
   languages: MenuLang[];
   compact?: boolean;
+  pathSuffix?: string;
 }
 
 function rememberChoice(lang: MenuLang) {
@@ -29,9 +30,9 @@ function rememberChoice(lang: MenuLang) {
   document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
 }
 
-export default function NativeLanguageSwitcher({ slug, current, languages, compact = false }: NativeLanguageSwitcherProps) {
+export default function NativeLanguageSwitcher({ slug, current, languages, compact = false, pathSuffix = '' }: NativeLanguageSwitcherProps) {
   const strings = useMenuStrings();
-  const href = (lang: MenuLang) => (lang === 'it' ? `/${slug}` : `/${slug}/${lang}`);
+  const href = (lang: MenuLang) => menuLangPath(slug, lang, pathSuffix);
   const others = languages.filter((l) => l !== 'it');
   const shown = current === 'it' ? (others.includes('en') ? 'en' : others[0]) : current;
 

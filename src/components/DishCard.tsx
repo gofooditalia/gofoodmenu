@@ -8,7 +8,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { parseIngredients } from '@/utils/ingredientParser';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
 import { Leaf, Home, Snowflake } from 'lucide-react';
-import { useMenuStrings } from '@/lib/menu-i18n';
+import { useMenuLang, useMenuStrings } from '@/lib/menu-i18n';
+import { menuLangPath } from '@/lib/menu-languages';
 
 interface DishCardProps {
   dish: Dish & {
@@ -28,6 +29,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
   const { isGlutenFree } = useGlutenFilter();
   // Etichette nella lingua del menu (/{slug}/{lingua}); fuori dal menu pubblico italiano
   const strings = useMenuStrings();
+  const menuLang = useMenuLang();
   const [imageError, setImageError] = useState(false);
   const placeholderImage = '/no-image.svg';
 
@@ -202,7 +204,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
               ))}
             </div>
             <Link
-              href={`/${tenantSlug}/allergeni`}
+              href={menuLangPath(tenantSlug, menuLang, '/allergeni')}
               prefetch={false}
               className="inline-flex items-center gap-1.5 text-sm hover:brightness-75 font-medium transition-all"
               style={{ color: 'var(--tenant-primary, #8B0000)' }}

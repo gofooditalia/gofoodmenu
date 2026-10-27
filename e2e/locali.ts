@@ -12,3 +12,6 @@ export const LOCALI_REALI = [
 
 // Locale col piano free: il suo menu non deve essere pubblico
 export const LOCALE_FREE = 'accademia';
+
+// Locale con il menu tradotto e salvato (tenants.menu_languages): pagine /{slug}/{lingua} e /{slug}/{lingua}/allergeni
+export const LOCALE_TRADOTTO = 'magnaromatrattoria';

@@ -3,7 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { useMenuStrings } from '@/lib/menu-i18n';
+import { useMenuLang, useMenuStrings } from '@/lib/menu-i18n';
+import { menuLangPath } from '@/lib/menu-languages';
 import { useTranslation } from '@/hooks/useTranslation';
 import { SocialIcon } from './SocialIcon';
 import TenantLogo from './TenantLogo';
@@ -21,6 +22,7 @@ interface FooterProps {
 export default function Footer({ footerData, restaurantName, logoUrl, slug, forceMobile = false }: FooterProps) {
   const { language } = useTranslation();
   const strings = useMenuStrings();
+  const menuLang = useMenuLang();
   // Ensure logoUrl is properly encoded to handle spaces
   const sanitizedLogoUrl = logoUrl?.replace(/ /g, '%20') || '/favicon.svg';
 
@@ -89,7 +91,7 @@ export default function Footer({ footerData, restaurantName, logoUrl, slug, forc
             <ul className="space-y-3 mb-6">
               <li>
                 <Link
-                  href={slug ? `/${slug}/allergeni` : '/allergeni'}
+                  href={slug ? menuLangPath(slug, menuLang, '/allergeni') : '/allergeni'}
                   prefetch={false}
                   className="inline-flex items-center gap-2 text-[var(--tenant-primary,#8B0000)] hover:brightness-75 font-medium transition-all"
                 >

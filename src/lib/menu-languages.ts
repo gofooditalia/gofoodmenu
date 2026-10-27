@@ -56,3 +56,8 @@ export function pickMenuLang(
     if (isTranslatedLang(first) && available.includes(first)) return first;
     return available.includes('en') ? 'en' : 'it';
 }
+
+/** Indirizzo di una pagina del menu nella lingua indicata: menuLangPath('pizzeria', 'en', '/allergeni') → /pizzeria/en/allergeni. */
+export function menuLangPath(slug: string, lang: MenuLang, suffix = ''): string {
+    return `/${slug}${lang === 'it' ? '' : `/${lang}`}${suffix}`;
+}

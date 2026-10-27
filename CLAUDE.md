@@ -206,8 +206,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `src/app/[slug]/menu-page.tsx`), hreflang tra le versioni, sitemap. Il middleware (`src/lib/menu-language-redirect.ts`)
   manda chi apre `/{slug}` dal QR alla lingua del telefono (olandese o altre → inglese; italiano o nessuna → italiano);
   la scelta fatta nel selettore (cookie `menu_lang`) vale più del telefono. Elenco dei locali tradotti letto ogni 5 min.
-  I locali senza traduzioni restano con Google Translate. Da fare dopo il pilota: traduzione automatica al salvataggio
-  del piatto, linguette di correzione nel pannello del ristoratore, pagina allergeni nelle nuove lingue.
+  I locali senza traduzioni restano con Google Translate. Pagina allergeni tradotta (27/10/2026): `/{slug}/{lingua}/allergeni`
+  (`src/app/[slug]/allergens-page.tsx`), testi fissi dei 14 allergeni e delle note legali in `src/lib/allergens-i18n.ts`
+  (scritti a mano sui testi ufficiali del Reg. UE 1169/2011, unica fonte anche per l'italiano), link dal menu e dal piè di
+  pagina nella stessa lingua, selettore lingua che resta sugli allergeni, hreflang. Tolta il 27/10/2026 la nota "N.B. Salsa
+  pomodoro San Marzano…" che compariva per tutti i locali. Da fare dopo il pilota: traduzione automatica al salvataggio
+  del piatto, linguette di correzione nel pannello del ristoratore.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
 - **Prenotazione tavoli** (da decidere entro aprile 2027): soluzione interna o servizio esterno.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,

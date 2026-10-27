@@ -29,25 +29,6 @@ export interface MenuData {
   categories: Category[];
 }
 
-export interface Allergen {
-  id: string;
-  number: number;
-  icon: string;
-  name: string;
-  description?: string;
-}
-
-export interface AllergenData {
-  allergens: Allergen[];
-  legalText: string;
-  regulationTitle: string;
-  regulationText: string;
-  rapidCooling: string;
-  note: string;
-  contactText: string;
-  coverCharge: string;
-}
-
 export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'ar' | 'zh';
 
 // ============================================================
