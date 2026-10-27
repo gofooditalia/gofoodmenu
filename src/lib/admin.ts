@@ -5,6 +5,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { lastVisibleDay } from '@/lib/menu-visibility';
 
 export function isAdminEmail(email: string | null | undefined): boolean {
     if (!email) return false;
@@ -91,7 +92,7 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     const [{ data: tenants, error: tenantsError }, { data: dishes }, usersResult] = await Promise.all([
         supabase
             .from('tenants')
-            .select('id, owner_id, restaurant_name, slug, contact_email, subscription_tier, subscription_status, onboarding_completed, created_at')
+            .select('id, owner_id, restaurant_name, slug, contact_email, subscription_tier, subscription_status, grace_until, onboarding_completed, created_at')
             .order('created_at', { ascending: false }),
         fetchAllDishes(supabase),
         supabase.auth.admin.listUsers({ perPage: 1000 }),
@@ -123,7 +124,12 @@ export async function getAdminOverview(): Promise<AdminOverview> {
         else if (stat.last && new Date(stat.last).getTime() < staleBefore) {
             flags.push(`Menu fermo da oltre ${STALE_MENU_DAYS} giorni`);
         }
-        if (t.subscription_status === 'past_due') flags.push('Pagamento in sospeso');
+        if (t.subscription_status === 'past_due') {
+            // Tolleranza sui pagamenti (src/lib/billing-grace.ts): il menu resta online fino a grace_until
+            flags.push(t.grace_until && new Date(t.grace_until).getTime() > now
+                ? `Pagamento non riuscito: menu online fino a ${lastVisibleDay(t.grace_until)}`
+                : 'Menu sospeso: pagamento non riuscito');
+        }
 
         return {
             id: t.id,

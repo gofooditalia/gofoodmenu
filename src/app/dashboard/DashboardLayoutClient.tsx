@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import SubscriptionBanner from '@/components/dashboard/SubscriptionBanner';
+import PaymentGraceBanner from '@/components/dashboard/PaymentGraceBanner';
 import ActivationModal from '@/components/dashboard/ActivationModal';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider, SidebarTrigger, SidebarInset, useSidebar } from '@/components/ui/sidebar';
@@ -182,6 +183,9 @@ export default function DashboardLayoutClient({
           <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
             {tenant.subscription_status === 'trialing' && (
               <SubscriptionBanner onActivate={() => setShowActivationModal(true)} />
+            )}
+            {tenant.subscription_status === 'past_due' && tenant.subscription_tier !== 'free' && (
+              <PaymentGraceBanner graceUntil={tenant.grace_until} />
             )}
             {children}
           </main>

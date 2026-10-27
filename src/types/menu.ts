@@ -163,6 +163,7 @@ export interface Tenant {
   // Subscription
   subscription_tier: SubscriptionTier;
   subscription_status: SubscriptionStatus;
+  grace_until?: string | null; // Con pagamento non riuscito il menu resta pubblico fino a questa data (migrazione 040)
 
 
   // Onboarding

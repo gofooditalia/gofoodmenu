@@ -29,10 +29,17 @@ for (const slug of LOCALI_REALI) {
   });
 }
 
-test('il menu di un locale col piano free non è pubblico', async ({ page }) => {
-  const res = await page.goto(`/${LOCALE_FREE}`);
-  expect(res?.status()).toBe(404);
-});
+// Locale senza menu pubblico (piano free, abbonamento sospeso o disdetto): pagina neutra, niente piatti, fuori dai motori
+for (const path of ['', '/allergeni']) {
+  test(`il menu di un locale col piano free non è pubblico (${path || '/'})`, async ({ page }) => {
+    const res = await page.goto(`/${LOCALE_FREE}${path}`);
+    expect(res?.status()).toBe(200);
+    await expect(page.getByRole('heading', { name: 'Menu non disponibile' })).toBeVisible();
+    await expect(page.getByText(/chiedi pure al personale/i)).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+    await expect(page.getByText('€')).toHaveCount(0);
+  });
+}
 
 // Scheda contatti /{slug}/info: per ora solo i locali in prova
 for (const slug of INFO_PAGE_SLUGS) {
