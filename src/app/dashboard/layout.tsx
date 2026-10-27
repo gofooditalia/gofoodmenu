@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     manifest: '/app.webmanifest',
 };
 
+// Le azioni server della dashboard traducono il menu dopo il salvataggio (after() in revalidatePublicMenu):
+// il tempo massimo della funzione deve bastare per attesa e traduzione (src/lib/menu-translation-jobs.ts)
+export const maxDuration = 300;
+
 export default function DashboardLayout({
     children,
 }: {

@@ -214,8 +214,18 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   mancanti (una lingua nuova non rifà le altre); tutte se il testo italiano è cambiato. Una lingua si aggiunge in
   `TRANSLATED_LANGS` (`src/lib/menu-languages.ts`) più i testi fissi in `menu-i18n.ts`, `allergens-i18n.ts` e `META_TEXT`
   (`menu-page.tsx`): il compilatore segnala quelli mancanti. Testi fissi polacchi e portoghesi da far rileggere a un madrelingua. Tolta il 27/10/2026 la nota "N.B. Salsa
-  pomodoro San Marzano…" che compariva per tutti i locali. Da fare dopo il pilota: traduzione automatica al salvataggio
-  del piatto, linguette di correzione nel pannello del ristoratore.
+  pomodoro San Marzano…" che compariva per tutti i locali.
+  **Traduzione automatica al salvataggio** (27/10/2026, migrazione 041 `menu_translation_jobs`, solo service role):
+  ogni salvataggio dal pannello chiama già `revalidatePublicMenu`, che per i locali con `menu_languages` non vuoto e menu
+  pubblico programma con `after()` la traduzione delle voci nuove o cambiate (`src/lib/menu-translation-jobs.ts`).
+  Attende 30 s dall'ultimo salvataggio (modifiche ravvicinate e import AI = una sola traduzione), prende un lucchetto per
+  locale (`locked_until`, scade dopo 6 min) e poi aggiorna il menu pubblico. Ogni giro ha un tempo massimo (120 s, 180 s
+  da /admin): un menu molto grande si completa in più giri. Rete di sicurezza: cron orario `/api/cron/menu-translations`
+  (`vercel.json`, `CRON_SECRET`) che traduce le voci rimaste indietro, senza chiamate AI se è tutto aggiornato.
+  La traduzione automatica **non attiva mai le lingue**: un locale nuovo si attiva solo con "Traduci menu" in `/admin`
+  (che usa lo stesso lucchetto e risponde "già in corso" se serve). I salvataggi fuori dal pannello (SQL, script) li
+  recupera il cron. Una voce scartata ogni volta dal controllo di plausibilità viene ritentata a ogni cron.
+  Da fare: linguette di correzione nel pannello del ristoratore.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
 - **Prenotazione tavoli** (da decidere entro aprile 2027): soluzione interna o servizio esterno.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,
