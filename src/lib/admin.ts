@@ -49,6 +49,8 @@ export interface AdminTenantRow {
     createdAt: string;
     dishCount: number;
     lastMenuUpdate: string | null;
+    // Lingue del menu tradotto attive (tenants.menu_languages, migrazione 039)
+    menuLanguages: string[];
     flags: string[];
 }
 
@@ -92,7 +94,7 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     const [{ data: tenants, error: tenantsError }, { data: dishes }, usersResult] = await Promise.all([
         supabase
             .from('tenants')
-            .select('id, owner_id, restaurant_name, slug, contact_email, subscription_tier, subscription_status, grace_until, onboarding_completed, created_at')
+            .select('id, owner_id, restaurant_name, slug, contact_email, subscription_tier, subscription_status, grace_until, onboarding_completed, created_at, menu_languages')
             .order('created_at', { ascending: false }),
         fetchAllDishes(supabase),
         supabase.auth.admin.listUsers({ perPage: 1000 }),
@@ -142,6 +144,7 @@ export async function getAdminOverview(): Promise<AdminOverview> {
             createdAt: t.created_at,
             dishCount: stat.count,
             lastMenuUpdate: stat.last,
+            menuLanguages: t.menu_languages ?? [],
             flags,
         };
     });

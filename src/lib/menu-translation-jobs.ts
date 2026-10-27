@@ -15,6 +15,7 @@ import { getSupabaseAdmin } from '@/lib/admin';
 import { isMenuPublic } from '@/lib/menu-visibility';
 import { revalidateMenuSlug } from '@/lib/revalidate-menu';
 import { translateTenantMenu, type TranslateMenuOptions, type TranslateMenuResult } from '@/lib/translate-menu';
+import type { TranslatedLang } from '@/lib/menu-languages';
 
 // Attesa dopo l'ultimo salvataggio prima di tradurre
 export const DEBOUNCE_MS = 30_000;
@@ -59,15 +60,16 @@ async function releaseLock(admin: SupabaseClient, tenantId: string, startedAt: D
 
 /**
  * Un giro di traduzione sotto lucchetto. Usato dal salvataggio (con `requestedBefore`), dal cron e da /admin
- * (con `activate`, per attivare le lingue). Aggiorna il menu pubblico se ha tradotto qualcosa (o attivato le lingue).
+ * (con `activate` e `langs`, per attivare le lingue scelte). Senza `langs` traduce le lingue già attive del locale. Aggiorna il menu pubblico se ha tradotto qualcosa (o attivato le lingue).
  */
 export async function runMenuTranslation(
     tenantId: string,
     {
         requestedBefore,
         activate = false,
+        langs,
         budgetMs = TRANSLATE_BUDGET_MS,
-    }: { requestedBefore?: Date; activate?: boolean; budgetMs?: number } = {},
+    }: { requestedBefore?: Date; activate?: boolean; langs?: TranslatedLang[]; budgetMs?: number } = {},
 ): Promise<TranslationRunOutcome> {
     const admin = getSupabaseAdmin();
     const startedAt = await claimLock(admin, tenantId, requestedBefore);
@@ -80,7 +82,7 @@ export async function runMenuTranslation(
 
     let completed = false;
     try {
-        const options: TranslateMenuOptions = { activate, deadline: startedAt.getTime() + budgetMs };
+        const options: TranslateMenuOptions = { activate, langs, deadline: startedAt.getTime() + budgetMs };
         const result = await translateTenantMenu(admin, tenantId, options);
         completed = result.skipped === 0;
         if (result.translated > 0 || activate) {

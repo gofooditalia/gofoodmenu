@@ -4,6 +4,7 @@ import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
 import { getAdminOverview, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
 import { runMenuTranslation } from '@/lib/menu-translation-jobs';
+import { TRANSLATED_LANGS } from '@/lib/menu-languages';
 
 export interface NewsletterSyncResult {
     ok: boolean;
@@ -85,12 +86,13 @@ export interface TranslateMenuActionResult {
 const ADMIN_TRANSLATE_BUDGET_MS = 180_000;
 
 /**
- * Traduce il menu di un locale nelle lingue di TRANSLATED_LANGS (solo le voci o le lingue nuove o cambiate)
- * e attiva le pagine /{slug}/{lingua}. L'attivazione di un locale si fa solo da qui; dopo, le modifiche del
- * ristoratore si traducono da sole (src/lib/menu-translation-jobs.ts).
+ * Traduce il menu di un locale nelle lingue scelte (solo le voci o le lingue nuove o cambiate) e attiva
+ * esattamente quelle pagine /{slug}/{lingua}: una lingua non più scelta si disattiva. L'attivazione di un locale
+ * si fa solo da qui; dopo, le modifiche del ristoratore si traducono da sole nelle sue lingue attive
+ * (src/lib/menu-translation-jobs.ts).
  */
 
-export async function translateMenuForTenant(tenantId: string): Promise<TranslateMenuActionResult> {
+export async function translateMenuForTenant(tenantId: string, languages: string[]): Promise<TranslateMenuActionResult> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user || !isAdminEmail(user.email)) {
@@ -100,9 +102,15 @@ export async function translateMenuForTenant(tenantId: string): Promise<Translat
         return { ok: false, message: 'Configura OPENROUTER_API_KEY su Vercel' };
     }
 
+    // Ordine fisso (quello di TRANSLATED_LANGS) e niente valori estranei
+    const langs = TRANSLATED_LANGS.filter((l) => languages.includes(l));
+    if (!langs.length) {
+        return { ok: false, message: 'Scegli almeno una lingua' };
+    }
+
     try {
         // Stesso lucchetto della traduzione automatica; qui si attivano anche le lingue del menu
-        const outcome = await runMenuTranslation(tenantId, { activate: true, budgetMs: ADMIN_TRANSLATE_BUDGET_MS });
+        const outcome = await runMenuTranslation(tenantId, { activate: true, langs, budgetMs: ADMIN_TRANSLATE_BUDGET_MS });
         if (outcome.status !== 'done') {
             return { ok: false, message: 'Traduzione già in corso per questo locale: riprova tra qualche minuto' };
         }

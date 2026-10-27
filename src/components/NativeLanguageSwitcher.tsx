@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MENU_LANG_COOKIE, MENU_LANG_LABELS, menuLangPath, type MenuLang } from '@/lib/menu-languages';
+import { MENU_LANG_COOKIE, MENU_LANG_LABELS, menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import { useMenuStrings } from '@/lib/menu-i18n';
 
 interface NativeLanguageSwitcherProps {
@@ -76,14 +76,14 @@ export default function NativeLanguageSwitcher({ slug, current, languages, compa
               <DropdownMenuItem key={lang} asChild className="cursor-pointer gap-2">
                 <a
                   href={href(lang)}
-                  hrefLang={lang}
-                  lang={lang}
+                  hrefLang={menuLangTag(lang)}
+                  lang={menuLangTag(lang)}
                   onClick={() => rememberChoice(lang)}
                   aria-current={current === lang ? 'page' : undefined}
                 >
                   <span className="text-lg notranslate" aria-hidden="true">{MENU_LANG_LABELS[lang].flag}</span>
                   <span className="notranslate">{MENU_LANG_LABELS[lang].label}</span>
-                  {current === lang && <span className="ml-auto text-xs" aria-hidden="true">✓</span>}
+                  {current === lang && <span className="ms-auto text-xs" aria-hidden="true">✓</span>}
                 </a>
               </DropdownMenuItem>
             ))}

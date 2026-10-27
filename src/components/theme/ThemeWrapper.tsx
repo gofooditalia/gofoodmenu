@@ -5,6 +5,7 @@ import { useTheme } from './ThemeContext';
 import { MenuFrame } from './MenuFrame';
 import { TextureOverlay } from './TextureOverlay';
 import { readableTextOn } from '@/lib/theme-engine/contrast';
+import { menuLangDir, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 
 // Font già inclusi nel sito da next/font (src/app/layout.tsx): non vanno riscaricati da Google Fonts
 const LOCAL_FONTS: Record<string, string> = {
@@ -12,12 +13,22 @@ const LOCAL_FONTS: Record<string, string> = {
     'Playfair Display': 'var(--font-playfair)',
 };
 
-const fontStack = (font: string) => LOCAL_FONTS[font] ?? `'${font}'`;
+// Cinese e arabo: i font del tema non hanno questi caratteri e il telefono userebbe un font qualsiasi.
+// Si indicano i font di sistema (iOS, macOS, Android, Windows): nessun file da scaricare, il menu non pesa di più.
+// I nomi dei piatti lasciati in italiano restano nel font del tema, che viene prima nell'elenco.
+// In arabo niente spaziatura tra le lettere (classi tracking-*): spezzerebbe le lettere legate.
+const SCRIPT_FONTS: Partial<Record<MenuLang, string>> = {
+    zh: `'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans SC', 'Microsoft YaHei'`,
+    ar: `'Geeza Pro', 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Segoe UI', Tahoma`,
+};
 
-// lang: lingua della pagina tradotta (es. allergeni in polacco), per lettori di schermo e traduttori del browser
-export function ThemeWrapper({ children, className, lang }: { children: React.ReactNode; className?: string; lang?: string }) {
+// lang: lingua della pagina del menu (es. allergeni in polacco), per lettori di schermo e traduttori del browser;
+// decide anche la direzione del testo (arabo da destra a sinistra) e i font di sistema per cinese e arabo
+export function ThemeWrapper({ children, className, lang }: { children: React.ReactNode; className?: string; lang?: MenuLang }) {
     const { currentTheme } = useTheme();
     const { fontHeading, fontBody, colors } = currentTheme;
+    const scriptFonts = lang && SCRIPT_FONTS[lang] ? `, ${SCRIPT_FONTS[lang]}` : '';
+    const fontStack = (font: string) => (LOCAL_FONTS[font] ?? `'${font}'`) + scriptFonts;
     // Senza fondo scelto il prezzo usa la superficie delle card: trasparente finirebbe sopra la foto
     const priceBackground = colors.priceBackground || colors.surface;
     const badgeBackground = colors.badgeBackground || colors.accent;
@@ -38,7 +49,8 @@ export function ThemeWrapper({ children, className, lang }: { children: React.Re
 
     return (
         <div
-            lang={lang}
+            lang={lang && menuLangTag(lang)}
+            dir={lang && menuLangDir(lang)}
             className={`relative w-full min-h-[600px] flex flex-col ${className || ''}`}
             style={{
                 fontFamily: fontStack(fontBody),
@@ -74,6 +86,7 @@ export function ThemeWrapper({ children, className, lang }: { children: React.Re
                 __html: `
             .theme-heading { font-family: ${fontStack(fontHeading)}, serif; text-shadow: var(--tenant-text-shadow); }
             .theme-body { font-family: ${fontStack(fontBody)}, sans-serif; text-shadow: var(--tenant-text-shadow); }
+            ${lang === 'ar' ? '[dir="rtl"] * { letter-spacing: 0 !important; }' : ''}
         `}} />
 
             {/* Texture/Pattern Layer */}

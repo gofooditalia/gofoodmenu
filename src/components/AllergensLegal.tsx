@@ -10,7 +10,8 @@ interface AllergensLegalProps {
   coverChargeValue?: number; // Dynamic value from DB
 }
 
-const LOCALES: Record<MenuLang, string> = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', de: 'de-DE', es: 'es-ES', pl: 'pl-PL', pt: 'pt-PT' };
+const LOCALES: Record<MenuLang, string> = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', de: 'de-DE', es: 'es-ES', pl: 'pl-PL', pt: 'pt-PT', zh: 'zh-CN', ar: 'ar-u-nu-latn' };
+// ar-u-nu-latn: cifre 0-9 come nei prezzi del menu, non le cifre arabo-indiane
 
 export default function AllergensLegal({ lang, logoUrl, coverChargeValue }: AllergensLegalProps) {
   const text = ALLERGEN_PAGE[lang];
@@ -71,6 +72,9 @@ export default function AllergensLegal({ lang, logoUrl, coverChargeValue }: Alle
           <h3 className="text-lg font-bold text-center text-[var(--tenant-text,#171717)]">
             {text.regulationTitle}
           </h3>
+          {text.translationNote && (
+            <p className="text-xs text-center text-[var(--tenant-text-secondary,#4B5563)]">{text.translationNote}</p>
+          )}
 
           <p className="text-sm text-[var(--tenant-text-secondary,#4B5563)] leading-relaxed">
             <span className="font-semibold">*</span> {text.frozenAtSource}

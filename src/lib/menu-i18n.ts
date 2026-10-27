@@ -3,6 +3,7 @@
 /**
  * Testi fissi del menu pubblico nelle lingue di MenuLang: etichette, pulsanti e nomi dei 14 allergeni.
  * Scritti a mano e mai generati dall'AI (gli allergeni sono un obbligo di legge: niente errori).
+ * Cinese e arabo (oltre a polacco e portoghese) sono da far rileggere a un madrelingua.
  * La lingua arriva da MenuLangProvider (pagine /{slug} e /{slug}/{lingua}); fuori dal menu vale l'italiano.
  */
 
@@ -147,24 +148,58 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         allergens: 'Alergénios',
         followUs: 'Siga-nos',
     },
+    zh: {
+        outOfSeason: '非当季',
+        seasonalOnly: '仅在当季供应',
+        containsGluten: '含麸质',
+        homemade: '自制',
+        frozen: '冷冻',
+        vegetarian: '素食',
+        vegan: '纯素',
+        allergenInfo: '过敏原信息',
+        glutenFilter: '无麸质筛选',
+        backToTop: '返回顶部',
+        languageLabel: '菜单语言',
+        ourLocations: '我们的门店',
+        information: '信息',
+        allergens: '过敏原',
+        followUs: '关注我们',
+    },
+    ar: {
+        outOfSeason: 'خارج الموسم',
+        seasonalOnly: 'متوفر في موسمه فقط',
+        containsGluten: 'يحتوي على الغلوتين',
+        homemade: 'من صنعنا',
+        frozen: 'مجمّد',
+        vegetarian: 'نباتي',
+        vegan: 'نباتي صرف',
+        allergenInfo: 'معلومات مسببات الحساسية',
+        glutenFilter: 'تصفية: خالٍ من الغلوتين',
+        backToTop: 'العودة إلى الأعلى',
+        languageLabel: 'لغة القائمة',
+        ourLocations: 'فروعنا',
+        information: 'معلومات',
+        allergens: 'مسببات الحساسية',
+        followUs: 'تابعونا',
+    },
 };
 
 // I 14 allergeni del Reg. UE 1169/2011, con gli id usati nel database (allergen_ids dei piatti)
 const ALLERGENS: Record<string, Record<MenuLang, string>> = {
-    glutine: { it: 'Glutine', en: 'Gluten', fr: 'Gluten', de: 'Gluten', es: 'Gluten', pl: 'Gluten', pt: 'Glúten' },
-    crostacei: { it: 'Crostacei', en: 'Crustaceans', fr: 'Crustacés', de: 'Krebstiere', es: 'Crustáceos', pl: 'Skorupiaki', pt: 'Crustáceos' },
-    uova: { it: 'Uova', en: 'Eggs', fr: 'Œufs', de: 'Eier', es: 'Huevos', pl: 'Jaja', pt: 'Ovos' },
-    pesce: { it: 'Pesce', en: 'Fish', fr: 'Poisson', de: 'Fisch', es: 'Pescado', pl: 'Ryby', pt: 'Peixe' },
-    arachidi: { it: 'Arachidi', en: 'Peanuts', fr: 'Arachides', de: 'Erdnüsse', es: 'Cacahuetes', pl: 'Orzeszki ziemne', pt: 'Amendoins' },
-    soia: { it: 'Soia', en: 'Soy', fr: 'Soja', de: 'Soja', es: 'Soja', pl: 'Soja', pt: 'Soja' },
-    lattosio: { it: 'Lattosio', en: 'Milk', fr: 'Lait', de: 'Milch', es: 'Leche', pl: 'Mleko', pt: 'Leite' },
-    'frutta-secca': { it: 'Frutta secca', en: 'Nuts', fr: 'Fruits à coque', de: 'Schalenfrüchte', es: 'Frutos de cáscara', pl: 'Orzechy', pt: 'Frutos de casca rija' },
-    sedano: { it: 'Sedano', en: 'Celery', fr: 'Céleri', de: 'Sellerie', es: 'Apio', pl: 'Seler', pt: 'Aipo' },
-    senape: { it: 'Senape', en: 'Mustard', fr: 'Moutarde', de: 'Senf', es: 'Mostaza', pl: 'Gorczyca', pt: 'Mostarda' },
-    sesamo: { it: 'Sesamo', en: 'Sesame', fr: 'Sésame', de: 'Sesam', es: 'Sésamo', pl: 'Sezam', pt: 'Sésamo' },
-    solfiti: { it: 'Solfiti', en: 'Sulphites', fr: 'Sulfites', de: 'Sulfite', es: 'Sulfitos', pl: 'Siarczyny', pt: 'Sulfitos' },
-    lupini: { it: 'Lupini', en: 'Lupin', fr: 'Lupin', de: 'Lupinen', es: 'Altramuces', pl: 'Łubin', pt: 'Tremoço' },
-    molluschi: { it: 'Molluschi', en: 'Molluscs', fr: 'Mollusques', de: 'Weichtiere', es: 'Moluscos', pl: 'Mięczaki', pt: 'Moluscos' },
+    glutine: { it: 'Glutine', en: 'Gluten', fr: 'Gluten', de: 'Gluten', es: 'Gluten', pl: 'Gluten', pt: 'Glúten', zh: '麸质', ar: 'الغلوتين' },
+    crostacei: { it: 'Crostacei', en: 'Crustaceans', fr: 'Crustacés', de: 'Krebstiere', es: 'Crustáceos', pl: 'Skorupiaki', pt: 'Crustáceos', zh: '甲壳类', ar: 'القشريات' },
+    uova: { it: 'Uova', en: 'Eggs', fr: 'Œufs', de: 'Eier', es: 'Huevos', pl: 'Jaja', pt: 'Ovos', zh: '蛋', ar: 'البيض' },
+    pesce: { it: 'Pesce', en: 'Fish', fr: 'Poisson', de: 'Fisch', es: 'Pescado', pl: 'Ryby', pt: 'Peixe', zh: '鱼', ar: 'الأسماك' },
+    arachidi: { it: 'Arachidi', en: 'Peanuts', fr: 'Arachides', de: 'Erdnüsse', es: 'Cacahuetes', pl: 'Orzeszki ziemne', pt: 'Amendoins', zh: '花生', ar: 'الفول السوداني' },
+    soia: { it: 'Soia', en: 'Soy', fr: 'Soja', de: 'Soja', es: 'Soja', pl: 'Soja', pt: 'Soja', zh: '大豆', ar: 'الصويا' },
+    lattosio: { it: 'Lattosio', en: 'Milk', fr: 'Lait', de: 'Milch', es: 'Leche', pl: 'Mleko', pt: 'Leite', zh: '乳制品', ar: 'الحليب' },
+    'frutta-secca': { it: 'Frutta secca', en: 'Nuts', fr: 'Fruits à coque', de: 'Schalenfrüchte', es: 'Frutos de cáscara', pl: 'Orzechy', pt: 'Frutos de casca rija', zh: '坚果', ar: 'المكسرات' },
+    sedano: { it: 'Sedano', en: 'Celery', fr: 'Céleri', de: 'Sellerie', es: 'Apio', pl: 'Seler', pt: 'Aipo', zh: '芹菜', ar: 'الكرفس' },
+    senape: { it: 'Senape', en: 'Mustard', fr: 'Moutarde', de: 'Senf', es: 'Mostaza', pl: 'Gorczyca', pt: 'Mostarda', zh: '芥末', ar: 'الخردل' },
+    sesamo: { it: 'Sesamo', en: 'Sesame', fr: 'Sésame', de: 'Sesam', es: 'Sésamo', pl: 'Sezam', pt: 'Sésamo', zh: '芝麻', ar: 'السمسم' },
+    solfiti: { it: 'Solfiti', en: 'Sulphites', fr: 'Sulfites', de: 'Sulfite', es: 'Sulfitos', pl: 'Siarczyny', pt: 'Sulfitos', zh: '亚硫酸盐', ar: 'الكبريتيت' },
+    lupini: { it: 'Lupini', en: 'Lupin', fr: 'Lupin', de: 'Lupinen', es: 'Altramuces', pl: 'Łubin', pt: 'Tremoço', zh: '羽扇豆', ar: 'الترمس' },
+    molluschi: { it: 'Molluschi', en: 'Molluscs', fr: 'Mollusques', de: 'Weichtiere', es: 'Moluscos', pl: 'Mięczaki', pt: 'Moluscos', zh: '软体动物', ar: 'الرخويات' },
 };
 
 const MenuLangContext = createContext<MenuLang>('it');

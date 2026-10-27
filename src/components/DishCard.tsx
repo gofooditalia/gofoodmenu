@@ -82,15 +82,15 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
         )}
         {/* Price badge */}
         <div
-          className="absolute top-4 right-4 text-[var(--tenant-price,#171717)] px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
+          className="absolute top-4 end-4 text-[var(--tenant-price,#171717)] px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
           style={{ backgroundColor: 'var(--tenant-price-bg, var(--tenant-secondary, #D4AF37))' }}
         >
-          <span className="font-bold text-base">€{dish.price}</span>
+          <span className="font-bold text-base" dir="ltr">€{dish.price}</span>
         </div>
 
         {/* Badge glutine quando filtro attivo */}
         {isDisabled && (
-          <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
+          <div className="absolute top-4 start-4 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
             <span className="font-semibold text-xs flex items-center gap-1">
               <span>🌾</span>
               {strings.containsGluten}
@@ -99,7 +99,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
         )}
 
         {/* Badge Fatto in casa e Surgelato */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
+        <div className="absolute top-4 start-4 flex flex-col gap-2">
           {!isDisabled && dish.is_homemade && (
             <div
               className="px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
@@ -140,6 +140,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
             <span
               className="shrink-0 text-[var(--tenant-price,#171717)] px-3 py-1 rounded-full font-bold text-base"
               style={{ backgroundColor: 'var(--tenant-price-bg, var(--tenant-secondary, #D4AF37))' }}
+              dir="ltr"
             >
               €{dish.price}
             </span>
