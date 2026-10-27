@@ -525,6 +525,10 @@ export default function AccountPage() {
                         In questa sezione puoi gestire le azioni sensibili relative al tuo account.
                     </p>
 
+                    {tenant?.subscription_tier === 'premium' && tenant?.subscription_status === 'active' && (
+                        <CancelSubscriptionSection />
+                    )}
+
                     <div className="bg-red-50 rounded-xl p-4 border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <div>
                             <h3 className="font-bold text-red-800 mb-1">Reset Menu Completo</h3>
@@ -722,21 +726,31 @@ function PremiumSubscription({ status }: { status?: string | null }) {
                         Hai cambiato idea? Con &quot;Riattiva abbonamento&quot; puoi annullare la disdetta prima di quella data.
                     </p>
                 </div>
-            ) : status === 'active' && renewsAt && (
-                <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-600">
-                    <p className="font-bold text-gray-900">Vuoi interrompere il servizio?</p>
-                    <p className="mt-1">
-                        Puoi disdire quando vuoi. L&apos;abbonamento resta attivo fino al {formatBillingDate(renewsAt)}
-                        {' '}(fine del periodo già pagato) e non verrà rinnovato; da quel giorno il menu non sarà più
-                        visibile ai clienti. I tuoi dati restano salvati e puoi riattivarlo in qualsiasi momento.
-                    </p>
-                    <PortalButton
-                        action="cancel"
-                        label="Disdici abbonamento"
-                        className="mt-3 border-red-200 text-red-700 hover:bg-red-50"
-                    />
-                </div>
-            )}
+            ) : null}
+        </div>
+    );
+}
+
+// Nella Zona pericolosa: solo con abbonamento attivo e non già disdetto (dopo la disdetta resta "Riattiva" in alto)
+function CancelSubscriptionSection() {
+    const { data: details } = useSubscriptionDetails(true);
+    if (details?.status !== 'active' || cancellationEnd(details) || !details.current_period_end) return null;
+
+    return (
+        <div className="mb-6 bg-red-50 rounded-xl p-4 border border-red-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h3 className="font-bold text-red-800 mb-1">Disdici Abbonamento</h3>
+                <p className="text-sm text-red-600">
+                    L&apos;abbonamento resta attivo fino al {formatBillingDate(details.current_period_end)} (fine del periodo
+                    già pagato) e non verrà rinnovato; da quel giorno il menu non sarà più visibile ai clienti. I tuoi dati
+                    restano salvati e puoi riattivarlo in qualsiasi momento.
+                </p>
+            </div>
+            <PortalButton
+                action="cancel"
+                label="Disdici abbonamento"
+                className="bg-white border text-red-600 hover:bg-red-50 border-red-200"
+            />
         </div>
     );
 }
