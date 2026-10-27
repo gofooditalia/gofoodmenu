@@ -2,8 +2,8 @@
  * Traduzione automatica del menu dopo i salvataggi del ristoratore (migrazione 041, tabella menu_translation_jobs).
  * Solo per i locali già tradotti (tenants.menu_languages non vuoto) e con il menu pubblico: non attiva mai lingue nuove.
  *
- * - requestMenuTranslation: chiamata da revalidatePublicMenu dopo ogni salvataggio. Segna la richiesta e, dopo la
- *   risposta al browser (after), aspetta DEBOUNCE_MS: se nel frattempo è arrivato un altro salvataggio si ferma e
+ * - requestMenuTranslation: chiamata dalla route /api/menu-translation, che revalidatePublicMenu richiama (con after)
+ *   dopo ogni salvataggio. Segna la richiesta e aspetta DEBOUNCE_MS: se nel frattempo è arrivato un altro salvataggio si ferma e
  *   lascia fare a quello. Così una serie di modifiche ravvicinate (o un import AI) produce una sola traduzione.
  * - Lucchetto per locale (locked_until, con scadenza): salvataggio, cron e pulsante in /admin non traducono mai
  *   lo stesso menu due volte in parallelo.
@@ -106,7 +106,8 @@ export async function wantsAutoTranslation(admin: SupabaseClient, tenantId: stri
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * Da chiamare dentro after(), dopo un salvataggio: segna la richiesta, aspetta la fine delle modifiche ravvicinate
+ * Da chiamare dentro la route /api/menu-translation, dopo un salvataggio (non dentro after(): lì revalidatePath non
+ * aggiornava il menu su Vercel): segna la richiesta, aspetta la fine delle modifiche ravvicinate
  * e traduce. Se un'altra traduzione era in corso, al termine ricontrolla una volta (le modifiche arrivate durante
  * quel giro non vanno perse; in ogni caso le recupera il cron).
  */
