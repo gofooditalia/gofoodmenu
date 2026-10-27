@@ -34,6 +34,11 @@ export function cancellationEnd(details: SubscriptionDetails | null | undefined)
     return null;
 }
 
+/** Abbonamento ancora in corso che si rinnoverà: finché è così "Elimina Account" è bloccato (vedi deleteAccount). */
+export function isRenewing(details: SubscriptionDetails | null | undefined): boolean {
+    return Boolean(details && ['active', 'trialing', 'past_due', 'unpaid'].includes(details.status ?? '') && !cancellationEnd(details));
+}
+
 /** Es. "27 novembre 2026" (ora italiana). */
 export function formatBillingDate(unixSeconds: number): string {
     return new Date(unixSeconds * 1000).toLocaleDateString('it-IT', {

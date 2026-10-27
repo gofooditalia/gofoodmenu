@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select';
 import { FooterData, FooterLocation, FooterSocial } from '@/types/menu';
 import { useTenant, useUpdateTenant } from '@/hooks/useTenant';
-import { cancellationEnd, formatBillingDate, useSubscriptionDetails } from '@/hooks/useSubscriptionDetails';
+import { cancellationEnd, formatBillingDate, isRenewing, useSubscriptionDetails, type SubscriptionDetails } from '@/hooks/useSubscriptionDetails';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function AccountPage() {
@@ -29,6 +29,11 @@ export default function AccountPage() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [deleteConfirmation, setDeleteConfirmation] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
+
+    // Con un abbonamento che si rinnova l'account non si elimina: prima la disdetta (controllo ripetuto sul server)
+    const isPremium = tenant?.subscription_tier === 'premium';
+    const { data: subscriptionDetails, isLoading: subscriptionLoading } = useSubscriptionDetails(isPremium);
+    const deletionBlocked = isPremium && (subscriptionLoading || isRenewing(subscriptionDetails));
 
     // Reset Menu State
     const [showResetMenuModal, setShowResetMenuModal] = useState(false);
@@ -106,7 +111,12 @@ export default function AccountPage() {
 
         setIsDeleting(true);
         try {
-            await deleteAccount();
+            const result = await deleteAccount();
+            if (!result.success) {
+                toast.error(result.error);
+                setIsDeleting(false);
+                return;
+            }
             window.location.href = '/';
         } catch (error) {
             console.error('Error deleting account:', error);
@@ -631,7 +641,7 @@ export default function AccountPage() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6 pt-4">
-                                {tenant?.subscription_tier === 'premium' && <DeleteSubscriptionWarning />}
+                                {isPremium && <DeleteSubscriptionNotice details={subscriptionDetails} loading={subscriptionLoading} />}
                                 <Input
                                     type="text"
                                     value={deleteConfirmation}
@@ -656,7 +666,7 @@ export default function AccountPage() {
                                         type="button"
                                         variant="destructive"
                                         onClick={handleDeleteAccount}
-                                        disabled={deleteConfirmation.trim().toUpperCase() !== 'ELIMINA' || isDeleting}
+                                        disabled={deleteConfirmation.trim().toUpperCase() !== 'ELIMINA' || isDeleting || deletionBlocked}
                                         className="flex-1"
                                     >
                                         {isDeleting ? 'Eliminazione...' : 'Elimina tutto'}
@@ -756,11 +766,10 @@ function CancelSubscriptionSection() {
     );
 }
 
-// Nella conferma di "Elimina Account": eliminare l'account non tocca l'abbonamento su Stripe, e senza account
-// il ristoratore non può più disdirlo dal pannello. Avvisa e offre la disdetta, senza bloccare l'eliminazione.
-function DeleteSubscriptionWarning() {
-    const { data: details, isLoading } = useSubscriptionDetails(true);
-    if (isLoading || !details || !['active', 'past_due', 'unpaid', 'trialing'].includes(details.status ?? '')) return null;
+// Nella conferma di "Elimina Account": eliminare l'account non tocca l'abbonamento su Stripe, quindi finché si
+// rinnova l'eliminazione è bloccata e si offre la disdetta (al ritorno dal portale si sblocca).
+function DeleteSubscriptionNotice({ details, loading }: { details: SubscriptionDetails | null | undefined; loading: boolean }) {
+    if (loading) return <p className="text-center text-xs text-gray-400">Verifica dell&apos;abbonamento...</p>;
 
     const endsAt = cancellationEnd(details);
     if (endsAt) {
@@ -770,13 +779,14 @@ function DeleteSubscriptionWarning() {
             </p>
         );
     }
+    if (!isRenewing(details)) return null;
 
     return (
         <div role="alert" className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
-            <p className="font-bold">Prima disdici l&apos;abbonamento</p>
+            <p className="font-bold">Per eliminare l&apos;account disdici prima l&apos;abbonamento</p>
             <p className="mt-1">
-                Eliminare l&apos;account non disdice l&apos;abbonamento: i rinnovi continuerebbero e, senza account, non
-                potresti più disdirlo da qui. Assicurati di averlo disdetto prima di eliminare l&apos;account.
+                Eliminare l&apos;account non disdice l&apos;abbonamento. Disdicilo qui sotto: resta attivo fino alla fine
+                del periodo già pagato, non verrà rinnovato e potrai eliminare l&apos;account subito dopo.
             </p>
             <PortalButton
                 action="cancel"
