@@ -2,9 +2,8 @@
 
 import { Resend } from 'resend';
 import { createClient } from '@/lib/supabase/server';
-import { getAdminOverview, getSupabaseAdmin, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
-import { translateTenantMenu } from '@/lib/translate-menu';
-import { revalidateMenuSlug } from '@/lib/revalidate-menu';
+import { getAdminOverview, isAdminEmail, isPaying, isTestTenant } from '@/lib/admin';
+import { runMenuTranslation } from '@/lib/menu-translation-jobs';
 
 export interface NewsletterSyncResult {
     ok: boolean;
@@ -82,10 +81,15 @@ export interface TranslateMenuActionResult {
     message: string;
 }
 
+// /admin ha maxDuration 300: qui non c'è l'attesa del salvataggio, il giro può durare di più
+const ADMIN_TRANSLATE_BUDGET_MS = 180_000;
+
 /**
  * Traduce il menu di un locale nelle lingue di TRANSLATED_LANGS (solo le voci o le lingue nuove o cambiate)
- * e attiva le pagine /{slug}/{lingua}. Per ora solo dal pannello admin: è la fase pilota (Magna Roma).
+ * e attiva le pagine /{slug}/{lingua}. L'attivazione di un locale si fa solo da qui; dopo, le modifiche del
+ * ristoratore si traducono da sole (src/lib/menu-translation-jobs.ts).
  */
+
 export async function translateMenuForTenant(tenantId: string): Promise<TranslateMenuActionResult> {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -97,14 +101,17 @@ export async function translateMenuForTenant(tenantId: string): Promise<Translat
     }
 
     try {
-        const admin = getSupabaseAdmin();
-        const { data: tenant } = await admin.from('tenants').select('slug').eq('id', tenantId).single();
-        const result = await translateTenantMenu(admin, tenantId);
-        revalidateMenuSlug(tenant?.slug);
+        // Stesso lucchetto della traduzione automatica; qui si attivano anche le lingue del menu
+        const outcome = await runMenuTranslation(tenantId, { activate: true, budgetMs: ADMIN_TRANSLATE_BUDGET_MS });
+        if (outcome.status !== 'done') {
+            return { ok: false, message: 'Traduzione già in corso per questo locale: riprova tra qualche minuto' };
+        }
+        const { result } = outcome;
         return {
-            ok: result.failed === 0,
+            ok: result.failed === 0 && result.skipped === 0,
             message: `${result.translated} voci tradotte, ${result.upToDate} già aggiornate`
-                + (result.failed ? `, ${result.failed} non riuscite (restano in italiano: rilancia)` : ''),
+                + (result.failed ? `, ${result.failed} non riuscite (restano in italiano: rilancia)` : '')
+                + (result.skipped ? `, ${result.skipped} rimandate per tempo (rilancia o attendi il cron)` : ''),
         };
     } catch (error) {
         console.error('[admin] Traduzione menu:', error);

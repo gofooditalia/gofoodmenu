@@ -5,6 +5,7 @@
  * Traduce solo ciò che manca o è cambiato: un piatto si ritraduce in tutte le lingue se il testo italiano non
  * coincide più con `translations.source`; altrimenti solo nelle lingue mancanti (es. una lingua appena aggiunta),
  * senza toccare quelle già fatte. Gli allergeni non passano di qui (nomi fissi in src/lib/menu-i18n.ts).
+ * La chiamano il pulsante "Traduci menu" in /admin e la traduzione automatica (src/lib/menu-translation-jobs.ts).
  */
 
 import OpenAI from 'openai';
@@ -17,6 +18,8 @@ const DEFAULT_MODEL = 'google/gemini-2.5-flash';
 // (25 voci con 4 lingue, 16 con 6)
 const MAX_PAIRS_PER_CALL = 100;
 const PARALLEL_CALLS = 3;
+// Una chiamata bloccata non deve consumare tutta la durata della funzione Vercel
+const CALL_TIMEOUT_MS = 90_000;
 
 export interface TextPair {
     name: string;
@@ -46,12 +49,22 @@ export interface TranslateMenuResult {
     translated: number;
     upToDate: number;
     failed: number;
+    skipped: number; // voci non tentate perché è arrivata la scadenza (deadline): le riprende il giro successivo
+}
+
+export interface TranslateMenuOptions {
+    // Attiva le lingue del menu (tenants.menu_languages): solo il pulsante in /admin, mai la traduzione automatica
+    activate?: boolean;
+    // Ora (ms) dopo la quale non si avviano altri blocchi: quanto è già tradotto viene salvato
+    deadline?: number;
 }
 
 function getOpenAI() {
     return new OpenAI({
         baseURL: 'https://openrouter.ai/api/v1',
         apiKey: process.env.OPENROUTER_API_KEY,
+        timeout: CALL_TIMEOUT_MS,
+        maxRetries: 0, // un blocco non riuscito lo riprende il giro successivo
         defaultHeaders: {
             'HTTP-Referer': SITE_URL,
             'X-Title': 'Go!Food Menu', // header HTTP: solo ASCII
@@ -161,8 +174,14 @@ async function translateBatch(items: Item[]): Promise<Map<string, Translations>>
     return out;
 }
 
-/** Traduce e salva piatti, categorie e sottotitolo del locale; poi attiva le lingue del menu. */
-export async function translateTenantMenu(admin: SupabaseClient, tenantId: string): Promise<TranslateMenuResult> {
+interface PendingItems {
+    todo: Item[];
+    upToDate: number;
+    tenantTranslations: Record<string, Translations>;
+}
+
+/** Voci del locale da tradurre (nuove, cambiate o con lingue mancanti). Solo letture, nessuna chiamata AI. */
+async function collectPendingItems(admin: SupabaseClient, tenantId: string): Promise<PendingItems> {
     const [{ data: tenant, error: tenantError }, { data: categories, error: catError }, { data: dishes, error: dishError }] =
         await Promise.all([
             admin.from('tenants').select('id, footer_data, translations').eq('id', tenantId).single(),
@@ -193,6 +212,22 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
     const brand = (tenant.footer_data as { brand_description?: { it?: string } } | null)?.brand_description?.it ?? '';
     if (brand.trim()) consider('t:brand', brand, '', tenantTranslations.brand ?? null);
 
+    return { todo, upToDate, tenantTranslations };
+}
+
+/** Quante voci del locale aspettano una traduzione (per il cron: nessuna chiamata AI se è tutto aggiornato). */
+export async function countPendingTranslations(admin: SupabaseClient, tenantId: string): Promise<number> {
+    return (await collectPendingItems(admin, tenantId)).todo.length;
+}
+
+/** Traduce e salva piatti, categorie e sottotitolo del locale; con `activate` attiva poi le lingue del menu. */
+export async function translateTenantMenu(
+    admin: SupabaseClient,
+    tenantId: string,
+    { activate = false, deadline }: TranslateMenuOptions = {},
+): Promise<TranslateMenuResult> {
+    const { todo, upToDate, tenantTranslations } = await collectPendingItems(admin, tenantId);
+
     // Blocchi di voci che chiedono le stesse lingue, più grandi quando le lingue sono poche
     const groups = new Map<string, Item[]>();
     for (const item of todo) {
@@ -207,7 +242,12 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
 
     const results = new Map<string, Translations>();
     let failedBatches = 0;
+    let skipped = 0;
     for (let i = 0; i < batches.length; i += PARALLEL_CALLS) {
+        if (deadline && Date.now() > deadline) {
+            skipped = batches.slice(i).reduce((n, b) => n + b.length, 0);
+            break;
+        }
         const chunk = batches.slice(i, i + PARALLEL_CALLS);
         const settled = await Promise.allSettled(chunk.map(translateBatch));
         settled.forEach((r) => {
@@ -238,9 +278,9 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
         } else translated += 1;
     }
 
-    const failed = todo.length - translated;
+    const failed = todo.length - translated - skipped;
     // Le lingue si attivano anche se qualche voce manca: quelle voci restano in italiano nel menu tradotto
-    if (translated + upToDate > 0) {
+    if (activate && translated + upToDate > 0) {
         const { error } = await admin.from('tenants').update({ menu_languages: [...TRANSLATED_LANGS] }).eq('id', tenantId);
         if (error) throw new Error(`Attivazione lingue: ${error.message}`);
     }
@@ -248,5 +288,5 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
         console.warn(`[translate-menu] ${tenantId}: ${failedBatches} blocchi e ${failedWrites} salvataggi non riusciti`);
     }
 
-    return { translated, upToDate, failed };
+    return { translated, upToDate, failed, skipped };
 }

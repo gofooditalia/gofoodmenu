@@ -1,5 +1,6 @@
 {
   "crons": [
-    { "path": "/api/cron/billing-grace", "schedule": "0 5 * * *" }
+    { "path": "/api/cron/billing-grace", "schedule": "0 5 * * *" },
+    { "path": "/api/cron/menu-translations", "schedule": "20 * * * *" }
   ]
 }
