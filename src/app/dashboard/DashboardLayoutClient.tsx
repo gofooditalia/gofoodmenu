@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import SubscriptionBanner from '@/components/dashboard/SubscriptionBanner';
 import PaymentGraceBanner from '@/components/dashboard/PaymentGraceBanner';
+import CancellationBanner from '@/components/dashboard/CancellationBanner';
 import ActivationModal from '@/components/dashboard/ActivationModal';
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider, SidebarTrigger, SidebarInset, useSidebar } from '@/components/ui/sidebar';
@@ -187,6 +188,8 @@ export default function DashboardLayoutClient({
             {tenant.subscription_status === 'past_due' && tenant.subscription_tier !== 'free' && (
               <PaymentGraceBanner graceUntil={tenant.grace_until} />
             )}
+            {tenant.subscription_tier === 'premium' && tenant.subscription_status === 'active'
+              && pathname !== '/dashboard/account' && <CancellationBanner />}
             {children}
           </main>
         </SidebarInset>

@@ -87,7 +87,7 @@ function graceEmail(kind: GraceEmailKind, name: string, day: string) {
     };
 }
 
-function adminEmails(): string[] {
+export function adminEmails(): string[] {
     return (process.env.ADMIN_EMAILS || '').split(',').map((e) => e.trim()).filter(Boolean);
 }
 
