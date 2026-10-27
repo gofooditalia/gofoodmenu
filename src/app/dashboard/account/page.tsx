@@ -631,6 +631,7 @@ export default function AccountPage() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6 pt-4">
+                                {tenant?.subscription_tier === 'premium' && <DeleteSubscriptionWarning />}
                                 <Input
                                     type="text"
                                     value={deleteConfirmation}
@@ -750,6 +751,37 @@ function CancelSubscriptionSection() {
                 action="cancel"
                 label="Disdici abbonamento"
                 className="bg-white border text-red-600 hover:bg-red-50 border-red-200"
+            />
+        </div>
+    );
+}
+
+// Nella conferma di "Elimina Account": eliminare l'account non tocca l'abbonamento su Stripe, e senza account
+// il ristoratore non può più disdirlo dal pannello. Avvisa e offre la disdetta, senza bloccare l'eliminazione.
+function DeleteSubscriptionWarning() {
+    const { data: details, isLoading } = useSubscriptionDetails(true);
+    if (isLoading || !details || !['active', 'past_due', 'unpaid', 'trialing'].includes(details.status ?? '')) return null;
+
+    const endsAt = cancellationEnd(details);
+    if (endsAt) {
+        return (
+            <p className="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">
+                L&apos;abbonamento è già disdetto: termina il {formatBillingDate(endsAt)} e non ci saranno altri rinnovi.
+            </p>
+        );
+    }
+
+    return (
+        <div role="alert" className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+            <p className="font-bold">Prima disdici l&apos;abbonamento</p>
+            <p className="mt-1">
+                Eliminare l&apos;account non disdice l&apos;abbonamento: i rinnovi continuerebbero e, senza account, non
+                potresti più disdirlo da qui. Assicurati di averlo disdetto prima di eliminare l&apos;account.
+            </p>
+            <PortalButton
+                action="cancel"
+                label="Disdici abbonamento"
+                className="mt-3 w-full border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
             />
         </div>
     );

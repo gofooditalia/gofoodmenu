@@ -146,7 +146,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   "Riattiva abbonamento" e avviso in tutto il pannello (`CancellationBanner`, dati da Stripe con
   `useSubscriptionDetails`, nessuna colonna nel database). Alla fine del periodo `subscription.deleted` porta il locale
   al piano free (pagina neutra). Il webhook avvisa `ADMIN_EMAILS` quando un ristoratore disdice o annulla la disdetta
-  (`src/lib/cancellation-notice.ts`, con il motivo scelto nel portale).
+  (`src/lib/cancellation-notice.ts`, con il motivo scelto nel portale). "Elimina Account" NON disdice l'abbonamento (scelta del
+  titolare: niente disdetta automatica): la conferma avvisa e offre "Disdici abbonamento" senza bloccare; se si
+  elimina con un abbonamento che si rinnova ancora, email agli admin con cliente e abbonamento Stripe da chiudere a mano.
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
