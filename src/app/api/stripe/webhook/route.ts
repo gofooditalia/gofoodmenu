@@ -5,6 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database';
 import { findTenantIdBySubscription, isCurrentSubscription, saveTenantBilling } from '@/lib/stripe-billing';
 import { revalidateMenuSlug } from '@/lib/revalidate-menu';
+import { computeGraceUntil, resetGraceEmails, sendGraceEmail } from '@/lib/billing-grace';
 
 // Stripe subscription statuses -> values allowed by tenants_subscription_status_check
 const SUBSCRIPTION_STATUS_MAP: Record<string, string> = {
@@ -68,6 +69,7 @@ export async function POST(req: NextRequest) {
                     const updateData: any = {
                         subscription_status: 'active',
                         subscription_tier: 'premium',
+                        grace_until: null,
                     };
 
                     console.log(`[STRIPE_WEBHOOK] Processing subscription for tenant ${tenantId}`);
@@ -114,7 +116,8 @@ export async function POST(req: NextRequest) {
                     const { error } = await (supabaseAdmin.from('tenants') as any)
                         .update({
                             subscription_status: 'active', // Fallback to 'active' for free tier to satisfy DB constraint
-                            subscription_tier: 'free'
+                            subscription_tier: 'free',
+                            grace_until: null,
                         })
                         .eq('id', tenantId);
 
@@ -140,18 +143,42 @@ export async function POST(req: NextRequest) {
                 if (tenantId && !(await isCurrentSubscription(tenantId, subscription.id))) {
                     console.log(`[STRIPE_WEBHOOK] Ignoring update of stale subscription ${subscription.id} for tenant ${tenantId}`);
                 } else if (tenantId && status) {
+                    // Pagamento non riuscito: il menu resta visibile fino a grace_until (src/lib/billing-grace.ts).
+                    // In ogni altro stato la tolleranza si chiude.
+                    const update: Record<string, unknown> = { subscription_status: status };
+                    if (status !== 'past_due') update.grace_until = null;
+
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const { error } = await (supabaseAdmin.from('tenants') as any)
-                        .update({
-                            subscription_status: status
-                        })
+                        .update(update)
                         .eq('id', tenantId);
 
                     if (error) {
                         console.error('[STRIPE_WEBHOOK] DB Error (updated):', error);
                         throw error;
                     }
+
+                    if (status === 'past_due') {
+                        // Solo al primo pagamento non riuscito: i tentativi successivi (e unpaid) non allungano la tolleranza
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        const { error: graceError } = await (supabaseAdmin.from('tenants') as any)
+                            .update({ grace_until: computeGraceUntil().toISOString() })
+                            .eq('id', tenantId)
+                            .is('grace_until', null);
+                        if (graceError) {
+                            console.error('[STRIPE_WEBHOOK] DB Error (grace):', graceError);
+                            throw graceError;
+                        }
+                    }
                     await revalidateTenantMenu(tenantId);
+
+                    if (status === 'past_due') {
+                        // Se l'invio fallisce ci riprova il cron giornaliero
+                        await sendGraceEmail(tenantId, 'notice').catch((e) =>
+                            console.error('[STRIPE_WEBHOOK] Grace email error:', e));
+                    } else if (status === 'active') {
+                        await resetGraceEmails(tenantId);
+                    }
                 } else if (!status) {
                     console.warn(`[STRIPE_WEBHOOK] Unmapped subscription status: ${subscription.status}`);
                 }

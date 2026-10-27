@@ -8,6 +8,8 @@ import { notFound } from 'next/navigation';
 import { createPublicClient } from '@/lib/supabase/public';
 import { SITE_URL } from '@/lib/site';
 import { hasInfoPage } from '@/lib/tenant-info';
+import { isMenuPublic } from '@/lib/menu-visibility';
+import MenuUnavailable, { menuUnavailableMetadata } from '../MenuUnavailable';
 import type { FooterSocial, TenantLocationDB } from '@/types/menu';
 import InfoPageClient, { type InfoLocation } from './InfoPageClient';
 
@@ -33,12 +35,19 @@ async function getInfoData(slug: string) {
     .eq('slug', slug)
     .single();
 
-  // Come il menu: senza abbonamento attivo il locale non ha pagine pubbliche
-  if (error || !tenant || tenant.subscription_tier === 'free' || tenant.subscription_status !== 'active') {
+  if (error || !tenant) {
     return null;
   }
 
   const footer = tenant.footer_data || {};
+  // Come il menu: senza abbonamento attivo (o fuori dalla tolleranza) si mostra la pagina neutra
+  if (!isMenuPublic(tenant)) {
+    return {
+      unavailable: true as const,
+      name: (footer.public_name || tenant.restaurant_name) as string,
+      logoUrl: (tenant.logo_url || null) as string | null,
+    };
+  }
   const locations: InfoLocation[] = ((tenant.tenant_locations || []) as TenantLocationDB[])
     .sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.created_at.localeCompare(b.created_at))
     .map((l) => ({ city: l.city, address: l.address, phone: l.phone, openingHours: l.opening_hours }));
@@ -65,6 +74,7 @@ export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const data = await getInfoData(slug);
   if (!data) notFound();
+  if ('unavailable' in data) return <MenuUnavailable name={data.name} logoUrl={data.logoUrl} />;
 
   return (
     <InfoPageClient
@@ -83,6 +93,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const data = await getInfoData(slug);
   if (!data) return { title: 'Ristorante non trovato' };
+  if ('unavailable' in data) return menuUnavailableMetadata(data.name);
 
   const cities = [...new Set(data.locations.map((l) => l.city).filter(Boolean))];
   const title = `${data.name} - Contatti e menu`;

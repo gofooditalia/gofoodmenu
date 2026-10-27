@@ -67,6 +67,7 @@ export interface Database {
           cover_charge: number;
           subscription_tier: string;
           subscription_status: string;
+          grace_until: string | null;
 
           onboarding_completed: boolean;
           onboarding_step: number;
@@ -92,6 +93,7 @@ export interface Database {
           cover_charge?: number;
           subscription_tier?: string;
           subscription_status?: string;
+          grace_until?: string | null;
 
           onboarding_completed?: boolean;
           onboarding_step?: number;
@@ -117,6 +119,7 @@ export interface Database {
           cover_charge?: number;
           subscription_tier?: string;
           subscription_status?: string;
+          grace_until?: string | null;
 
           onboarding_completed?: boolean;
           onboarding_step?: number;

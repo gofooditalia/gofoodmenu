@@ -12,6 +12,8 @@ import MenuPageClient from './MenuPageClient';
 import { SITE_URL } from '@/lib/site';
 import { getTenantPwaData } from '@/lib/tenant-pwa';
 import { isTranslatedLang, TRANSLATED_LANGS, type MenuLang, type TranslatedLang } from '@/lib/menu-languages';
+import { isMenuPublic } from '@/lib/menu-visibility';
+import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
 
 type TextPair = { name: string; description: string };
 type StoredTranslations = Partial<Record<TranslatedLang, TextPair>> & { source?: TextPair };
@@ -66,7 +68,8 @@ interface DbDishAllergen {
   allergen: { id: string };
 }
 
-// Fetch menu data dal database, nella lingua richiesta (null = menu inesistente, non pubblico o lingua non attiva)
+// Fetch menu data dal database, nella lingua richiesta (null = menu inesistente o lingua non attiva;
+// `unavailable` = il locale esiste ma il menu non è pubblico: si mostra la pagina neutra)
 export async function getMenuData(slug: string, lang: MenuLang = 'it') {
   const supabase = createPublicClient();
 
@@ -81,15 +84,20 @@ export async function getMenuData(slug: string, lang: MenuLang = 'it') {
     return null;
   }
 
-  // Security: If tenant is on free tier, the menu is NOT public.
-  // We treat it as 404.
-  if (tenant.subscription_tier === 'free' || tenant.subscription_status !== 'active') {
-    return null;
-  }
-
   const languages = tenantLanguages(tenant);
   if (lang !== 'it' && !languages.includes(lang)) {
     return null;
+  }
+
+  // Piano free, abbonamento sospeso o disdetto: niente menu (con pagamento non riuscito resta visibile
+  // durante la tolleranza, src/lib/menu-visibility.ts)
+  if (!isMenuPublic(tenant)) {
+    return {
+      unavailable: {
+        name: (tenant.footer_data?.public_name || tenant.restaurant_name) as string,
+        logoUrl: (tenant.logo_url || null) as string | null,
+      },
+    };
   }
 
   // Prepare Footer Data with Locations from DB (Priority: DB Locations > Legacy Fields > JSON)
@@ -208,6 +216,9 @@ export async function MenuPage({ slug, lang }: { slug: string; lang: MenuLang })
   if (!menuData) {
     notFound();
   }
+  if (menuData.unavailable) {
+    return <MenuUnavailable name={menuData.unavailable.name} logoUrl={menuData.unavailable.logoUrl} />;
+  }
   const { tenant, categories, themeConfig, languages } = menuData;
 
   // Transform tenant to match expected interface
@@ -288,6 +299,10 @@ export async function buildMenuMetadata(slug: string, lang: MenuLang) {
     return {
       title: 'Ristorante non trovato',
     };
+  }
+
+  if (!isMenuPublic(tenant)) {
+    return menuUnavailableMetadata(tenant.footer_data?.public_name || tenant.restaurant_name);
   }
 
   const tenantData = tenant as {

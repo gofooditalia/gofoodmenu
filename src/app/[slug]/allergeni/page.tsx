@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { createPublicClient } from '@/lib/supabase/public';
 import type { Tenant } from '@/types/menu';
 import AllergensPageClient from './AllergensPageClient';
+import { isMenuPublic } from '@/lib/menu-visibility';
+import MenuUnavailable, { menuUnavailableMetadata } from '../MenuUnavailable';
 
 // Cached per slug (ISR). Purged on every menu change via revalidatePublicMenu
 // (src/app/actions/revalidate-menu.ts); the time-based revalidate is only a safety net.
@@ -86,6 +88,11 @@ export default async function Page({ params }: PageProps) {
 
     const { tenant, themeConfig } = data;
 
+    // Come il menu: senza abbonamento attivo (o fuori dalla tolleranza) si mostra la pagina neutra
+    if (!isMenuPublic(tenant)) {
+        return <MenuUnavailable name={tenant.restaurant_name} logoUrl={tenant.logo_url} />;
+    }
+
     return <AllergensPageClient tenant={tenant} initialTheme={themeConfig} />;
 }
 
@@ -94,9 +101,10 @@ export async function generateMetadata({ params }: PageProps) {
     const { slug } = await params;
     const supabase = createPublicClient();
 
-    const { data: tenant } = await supabase
-        .from('tenants')
-        .select('restaurant_name')
+    // '*': grace_until (migrazione 040) non è ancora nei tipi generati
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: tenant } = await (supabase.from('tenants') as any)
+        .select('*')
         .eq('slug', slug)
         .single();
 
@@ -106,7 +114,13 @@ export async function generateMetadata({ params }: PageProps) {
         };
     }
 
-    const tenantData = tenant as { restaurant_name: string };
+    const tenantData = {
+        restaurant_name: (tenant.footer_data?.public_name || tenant.restaurant_name) as string,
+    };
+
+    if (!isMenuPublic(tenant)) {
+        return menuUnavailableMetadata(tenantData.restaurant_name);
+    }
 
     return {
         title: `Allergeni - ${tenantData.restaurant_name}`,

@@ -130,6 +130,15 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `tenant_locations` e `footer_data.socials`; i numeri si ricavano dal campo libero del telefono (`parsePhoneNumbers`:
   "091 7283177 - 3922151234" → due pulsanti; parti con lettere saltate). Solo in italiano per ora. Orari di Magna Roma
   inseriti il 24/10/2026 (12:30–15:00 · 19:30–23:00, tutte le sedi). Si aggiorna con `revalidateMenuSlug`.
+- **Pagamenti non riusciti** (27/10/2026, migrazione 040): con `past_due`/`unpaid` il menu resta visibile per
+  `MENU_GRACE_DAYS` giorni (default 7) fino a `tenants.grace_until`, che il webhook imposta al primo pagamento non
+  riuscito e non sposta più; al pagamento riuscito torna NULL. Regola unica `isMenuPublic` in
+  `src/lib/menu-visibility.ts` (menu, lingue, allergeni, `/info`, sitemap). Locale esistente ma senza menu pubblico
+  (sospeso, disdetto, free): pagina neutra `MenuUnavailable` (noindex, "chiedi al personale", riga in inglese), non
+  più 404. Cron Vercel `/api/cron/billing-grace` alle 5 UTC (`vercel.json`, richiede `CRON_SECRET`): sospende alla
+  scadenza (ore 4 UTC, mai durante il servizio) e manda le email al ristoratore con copia ad `ADMIN_EMAILS`
+  (avviso all'inizio, promemoria 2 giorni prima; date in `tenant_billing`). `grace_until` è protetto dal trigger
+  come `subscription_status`.
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
