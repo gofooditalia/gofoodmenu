@@ -14,7 +14,7 @@ export function TranslateMenuButton({ tenantId, restaurantName }: { tenantId: st
             variant="outline"
             size="sm"
             disabled={isPending}
-            title={`Traduci il menu di ${restaurantName} in inglese, francese, tedesco e spagnolo`}
+            title={`Traduci il menu di ${restaurantName} in inglese, francese, tedesco, spagnolo, polacco e portoghese`}
             onClick={() =>
                 startTransition(async () => {
                     const result = await translateMenuForTenant(tenantId);

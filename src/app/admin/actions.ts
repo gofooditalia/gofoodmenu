@@ -83,7 +83,7 @@ export interface TranslateMenuActionResult {
 }
 
 /**
- * Traduce il menu di un locale in inglese, francese, tedesco e spagnolo (solo le voci nuove o cambiate)
+ * Traduce il menu di un locale nelle lingue di TRANSLATED_LANGS (solo le voci o le lingue nuove o cambiate)
  * e attiva le pagine /{slug}/{lingua}. Per ora solo dal pannello admin: è la fase pilota (Magna Roma).
  */
 export async function translateMenuForTenant(tenantId: string): Promise<TranslateMenuActionResult> {

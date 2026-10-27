@@ -4,7 +4,7 @@
  * Usato anche dal middleware: niente import da React o da Supabase qui.
  */
 
-export const TRANSLATED_LANGS = ['en', 'fr', 'de', 'es'] as const;
+export const TRANSLATED_LANGS = ['en', 'fr', 'de', 'es', 'pl', 'pt'] as const;
 export type TranslatedLang = (typeof TRANSLATED_LANGS)[number];
 export type MenuLang = 'it' | TranslatedLang;
 
@@ -14,6 +14,8 @@ export const MENU_LANG_LABELS: Record<MenuLang, { label: string; flag: string }>
     fr: { label: 'Français', flag: '🇫🇷' },
     de: { label: 'Deutsch', flag: '🇩🇪' },
     es: { label: 'Español', flag: '🇪🇸' },
+    pl: { label: 'Polski', flag: '🇵🇱' },
+    pt: { label: 'Português', flag: '🇵🇹' },
 };
 
 // Cookie con la lingua scelta dal cliente nel selettore: vale più della lingua del telefono

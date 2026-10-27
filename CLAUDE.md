@@ -194,7 +194,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   "Onboarding" (Sending access) dello stesso team: la usa via SMTP l'email "Conferma Registrazione" da
   `register@gofoodmenu.it`: è l'SMTP personalizzato di Supabase Auth (Authentication → Emails → SMTP Settings:
   `smtp.resend.com`, porta 465, utente `resend`, mittente "GO!Food Menù"; verificato il 23/10/2026).
-- **Menu tradotti al posto di Google Translate** (24/10/2026, pilota **Magna Roma**, lingue **en, fr, de, es**):
+- **Menu tradotti al posto di Google Translate** (24/10/2026, pilota **Magna Roma**, lingue **en, fr, de, es**, dal 27/10/2026 anche
+  **pl** e **pt** (portoghese europeo), scelte per il turismo in Sicilia: polacchi in forte crescita e poco inglese):
   traduzioni salvate in `translations` (jsonb) di `dishes`, `categories` e `tenants` (sottotitolo `tagline` e descrizione
   `brand`), lingue attive in `tenants.menu_languages` (migrazione 039, applicata il 24/10/2026). Si generano dal pannello
   `/admin` (pulsante "Traduci menu", `src/lib/translate-menu.ts`, OpenRouter, modello `OPENROUTER_TRANSLATE_MODEL` o
@@ -209,7 +210,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   I locali senza traduzioni restano con Google Translate. Pagina allergeni tradotta (27/10/2026): `/{slug}/{lingua}/allergeni`
   (`src/app/[slug]/allergens-page.tsx`), testi fissi dei 14 allergeni e delle note legali in `src/lib/allergens-i18n.ts`
   (scritti a mano sui testi ufficiali del Reg. UE 1169/2011, unica fonte anche per l'italiano), link dal menu e dal piè di
-  pagina nella stessa lingua, selettore lingua che resta sugli allergeni, hreflang. Tolta il 27/10/2026 la nota "N.B. Salsa
+  pagina nella stessa lingua, selettore lingua che resta sugli allergeni, hreflang. "Traduci menu" traduce per ogni voce solo le lingue
+  mancanti (una lingua nuova non rifà le altre); tutte se il testo italiano è cambiato. Una lingua si aggiunge in
+  `TRANSLATED_LANGS` (`src/lib/menu-languages.ts`) più i testi fissi in `menu-i18n.ts`, `allergens-i18n.ts` e `META_TEXT`
+  (`menu-page.tsx`): il compilatore segnala quelli mancanti. Testi fissi polacchi e portoghesi da far rileggere a un madrelingua. Tolta il 27/10/2026 la nota "N.B. Salsa
   pomodoro San Marzano…" che compariva per tutti i locali. Da fare dopo il pilota: traduzione automatica al salvataggio
   del piatto, linguette di correzione nel pannello del ristoratore.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).

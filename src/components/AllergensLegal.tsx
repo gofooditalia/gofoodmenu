@@ -10,7 +10,7 @@ interface AllergensLegalProps {
   coverChargeValue?: number; // Dynamic value from DB
 }
 
-const LOCALES: Record<MenuLang, string> = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', de: 'de-DE', es: 'es-ES' };
+const LOCALES: Record<MenuLang, string> = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', de: 'de-DE', es: 'es-ES', pl: 'pl-PL', pt: 'pt-PT' };
 
 export default function AllergensLegal({ lang, logoUrl, coverChargeValue }: AllergensLegalProps) {
   const text = ALLERGEN_PAGE[lang];

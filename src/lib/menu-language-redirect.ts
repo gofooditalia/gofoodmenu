@@ -1,6 +1,6 @@
 /**
  * Reindirizzamento del menu pubblico nella lingua del telefono (usato dal middleware).
- * Chi apre /{slug} dal QR con il telefono in inglese, francese, tedesco o spagnolo va su /{slug}/{lingua},
+ * Chi apre /{slug} dal QR con il telefono in una lingua tradotta (TRANSLATED_LANGS) va su /{slug}/{lingua},
  * se il locale ha quella lingua attiva (tenants.menu_languages, migrazione 039). Il QR resta lo stesso.
  *
  * L'elenco dei locali tradotti si legge da Supabase al massimo ogni 5 minuti per istanza: il middleware
