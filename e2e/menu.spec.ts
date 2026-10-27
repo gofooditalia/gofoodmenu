@@ -47,9 +47,10 @@ test('il menu tradotto porta agli allergeni nella stessa lingua', async ({ page 
   await expect(page.locator(`a[href="/${LOCALE_TRADOTTO}/en/allergeni"]`).first()).toBeAttached();
 });
 
+// Locale senza lingue attive: l'account di prova sul piano free, che non viene mai tradotto (i locali reali
+// passano uno alla volta ai menu tradotti, quindi non se ne può scegliere uno come "non tradotto")
 test('la pagina allergeni non esiste nelle lingue non attive del locale', async ({ page }) => {
-  const altro = LOCALI_REALI.find((slug) => slug !== LOCALE_TRADOTTO)!;
-  const res = await page.goto(`/${altro}/en/allergeni`);
+  const res = await page.goto(`/${LOCALE_FREE}/en/allergeni`);
   expect(res?.status()).toBe(404);
 });
 
