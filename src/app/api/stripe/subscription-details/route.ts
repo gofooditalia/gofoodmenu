@@ -42,7 +42,8 @@ export async function GET(req: NextRequest) {
                 return NextResponse.json({
                     status: sub.status,
                     current_period_end: sub.current_period_end,
-                    cancel_at_period_end: sub.cancel_at_period_end
+                    cancel_at_period_end: sub.cancel_at_period_end,
+                    cancel_at: sub.cancel_at,
                 });
             }
             return NextResponse.json({ subscription: null });
@@ -54,7 +55,8 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             status: sub.status,
             current_period_end: sub.current_period_end,
-            cancel_at_period_end: sub.cancel_at_period_end
+            cancel_at_period_end: sub.cancel_at_period_end,
+            cancel_at: sub.cancel_at,
         });
 
     } catch (error) {

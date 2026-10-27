@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/select';
 import { FooterData, FooterLocation, FooterSocial } from '@/types/menu';
 import { useTenant, useUpdateTenant } from '@/hooks/useTenant';
+import { cancellationEnd, formatBillingDate, useSubscriptionDetails } from '@/hooks/useSubscriptionDetails';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function AccountPage() {
@@ -445,42 +446,29 @@ export default function AccountPage() {
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-purple-100">
-                        <div>
-                            <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                                Stato:
-                                <span className={`uppercase text-xs px-2 py-1 rounded-full font-bold tracking-wider ${tenant?.subscription_tier === 'free'
-                                    ? 'bg-orange-100 text-orange-700'
-                                    : tenant?.subscription_status === 'active'
-                                        ? 'bg-green-100 text-green-700'
-                                        : tenant?.subscription_status === 'trialing'
-                                            ? 'bg-blue-100 text-blue-700'
-                                            : 'bg-red-100 text-red-700'
-                                    }`}>
-                                    {tenant?.subscription_tier === 'free' ? 'Free (Piano Gratuito)' : (tenant?.subscription_status || 'Premium')}
-                                </span>
-                            </h4>
-                            <p className="text-sm text-gray-600 mt-1">
-                                {tenant?.subscription_tier === 'premium'
-                                    ? 'Hai accesso completo a tutte le funzionalità.'
-                                    : 'Passa a Premium per sbloccare il menu pubblico.'}
-                            </p>
-
-                            {/* Async Renewal Date Display */}
-                            <SubscriptionDetails />
-                        </div>
-
-                        {tenant?.subscription_tier === 'premium' ? (
-                            <ManageSubscriptionButton />
-                        ) : (
+                    {tenant?.subscription_tier === 'premium' ? (
+                        <PremiumSubscription status={tenant?.subscription_status} />
+                    ) : (
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-purple-100">
+                            <div>
+                                <h4 className="font-bold text-gray-900 flex items-center gap-2">
+                                    Stato:
+                                    <span className="uppercase text-xs px-2 py-1 rounded-full font-bold tracking-wider bg-orange-100 text-orange-700">
+                                        Free (Piano Gratuito)
+                                    </span>
+                                </h4>
+                                <p className="text-sm text-gray-600 mt-1">
+                                    Passa a Premium per sbloccare il menu pubblico.
+                                </p>
+                            </div>
                             <Button
                                 onClick={() => window.location.href = '/dashboard?activate=true'} // Or logic to open modal
                                 className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
                             >
                                 Attiva Premium
                             </Button>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -678,44 +666,83 @@ export default function AccountPage() {
     );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function SubscriptionDetails() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [details, setDetails] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+// Stati di tenants.subscription_status (il piano free è mostrato a parte)
+const SUBSCRIPTION_STATUS_LABELS: Record<string, { label: string; className: string }> = {
+    active: { label: 'Attivo', className: 'bg-green-100 text-green-700' },
+    trialing: { label: 'In prova', className: 'bg-blue-100 text-blue-700' },
+    past_due: { label: 'Pagamento non riuscito', className: 'bg-red-100 text-red-700' },
+    incomplete: { label: 'Da completare', className: 'bg-red-100 text-red-700' },
+    cancelled: { label: 'Terminato', className: 'bg-red-100 text-red-700' },
+    suspended: { label: 'Sospeso', className: 'bg-red-100 text-red-700' },
+};
 
-    useEffect(() => {
-        fetch('/api/stripe/subscription-details')
-            .then(res => res.json())
-            .then(data => {
-                setDetails(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) return <div className="text-xs text-gray-400 mt-2">Caricamento dettagli...</div>;
-    // Check if subscription exists in details (api returns { subscription: null } or { status... })
-    // Adjust logic based on API response structure
-    if (!details || (details.subscription === null && !details.status)) return null;
-
-    const currentPeriodEnd = details.current_period_end;
-    if (!currentPeriodEnd) return null;
-
-    const date = new Date(currentPeriodEnd * 1000).toLocaleDateString();
+function PremiumSubscription({ status }: { status?: string | null }) {
+    const { data: details, isLoading } = useSubscriptionDetails(true);
+    const endsAt = cancellationEnd(details);
+    const renewsAt = !endsAt && details?.current_period_end ? details.current_period_end : null;
+    const badge = endsAt
+        ? { label: 'Disdetto', className: 'bg-amber-100 text-amber-800' }
+        : SUBSCRIPTION_STATUS_LABELS[status ?? ''] ?? { label: 'Premium', className: 'bg-green-100 text-green-700' };
 
     return (
-        <p className="text-xs text-gray-500 mt-2 font-mono">
-            Prossimo rinnovo: <span className="font-bold">{date}</span>
-            {details.cancel_at_period_end && <span className="text-red-500 ml-2">(Si cancellerà)</span>}
-        </p>
+        <div className="space-y-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-purple-100">
+                <div>
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
+                        Stato:
+                        <span className={`uppercase text-xs px-2 py-1 rounded-full font-bold tracking-wider ${badge.className}`}>
+                            {badge.label}
+                        </span>
+                    </h4>
+                    <p className="text-sm text-gray-600 mt-1">Hai accesso completo a tutte le funzionalità.</p>
+                    {isLoading && <p className="text-xs text-gray-400 mt-2">Caricamento dettagli...</p>}
+                    {renewsAt && (
+                        <p className="text-xs text-gray-500 mt-2">
+                            Prossimo rinnovo: <span className="font-bold">{formatBillingDate(renewsAt)}</span>
+                        </p>
+                    )}
+                    {endsAt && (
+                        <p className="text-xs text-gray-500 mt-2">
+                            Termina il: <span className="font-bold">{formatBillingDate(endsAt)}</span>
+                        </p>
+                    )}
+                </div>
+                <PortalButton label={endsAt ? 'Riattiva abbonamento' : 'Gestisci Abbonamento'} />
+            </div>
+
+            {endsAt ? (
+                <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+                    <p className="font-bold">Abbonamento disdetto</p>
+                    <p className="mt-1">
+                        Il menu resta visibile ai clienti fino al {formatBillingDate(endsAt)}. Dopo quella data i clienti
+                        vedranno una pagina che li invita a chiedere piatti, prezzi e allergeni al personale; i tuoi dati
+                        restano salvati.
+                    </p>
+                    <p className="mt-1">
+                        Hai cambiato idea? Con &quot;Riattiva abbonamento&quot; puoi annullare la disdetta prima di quella data.
+                    </p>
+                </div>
+            ) : status === 'active' && renewsAt && (
+                <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-600">
+                    <p className="font-bold text-gray-900">Vuoi interrompere il servizio?</p>
+                    <p className="mt-1">
+                        Puoi disdire quando vuoi. L&apos;abbonamento resta attivo fino al {formatBillingDate(renewsAt)}
+                        {' '}(fine del periodo già pagato) e non verrà rinnovato; da quel giorno il menu non sarà più
+                        visibile ai clienti. I tuoi dati restano salvati e puoi riattivarlo in qualsiasi momento.
+                    </p>
+                    <PortalButton
+                        action="cancel"
+                        label="Disdici abbonamento"
+                        className="mt-3 border-red-200 text-red-700 hover:bg-red-50"
+                    />
+                </div>
+            )}
+        </div>
     );
 }
 
-function ManageSubscriptionButton() {
+// Portale clienti di Stripe: carta, fatture, riattivazione; con action 'cancel' si apre sulla disdetta.
+function PortalButton({ label, action, className }: { label: string; action?: 'cancel'; className?: string }) {
     const [loading, setLoading] = useState(false);
 
     const handlePortal = async () => {
@@ -724,17 +751,17 @@ function ManageSubscriptionButton() {
             const res = await fetch('/api/stripe/portal', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ returnUrl: window.location.href })
+                body: JSON.stringify({ returnUrl: window.location.href, action })
             });
             const data = await res.json();
             if (data.url) {
                 window.location.href = data.url;
             } else {
                 toast.error('Impossibile aprire il portale');
+                setLoading(false);
             }
         } catch (e) {
             toast.error('Errore di connessione');
-        } finally {
             setLoading(false);
         }
     };
@@ -744,9 +771,9 @@ function ManageSubscriptionButton() {
             onClick={handlePortal}
             variant="outline"
             disabled={loading}
-            className="border-purple-200 text-purple-700 hover:bg-purple-50"
+            className={className ?? 'border-purple-200 text-purple-700 hover:bg-purple-50'}
         >
-            {loading ? 'Attendere...' : 'Gestisci Abbonamento'}
+            {loading ? 'Attendere...' : label}
         </Button>
     );
 }

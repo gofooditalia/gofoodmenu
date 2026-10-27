@@ -6,6 +6,7 @@ import type { Database } from '@/types/database';
 import { findTenantIdBySubscription, isCurrentSubscription, saveTenantBilling } from '@/lib/stripe-billing';
 import { revalidateMenuSlug } from '@/lib/revalidate-menu';
 import { computeGraceUntil, resetGraceEmails, sendGraceEmail } from '@/lib/billing-grace';
+import { detectCancellationChange, notifyAdminsOfCancellation } from '@/lib/cancellation-notice';
 
 // Stripe subscription statuses -> values allowed by tenants_subscription_status_check
 const SUBSCRIPTION_STATUS_MAP: Record<string, string> = {
@@ -178,6 +179,16 @@ export async function POST(req: NextRequest) {
                             console.error('[STRIPE_WEBHOOK] Grace email error:', e));
                     } else if (status === 'active') {
                         await resetGraceEmails(tenantId);
+                    }
+
+                    // Disdetta (o riattivazione) dal portale: avviso agli admin, il menu resta fino a fine periodo
+                    const change = detectCancellationChange(subscription, (event.data as any).previous_attributes);
+                    if (change) {
+                        await notifyAdminsOfCancellation(tenantId, change, {
+                            endsAt: subscription.cancel_at ?? (subscription as any).current_period_end,
+                            feedback: subscription.cancellation_details?.feedback,
+                            comment: subscription.cancellation_details?.comment,
+                        }).catch((e) => console.error('[STRIPE_WEBHOOK] Cancellation email error:', e));
                     }
                 } else if (!status) {
                     console.warn(`[STRIPE_WEBHOOK] Unmapped subscription status: ${subscription.status}`);

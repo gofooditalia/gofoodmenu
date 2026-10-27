@@ -139,6 +139,14 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   scadenza (ore 4 UTC, mai durante il servizio) e manda le email al ristoratore con copia ad `ADMIN_EMAILS`
   (avviso all'inizio, promemoria 2 giorni prima; date in `tenant_billing`). `grace_until` è protetto dal trigger
   come `subscription_status`.
+- **Disdetta dell'abbonamento** (27/10/2026): pulsante "Disdici abbonamento" in Account, che apre il portale clienti
+  Stripe direttamente sulla disdetta (`action: 'cancel'` in `/api/stripe/portal`, `flow_data` `subscription_cancel`).
+  La configurazione del portale su Stripe (dashboard Stripe, non nel codice) disdice a fine periodo, senza rimborsi
+  parziali, con motivo facoltativo. Mentre la disdetta è programmata: stato "Disdetto", "Termina il …", pulsante
+  "Riattiva abbonamento" e avviso in tutto il pannello (`CancellationBanner`, dati da Stripe con
+  `useSubscriptionDetails`, nessuna colonna nel database). Alla fine del periodo `subscription.deleted` porta il locale
+  al piano free (pagina neutra). Il webhook avvisa `ADMIN_EMAILS` quando un ristoratore disdice o annulla la disdetta
+  (`src/lib/cancellation-notice.ts`, con il motivo scelto nel portale).
 
 ## Cose aperte (aggiornate al 21/10/2026)
 - Ricompressione immagini già caricate (`scripts/recompress-images.mjs`, prova senza `--apply`; migrazione 038
