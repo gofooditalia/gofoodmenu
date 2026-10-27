@@ -217,7 +217,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   pomodoro San Marzano…" che compariva per tutti i locali.
   **Traduzione automatica al salvataggio** (27/10/2026, migrazione 041 `menu_translation_jobs`, solo service role):
   ogni salvataggio dal pannello chiama già `revalidatePublicMenu`, che per i locali con `menu_languages` non vuoto e menu
-  pubblico programma con `after()` la traduzione delle voci nuove o cambiate (`src/lib/menu-translation-jobs.ts`).
+  pubblico chiama con `after()` la route interna `/api/menu-translation` (`CRON_SECRET`), dove avviene la traduzione delle
+  voci nuove o cambiate (`src/lib/menu-translation-jobs.ts`). **Mai `revalidatePath` dentro `after()` di un'azione
+  server**: su Vercel non aggiornava la cache del menu (provato il 27/10/2026, `/en` rimasto in italiano); dentro una
+  richiesta normale (route, cron, corpo dell'azione) funziona.
   Attende 30 s dall'ultimo salvataggio (modifiche ravvicinate e import AI = una sola traduzione), prende un lucchetto per
   locale (`locked_until`, scade dopo 6 min) e poi aggiorna il menu pubblico. Ogni giro ha un tempo massimo (120 s, 180 s
   da /admin): un menu molto grande si completa in più giri. Rete di sicurezza: cron orario `/api/cron/menu-translations`
