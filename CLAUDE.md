@@ -200,7 +200,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   `brand`), lingue attive in `tenants.menu_languages` (migrazione 039, applicata il 24/10/2026). Si generano dal pannello
   `/admin` (pulsante "Traduci menu", `src/lib/translate-menu.ts`, OpenRouter, modello `OPENROUTER_TRANSLATE_MODEL` o
   Gemini 2.5 Flash): traduce solo le voci nuove o cambiate e poi attiva le lingue. Regole del prompt: i nomi dei piatti
-  tipici restano in italiano, ingredienti tradotti fedelmente, niente ingredienti aggiunti. **Sicurezza**: ogni traduzione
+  tipici restano in italiano, ingredienti tradotti fedelmente, niente ingredienti aggiunti, "frutta secca" = frutta a
+  guscio (nuts, Nüsse…), mai frutta essiccata (27/10/2026, Osteria Cilea). **Sicurezza**: ogni traduzione
   tiene il testo italiano di partenza (`source`); se il ristoratore cambia nome o descrizione, il menu tradotto mostra
   l'italiano per quel piatto finché non viene ritradotto. Allergeni ed etichette hanno testi fissi scritti a mano
   (`src/lib/menu-i18n.ts`), mai dall'AI. Pagine `/{slug}/{lingua}` (`src/app/[slug]/[lang]`, codice comune in

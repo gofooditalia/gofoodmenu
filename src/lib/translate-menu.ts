@@ -89,6 +89,9 @@ Regole:
 - Nelle descrizioni traduci gli ingredienti in modo fedele: non aggiungere, togliere o cambiare ingredienti.
   Usa i termini di cucina corretti nella lingua di arrivo. Ingredienti italiani senza equivalente (guanciale,
   pecorino, stracciatella, fiordilatte, porchetta, mortadella) restano in italiano.
+- "Frutta secca" nei menu italiani è la frutta a guscio (noci, mandorle, nocciole, pistacchi), non la frutta
+  essiccata: inglese "nuts", francese "fruits à coque", tedesco "Nüsse", spagnolo "frutos secos", polacco
+  "orzechy", portoghese "frutos de casca rija". Vale anche per "granella di frutta secca" e simili.
 - Lascia invariati simboli, numeri, asterischi (*), unità di misura, prezzi e marchi.
 - Le categorie (es. "Antipasti", "I Primi della Tradizione") si traducono in modo naturale.
 - Inglese britannico e termini coerenti in tutto il menu: aubergine, courgette, draught beer, spirits;
