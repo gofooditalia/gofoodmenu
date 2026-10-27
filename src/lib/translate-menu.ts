@@ -1,6 +1,7 @@
 /**
- * Traduce il menu di un locale nelle lingue di TRANSLATED_LANGS con l'AI (OpenRouter) e salva
- * le traduzioni nel database (migrazione 039). Solo lato server, con la service role.
+ * Traduce il menu di un locale nelle sue lingue con l'AI (OpenRouter) e salva le traduzioni nel database
+ * (migrazione 039). Solo lato server, con la service role. Le lingue sono quelle attive del locale
+ * (tenants.menu_languages); il pulsante in /admin passa quelle scelte e poi le attiva.
  *
  * Traduce solo ciò che manca o è cambiato: un piatto si ritraduce in tutte le lingue se il testo italiano non
  * coincide più con `translations.source`; altrimenti solo nelle lingue mancanti (es. una lingua appena aggiunta),
@@ -11,7 +12,7 @@
 import OpenAI from 'openai';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { SITE_URL } from '@/lib/site';
-import { TRANSLATED_LANGS, type TranslatedLang } from '@/lib/menu-languages';
+import { isTranslatedLang, type TranslatedLang } from '@/lib/menu-languages';
 
 const DEFAULT_MODEL = 'google/gemini-2.5-flash';
 // Voci × lingue per chiamata: abbastanza poche da non superare la risposta massima del modello
@@ -43,6 +44,24 @@ const LANG_NAMES: Record<TranslatedLang, string> = {
     es: 'spagnolo',
     pl: 'polacco',
     pt: 'portoghese europeo (Portogallo)',
+    zh: 'cinese semplificato',
+    ar: 'arabo standard moderno',
+};
+
+/**
+ * Lunghezza della descrizione tradotta rispetto all'italiana (minimo, massimo). Il cinese è molto più corto
+ * (un carattere per parola o quasi, ma i nomi lasciati in italiano restano lunghi), l'arabo un po' più corto:
+ * con la stessa soglia delle lingue europee si scarterebbero traduzioni giuste.
+ */
+const LENGTH_RATIO: Record<TranslatedLang, [number, number]> = {
+    en: [0.5, 1.8],
+    fr: [0.5, 1.8],
+    de: [0.5, 1.8],
+    es: [0.5, 1.8],
+    pl: [0.5, 1.8],
+    pt: [0.5, 1.8],
+    zh: [0.12, 1.2],
+    ar: [0.4, 1.6],
 };
 
 export interface TranslateMenuResult {
@@ -55,6 +74,8 @@ export interface TranslateMenuResult {
 export interface TranslateMenuOptions {
     // Attiva le lingue del menu (tenants.menu_languages): solo il pulsante in /admin, mai la traduzione automatica
     activate?: boolean;
+    // Lingue da tradurre (e da attivare con `activate`). Senza: le lingue già attive del locale
+    langs?: TranslatedLang[];
     // Ora (ms) dopo la quale non si avviano altri blocchi: quanto è già tradotto viene salvato
     deadline?: number;
 }
@@ -100,6 +121,11 @@ Regole:
 - Inglese britannico e termini coerenti in tutto il menu: aubergine, courgette, draught beer, spirits;
   "all'etto" → "per 100 g" (e l'equivalente nelle altre lingue).
 - Portoghese: quello del Portogallo, non del Brasile.
+- Cinese: caratteri semplificati, cinese standard. Arabo: arabo standard moderno, senza vocali brevi (harakat).
+  In cinese e arabo i nomi dei piatti tipici e degli ingredienti che restano in italiano si scrivono in caratteri
+  latini, come in italiano (es. "Carbonara", "guanciale"), dentro il testo tradotto. Numeri in cifre arabe
+  occidentali (0-9). "Frutta secca" (a guscio): cinese "坚果", arabo "المكسرات". "Noccioline" (arachidi): cinese
+  "花生", arabo "الفول السوداني".
 - Testo breve e naturale, come in un menu stampato. Niente virgolette in più, niente note.
 
 Rispondi SOLO con JSON: {"items": {"<key>": {${example}}}}
@@ -115,23 +141,24 @@ function sameSource(a: TextPair | undefined, b: TextPair): boolean {
  * simile se è un elenco di ingredienti. Scarta i casi in cui il modello ha sostituito gli ingredienti con una
  * frase generica (es. carbonara → "Traditional Roman pasta dish") o ha aggiunto spiegazioni.
  */
-function plausibleDescription(source: string, translated: string): boolean {
+function plausibleDescription(source: string, translated: string, lang: TranslatedLang): boolean {
     if (!source) return translated === '';
     if (!translated) return false;
     if (source.length < 25) return true;
     const ratio = translated.length / source.length;
-    return ratio >= 0.5 && ratio <= 1.8;
+    const [min, max] = LENGTH_RATIO[lang];
+    return ratio >= min && ratio <= max;
 }
 
 /**
  * Lingue ancora da tradurre per una voce: tutte se il testo italiano è cambiato, altrimenti quelle mancanti.
  * Anche le traduzioni già salvate si ricontrollano: quelle non plausibili si rifanno.
  */
-function missingLangs(t: Translations | null | undefined, source: TextPair): TranslatedLang[] {
-    if (!t || !sameSource(t.source, source)) return [...TRANSLATED_LANGS];
-    return TRANSLATED_LANGS.filter((lang) => {
+function missingLangs(t: Translations | null | undefined, source: TextPair, langs: TranslatedLang[]): TranslatedLang[] {
+    if (!t || !sameSource(t.source, source)) return [...langs];
+    return langs.filter((lang) => {
         const pair = t[lang];
-        return !pair?.name || !plausibleDescription(source.description, pair.description);
+        return !pair?.name || !plausibleDescription(source.description, pair.description, lang);
     });
 }
 
@@ -169,7 +196,7 @@ async function translateBatch(items: Item[]): Promise<Map<string, Translations>>
             const pair = readPair(entry[lang]);
             // Senza nome tradotto o con una descrizione che non corrisponde all'italiano la voce resta da
             // tradurre: nel menu si vedrà l'italiano, e il prossimo "Traduci menu" ci riprova
-            if (!pair || !pair.name || !plausibleDescription(item.description, pair.description)) {
+            if (!pair || !pair.name || !plausibleDescription(item.description, pair.description, lang)) {
                 ok = false;
                 break;
             }
@@ -186,11 +213,14 @@ interface PendingItems {
     tenantTranslations: Record<string, Translations>;
 }
 
-/** Voci del locale da tradurre (nuove, cambiate o con lingue mancanti). Solo letture, nessuna chiamata AI. */
-async function collectPendingItems(admin: SupabaseClient, tenantId: string): Promise<PendingItems> {
+/**
+ * Voci del locale da tradurre (nuove, cambiate o con lingue mancanti). Solo letture, nessuna chiamata AI.
+ * Senza `langs` valgono le lingue già attive del locale (nessuna: niente da tradurre).
+ */
+async function collectPendingItems(admin: SupabaseClient, tenantId: string, langs?: TranslatedLang[]): Promise<PendingItems> {
     const [{ data: tenant, error: tenantError }, { data: categories, error: catError }, { data: dishes, error: dishError }] =
         await Promise.all([
-            admin.from('tenants').select('id, footer_data, translations').eq('id', tenantId).single(),
+            admin.from('tenants').select('id, footer_data, translations, menu_languages').eq('id', tenantId).single(),
             admin.from('categories').select('id, name, description, translations').eq('tenant_id', tenantId),
             admin.from('dishes').select('id, name, description, translations').eq('tenant_id', tenantId),
         ]);
@@ -198,14 +228,15 @@ async function collectPendingItems(admin: SupabaseClient, tenantId: string): Pro
     if (catError) throw new Error(`Lettura categorie: ${catError.message}`);
     if (dishError) throw new Error(`Lettura piatti: ${dishError.message}`);
 
+    const targetLangs = langs ?? ((tenant.menu_languages as string[] | null) ?? []).filter(isTranslatedLang);
     const todo: Item[] = [];
     let upToDate = 0;
     const consider = (key: string, name: string | null, description: string | null, current: Translations | null) => {
         const source = { name: (name ?? '').trim(), description: (description ?? '').trim() };
-        if (!source.name) return;
-        const langs = missingLangs(current, source);
-        if (!langs.length) upToDate += 1;
-        else todo.push({ key, ...source, langs, current: sameSource(current?.source, source) ? current : null });
+        if (!source.name || !targetLangs.length) return;
+        const missing = missingLangs(current, source, targetLangs);
+        if (!missing.length) upToDate += 1;
+        else todo.push({ key, ...source, langs: missing, current: sameSource(current?.source, source) ? current : null });
     };
 
     for (const c of categories ?? []) consider(`c:${c.id}`, c.name, c.description, c.translations as Translations);
@@ -221,18 +252,22 @@ async function collectPendingItems(admin: SupabaseClient, tenantId: string): Pro
     return { todo, upToDate, tenantTranslations };
 }
 
-/** Quante voci del locale aspettano una traduzione (per il cron: nessuna chiamata AI se è tutto aggiornato). */
+/** Quante voci del locale aspettano una traduzione nelle sue lingue attive (per il cron: nessuna chiamata AI se è tutto aggiornato). */
 export async function countPendingTranslations(admin: SupabaseClient, tenantId: string): Promise<number> {
     return (await collectPendingItems(admin, tenantId)).todo.length;
 }
 
-/** Traduce e salva piatti, categorie e sottotitolo del locale; con `activate` attiva poi le lingue del menu. */
+/**
+ * Traduce e salva piatti, categorie e sottotitolo del locale; con `activate` attiva poi le lingue del menu
+ * (esattamente quelle di `langs`: una lingua tolta dalla scelta si disattiva, le sue traduzioni restano salvate).
+ */
 export async function translateTenantMenu(
     admin: SupabaseClient,
     tenantId: string,
-    { activate = false, deadline }: TranslateMenuOptions = {},
+    { activate = false, langs, deadline }: TranslateMenuOptions = {},
 ): Promise<TranslateMenuResult> {
-    const { todo, upToDate, tenantTranslations } = await collectPendingItems(admin, tenantId);
+    if (activate && !langs?.length) throw new Error('Nessuna lingua scelta');
+    const { todo, upToDate, tenantTranslations } = await collectPendingItems(admin, tenantId, langs);
 
     // Blocchi di voci che chiedono le stesse lingue, più grandi quando le lingue sono poche
     const groups = new Map<string, Item[]>();
@@ -286,8 +321,8 @@ export async function translateTenantMenu(
 
     const failed = todo.length - translated - skipped;
     // Le lingue si attivano anche se qualche voce manca: quelle voci restano in italiano nel menu tradotto
-    if (activate && translated + upToDate > 0) {
-        const { error } = await admin.from('tenants').update({ menu_languages: [...TRANSLATED_LANGS] }).eq('id', tenantId);
+    if (activate && langs && translated + upToDate > 0) {
+        const { error } = await admin.from('tenants').update({ menu_languages: [...langs] }).eq('id', tenantId);
         if (error) throw new Error(`Attivazione lingue: ${error.message}`);
     }
     if (failedBatches || failedWrites) {

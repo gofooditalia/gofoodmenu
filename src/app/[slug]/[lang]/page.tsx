@@ -1,5 +1,5 @@
 /**
- * Menu pubblico tradotto: /{slug}/en, /fr, /de, /es (traduzioni salvate nel database, migrazione 039).
+ * Menu pubblico tradotto: /{slug}/en, /fr, /de, /es, /pl, /pt, /zh, /ar (traduzioni salvate nel database, migrazione 039).
  * Esiste solo per le lingue attive del locale (tenants.menu_languages); le altre danno 404.
  * Il middleware ci manda il cliente in base alla lingua del telefono quando apre /{slug} dal QR.
  */

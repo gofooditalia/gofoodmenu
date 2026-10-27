@@ -111,6 +111,11 @@ export default function AllergensPageClient({ tenant, initialTheme, lang, langua
                                             <p className="text-sm md:text-base text-[var(--tenant-text-secondary,#4B5563)]">
                                                 {text.listSubtitle}
                                             </p>
+                                            {text.translationNote && (
+                                                <p className="mt-2 text-xs md:text-sm text-[var(--tenant-text-secondary,#4B5563)]">
+                                                    {text.translationNote}
+                                                </p>
+                                            )}
                                         </div>
                                         <AllergensList lang={lang} />
                                     </div>

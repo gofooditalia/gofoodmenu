@@ -231,6 +231,22 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (che usa lo stesso lucchetto e risponde "già in corso" se serve). I salvataggi fuori dal pannello (SQL, script) li
   recupera il cron. Una voce scartata ogni volta dal controllo di plausibilità viene ritentata a ogni cron.
   Da fare: linguette di correzione nel pannello del ristoratore.
+  **Cinese (semplificato) e arabo** (27/10/2026): `zh` e `ar` in `TRANSLATED_LANGS`, ma **le lingue sono scelte per
+  locale**: in `/admin` "Traduci menu" ha una casella per lingua (di default le sei europee, `DEFAULT_TRANSLATED_LANGS`;
+  per un locale già tradotto quelle attive) e imposta `menu_languages` esattamente sulle lingue scelte (togliere una
+  casella disattiva la lingua, le traduzioni restano salvate). Traduzione automatica e cron traducono **solo le lingue
+  attive del locale**. Controllo di plausibilità con soglia per lingua (`LENGTH_RATIO` in `translate-menu.ts`: il
+  cinese è molto più corto). Nel prompt: caratteri semplificati, arabo standard senza harakat, nomi italiani in
+  caratteri latini, cifre 0-9. Indirizzo `/{slug}/zh` ma `lang`/hreflang `zh-Hans` (`menuLangTag`); l'arabo ha
+  `dir="rtl"` su `ThemeWrapper` (`menuLangDir`, `RTL_LANGS`): nei componenti del menu usare classi logiche
+  (`start-*`, `end-*`, `ms-*`, `me-*`) invece di `left`/`right`, prezzi con `dir="ltr"`. Font: **nessun font
+  scaricato**, solo font di sistema dopo quello del tema (`SCRIPT_FONTS` in `ThemeWrapper.tsx`); in arabo
+  `letter-spacing` azzerato. Telefono zh-CN/zh-TW/zh-HK → `zh`, ar-* → `ar` (se attive, altrimenti inglese).
+  Il Reg. UE 1169/2011 non ha testo ufficiale in cinese e arabo: allergeni e note legali tradotti a mano con
+  l'avviso "in caso di dubbio vale l'italiano" (`translationNote` in `allergens-i18n.ts`). **Testi fissi cinesi e
+  arabi da far rileggere a un madrelingua prima di attivare queste lingue su un locale.** Prova visiva fatta su
+  telefono simulato; resta da provare su un telefono vero. Da valutare in una PR a parte: voce "Altre lingue"
+  (Google Translate) nel selettore nativo per le lingue non tradotte.
 - Verificare l'installazione dell'app Bistrot su Android e l'icona su iPhone (gestore MagnaRoma).
 - **Prenotazione tavoli** (da decidere entro aprile 2027): soluzione interna o servizio esterno.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,

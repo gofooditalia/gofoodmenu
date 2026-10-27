@@ -1,6 +1,6 @@
 /**
  * Menu Pubblico: dati, pagina e metadati condivisi da /{slug} (italiano) e /{slug}/{lingua}
- * (inglese, francese, tedesco, spagnolo, polacco, portoghese: traduzioni salvate nel database, migrazione 039).
+ * (inglese, francese, tedesco, spagnolo, polacco, portoghese, cinese, arabo: traduzioni salvate nel database, migrazione 039).
  *
  * Esempio: /magnaromatrattoria, /magnaromatrattoria/en
  */
@@ -11,7 +11,7 @@ import type { Tenant } from '@/types/menu';
 import MenuPageClient from './MenuPageClient';
 import { SITE_URL } from '@/lib/site';
 import { getTenantPwaData } from '@/lib/tenant-pwa';
-import { isTranslatedLang, TRANSLATED_LANGS, type MenuLang, type TranslatedLang } from '@/lib/menu-languages';
+import { isTranslatedLang, menuLangTag, TRANSLATED_LANGS, type MenuLang, type TranslatedLang } from '@/lib/menu-languages';
 import { isMenuPublic } from '@/lib/menu-visibility';
 import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
 
@@ -238,7 +238,7 @@ export async function MenuPage({ slug, lang }: { slug: string; lang: MenuLang })
             name: tenant.restaurant_name,
             image: tenant.logo_url,
             url: `${SITE_URL}${menuPath(slug, lang)}`,
-            inLanguage: lang,
+            inLanguage: menuLangTag(lang),
             telephone: tenant.footer_data?.locations?.[0]?.phone,
             address: {
               '@type': 'PostalAddress',
@@ -291,6 +291,14 @@ const META_TEXT: Record<MenuLang, { title: string; description: (name: string, c
     title: 'Menu digital',
     description: (name, city) => `O menu de ${name}${city ? ` em ${city}` : ''}: pratos, preços e alergénios, sempre atualizados.`,
   },
+  zh: {
+    title: '电子菜单',
+    description: (name, city) => `${name}${city ? `（${city}）` : ''}的菜单：菜品、价格和过敏原，随时更新。`,
+  },
+  ar: {
+    title: 'القائمة الرقمية',
+    description: (name, city) => `قائمة طعام ${name}${city ? ` في ${city}` : ''}: الأطباق والأسعار ومسببات الحساسية، محدّثة دائمًا.`,
+  },
 };
 
 export async function buildMenuMetadata(slug: string, lang: MenuLang) {
@@ -336,7 +344,7 @@ export async function buildMenuMetadata(slug: string, lang: MenuLang) {
       languages: translated.length
         ? {
           it: `${SITE_URL}/${slug}`,
-          ...Object.fromEntries(translated.map((l) => [l, `${SITE_URL}/${slug}/${l}`])),
+          ...Object.fromEntries(translated.map((l) => [menuLangTag(l), `${SITE_URL}/${slug}/${l}`])),
           'x-default': `${SITE_URL}/${slug}`,
         }
         : undefined,
@@ -346,7 +354,7 @@ export async function buildMenuMetadata(slug: string, lang: MenuLang) {
       description,
       url: pageUrl,
       type: 'website',
-      locale: { it: 'it_IT', en: 'en_GB', fr: 'fr_FR', de: 'de_DE', es: 'es_ES', pl: 'pl_PL', pt: 'pt_PT' }[lang],
+      locale: { it: 'it_IT', en: 'en_GB', fr: 'fr_FR', de: 'de_DE', es: 'es_ES', pl: 'pl_PL', pt: 'pt_PT', zh: 'zh_CN', ar: 'ar_AR' }[lang],
       // Immagine di anteprima: ./opengraph-image.tsx (logo, nome e colori del locale, 1200×630)
     },
     // PWA del ristorante: Chrome propone di installare il menu come app del locale

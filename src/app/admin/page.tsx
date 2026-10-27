@@ -119,7 +119,7 @@ export default async function AdminPage() {
                                     <td className="p-3">{formatDate(t.createdAt)}</td>
                                     <td className="p-3">
                                         {t.slug && t.tier !== 'free' && t.dishCount > 0 ? (
-                                            <TranslateMenuButton tenantId={t.id} restaurantName={t.restaurantName} />
+                                            <TranslateMenuButton tenantId={t.id} restaurantName={t.restaurantName} activeLanguages={t.menuLanguages} />
                                         ) : '—'}
                                     </td>
                                 </tr>

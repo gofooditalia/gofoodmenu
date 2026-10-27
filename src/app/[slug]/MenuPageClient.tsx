@@ -13,7 +13,7 @@ import { ThemeConfig } from '@/lib/theme-engine/types';
 import { readableTextOn } from '@/lib/theme-engine/contrast';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { MenuLangProvider } from '@/lib/menu-i18n';
-import type { MenuLang } from '@/lib/menu-languages';
+import { menuLangTag, type MenuLang } from '@/lib/menu-languages';
 
 interface Tenant {
   restaurant_name: string;
@@ -126,7 +126,7 @@ function MenuContent({ tenant, categories, lang, languages }: { tenant: Tenant, 
 
   return (
     <div
-      lang={lang}
+      lang={menuLangTag(lang)}
       className="min-h-screen pt-[135px] select-none overflow-x-hidden relative z-10"
       style={{
         // backgroundColor: currentTheme.colors.background, // RIMOSSO PER PERMETTERE AL TEXTURE OVERLAY DI ESSERE VISIBILE
@@ -248,7 +248,7 @@ export default function MenuPageClient({ tenant, categories, initialTheme, lang 
     <MenuLangProvider value={lang}>
       <LanguageProvider initialLanguage={lang}>
         <ThemeProvider initialTheme={initialTheme}>
-          <ThemeWrapper>
+          <ThemeWrapper lang={lang}>
             <MenuContent tenant={tenant} categories={categories} lang={lang} languages={languages} />
           </ThemeWrapper>
         </ThemeProvider>

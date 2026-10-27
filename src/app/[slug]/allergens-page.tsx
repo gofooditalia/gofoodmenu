@@ -9,7 +9,7 @@ import { createPublicClient } from '@/lib/supabase/public';
 import { SITE_URL } from '@/lib/site';
 import { isMenuPublic } from '@/lib/menu-visibility';
 import { ALLERGEN_PAGE } from '@/lib/allergens-i18n';
-import { menuLangPath, type MenuLang } from '@/lib/menu-languages';
+import { menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import { getMenuData, tenantLanguages } from './menu-page';
 import AllergensPageClient from './allergeni/AllergensPageClient';
 import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
@@ -67,7 +67,7 @@ export async function buildAllergensMetadata(slug: string, lang: MenuLang) {
       languages: translated.length
         ? {
           it: url('it'),
-          ...Object.fromEntries(translated.map((l) => [l, url(l)])),
+          ...Object.fromEntries(translated.map((l) => [menuLangTag(l), url(l)])),
           'x-default': url('it'),
         }
         : undefined,
