@@ -1,9 +1,10 @@
 /**
- * Traduce il menu di un locale in inglese, francese, tedesco e spagnolo con l'AI (OpenRouter) e salva
+ * Traduce il menu di un locale nelle lingue di TRANSLATED_LANGS con l'AI (OpenRouter) e salva
  * le traduzioni nel database (migrazione 039). Solo lato server, con la service role.
  *
- * Traduce solo ciò che manca o è cambiato: un piatto si ritraduce se il testo italiano non coincide più
- * con `translations.source`. Gli allergeni non passano di qui (nomi fissi in src/lib/menu-i18n.ts).
+ * Traduce solo ciò che manca o è cambiato: un piatto si ritraduce in tutte le lingue se il testo italiano non
+ * coincide più con `translations.source`; altrimenti solo nelle lingue mancanti (es. una lingua appena aggiunta),
+ * senza toccare quelle già fatte. Gli allergeni non passano di qui (nomi fissi in src/lib/menu-i18n.ts).
  */
 
 import OpenAI from 'openai';
@@ -12,8 +13,9 @@ import { SITE_URL } from '@/lib/site';
 import { TRANSLATED_LANGS, type TranslatedLang } from '@/lib/menu-languages';
 
 const DEFAULT_MODEL = 'google/gemini-2.5-flash';
-// Voci per chiamata: abbastanza poche da non superare la risposta massima del modello con 4 lingue
-const BATCH_SIZE = 25;
+// Voci × lingue per chiamata: abbastanza poche da non superare la risposta massima del modello
+// (25 voci con 4 lingue, 16 con 6)
+const MAX_PAIRS_PER_CALL = 100;
 const PARALLEL_CALLS = 3;
 
 export interface TextPair {
@@ -27,7 +29,18 @@ interface Item {
     key: string; // "d:<id>", "c:<id>", "t:tagline"
     name: string;
     description: string;
+    langs: TranslatedLang[]; // lingue da tradurre
+    current: Translations | null; // traduzioni già valide da tenere (stesso testo italiano)
 }
+
+const LANG_NAMES: Record<TranslatedLang, string> = {
+    en: 'inglese',
+    fr: 'francese',
+    de: 'tedesco',
+    es: 'spagnolo',
+    pl: 'polacco',
+    pt: 'portoghese europeo (Portogallo)',
+};
 
 export interface TranslateMenuResult {
     translated: number;
@@ -46,8 +59,11 @@ function getOpenAI() {
     });
 }
 
-const SYSTEM_PROMPT = `Sei un traduttore professionista di menu di ristoranti italiani.
-Traduci ogni voce dall'italiano in inglese (en), francese (fr), tedesco (de) e spagnolo (es).
+function systemPrompt(langs: TranslatedLang[]) {
+    const list = langs.map((l) => `${LANG_NAMES[l]} (${l})`).join(', ');
+    const example = langs.map((l) => `"${l}": {"name": "...", "description": "..."}`).join(', ');
+    return `Sei un traduttore professionista di menu di ristoranti italiani.
+Traduci ogni voce dall'italiano in queste lingue: ${list}.
 
 Regole:
 - La descrizione tradotta è SOLO la traduzione della descrizione italiana, voce per voce: stessi ingredienti,
@@ -63,11 +79,13 @@ Regole:
 - Lascia invariati simboli, numeri, asterischi (*), unità di misura, prezzi e marchi.
 - Le categorie (es. "Antipasti", "I Primi della Tradizione") si traducono in modo naturale.
 - Inglese britannico e termini coerenti in tutto il menu: aubergine, courgette, draught beer, spirits;
-  "all'etto" → "per 100 g".
+  "all'etto" → "per 100 g" (e l'equivalente nelle altre lingue).
+- Portoghese: quello del Portogallo, non del Brasile.
 - Testo breve e naturale, come in un menu stampato. Niente virgolette in più, niente note.
 
-Rispondi SOLO con JSON: {"items": {"<key>": {"en": {"name": "...", "description": "..."}, "fr": {...}, "de": {...}, "es": {...}}}}
-con esattamente le stesse key ricevute.`;
+Rispondi SOLO con JSON: {"items": {"<key>": {${example}}}}
+con esattamente le stesse key ricevute e tutte le lingue richieste.`;
+}
 
 function sameSource(a: TextPair | undefined, b: TextPair): boolean {
     return !!a && a.name === b.name && a.description === b.description;
@@ -86,12 +104,15 @@ function plausibleDescription(source: string, translated: string): boolean {
     return ratio >= 0.5 && ratio <= 1.8;
 }
 
-function isComplete(t: Translations | null | undefined, source: TextPair): boolean {
-    if (!t || !sameSource(t.source, source)) return false;
-    // Anche le traduzioni già salvate si ricontrollano: quelle non plausibili si rifanno
-    return TRANSLATED_LANGS.every((lang) => {
+/**
+ * Lingue ancora da tradurre per una voce: tutte se il testo italiano è cambiato, altrimenti quelle mancanti.
+ * Anche le traduzioni già salvate si ricontrollano: quelle non plausibili si rifanno.
+ */
+function missingLangs(t: Translations | null | undefined, source: TextPair): TranslatedLang[] {
+    if (!t || !sameSource(t.source, source)) return [...TRANSLATED_LANGS];
+    return TRANSLATED_LANGS.filter((lang) => {
         const pair = t[lang];
-        return !!pair?.name && plausibleDescription(source.description, pair.description);
+        return !pair?.name || !plausibleDescription(source.description, pair.description);
     });
 }
 
@@ -102,12 +123,14 @@ function readPair(value: unknown): TextPair | null {
     return { name: v.name.trim(), description: typeof v.description === 'string' ? v.description.trim() : '' };
 }
 
+// Tutte le voci di un blocco chiedono le stesse lingue
 async function translateBatch(items: Item[]): Promise<Map<string, Translations>> {
+    const langs = items[0].langs;
     const payload = Object.fromEntries(items.map((i) => [i.key, { name: i.name, description: i.description }]));
     const completion = await getOpenAI().chat.completions.create({
         model: process.env.OPENROUTER_TRANSLATE_MODEL || DEFAULT_MODEL,
         messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'system', content: systemPrompt(langs) },
             { role: 'user', content: JSON.stringify({ items: payload }) },
         ],
         temperature: 0.2,
@@ -120,9 +143,10 @@ async function translateBatch(items: Item[]): Promise<Map<string, Translations>>
     for (const item of items) {
         const entry = parsed.items?.[item.key];
         if (!entry) continue;
-        const t: Translations = { source: { name: item.name, description: item.description } };
+        // Le lingue già valide restano come sono, si aggiungono quelle appena tradotte
+        const t: Translations = { ...(item.current ?? {}), source: { name: item.name, description: item.description } };
         let ok = true;
-        for (const lang of TRANSLATED_LANGS) {
+        for (const lang of langs) {
             const pair = readPair(entry[lang]);
             // Senza nome tradotto o con una descrizione che non corrisponde all'italiano la voce resta da
             // tradurre: nel menu si vedrà l'italiano, e il prossimo "Traduci menu" ci riprova
@@ -154,8 +178,9 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
     const consider = (key: string, name: string | null, description: string | null, current: Translations | null) => {
         const source = { name: (name ?? '').trim(), description: (description ?? '').trim() };
         if (!source.name) return;
-        if (isComplete(current, source)) upToDate += 1;
-        else todo.push({ key, ...source });
+        const langs = missingLangs(current, source);
+        if (!langs.length) upToDate += 1;
+        else todo.push({ key, ...source, langs, current: sameSource(current?.source, source) ? current : null });
     };
 
     for (const c of categories ?? []) consider(`c:${c.id}`, c.name, c.description, c.translations as Translations);
@@ -168,8 +193,17 @@ export async function translateTenantMenu(admin: SupabaseClient, tenantId: strin
     const brand = (tenant.footer_data as { brand_description?: { it?: string } } | null)?.brand_description?.it ?? '';
     if (brand.trim()) consider('t:brand', brand, '', tenantTranslations.brand ?? null);
 
+    // Blocchi di voci che chiedono le stesse lingue, più grandi quando le lingue sono poche
+    const groups = new Map<string, Item[]>();
+    for (const item of todo) {
+        const key = item.langs.join(',');
+        groups.set(key, [...(groups.get(key) ?? []), item]);
+    }
     const batches: Item[][] = [];
-    for (let i = 0; i < todo.length; i += BATCH_SIZE) batches.push(todo.slice(i, i + BATCH_SIZE));
+    for (const items of groups.values()) {
+        const size = Math.max(1, Math.floor(MAX_PAIRS_PER_CALL / items[0].langs.length));
+        for (let i = 0; i < items.length; i += size) batches.push(items.slice(i, i + size));
+    }
 
     const results = new Map<string, Translations>();
     let failedBatches = 0;

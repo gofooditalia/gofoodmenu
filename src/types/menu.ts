@@ -29,7 +29,7 @@ export interface MenuData {
   categories: Category[];
 }
 
-export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'ar' | 'zh';
+export type Language = 'it' | 'en' | 'es' | 'fr' | 'de' | 'pl' | 'pt' | 'ar' | 'zh';
 
 // ============================================================
 // TYPES: Database (Supabase Multi-Tenant)

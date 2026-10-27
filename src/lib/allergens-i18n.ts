@@ -26,6 +26,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Céréales contenant du gluten',
             de: 'Glutenhaltiges Getreide',
             es: 'Cereales que contienen gluten',
+            pl: 'Zboża zawierające gluten',
+            pt: 'Cereais que contêm glúten',
         },
         description: {
             it: 'Grano, segale, orzo, avena, farro, kamut o loro ceppi ibridati, e prodotti derivati',
@@ -33,6 +35,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Blé, seigle, orge, avoine, épeautre, kamut ou leurs souches hybridées, et produits dérivés',
             de: 'Weizen, Roggen, Gerste, Hafer, Dinkel, Kamut oder Hybridstämme davon sowie daraus gewonnene Erzeugnisse',
             es: 'Trigo, centeno, cebada, avena, espelta, kamut o sus variedades híbridas, y productos derivados',
+            pl: 'Pszenica, żyto, jęczmień, owies, orkisz, kamut lub ich odmiany hybrydowe oraz produkty pochodne',
+            pt: 'Trigo, centeio, cevada, aveia, espelta, kamut ou as suas estirpes híbridas, e produtos derivados',
         },
     },
     {
@@ -43,6 +47,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Crustacés et produits à base de crustacés',
             de: 'Krebstiere und daraus gewonnene Erzeugnisse',
             es: 'Crustáceos y productos a base de crustáceos',
+            pl: 'Skorupiaki i produkty pochodne',
+            pt: 'Crustáceos e produtos à base de crustáceos',
         },
         description: {
             it: 'Gamberi, scampi, aragoste, granchi e prodotti derivati',
@@ -50,6 +56,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Crevettes, langoustines, homards, crabes et produits dérivés',
             de: 'Garnelen, Scampi, Hummer, Krabben und daraus gewonnene Erzeugnisse',
             es: 'Gambas, cigalas, langostas, cangrejos y productos derivados',
+            pl: 'Krewetki, langustynki, homary, kraby i produkty pochodne',
+            pt: 'Camarões, lagostins, lavagantes, caranguejos e produtos derivados',
         },
     },
     {
@@ -60,6 +68,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Œufs et produits à base d’œufs',
             de: 'Eier und daraus gewonnene Erzeugnisse',
             es: 'Huevos y productos a base de huevo',
+            pl: 'Jaja i produkty pochodne',
+            pt: 'Ovos e produtos à base de ovos',
         },
         description: {
             it: 'Tutte le preparazioni contenenti uova',
@@ -67,6 +77,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Toutes les préparations contenant des œufs',
             de: 'Alle Zubereitungen mit Eiern',
             es: 'Todas las preparaciones que contienen huevo',
+            pl: 'Wszystkie potrawy zawierające jaja',
+            pt: 'Todas as preparações que contêm ovos',
         },
     },
     {
@@ -77,6 +89,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Poissons et produits à base de poissons',
             de: 'Fische und daraus gewonnene Erzeugnisse',
             es: 'Pescado y productos a base de pescado',
+            pl: 'Ryby i produkty pochodne',
+            pt: 'Peixes e produtos à base de peixe',
         },
         description: {
             it: 'Tutti i tipi di pesce e preparazioni derivate, eccetto gelatina di pesce',
@@ -84,6 +98,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Tous les poissons et préparations à base de poisson, sauf la gélatine de poisson',
             de: 'Alle Fischarten und Fischzubereitungen, außer Fischgelatine',
             es: 'Todo tipo de pescado y preparaciones a base de pescado, excepto la gelatina de pescado',
+            pl: 'Wszystkie rodzaje ryb i przetworów rybnych, z wyjątkiem żelatyny rybnej',
+            pt: 'Todos os tipos de peixe e preparações à base de peixe, exceto a gelatina de peixe',
         },
     },
     {
@@ -94,6 +110,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Arachides et produits à base d’arachides',
             de: 'Erdnüsse und daraus gewonnene Erzeugnisse',
             es: 'Cacahuetes y productos a base de cacahuetes',
+            pl: 'Orzeszki ziemne (arachidowe) i produkty pochodne',
+            pt: 'Amendoins e produtos à base de amendoins',
         },
         description: {
             it: 'Noccioline americane e tutti i prodotti derivati',
@@ -101,6 +119,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Cacahuètes et tous les produits dérivés',
             de: 'Erdnüsse und alle daraus gewonnenen Erzeugnisse',
             es: 'Cacahuetes y todos sus productos derivados',
+            pl: 'Orzeszki ziemne i wszystkie produkty pochodne',
+            pt: 'Amendoins e todos os produtos derivados',
         },
     },
     {
@@ -111,6 +131,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Soja et produits à base de soja',
             de: 'Sojabohnen und daraus gewonnene Erzeugnisse',
             es: 'Soja y productos a base de soja',
+            pl: 'Soja i produkty pochodne',
+            pt: 'Soja e produtos à base de soja',
         },
         description: {
             it: 'Fagioli di soia e prodotti derivati, eccetto alcuni oli raffinati',
@@ -118,6 +140,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Fèves de soja et produits dérivés, sauf certaines huiles raffinées',
             de: 'Sojabohnen und daraus gewonnene Erzeugnisse, außer einigen raffinierten Ölen',
             es: 'Habas de soja y productos derivados, excepto algunos aceites refinados',
+            pl: 'Ziarna soi i produkty pochodne, z wyjątkiem niektórych olejów rafinowanych',
+            pt: 'Soja e produtos derivados, exceto alguns óleos refinados',
         },
     },
     {
@@ -128,6 +152,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Lait et produits à base de lait',
             de: 'Milch und daraus gewonnene Erzeugnisse',
             es: 'Leche y sus derivados',
+            pl: 'Mleko i produkty pochodne',
+            pt: 'Leite e produtos à base de leite',
         },
         description: {
             it: 'Incluso il lattosio, formaggi, burro, yogurt e derivati',
@@ -135,6 +161,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Y compris le lactose, fromages, beurre, yaourts et produits dérivés',
             de: 'Einschließlich Laktose, Käse, Butter, Joghurt und Milcherzeugnisse',
             es: 'Incluida la lactosa, quesos, mantequilla, yogur y derivados',
+            pl: 'Łącznie z laktozą: sery, masło, jogurt i inne produkty mleczne',
+            pt: 'Incluindo a lactose, queijos, manteiga, iogurte e outros derivados',
         },
     },
     {
@@ -145,6 +173,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Fruits à coque',
             de: 'Schalenfrüchte',
             es: 'Frutos de cáscara',
+            pl: 'Orzechy',
+            pt: 'Frutos de casca rija',
         },
         description: {
             it: 'Mandorle, nocciole, noci, anacardi, pecan, noci del Brasile, pistacchi, noci macadamia, noci del Queensland e prodotti derivati',
@@ -152,6 +182,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Amandes, noisettes, noix, noix de cajou, noix de pécan, noix du Brésil, pistaches, noix de macadamia ou du Queensland, et produits dérivés',
             de: 'Mandeln, Haselnüsse, Walnüsse, Cashewnüsse, Pekannüsse, Paranüsse, Pistazien, Macadamia- oder Queenslandnüsse sowie daraus gewonnene Erzeugnisse',
             es: 'Almendras, avellanas, nueces, anacardos, pacanas, nueces de Brasil, pistachos, nueces de macadamia o de Queensland, y productos derivados',
+            pl: 'Migdały, orzechy laskowe, orzechy włoskie, nerkowce, orzechy pekan, orzechy brazylijskie, pistacje, orzechy makadamia lub queensland oraz produkty pochodne',
+            pt: 'Amêndoas, avelãs, nozes, cajus, nozes-pecã, castanhas-do-brasil, pistácios, nozes de macadâmia ou do Queensland, e produtos derivados',
         },
     },
     {
@@ -162,6 +194,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Céleri et produits à base de céleri',
             de: 'Sellerie und daraus gewonnene Erzeugnisse',
             es: 'Apio y productos derivados',
+            pl: 'Seler i produkty pochodne',
+            pt: 'Aipo e produtos à base de aipo',
         },
         description: {
             it: 'Sedano e preparazioni derivate',
@@ -169,6 +203,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Céleri et préparations dérivées',
             de: 'Sellerie und daraus hergestellte Zubereitungen',
             es: 'Apio y preparaciones derivadas',
+            pl: 'Seler i przygotowane z niego potrawy',
+            pt: 'Aipo e preparações derivadas',
         },
     },
     {
@@ -179,6 +215,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Moutarde et produits à base de moutarde',
             de: 'Senf und daraus gewonnene Erzeugnisse',
             es: 'Mostaza y productos derivados',
+            pl: 'Gorczyca i produkty pochodne',
+            pt: 'Mostarda e produtos à base de mostarda',
         },
         description: {
             it: 'Semi di senape e prodotti derivati',
@@ -186,6 +224,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Graines de moutarde et produits dérivés',
             de: 'Senfkörner und daraus gewonnene Erzeugnisse',
             es: 'Semillas de mostaza y productos derivados',
+            pl: 'Nasiona gorczycy i produkty pochodne',
+            pt: 'Sementes de mostarda e produtos derivados',
         },
     },
     {
@@ -196,6 +236,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Graines de sésame et produits à base de graines de sésame',
             de: 'Sesamsamen und daraus gewonnene Erzeugnisse',
             es: 'Granos de sésamo y productos a base de granos de sésamo',
+            pl: 'Nasiona sezamu i produkty pochodne',
+            pt: 'Sementes de sésamo e produtos à base de sementes de sésamo',
         },
         description: {
             it: 'Semi di sesamo e prodotti derivati',
@@ -203,6 +245,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Graines de sésame et produits dérivés',
             de: 'Sesamsamen und daraus gewonnene Erzeugnisse',
             es: 'Granos de sésamo y productos derivados',
+            pl: 'Nasiona sezamu i produkty pochodne',
+            pt: 'Sementes de sésamo e produtos derivados',
         },
     },
     {
@@ -213,6 +257,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Anhydride sulfureux et sulfites',
             de: 'Schwefeldioxid und Sulphite',
             es: 'Dióxido de azufre y sulfitos',
+            pl: 'Dwutlenek siarki i siarczyny',
+            pt: 'Dióxido de enxofre e sulfitos',
         },
         description: {
             it: 'In concentrazioni superiori a 10 mg/kg o 10 mg/litro in termini di SO₂ totale',
@@ -220,6 +266,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'À des concentrations de plus de 10 mg/kg ou 10 mg/litre exprimées en SO₂ total',
             de: 'In Konzentrationen von mehr als 10 mg/kg oder 10 mg/l, als insgesamt vorhandenes SO₂ angegeben',
             es: 'En concentraciones superiores a 10 mg/kg o 10 mg/litro en términos de SO₂ total',
+            pl: 'W stężeniach powyżej 10 mg/kg lub 10 mg/litr w przeliczeniu na całkowitą zawartość SO₂',
+            pt: 'Em concentrações superiores a 10 mg/kg ou 10 mg/litro, expressas em SO₂ total',
         },
     },
     {
@@ -230,6 +278,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Lupin et produits à base de lupin',
             de: 'Lupinen und daraus gewonnene Erzeugnisse',
             es: 'Altramuces y productos a base de altramuces',
+            pl: 'Łubin i produkty pochodne',
+            pt: 'Tremoço e produtos à base de tremoço',
         },
         description: {
             it: 'Lupini e prodotti derivati',
@@ -237,6 +287,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Lupin et produits dérivés',
             de: 'Lupinen und daraus gewonnene Erzeugnisse',
             es: 'Altramuces y productos derivados',
+            pl: 'Łubin i produkty pochodne',
+            pt: 'Tremoço e produtos derivados',
         },
     },
     {
@@ -247,6 +299,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Mollusques et produits à base de mollusques',
             de: 'Weichtiere und daraus gewonnene Erzeugnisse',
             es: 'Moluscos y productos a base de moluscos',
+            pl: 'Mięczaki i produkty pochodne',
+            pt: 'Moluscos e produtos à base de moluscos',
         },
         description: {
             it: 'Vongole, cozze, ostriche, calamari e prodotti derivati',
@@ -254,6 +308,8 @@ export const ALLERGEN_LIST: AllergenEntry[] = [
             fr: 'Palourdes, moules, huîtres, calamars et produits dérivés',
             de: 'Venusmuscheln, Miesmuscheln, Austern, Tintenfische und daraus gewonnene Erzeugnisse',
             es: 'Almejas, mejillones, ostras, calamares y productos derivados',
+            pl: 'Małże, omułki, ostrygi, kalmary i produkty pochodne',
+            pt: 'Amêijoas, mexilhões, ostras, lulas e produtos derivados',
         },
     },
 ];
@@ -385,5 +441,47 @@ export const ALLERGEN_PAGE: Record<MenuLang, AllergenPageStrings> = {
         contactText: 'Según lo previsto en el artículo 9 del Reglamento (UE) n.º 1169/2011 del Parlamento Europeo y del Consejo, de 25 de octubre de 2011, la información sobre los ingredientes alergénicos está disponible consultando al personal.',
         coverCharge: 'Cubierto',
         metaDescription: (name) => `Lista de alérgenos e información legal de ${name}.`,
+    },
+    pl: {
+        menu: 'Menu',
+        allergens: 'Alergeny',
+        title: 'Alergeny i nietolerancje',
+        subtitle: 'Twoje bezpieczeństwo jest dla nas najważniejsze. Sprawdź pełną listę alergenów obecnych w naszych daniach.',
+        tabList: '📋 Lista alergenów',
+        tabLegal: '📄 Informacje prawne',
+        listTitle: '14 głównych alergenów',
+        listSubtitle: 'Zgodnie z rozporządzeniem (UE) nr 1169/2011',
+        questionsTitle: 'Masz pytania?',
+        questionsText: 'Nasz personel chętnie udzieli szczegółowych informacji o składnikach każdego dania i pomoże dokonać wyboru zgodnie z Twoimi potrzebami żywieniowymi.',
+        digitalMenu: 'Menu cyfrowe',
+        legalTitle: 'LISTA ALERGENÓW',
+        legalText: 'Poniżej znajduje się lista alergenów używanych w tym lokalu, które zgodnie z przepisami muszą być wskazane, aby nasi goście byli właściwie poinformowani.',
+        regulationTitle: 'ROZPORZĄDZENIE (UE) NR 1169/2011',
+        frozenAtSource: 'W przypadku braku świeżego produktu niektóre produkty w naszym menu pochodzą z zamrożenia dokonanego u źródła.',
+        blastChilled: 'W przypadku braku świeżego produktu niektóre produkty w naszym menu są zamrażane na miejscu metodą szybkiego schładzania.',
+        contactText: 'Zgodnie z art. 9 rozporządzenia Parlamentu Europejskiego i Rady (UE) nr 1169/2011 z dnia 25 października 2011 r. informacje o składnikach alergennych można uzyskać u personelu.',
+        coverCharge: 'Opłata za nakrycie',
+        metaDescription: (name) => `Lista alergenów i informacje prawne: ${name}.`,
+    },
+    pt: {
+        menu: 'Menu',
+        allergens: 'Alergénios',
+        title: 'Alergénios e intolerâncias',
+        subtitle: 'A sua segurança é a nossa prioridade. Consulte a lista completa dos alergénios presentes nos nossos pratos.',
+        tabList: '📋 Lista de alergénios',
+        tabLegal: '📄 Informação legal',
+        listTitle: 'Os 14 principais alergénios',
+        listSubtitle: 'De acordo com o Regulamento (UE) n.º 1169/2011',
+        questionsTitle: 'Tem dúvidas?',
+        questionsText: 'O nosso pessoal está à sua disposição para lhe dar informações detalhadas sobre os ingredientes de cada prato e ajudá-lo a escolher de acordo com as suas necessidades alimentares.',
+        digitalMenu: 'Menu digital',
+        legalTitle: 'LISTA DE ALERGÉNIOS',
+        legalText: 'Apresentamos a lista dos alergénios utilizados neste estabelecimento cuja indicação é obrigatória, para a correta informação dos nossos clientes.',
+        regulationTitle: 'REGULAMENTO (UE) N.º 1169/2011',
+        frozenAtSource: 'Na falta de produto fresco, alguns produtos do nosso menu são congelados na origem.',
+        blastChilled: 'Na falta de produto fresco, alguns produtos do nosso menu são congelados no local por abatimento rápido de temperatura.',
+        contactText: 'Nos termos do artigo 9.º do Regulamento (UE) n.º 1169/2011 do Parlamento Europeu e do Conselho, de 25 de outubro de 2011, a informação sobre os ingredientes alergénicos está disponível junto do nosso pessoal.',
+        coverCharge: 'Couvert',
+        metaDescription: (name) => `Lista de alergénios e informação legal de ${name}.`,
     },
 };

@@ -1,6 +1,6 @@
 /**
  * Menu Pubblico: dati, pagina e metadati condivisi da /{slug} (italiano) e /{slug}/{lingua}
- * (inglese, francese, tedesco, spagnolo: traduzioni salvate nel database, migrazione 039).
+ * (inglese, francese, tedesco, spagnolo, polacco, portoghese: traduzioni salvate nel database, migrazione 039).
  *
  * Esempio: /magnaromatrattoria, /magnaromatrattoria/en
  */
@@ -283,6 +283,14 @@ const META_TEXT: Record<MenuLang, { title: string; description: (name: string, c
     title: 'Menú digital',
     description: (name, city) => `El menú de ${name}${city ? ` en ${city}` : ''}: platos, precios y alérgenos, siempre actualizados.`,
   },
+  pl: {
+    title: 'Menu cyfrowe',
+    description: (name, city) => `Menu restauracji ${name}${city ? ` (${city})` : ''}: dania, ceny i alergeny, zawsze aktualne.`,
+  },
+  pt: {
+    title: 'Menu digital',
+    description: (name, city) => `O menu de ${name}${city ? ` em ${city}` : ''}: pratos, preços e alergénios, sempre atualizados.`,
+  },
 };
 
 export async function buildMenuMetadata(slug: string, lang: MenuLang) {
@@ -338,7 +346,7 @@ export async function buildMenuMetadata(slug: string, lang: MenuLang) {
       description,
       url: pageUrl,
       type: 'website',
-      locale: { it: 'it_IT', en: 'en_GB', fr: 'fr_FR', de: 'de_DE', es: 'es_ES' }[lang],
+      locale: { it: 'it_IT', en: 'en_GB', fr: 'fr_FR', de: 'de_DE', es: 'es_ES', pl: 'pl_PL', pt: 'pt_PT' }[lang],
       // Immagine di anteprima: ./opengraph-image.tsx (logo, nome e colori del locale, 1200×630)
     },
     // PWA del ristorante: Chrome propone di installare il menu come app del locale
