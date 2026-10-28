@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
-import { prepareImageForUpload, uploadExtension } from '@/lib/image-upload';
+import { uploadDishPhoto } from '@/lib/image-upload';
+import { dishThumbPath } from '@/lib/dish-thumbs';
 export async function fetchPhotos(tenantId: string | undefined) {
     if (!tenantId) return [];
     const supabase = createClient();
@@ -52,16 +53,9 @@ export function useUploadPhoto() {
         mutationFn: async ({ tenantId, file }: { tenantId: string, file: File }) => {
             const supabase = createClient();
 
-            // Ridimensionata e convertita in WebP: niente originali pesanti su Supabase
-            const fileToUpload = await prepareImageForUpload(file, 'dish');
-            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${uploadExtension(fileToUpload)}`;
-            const filePath = `${tenantId}/dishes/${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from('dishes')
-                .upload(filePath, fileToUpload, { contentType: fileToUpload.type });
-
-            if (uploadError) throw uploadError;
+            // Ridimensionata e convertita in WebP, con la miniatura per il menu pubblico
+            const baseName = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
+            await uploadDishPhoto(supabase, `${tenantId}/dishes`, baseName, file);
             return true;
         },
         onSuccess: (_, variables) => {
@@ -81,7 +75,12 @@ export function useDeletePhotos() {
     return useMutation({
         mutationFn: async ({ tenantId, photoNames }: { tenantId: string, photoNames: string[] }) => {
             const supabase = createClient();
-            const filePaths = photoNames.map(name => `${tenantId}/dishes/${name}`);
+            // Insieme alle foto se ne vanno le loro miniature
+            const filePaths = photoNames.flatMap(name => {
+                const photoPath = `${tenantId}/dishes/${name}`;
+                const thumbPath = dishThumbPath(photoPath);
+                return thumbPath ? [photoPath, thumbPath] : [photoPath];
+            });
 
             const { error } = await supabase.storage
                 .from('dishes')

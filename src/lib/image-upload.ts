@@ -1,10 +1,12 @@
 import imageCompression from 'browser-image-compression';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { dishThumbPath } from '@/lib/dish-thumbs';
 
 // Regole uniche per le immagini caricate dai ristoratori: il menu pubblico non deve mai
 // ricevere file sovradimensionati. `maxBytes` e `types` coincidono con `file_size_limit` e
 // `allowed_mime_types` dei bucket Supabase (supabase/migrations/038_storage_upload_limits.sql):
 // se il browser non riesce a rispettarli il caricamento si blocca, Supabase rifiuterebbe il file.
-export type UploadImageKind = 'dish' | 'logo';
+export type UploadImageKind = 'dish' | 'dishThumb' | 'logo';
 
 interface Rule {
   maxSide: number;
@@ -17,6 +19,9 @@ interface Rule {
 const RULES: Record<UploadImageKind, Rule> = {
   // Foto dei piatti: card larghe al massimo ~500 px (1200 px su schermi 3x)
   dish: { maxSide: 1600, targetMB: 0.3, maxBytes: 500 * 1024, types: ['image/webp', 'image/jpeg'] },
+  // Miniatura servita al menu pubblico direttamente da Supabase (src/lib/dish-thumbs.ts):
+  // card larghe ~400 px sui telefoni e ~600 px sugli schermi grandi
+  dishThumb: { maxSide: 960, targetMB: 0.08, maxBytes: 150 * 1024, types: ['image/webp', 'image/jpeg'] },
   // Logo: mostrato a 56-64 px di altezza. PNG e non WebP: le icone dell'app del locale
   // (src/app/[slug]/app-icon) sono disegnate da next/og, che non legge il WebP
   logo: { maxSide: 600, targetMB: 0.1, maxBytes: 200 * 1024, types: ['image/png'] },
@@ -78,4 +83,39 @@ export async function prepareImageForUpload(file: File, kind: UploadImageKind): 
 // Estensione del file preparato da prepareImageForUpload, per costruire il percorso su Supabase
 export function uploadExtension(file: File) {
   return EXTENSIONS[file.type] ?? 'webp';
+}
+
+// I nomi dei file non si riusano mai (vedi CLAUDE.md): la cache del CDN di Supabase può durare un anno
+const UPLOAD_CACHE_CONTROL = '31536000';
+
+/**
+ * Carica una foto di un piatto nel bucket `dishes` (`<folder>/<baseName>.<ext>`) insieme alla sua
+ * miniatura in `thumbs/`. Prima la miniatura: una foto senza miniatura nel menu pubblico non deve
+ * esistere, quindi se la foto non si carica la miniatura viene tolta. Restituisce il percorso della foto.
+ */
+export async function uploadDishPhoto(supabase: SupabaseClient, folder: string, baseName: string, source: File) {
+  const [photo, thumb] = await Promise.all([
+    prepareImageForUpload(source, 'dish'),
+    prepareImageForUpload(source, 'dishThumb'),
+  ]);
+  const photoPath = `${folder}/${baseName}.${uploadExtension(photo)}`;
+  const thumbPath = dishThumbPath(photoPath);
+  if (!thumbPath) throw new Error(`Percorso foto non valido: ${photoPath}`);
+
+  const bucket = supabase.storage.from('dishes');
+  const { error: thumbError } = await bucket.upload(thumbPath, thumb, {
+    contentType: thumb.type,
+    cacheControl: UPLOAD_CACHE_CONTROL,
+  });
+  if (thumbError) throw thumbError;
+
+  const { error: photoError } = await bucket.upload(photoPath, photo, {
+    contentType: photo.type,
+    cacheControl: UPLOAD_CACHE_CONTROL,
+  });
+  if (photoError) {
+    await bucket.remove([thumbPath]);
+    throw photoError;
+  }
+  return photoPath;
 }

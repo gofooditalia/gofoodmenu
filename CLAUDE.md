@@ -85,6 +85,13 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Se l'ottimizzazione fallisce il caricamento si blocca: mai caricare l'originale. Barriera lato server:
   `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
+- **Miniature delle foto dei piatti** (28/10/2026): il menu pubblico scarica `<tenant>/thumbs/<file>` direttamente da
+  Supabase (`dishThumbUrl` in `src/lib/dish-thumbs.ts`, `unoptimized` in `DishCard`), non da `/_next/image`: le foto
+  erano il 70 % delle richieste CDN di Vercel. Miniatura max 960 px / 150 KB in WebP, creata al caricamento insieme
+  alla foto da `uploadDishPhoto` (`src/lib/image-upload.ts`, unico punto per le foto dei piatti) e cancellata con lei.
+  Se manca, `DishCard` torna alla foto ottimizzata da next/image. Foto già caricate: `scripts/make-dish-thumbs.mjs`
+  (prova senza `--apply`), da rilanciare dopo ogni `recompress-images.mjs`. Loghi e foto fuori da Supabase restano su
+  next/image.
 - **Temi e Design Studio** (21/10/2026, PR #48–#51): i preset del Design Studio sono solo due,
   `trattoria-classica` e `moderno-scuro` (`THEME_PRESETS` in `src/lib/theme-engine/presets.ts`), completi in ogni
   colore e con contrasti WCAG AA verificati. I 10 preset vecchi restano in `LEGACY_PRESETS`, fuori dal Design

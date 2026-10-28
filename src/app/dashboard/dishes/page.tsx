@@ -31,7 +31,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Loader2, Plus, GripVertical, Trash2, Edit, Image as ImageIcon, Check } from 'lucide-react';
-import { prepareImageForUpload, uploadExtension } from '@/lib/image-upload';
+import { uploadDishPhoto } from '@/lib/image-upload';
+import { dishThumbPath } from '@/lib/dish-thumbs';
 
 // Shadcn Imports
 import { Button } from '@/components/ui/button';
@@ -472,20 +473,8 @@ export default function DishesPage() {
     // NEW LOGIC: Use ONLY tenantId for folder name
     const folderName = `${tenantId}/dishes`;
 
-    // Ridimensionata e convertita in WebP: niente originali pesanti su Supabase
-    const fileToUpload = await prepareImageForUpload(file, 'dish');
-    const fileName = `${Math.random().toString(36).substring(2)}.${uploadExtension(fileToUpload)}`;
-    const filePath = `${folderName}/${fileName}`;
-
-    console.log('[DishesPage] Uploading to:', filePath);
-
-    const { error: uploadError } = await supabase.storage
-      .from('dishes')
-      .upload(filePath, fileToUpload, { contentType: fileToUpload.type });
-
-    if (uploadError) {
-      throw uploadError;
-    }
+    // Ridimensionata e convertita in WebP, con la miniatura per il menu pubblico
+    const filePath = await uploadDishPhoto(supabase, folderName, Math.random().toString(36).substring(2), file);
 
     const { data: { publicUrl } } = supabase.storage
       .from('dishes')
@@ -517,9 +506,11 @@ export default function DishesPage() {
 
       console.log('[DishesPage] Deleting image:', filePath);
 
+      // Insieme alla foto se ne va la sua miniatura
+      const thumbPath = dishThumbPath(filePath);
       const { error } = await supabase.storage
         .from('dishes')
-        .remove([filePath]);
+        .remove(thumbPath ? [filePath, thumbPath] : [filePath]);
 
       if (error) {
         console.error('Error deleting image:', error);
