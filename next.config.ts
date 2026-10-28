@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Vecchio menu di Magna Roma (primo progetto, prima del SaaS): l'indirizzo è ancora nei QR e nei link
+  // salvati, quindi qualsiasi pagina porta al menu attuale
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'magnaroma-table-menu.vercel.app' }],
+        destination: 'https://gofoodmenu.it/magnaromatrattoria',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     // Le foto caricate prendono sempre un nome nuovo (usePhotos, dishes, logo),
     // quindi la cache lunga è sicura: evita di ritrasformarle ogni 4 ore (default Next 16).
