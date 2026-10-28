@@ -90,6 +90,14 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (`public.storage_owns_folder`). I bucket sono pubblici: la lettura dagli indirizzi `/object/public/` non passa dalle
   regole. Ogni nuovo punto di caricamento deve scrivere sotto `<tenant_id>/`. Il bucket `Go Food` (landing) usa ancora
   cartelle per slug.
+- **Dati pubblici dei locali** (PR #96, migrazioni 043–044 applicate il 28/10/2026): chi non ha fatto il login legge da
+  `tenants` solo `PUBLIC_TENANT_COLUMNS` (`src/lib/public-tenant.ts`: nome, slug, logo, `footer_data`, coperto, valuta,
+  paese, lingue, traduzioni); un utente autenticato legge per intero solo i propri locali. Email, proprietario, piano,
+  stato dell'abbonamento e date sono riservati. Le pagine pubbliche leggono il locale con `getPublicTenant` (mai
+  `select('*')` con il client pubblico: darebbe "permesso negato") e sanno se il menu è pubblico da `menu_public`
+  (funzione `is_menu_public`); sitemap da `public_menu_tenants()`, slug libero da `is_slug_taken()`, email del locale
+  per le notifiche con `getTenantContactEmail` (chiave service role, solo server). Una nuova colonna pubblica va
+  aggiunta sia a `PUBLIC_TENANT_COLUMNS` sia ai permessi di `anon` (nuova migrazione).
 - **Miniature delle foto dei piatti** (28/10/2026): il menu pubblico scarica `<tenant>/thumbs/<file>` direttamente da
   Supabase (`dishThumbUrl` in `src/lib/dish-thumbs.ts`, `unoptimized` in `DishCard`), non da `/_next/image`: le foto
   erano il 70 % delle richieste CDN di Vercel. Miniatura max 960 px / 150 KB in WebP, creata al caricamento insieme
@@ -145,7 +153,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - **Pagamenti non riusciti** (27/10/2026, migrazione 040): con `past_due`/`unpaid` il menu resta visibile per
   `MENU_GRACE_DAYS` giorni (default 7) fino a `tenants.grace_until`, che il webhook imposta al primo pagamento non
   riuscito e non sposta più; al pagamento riuscito torna NULL. Regola unica `isMenuPublic` in
-  `src/lib/menu-visibility.ts` (menu, lingue, allergeni, `/info`, sitemap). Locale esistente ma senza menu pubblico
+  `src/lib/menu-visibility.ts`, con la copia SQL `is_menu_public` (migrazione 043) usata dalle pagine pubbliche
+  (menu, lingue, allergeni, `/info`, sitemap): le due vanno cambiate insieme. Locale esistente ma senza menu pubblico
   (sospeso, disdetto, free): pagina neutra `MenuUnavailable` (noindex, "chiedi al personale", riga in inglese), non
   più 404. Cron Vercel `/api/cron/billing-grace` alle 5 UTC (`vercel.json`, richiede `CRON_SECRET`): sospende alla
   scadenza (ore 4 UTC, mai durante il servizio) e manda le email al ristoratore con copia ad `ADMIN_EMAILS`
@@ -265,7 +274,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - **Prenotazione tavoli** (da decidere entro aprile 2027): soluzione interna o servizio esterno.
   Base esistente: modulo prenotazioni in-house (~2.200 righe: `/prenota/[slug]`, `/dashboard/reservations`,
   `src/components/reservations/`, `src/app/actions/reservation-actions.ts`, tabelle `reservation_*` e
-  `reservations`, migrazioni 032–035), attivo solo su Villa Pensabene.
+  `reservations`, migrazioni 032–035), iniziato a inizio 2026 e mai completato: non è offerto ai locali (le ultime
+  prenotazioni nel database sono prove di gennaio 2026 su Villa Pensabene).
   Mancano: disponibilità per fascia senza doppie prenotazioni, notifiche affidabili (push/WhatsApp), conferma,
   promemoria e annullamento via link, chiusure/ferie, widget per i siti dei clienti, privacy, test.
   Primo passo: controllo tecnico del modulo esistente con stima del lavoro.
