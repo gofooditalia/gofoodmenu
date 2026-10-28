@@ -85,6 +85,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Se l'ottimizzazione fallisce il caricamento si blocca: mai caricare l'originale. Barriera lato server:
   `file_size_limit` e `allowed_mime_types` dei bucket `dishes` e `logos` (migrazione 038), da tenere
   allineati ai valori del codice. Nuovi punti di caricamento devono usare la stessa funzione.
+- **Permessi sui file** (migrazione 042, applicata il 28/10/2026): nei bucket `dishes` e `logos` un utente può
+  elencare, caricare, modificare e cancellare solo nella cartella `<tenant_id>/` del proprio locale
+  (`public.storage_owns_folder`). I bucket sono pubblici: la lettura dagli indirizzi `/object/public/` non passa dalle
+  regole. Ogni nuovo punto di caricamento deve scrivere sotto `<tenant_id>/`. Il bucket `Go Food` (landing) usa ancora
+  cartelle per slug.
 - **Miniature delle foto dei piatti** (28/10/2026): il menu pubblico scarica `<tenant>/thumbs/<file>` direttamente da
   Supabase (`dishThumbUrl` in `src/lib/dish-thumbs.ts`, `unoptimized` in `DishCard`), non da `/_next/image`: le foto
   erano il 70 % delle richieste CDN di Vercel. Miniatura max 960 px / 150 KB in WebP, creata al caricamento insieme
