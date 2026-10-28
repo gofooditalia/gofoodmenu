@@ -10,6 +10,7 @@ import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
 import { Leaf, Home, Snowflake } from 'lucide-react';
 import { useMenuLang, useMenuStrings } from '@/lib/menu-i18n';
 import { menuLangPath } from '@/lib/menu-languages';
+import { dishThumbUrl } from '@/lib/dish-thumbs';
 
 interface DishCardProps {
   dish: Dish & {
@@ -46,6 +47,12 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
   const isLegacyPlaceholder = dish.image?.includes('icon.svg') || dish.image?.includes('favicon.svg');
   const showPlaceholder = !dish.image || imageError || isLegacyPlaceholder;
 
+  // Foto su Supabase: miniatura scaricata direttamente, senza /_next/image. Se manca si torna alla foto
+  // ottimizzata da Vercel (foto caricate prima delle miniature o fuori da Supabase)
+  const thumbUrl = dishThumbUrl(dish.image);
+  const [thumbError, setThumbError] = useState(false);
+  const useThumb = !showPlaceholder && !!thumbUrl && !thumbError;
+
   return (
     <div className={`bg-[var(--tenant-surface,#FFFFFF)] rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${isDisabled
       ? 'opacity-50 pointer-events-none'
@@ -68,7 +75,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
           </div>
         ) : (
           <Image
-            src={showPlaceholder ? placeholderImage : dish.image!}
+            src={showPlaceholder ? placeholderImage : useThumb ? thumbUrl! : dish.image!}
             alt={dish.name}
             fill
             sizes="(max-width: 767px) calc(100vw - 32px), (max-width: 1023px) 50vw, 33vw"
@@ -76,8 +83,9 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
                 ${showPlaceholder ? 'object-contain p-12 opacity-40 grayscale' : 'object-cover opacity-100'} 
                 hover:scale-105 transition-transform duration-500
               `}
+            unoptimized={useThumb}
             preload={priority}
-            onError={() => setImageError(true)}
+            onError={() => (useThumb ? setThumbError(true) : setImageError(true))}
           />
         )}
         {/* Price badge */}
