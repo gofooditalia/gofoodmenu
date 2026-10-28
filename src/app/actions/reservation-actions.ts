@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getTenantContactEmail } from "@/lib/public-tenant";
 import { Resend } from "resend";
 import NewReservationEmail from "@/components/emails/NewReservationEmail";
 import ReservationStatusEmail from "@/components/emails/ReservationStatusEmail";
@@ -49,14 +50,8 @@ export async function submitReservation(formData: {
         return { success: false, error: "Database error" };
     }
 
-    // 2. Fetch Tenant Contact Email for Notifications
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: tenantData } = await (supabase.from('tenants') as any)
-        .select('contact_email')
-        .eq('id', formData.tenantId)
-        .single();
-
-    const ownerEmail = tenantData?.contact_email;
+    // 2. Fetch Tenant Contact Email for Notifications (riservata: chi prenota non può leggerla)
+    const ownerEmail = await getTenantContactEmail(formData.tenantId);
 
     if (ownerEmail) {
         // 3. Send Email to Owner

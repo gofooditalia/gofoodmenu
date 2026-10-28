@@ -12,18 +12,16 @@ export function useCheckSlug(slug: string | null, currentSlug?: string | null) {
             const problem = slugProblem(slug);
             if (problem) return { available: false, error: problem };
 
-            const supabase = createClient();
-            const { data } = await supabase
-                .from('tenants')
-                .select('slug')
-                .eq('slug', slug)
-                // If checking against own slug (update scenarios), we might want to allow it
-                // but typically we check availability of *other* slugs.
-                // For onboarding, we don't have a "currentSlug" usually, or it's empty.
-                .neq('slug', currentSlug || '')
-                .maybeSingle();
+            // Lo slug attuale del locale (modifiche) resta suo
+            if (currentSlug && slug === currentSlug) return { available: true };
 
-            return { available: !data };
+            // Funzione del database (migrazione 043): risponde solo libero/occupato, senza leggere gli altri locali
+            const supabase = createClient();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { data, error } = await (supabase as any).rpc('is_slug_taken', { p_slug: slug });
+            if (error) throw error;
+
+            return { available: data !== true };
         },
         enabled: !!slug && slug.length >= SLUG_MIN_LENGTH,
         staleTime: 1000 * 60, // 1 minute cache

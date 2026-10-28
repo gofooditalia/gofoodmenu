@@ -7,12 +7,12 @@
 
 import { notFound } from 'next/navigation';
 import { createPublicClient } from '@/lib/supabase/public';
+import { getPublicTenant } from '@/lib/public-tenant';
 import type { Tenant } from '@/types/menu';
 import MenuPageClient from './MenuPageClient';
 import { SITE_URL } from '@/lib/site';
 import { getTenantPwaData } from '@/lib/tenant-pwa';
 import { isTranslatedLang, menuLangTag, TRANSLATED_LANGS, type MenuLang, type TranslatedLang } from '@/lib/menu-languages';
-import { isMenuPublic } from '@/lib/menu-visibility';
 import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
 
 type TextPair = { name: string; description: string };
@@ -73,14 +73,9 @@ interface DbDishAllergen {
 export async function getMenuData(slug: string, lang: MenuLang = 'it') {
   const supabase = createPublicClient();
 
-  // 1. Fetch tenant
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: tenant, error: tenantError } = await (supabase.from('tenants') as any)
-    .select('*, tenant_locations(*)')
-    .eq('slug', slug)
-    .single();
-
-  if (tenantError || !tenant) {
+  // 1. Fetch tenant: colonne pubbliche più lo stato dell'abbonamento letto sul server (src/lib/public-tenant.ts)
+  const tenant = await getPublicTenant(slug, 'tenant_locations(*)');
+  if (!tenant) {
     return null;
   }
 
@@ -91,7 +86,7 @@ export async function getMenuData(slug: string, lang: MenuLang = 'it') {
 
   // Piano free, abbonamento sospeso o disdetto: niente menu (con pagamento non riuscito resta visibile
   // durante la tolleranza, src/lib/menu-visibility.ts)
-  if (!isMenuPublic(tenant)) {
+  if (!tenant.menu_public) {
     return {
       unavailable: {
         name: (tenant.footer_data?.public_name || tenant.restaurant_name) as string,
@@ -302,14 +297,7 @@ const META_TEXT: Record<MenuLang, { title: string; description: (name: string, c
 };
 
 export async function buildMenuMetadata(slug: string, lang: MenuLang) {
-  const supabase = createPublicClient();
-
-  // '*' e non l'elenco delle colonne: prima della migrazione 039 menu_languages non esiste
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: tenant } = await (supabase.from('tenants') as any)
-    .select('*, tenant_locations(city)')
-    .eq('slug', slug)
-    .single();
+  const tenant = await getPublicTenant(slug, 'tenant_locations(city)');
 
   if (!tenant || (lang !== 'it' && !tenantLanguages(tenant).includes(lang))) {
     return {
@@ -317,7 +305,7 @@ export async function buildMenuMetadata(slug: string, lang: MenuLang) {
     };
   }
 
-  if (!isMenuPublic(tenant)) {
+  if (!tenant.menu_public) {
     return menuUnavailableMetadata(tenant.footer_data?.public_name || tenant.restaurant_name);
   }
 
