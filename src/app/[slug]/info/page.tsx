@@ -6,9 +6,9 @@
 
 import { notFound } from 'next/navigation';
 import { createPublicClient } from '@/lib/supabase/public';
+import { getPublicTenant } from '@/lib/public-tenant';
 import { SITE_URL } from '@/lib/site';
 import { hasInfoPage } from '@/lib/tenant-info';
-import { isMenuPublic } from '@/lib/menu-visibility';
 import MenuUnavailable, { menuUnavailableMetadata } from '../MenuUnavailable';
 import type { FooterSocial, TenantLocationDB } from '@/types/menu';
 import InfoPageClient, { type InfoLocation } from './InfoPageClient';
@@ -29,19 +29,14 @@ async function getInfoData(slug: string) {
   if (!hasInfoPage(slug)) return null;
   const supabase = createPublicClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: tenant, error } = await (supabase.from('tenants') as any)
-    .select('*, tenant_locations(*)')
-    .eq('slug', slug)
-    .single();
-
-  if (error || !tenant) {
+  const tenant = await getPublicTenant(slug, 'tenant_locations(*)');
+  if (!tenant) {
     return null;
   }
 
   const footer = tenant.footer_data || {};
   // Come il menu: senza abbonamento attivo (o fuori dalla tolleranza) si mostra la pagina neutra
-  if (!isMenuPublic(tenant)) {
+  if (!tenant.menu_public) {
     return {
       unavailable: true as const,
       name: (footer.public_name || tenant.restaurant_name) as string,

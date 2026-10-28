@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
+import { PUBLIC_TENANT_COLUMNS } from '@/lib/public-tenant';
 import { ReservationPageClient } from '@/components/reservations/ReservationPageClient';
 import { ReservationConfig, ReservationSettings, TableConfig, ReservationShift } from '@/components/reservations/types';
 import { Tenant } from '@/types/menu';
@@ -10,7 +11,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
     const { slug } = await params;
-    const supabase = await createClient();
+    const supabase = createPublicClient();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: tenant } = await (supabase.from('tenants') as any)
@@ -33,12 +34,12 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function ReservationPage({ params }: PageProps) {
     const { slug } = await params;
-    const supabase = await createClient();
+    const supabase = createPublicClient();
 
     // 1. Fetch Tenant
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: tenant } = await (supabase.from('tenants') as any)
-        .select('*')
+        .select(PUBLIC_TENANT_COLUMNS)
         .eq('slug', slug)
         .single();
 

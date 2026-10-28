@@ -2,6 +2,8 @@
  * Quando il menu pubblico di un locale è visibile (menu, lingue, allergeni, /info, sitemap).
  * Abbonamento premium attivo, oppure pagamento non riuscito ma ancora nel periodo di tolleranza
  * (tenants.grace_until, migrazione 040). Negli altri casi le pagine mostrano MenuUnavailable.
+ * Le pagine pubbliche usano la copia SQL di questa regola, is_menu_public (migrazione 043), perché
+ * chi non ha fatto il login non legge più piano e abbonamento: le due vanno cambiate insieme.
  */
 
 export interface MenuVisibilityFields {

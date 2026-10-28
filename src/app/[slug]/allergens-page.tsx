@@ -5,9 +5,8 @@
  */
 
 import { notFound } from 'next/navigation';
-import { createPublicClient } from '@/lib/supabase/public';
+import { getPublicTenant } from '@/lib/public-tenant';
 import { SITE_URL } from '@/lib/site';
-import { isMenuPublic } from '@/lib/menu-visibility';
 import { ALLERGEN_PAGE } from '@/lib/allergens-i18n';
 import { menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import { getMenuData, tenantLanguages } from './menu-page';
@@ -37,14 +36,7 @@ export async function AllergensPage({ slug, lang }: { slug: string; lang: MenuLa
 }
 
 export async function buildAllergensMetadata(slug: string, lang: MenuLang) {
-  const supabase = createPublicClient();
-
-  // '*': menu_languages (039) e grace_until (040) non sono ancora nei tipi generati
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: tenant } = await (supabase.from('tenants') as any)
-    .select('*')
-    .eq('slug', slug)
-    .single();
+  const tenant = await getPublicTenant(slug);
 
   const translated = tenant ? tenantLanguages(tenant) : [];
   if (!tenant || (lang !== 'it' && !translated.includes(lang))) {
@@ -52,7 +44,7 @@ export async function buildAllergensMetadata(slug: string, lang: MenuLang) {
   }
 
   const name = (tenant.footer_data?.public_name || tenant.restaurant_name) as string;
-  if (!isMenuPublic(tenant)) {
+  if (!tenant.menu_public) {
     return menuUnavailableMetadata(name);
   }
 
