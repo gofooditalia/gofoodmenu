@@ -2,6 +2,10 @@
 import { MetadataRoute } from 'next';
 import { getPublicMenuTenants } from '@/lib/public-tenant';
 
+// Rigenerata ogni ora: senza cookie Next la renderebbe statica al deploy (nuovi locali, lingue attivate e
+// menu sospesi non comparirebbero fino al deploy successivo)
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://gofoodmenu.it';
 
