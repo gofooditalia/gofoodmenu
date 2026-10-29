@@ -14,9 +14,10 @@
 import OpenAI from 'openai';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { SITE_URL } from '@/lib/site';
+import { AI_MODELS, reasoningFor } from '@/lib/ai-models';
 import { isTranslatedLang, type TranslatedLang } from '@/lib/menu-languages';
 
-const DEFAULT_MODEL = 'google/gemini-2.5-flash';
+const DEFAULT_MODEL = AI_MODELS.translate;
 // Voci × lingue per chiamata: abbastanza poche da non superare la risposta massima del modello
 // (25 voci con 4 lingue, 16 con 6)
 const MAX_PAIRS_PER_CALL = 100;
@@ -185,15 +186,17 @@ function readPair(value: unknown): TextPair | null {
 async function translateBatch(items: Item[]): Promise<Map<string, Translations>> {
     const langs = items[0].langs;
     const payload = Object.fromEntries(items.map((i) => [i.key, { name: i.name, description: i.description }]));
+    const model = process.env.OPENROUTER_TRANSLATE_MODEL || DEFAULT_MODEL;
     const completion = await getOpenAI().chat.completions.create({
-        model: process.env.OPENROUTER_TRANSLATE_MODEL || DEFAULT_MODEL,
+        model,
         messages: [
             { role: 'system', content: systemPrompt(langs) },
             { role: 'user', content: JSON.stringify({ items: payload }) },
         ],
         temperature: 0.2,
         response_format: { type: 'json_object' },
-    });
+        reasoning: reasoningFor(model),
+    } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: ReturnType<typeof reasoningFor> });
 
     const raw = completion.choices[0]?.message?.content ?? '';
     const parsed = JSON.parse(raw) as { items?: Record<string, Record<string, unknown>> };

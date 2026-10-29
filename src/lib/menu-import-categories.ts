@@ -24,13 +24,17 @@ export function categorySlug(name: string): string {
     return name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-/** "PRIMI PIATTI" → "Primi piatti"; i nomi già scritti in minuscolo/maiuscolo misto restano come sono. */
+/**
+ * "PRIMI PIATTI" → "Primi piatti", anche con una nota in minuscolo ("PANINI SEMPLICI (pane tipo francesina)");
+ * i nomi scritti in maiuscolo e minuscolo normali restano come sono.
+ */
 export function cleanSectionName(raw: string): string {
     const name = raw.replace(/\s+/g, ' ').trim();
-    if (name && name === name.toUpperCase() && /[A-ZÀ-Ý]/.test(name)) {
-        return name.charAt(0) + name.slice(1).toLowerCase();
-    }
-    return name;
+    const isCaps = (w: string) => /[A-ZÀ-Ý]{2,}/.test(w) && w === w.toUpperCase();
+    // Intestazione in maiuscolo: si abbassano le parole in maiuscolo, la nota in minuscolo resta com'è
+    if (!isCaps(name.split(' ')[0] ?? '')) return name;
+    const lowered = name.split(' ').map((w) => (isCaps(w) ? w.toLowerCase() : w)).join(' ');
+    return lowered.charAt(0).toUpperCase() + lowered.slice(1);
 }
 
 /**

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { SITE_URL } from '@/lib/site';
+import { AI_MODELS, reasoningFor } from '@/lib/ai-models';
 import {
     buildReviewReplyPrompt,
     DEFAULT_REVIEW_SETTINGS,
@@ -23,7 +24,7 @@ function getOpenAI() {
     });
 }
 
-const DEFAULT_MODEL = 'google/gemini-2.5-flash';
+const DEFAULT_MODEL = AI_MODELS.review;
 
 // Genera proposte di risposta a una recensione Google con tono, firma e istruzioni del ristorante
 export async function POST(req: NextRequest) {
@@ -65,12 +66,14 @@ export async function POST(req: NextRequest) {
         const settings: ReviewReplySettings = { ...DEFAULT_REVIEW_SETTINGS, ...(saved || {}) };
         const prompt = buildReviewReplyPrompt(tenant.restaurant_name, settings, { text, rating, reviewerName });
 
+        const model = process.env.OPENROUTER_REVIEW_MODEL || DEFAULT_MODEL;
         const completion = await getOpenAI().chat.completions.create({
-            model: process.env.OPENROUTER_REVIEW_MODEL || DEFAULT_MODEL,
+            model,
             messages: [{ role: 'user', content: prompt }],
             response_format: { type: 'json_object' },
             temperature: 0.8,
-        });
+            reasoning: reasoningFor(model),
+        } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: ReturnType<typeof reasoningFor> });
 
         const content = completion.choices[0]?.message?.content || '';
         let replies: string[] = [];

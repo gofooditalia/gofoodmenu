@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { SITE_URL } from '@/lib/site';
+import { AI_MODELS, reasoningFor } from '@/lib/ai-models';
 
 // Client OpenAI (via OpenRouter) creato alla richiesta e non al caricamento del modulo:
 // durante la build la chiave può mancare (es. deploy di anteprima) e il build non deve fallire.
@@ -16,7 +17,7 @@ function getOpenAI() {
     });
 }
 
-const DEFAULT_MODEL = 'google/gemini-2.5-flash';
+const DEFAULT_MODEL = AI_MODELS.import;
 
 export async function POST(req: NextRequest) {
     try {
@@ -62,6 +63,13 @@ ${existing.map((c: any) => `- ${c.name} (ID: ${c.id})`).join('\n')}`
          - **Nome**: esatto come sul menu.
          - **Ingredienti**: tutto il testo descrittivo. NON includere il prezzo. Se c'è solo il prezzo, lascia vuoto.
          - **Prezzo**: numero (usa 0 se manca).
+         - **Formati**: se un prodotto ha più formati o misure con prezzi diversi (es. "cl 20 € 3,00 · cl 40 € 5,00"),
+           crea un elemento per ogni formato, con il formato in fondo al nome (es. "Thwaites Gold Extra cl 20") e il suo prezzo.
+         - **Maiuscole**: i testi scritti tutti in maiuscolo riportali con maiuscole e minuscole normali
+           (es. "PANINO CON SALSICCIA" → "Panino con salsiccia"; nomi propri e marchi con l'iniziale maiuscola).
+         - **Simboli di nota** (es. "*" o "°" davanti al nome, spiegati in una legenda come "*prodotto surgelato"):
+           togli il simbolo dal nome e scrivi la nota in fondo alla descrizione (es. "Prodotto surgelato").
+           Non perdere mai questa informazione.
       3. Restituisci i piatti nello stesso ordine in cui compaiono nel menu.
 
       Restituisci SOLO un oggetto JSON valido con questa struttura esatta:
@@ -92,9 +100,10 @@ ${existing.map((c: any) => `- ${c.name} (ID: ${c.id})`).join('\n')}`
             })),
         ];
 
+        // Modello configurabile da Vercel (OPENROUTER_IMPORT_MODEL); predefinito in src/lib/ai-models.ts
+        const model = process.env.OPENROUTER_IMPORT_MODEL || DEFAULT_MODEL;
         const completion = await getOpenAI().chat.completions.create({
-            // Modello configurabile da Vercel (OPENROUTER_IMPORT_MODEL); predefinito Gemini 2.5 Flash
-            model: process.env.OPENROUTER_IMPORT_MODEL || DEFAULT_MODEL,
+            model,
             messages: [
                 {
                     role: 'user',
@@ -102,9 +111,8 @@ ${existing.map((c: any) => `- ${c.name} (ID: ${c.id})`).join('\n')}`
                 },
             ],
             response_format: { type: 'json_object' },
-            // OpenRouter: disattiva il ragionamento interno, fatturato come token di output
-            reasoning: { enabled: false },
-        } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: { enabled: boolean } });
+            reasoning: reasoningFor(model),
+        } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: ReturnType<typeof reasoningFor> });
 
         const content = completion.choices[0]?.message?.content;
 
