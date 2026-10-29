@@ -16,13 +16,15 @@ import { toast } from 'sonner';
 interface CharacteristicsManagerProps {
     tenantId?: string;
     showIntro?: boolean;
+    // Onboarding: l'elenco dei piatti compare dopo la scansione AI (o se il ristoratore sceglie di fare a mano)
+    listAfterScan?: boolean;
 }
 
 interface CategoryWithDishes extends Category {
     dishes?: Dish[];
 }
 
-export function CharacteristicsManager({ tenantId, showIntro = true }: CharacteristicsManagerProps) {
+export function CharacteristicsManager({ tenantId, showIntro = true, listAfterScan = false }: CharacteristicsManagerProps) {
     const { data: serverCats = [] } = useCategories(tenantId);
     const { data: serverDishes = [] } = useDishes(tenantId);
     const { data: allergens = [] } = useAllergens();
@@ -35,6 +37,7 @@ export function CharacteristicsManager({ tenantId, showIntro = true }: Character
     const [forceRescan, setForceRescan] = useState(false);
     const [aiResults, setAiResults] = useState<Map<string, AllergenResult>>(new Map());
     const [scanStats, setScanStats] = useState<{ analyzed: number, toReview: number } | null>(null);
+    const [manualMode, setManualMode] = useState(false);
 
     // Merge logic
     const categories: CategoryWithDishes[] = useMemo(() => {
@@ -371,7 +374,7 @@ export function CharacteristicsManager({ tenantId, showIntro = true }: Character
                         <AlertDialogDescription className="space-y-4 pt-2 text-left" asChild>
                             <div className="text-sm text-muted-foreground">
                                 <p>
-                                    L'intelligenza artificiale (Gemini) analizzerà <b>{forceRescan ? serverDishes.length : serverDishes.filter(d => !((d.allergen_ids && d.allergen_ids.length > 0) || (d.is_vegetarian || d.is_vegan || d.is_seasonal || d.is_homemade || d.is_frozen))).length} piatti</b> (su {serverDishes.length} totali) per identificare possibili allergeni e glutine.
+                                    L'intelligenza artificiale analizzerà <b>{forceRescan ? serverDishes.length : serverDishes.filter(d => !((d.allergen_ids && d.allergen_ids.length > 0) || (d.is_vegetarian || d.is_vegan || d.is_seasonal || d.is_homemade || d.is_frozen))).length} piatti</b> (su {serverDishes.length} totali) per identificare possibili allergeni e glutine.
                                 </p>
 
                                 <div className="flex items-start space-x-3 p-3 border rounded-md bg-white">
@@ -424,6 +427,17 @@ export function CharacteristicsManager({ tenantId, showIntro = true }: Character
             {categories.length === 0 ? (
                 <div className="text-center py-12 text-gray-400">
                     Nessun piatto trovato. Torna indietro per aggiungere i piatti.
+                </div>
+            ) : listAfterScan && !scanStats && !manualMode && !isScanning && !serverDishes.some(d => d.ai_data) ? (
+                <div className="text-center py-10 px-6 bg-white rounded-xl border-2 border-dashed border-gray-200 space-y-3">
+                    <p className="font-bold text-gray-900">Premi «Scansiona Allergeni AI»</p>
+                    <p className="text-sm text-gray-600 max-w-md mx-auto">
+                        Leggiamo ingredienti e descrizioni dei tuoi {serverDishes.length === 1 ? 'piatto' : `${serverDishes.length} piatti`} e
+                        ti proponiamo gli allergeni. Poi li controlli qui, piatto per piatto.
+                    </p>
+                    <button type="button" onClick={() => setManualMode(true)} className="text-sm font-semibold text-indigo-700 hover:underline">
+                        Preferisco inserirli a mano
+                    </button>
                 </div>
             ) : (
                 <div className="space-y-6">

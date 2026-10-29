@@ -219,45 +219,9 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
         }
     }
 
-    return (
-        <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center md:text-left">
-                <h2 className="text-2xl font-black text-gray-900">Il Tuo Menu 🍔</h2>
-                <p className="mt-2 text-gray-600">
-                    Hai già un menu? Caricalo: leggiamo noi piatti, prezzi e categorie.
-                </p>
-            </div>
-
-            {/* Menu già importato: si va avanti a controllare i piatti; altrimenti l'importazione è la prima scelta */}
-            {tenantId && dishes.length > 0 ? (
-                <div role="status" className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border-2 border-green-200 bg-green-50">
-                    <CheckCircle2 className="w-7 h-7 text-green-600 shrink-0" aria-hidden="true" />
-                    <p className="flex-1 text-sm text-green-900">
-                        <span className="font-bold">Menu importato:</span>{' '}
-                        {categories.length === 1 ? '1 categoria' : `${categories.length} categorie`} e{' '}
-                        {dishes.length === 1 ? '1 piatto' : `${dishes.length} piatti`}. Premi <span className="font-bold">Continua</span> per controllarli.
-                    </p>
-                    <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="shrink-0">
-                        Importa altre pagine
-                    </Button>
-                </div>
-            ) : tenantId && (
-                <Card className="border-2 border-orange-200 bg-orange-50/60 shadow-sm">
-                    <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center gap-4">
-                        <Sparkles className="w-8 h-8 text-orange-500 shrink-0" aria-hidden="true" />
-                        <div className="flex-1">
-                            <p className="font-bold text-gray-900">Carica le foto o il PDF del tuo menu</p>
-                            <p className="text-sm text-gray-600">
-                                Le categorie si creano dalle sezioni del menu, i piatti finiscono già al loro posto. Prima di salvare controlli tutto tu.
-                            </p>
-                        </div>
-                        <Button onClick={() => setImportOpen(true)} className="bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0">
-                            Importa il menu
-                        </Button>
-                    </CardContent>
-                </Card>
-            )}
-
+    // Aggiunta, cancellazione e ordine delle categorie
+    const categoryEditor = (
+        <>
             <p className="text-sm font-semibold text-gray-500">
                 {categories.length > 0 ? 'Le tue categorie (trascinale per cambiare l\'ordine):' : 'Oppure crea le categorie a mano:'}
             </p>
@@ -335,6 +299,58 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
                     </DndContext>
                 )}
             </div>
+
+        </>
+    );
+
+    return (
+        <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="text-center md:text-left">
+                <h2 className="text-2xl font-black text-gray-900">Il Tuo Menu 🍔</h2>
+                <p className="mt-2 text-gray-600">
+                    Hai già un menu? Caricalo: leggiamo noi piatti, prezzi e categorie.
+                </p>
+            </div>
+
+            {/* Menu già importato: si va avanti a controllare i piatti; altrimenti l'importazione è la prima scelta */}
+            {tenantId && dishes.length > 0 ? (
+                <div role="status" className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border-2 border-green-200 bg-green-50">
+                    <CheckCircle2 className="w-7 h-7 text-green-600 shrink-0" aria-hidden="true" />
+                    <p className="flex-1 text-sm text-green-900">
+                        <span className="font-bold">Menu importato:</span>{' '}
+                        {categories.length === 1 ? '1 categoria' : `${categories.length} categorie`} e{' '}
+                        {dishes.length === 1 ? '1 piatto' : `${dishes.length} piatti`}. Premi <span className="font-bold">Continua</span> per controllarli.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="shrink-0">
+                        Importa altre pagine
+                    </Button>
+                </div>
+            ) : tenantId && (
+                <Card className="border-2 border-orange-200 bg-orange-50/60 shadow-sm">
+                    <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+                        <Sparkles className="w-8 h-8 text-orange-500 shrink-0" aria-hidden="true" />
+                        <div className="flex-1">
+                            <p className="font-bold text-gray-900">Carica le foto o il PDF del tuo menu</p>
+                            <p className="text-sm text-gray-600">
+                                Le categorie si creano dalle sezioni del menu, i piatti finiscono già al loro posto. Prima di salvare controlli tutto tu.
+                            </p>
+                        </div>
+                        <Button onClick={() => setImportOpen(true)} className="bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0">
+                            Importa il menu
+                        </Button>
+                    </CardContent>
+                </Card>
+            )}
+
+            {/* Con il menu importato la gestione delle categorie resta a portata di mano ma chiusa */}
+            {dishes.length > 0 ? (
+                <details className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+                    <summary className="cursor-pointer text-sm font-semibold text-gray-700">
+                        Aggiungi, togli o riordina le categorie
+                    </summary>
+                    <div className="mt-4 space-y-6">{categoryEditor}</div>
+                </details>
+            ) : categoryEditor}
 
             {tenantId && (
                 <MenuImportModal

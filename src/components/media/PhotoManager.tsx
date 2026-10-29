@@ -42,13 +42,15 @@ interface PhotoManagerProps {
     tenantId: string;
     onValidationChange?: (isValid: boolean) => void;
     highlightUnassigned?: boolean;
+    // Onboarding: l'elenco dei piatti compare solo dopo aver caricato almeno una foto
+    listOnlyWithPhotos?: boolean;
 }
 
 interface CategoryWithDishes extends Category {
     dishes: Dish[];
 }
 
-export default function PhotoManager({ tenantId, onValidationChange, highlightUnassigned = false }: PhotoManagerProps) {
+export default function PhotoManager({ tenantId, onValidationChange, highlightUnassigned = false, listOnlyWithPhotos = false }: PhotoManagerProps) {
     const { data: photos = [], isLoading: photosLoading } = usePhotos(tenantId);
     const { data: serverCats = [], isLoading: catsLoading } = useCategories(tenantId);
     const { data: serverDishes = [], isLoading: dishesLoading } = useDishes(tenantId);
@@ -258,6 +260,7 @@ export default function PhotoManager({ tenantId, onValidationChange, highlightUn
 
 
                 {/* Bottom Section: Dishes List */}
+                {(!listOnlyWithPhotos || photos.length > 0 || serverDishes.some(d => d.image_url)) && (
                 <Card className="border-y md:border border-gray-100 shadow-none md:shadow-sm flex flex-col bg-white rounded-none md:rounded-xl">
                     <div className="p-4 border-b border-gray-100 bg-white z-10">
                         <h2 className="text-xl font-bold text-gray-900">Assegna Foto ai Piatti</h2>
@@ -425,6 +428,7 @@ export default function PhotoManager({ tenantId, onValidationChange, highlightUn
                         </div>
                     </div>
                 </Card>
+                )}
 
             </div>
 

@@ -1,4 +1,4 @@
-import { Zap, NotebookPen, UtensilsCrossed, Palette, CheckCircle, Circle, Image, Tag } from "lucide-react";
+import { Zap, NotebookPen, Palette, CheckCircle, Circle, Image, Tag } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
@@ -9,12 +9,11 @@ interface WizardStepperProps {
 }
 
 const STEPS = [
-    { id: 1, label: "Impostazioni", icon: Zap },
-    { id: 2, label: "Categorie", icon: NotebookPen },
-    { id: 3, label: "Piatti", icon: UtensilsCrossed },
-    { id: 4, label: "Caratteristiche", icon: Tag },
-    { id: 5, label: "Foto", icon: Image },
-    { id: 6, label: "Branding", icon: Palette },
+    { id: 1, label: "Info", icon: Zap },
+    { id: 2, label: "Menu", icon: NotebookPen },
+    { id: 3, label: "Allergeni", icon: Tag },
+    { id: 4, label: "Foto", icon: Image },
+    { id: 5, label: "Branding", icon: Palette },
 ];
 
 export function WizardStepper({ currentStep, totalSteps }: WizardStepperProps) {

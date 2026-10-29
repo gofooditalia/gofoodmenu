@@ -32,6 +32,8 @@ interface StepDishesProps {
     tenantId?: string;
     onUpdate: (updates: any) => void;
     onValidationChange: (isValid: boolean) => void;
+    // Dentro il passaggio "Menu": niente titolo e niente importazione (sono già sopra)
+    embedded?: boolean;
 }
 
 // ... imports
@@ -45,7 +47,7 @@ interface CategoryWithDishes extends Category {
     dishes?: Dish[];
 }
 
-export function StepDishes({ tenantId, onValidationChange }: StepDishesProps) {
+export function StepDishes({ tenantId, onValidationChange, embedded = false }: StepDishesProps) {
     const queryClient = useQueryClient();
     const { data: serverCats = [], isLoading: catsLoading } = useCategories(tenantId);
     const { data: serverDishes = [], isLoading: dishesLoading } = useDishes(tenantId);
@@ -170,6 +172,16 @@ export function StepDishes({ tenantId, onValidationChange }: StepDishesProps) {
 
     return (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+            {embedded ? (
+                <div>
+                    <h3 className="text-lg font-black text-gray-900">I piatti</h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                        {reviewing
+                            ? `${totalDishes === 1 ? '1 piatto' : `${totalDishes} piatti`}. Apri una categoria per correggere nomi, prezzi e descrizioni o aggiungere quello che manca.`
+                            : 'Apri una categoria e aggiungi i suoi piatti.'}
+                    </p>
+                </div>
+            ) : (
             <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
                     <h2 className="text-2xl font-black text-gray-900">{reviewing ? 'Controlla i tuoi piatti 🍝' : 'I Tuoi Piatti 🍝'}</h2>
@@ -189,6 +201,7 @@ export function StepDishes({ tenantId, onValidationChange }: StepDishesProps) {
                     <Sparkles className="w-4 h-4 mr-2" /> {reviewing ? 'Importa altri piatti' : 'Importa con AI'}
                 </Button>
             </div>
+            )}
 
             {loading ? (
                 <div className="flex justify-center p-12">

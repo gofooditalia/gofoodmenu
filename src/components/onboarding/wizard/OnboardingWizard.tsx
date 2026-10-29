@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { WizardStepper } from './WizardStepper';
 import { WizardControls } from './WizardControls';
 import { StepSettings } from './steps/StepSettings';
-import { StepCategories } from './steps/StepCategories';
-import { StepDishes } from './steps/StepDishes';
+import { StepMenu } from './steps/StepMenu';
+import { ONBOARDING_STEPS } from '@/lib/onboarding';
 import { StepCharacteristics } from './steps/StepCharacteristics';
 import { StepPhotos } from './steps/StepPhotos';
 import { StepBranding } from './steps/StepBranding';
@@ -38,7 +38,7 @@ export function OnboardingWizard({ initialData, tenantId, onUpdate, onExit, curr
     // Uscita dal passaggio 1 (chiude la sessione): sempre con conferma
     const [showExitDialog, setShowExitDialog] = useState(false);
 
-    const TOTAL_STEPS = 6;
+    const TOTAL_STEPS = ONBOARDING_STEPS;
 
 
     const performNextStep = async () => {
@@ -85,34 +85,27 @@ export function OnboardingWizard({ initialData, tenantId, onUpdate, onExit, curr
                     onValidationChange={setCanGoNext}
                 />;
             case 2:
-                return <StepCategories
+                return <StepMenu
                     data={formData}
                     tenantId={tenantId}
                     onUpdate={updateFormData}
                     onValidationChange={setCanGoNext}
                 />;
             case 3:
-                return <StepDishes
-                    data={formData}
-                    tenantId={tenantId}
-                    onUpdate={updateFormData}
-                    onValidationChange={setCanGoNext}
-                />;
-            case 4:
                 return <StepCharacteristics
                     data={formData}
                     tenantId={tenantId}
                     onUpdate={updateFormData}
                     onValidationChange={setCanGoNext}
                 />;
-            case 5:
+            case 4:
                 return <StepPhotos
                     data={formData}
                     tenantId={tenantId}
                     onUpdate={updateFormData}
                     onValidationChange={setCanGoNext}
                 />;
-            case 6:
+            case 5:
                 return <StepBranding
                     data={formData}
                     tenantId={tenantId}

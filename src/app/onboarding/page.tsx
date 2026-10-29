@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import type { Tenant } from '@/types/menu';
 import { OnboardingWizard } from '@/components/onboarding/wizard/OnboardingWizard';
+import { ONBOARDING_STEPS } from '@/lib/onboarding';
 import { FooterData } from '@/types/menu';
 import { useTenant, useUpdateTenant } from '@/hooks/useTenant';
 
@@ -53,8 +54,7 @@ function OnboardingContent() {
 
       // Handle redirect if needed (mutation usually handles toast)
       // Check nextStep condition again strictly
-      // TOTAL_STEPS is now 6. So we only redirect if nextStep > 6.
-      if ((nextStep || (data.onboarding_step || 1)) > 6) {
+      if ((nextStep || (data.onboarding_step || 1)) > ONBOARDING_STEPS) {
         router.push('/dashboard');
       }
       return true;
@@ -81,7 +81,7 @@ function OnboardingContent() {
   // Effect to redirect if already completed
   useEffect(() => {
     // Only redirect if completed AND step is actually past the end (safeguard for bug fix)
-    if (tenant?.onboarding_completed && (tenant.onboarding_step || 1) > 6) {
+    if (tenant?.onboarding_completed && (tenant.onboarding_step || 1) > ONBOARDING_STEPS) {
       router.push('/dashboard');
     }
   }, [tenant, router]);
@@ -109,7 +109,7 @@ function OnboardingContent() {
         <OnboardingWizard
           initialData={tenant}
           tenantId={tenant.id}
-          currentStepProp={Math.min(tenant.onboarding_step || 1, 6)}
+          currentStepProp={Math.min(tenant.onboarding_step || 1, ONBOARDING_STEPS)}
           onUpdate={handleUpdate}
           onExit={handleLogout}
         />
