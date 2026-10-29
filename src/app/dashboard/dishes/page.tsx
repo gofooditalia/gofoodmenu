@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { memo, useCallback, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
@@ -32,7 +32,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { Loader2, Plus, GripVertical, Trash2, Edit, Image as ImageIcon, Check } from 'lucide-react';
 import { uploadDishPhoto } from '@/lib/image-upload';
-import { dishThumbPath } from '@/lib/dish-thumbs';
+import { dishThumbPath, dishThumbUrl } from '@/lib/dish-thumbs';
 
 // Shadcn Imports
 import { Button } from '@/components/ui/button';
@@ -124,7 +124,9 @@ interface Allergen {
 // ------------------------------------------------------------------
 // SortableDishCard Component
 // ------------------------------------------------------------------
-function SortableDishCard({
+// Memoizzata: cambiando categoria o selezione si ridisegnano solo le schede che cambiano davvero
+// (con 250 piatti rifarle tutte bloccava la pagina)
+const SortableDishCard = memo(function SortableDishCard({
   dish,
   category,
   onEdit,
@@ -156,6 +158,11 @@ function SortableDishCard({
     zIndex: isDragging ? 10 : 1,
     opacity: isDragging ? 0.5 : 1,
   };
+
+  // Miniatura leggera (la stessa del menu pubblico); se manca si torna alla foto originale
+  const thumbUrl = dishThumbUrl(dish.image_url);
+  const [failedThumb, setFailedThumb] = useState<string | null>(null);
+  const useThumb = !!thumbUrl && failedThumb !== thumbUrl;
 
   return (
     <Card
@@ -195,8 +202,11 @@ function SortableDishCard({
                 {dish.image_url && (
                   <div className="shrink-0 relative group">
                     <img
-                      src={dish.image_url}
+                      src={useThumb ? thumbUrl : dish.image_url}
                       alt={dish.name}
+                      loading="lazy"
+                      decoding="async"
+                      onError={useThumb ? () => setFailedThumb(thumbUrl) : undefined}
                       className="w-20 h-20 sm:w-16 sm:h-16 object-cover rounded-lg border border-border"
                     />
 
@@ -284,7 +294,7 @@ function SortableDishCard({
       </CardContent>
     </Card>
   );
-}
+});
 
 // ------------------------------------------------------------------
 // Main Page Component
@@ -311,15 +321,17 @@ export default function DishesPage() {
 
   // ... (previous useEffects) ...
 
-  const toggleSelection = (id: string) => {
-    const newSelected = new Set(selectedDishes);
-    if (newSelected.has(id)) {
-      newSelected.delete(id);
-    } else {
-      newSelected.add(id);
-    }
-    setSelectedDishes(newSelected);
-  };
+  const toggleSelection = useCallback((id: string) => {
+    setSelectedDishes(prev => {
+      const newSelected = new Set(prev);
+      if (newSelected.has(id)) {
+        newSelected.delete(id);
+      } else {
+        newSelected.add(id);
+      }
+      return newSelected;
+    });
+  }, []);
 
   const toggleSelectAll = () => {
     if (selectedDishes.size === filteredDishes.length) {
@@ -527,9 +539,10 @@ export default function DishesPage() {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const filteredList = selectedCategory === 'all'
+      // Stessa categoria dell'elenco mostrato (che segue il pulsante in differita)
+      const filteredList = listCategory === 'all'
         ? dishes
-        : dishes.filter(d => d.category_id === selectedCategory);
+        : dishes.filter(d => d.category_id === listCategory);
 
       const oldIndex = filteredList.findIndex((item) => item.id === active.id);
       const newIndex = filteredList.findIndex((item) => item.id === over?.id);
@@ -786,17 +799,22 @@ export default function DishesPage() {
     setEditingDish(null);
   }
 
-  const filteredDishes = dishes.filter(d => {
+  // L'elenco segue categoria e ricerca in differita: il pulsante premuto si aggiorna subito,
+  // le schede subito dopo senza bloccare la pagina
+  const listCategory = useDeferredValue(selectedCategory);
+  const listSearchQuery = useDeferredValue(searchQuery);
+
+  const filteredDishes = useMemo(() => dishes.filter(d => {
     // 0. Search Filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (listSearchQuery) {
+      const query = listSearchQuery.toLowerCase();
       const matchesName = d.name.toLowerCase().includes(query);
       const matchesDesc = d.description?.toLowerCase().includes(query);
       if (!matchesName && !matchesDesc) return false;
     }
 
     // 1. Category Filter
-    if (selectedCategory !== 'all' && d.category_id !== selectedCategory) return false;
+    if (listCategory !== 'all' && d.category_id !== listCategory) return false;
 
     // 2. Flags Filter
     if (filterFlags.size > 0) {
@@ -813,7 +831,26 @@ export default function DishesPage() {
     }
 
     return true;
+  }), [dishes, listSearchQuery, listCategory, filterFlags, filterAllergens]);
+
+  const filteredDishIds = useMemo(() => filteredDishes.map(d => d.id), [filteredDishes]);
+
+  const categoriesById = useMemo(() => new Map(categories.map(c => [c.id, c])), [categories]);
+
+  const dishCountByCategory = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const d of dishes) counts.set(d.category_id, (counts.get(d.category_id) ?? 0) + 1);
+    return counts;
+  }, [dishes]);
+
+  // Gestori stabili per le schede memoizzate: chiamano sempre l'ultima versione delle funzioni
+  const handlersRef = useRef({ handleEdit, handleDelete, handleDragEnd });
+  useLayoutEffect(() => {
+    handlersRef.current = { handleEdit, handleDelete, handleDragEnd };
   });
+  const onEditDish = useCallback((dish: Dish) => handlersRef.current.handleEdit(dish), []);
+  const onDeleteDish = useCallback((id: string) => handlersRef.current.handleDelete(id), []);
+  const onDragEnd = useCallback((event: DragEndEvent) => handlersRef.current.handleDragEnd(event), []);
 
   const activeFiltersCount = filterFlags.size + filterAllergens.size;
 
@@ -966,7 +1003,7 @@ export default function DishesPage() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`whitespace-nowrap ${selectedCategory === cat.id ? 'bg-orange-500 hover:bg-orange-600' : ''}`}
               >
-                {cat.name} ({dishes.filter(d => d.category_id === cat.id).length})
+                {cat.name} ({dishCountByCategory.get(cat.id) ?? 0})
               </Button>
             ))}
           </div>
@@ -1189,10 +1226,10 @@ export default function DishesPage() {
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
+          onDragEnd={onDragEnd}
         >
           <SortableContext
-            items={filteredDishes.map((d) => d.id)}
+            items={filteredDishIds}
             strategy={verticalListSortingStrategy}
           >
             <div className="grid gap-4">
@@ -1200,9 +1237,9 @@ export default function DishesPage() {
                 <SortableDishCard
                   key={dish.id}
                   dish={dish}
-                  category={categories.find(c => c.id === dish.category_id)}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
+                  category={categoriesById.get(dish.category_id)}
+                  onEdit={onEditDish}
+                  onDelete={onDeleteDish}
                   selected={selectedDishes.has(dish.id)}
                   onSelect={toggleSelection}
                   isSelectionMode={isSelectionMode}

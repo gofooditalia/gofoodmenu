@@ -10,11 +10,12 @@ import {
     StyleSheet,
     Image,
     Link,
-    PDFDownloadLink,
+    pdf,
     Font,
 } from '@react-pdf/renderer';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { toast } from 'sonner';
 import type { Database } from '@/types/database';
 
 // Types
@@ -388,20 +389,16 @@ interface DownloadMenuButtonProps {
     };
 }
 
+// Il PDF si genera solo al clic: con PDFDownloadLink veniva rifatto per intero (foto comprese) a ogni
+// render della pagina Piatti, anche solo cambiando categoria, e bloccava la pagina per centinaia di ms
 export default function DownloadMenuButton({ dishes, categories, allergens, tenant }: DownloadMenuButtonProps) {
-    const [isClient, setIsClient] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
-    React.useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    if (!isClient) return null;
-
-    const goFoodLogoUrl = `${window.location.origin}/web-app-manifest-192x192.png`;
-
-    return (
-        <PDFDownloadLink
-            document={
+    async function handleDownload() {
+        setLoading(true);
+        try {
+            const goFoodLogoUrl = `${window.location.origin}/web-app-manifest-192x192.png`;
+            const blob = await pdf(
                 <MenuDocument
                     dishes={dishes}
                     categories={categories}
@@ -409,20 +406,30 @@ export default function DownloadMenuButton({ dishes, categories, allergens, tena
                     tenant={tenant}
                     goFoodLogoUrl={goFoodLogoUrl}
                 />
-            }
-            fileName={`menu-${tenant.restaurant_name.toLowerCase().replace(/\s+/g, '-')}.pdf`}
+            ).toBlob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `menu-${tenant.restaurant_name.toLowerCase().replace(/\s+/g, '-')}.pdf`;
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 10_000);
+        } catch (err) {
+            console.error('Error generating PDF:', err);
+            toast.error('Errore nella generazione del PDF');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <Button
+            variant="outline"
+            disabled={loading}
+            onClick={handleDownload}
+            className="gap-2 border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-50 hover:border-orange-300"
         >
-            {/* @ts-ignore */}
-            {({ blob, url, loading, error }) => (
-                <Button
-                    variant="outline"
-                    disabled={loading}
-                    className="gap-2 border-orange-200 text-orange-700 hover:text-orange-800 hover:bg-orange-50 hover:border-orange-300"
-                >
-                    <Download className="w-4 h-4" />
-                    {loading ? 'Generazione PDF...' : 'Scarica PDF'}
-                </Button>
-            )}
-        </PDFDownloadLink>
+            <Download className="w-4 h-4" />
+            {loading ? 'Generazione PDF...' : 'Scarica PDF'}
+        </Button>
     );
 }
