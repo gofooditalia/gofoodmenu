@@ -51,6 +51,12 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (`SLUG_MIN_LENGTH`). La route di checkout (`/api/stripe/checkout`, dove lo slug viene davvero assegnato) passa al
   suffisso `-1`, `-2`… per uno slug riservato o troppo corto, come per uno occupato (il ristoratore non può
   modificare lo slug proposto in `ActivationModal`); `useCheckSlug` lo segnala come non disponibile.
+- **Registrazione con la sola email** (29/10/2026, PR #102): `/register` chiede solo email + reCAPTCHA e manda un link
+  (`signInWithOtp`, `shouldCreateUser: true`) che porta a `/auth/confirm?next=/onboarding`; il nome del locale si scrive
+  al passaggio 1 (il nome provvisorio `PLACEHOLDER_RESTAURANT_NAME` lì parte vuoto), la password è facoltativa
+  (`PasswordSetup`, metadato `password_set`). Il login ha anche "mandami un link" (`shouldCreateUser: false`).
+  `/auth/confirm` accetta `token_hash` (modelli email con `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email`,
+  funziona anche su un altro dispositivo) o `code` (modelli predefiniti, solo nello stesso browser).
 - Temi modificati direttamente nel database: il menu pubblico è in cache ISR fino a 24 h; salvando dalla
   dashboard (o con un nuovo deploy) si aggiorna subito.
 - Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).

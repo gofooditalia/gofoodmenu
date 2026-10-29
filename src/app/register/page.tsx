@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -10,25 +9,17 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, ChevronRight, AlertCircle, MailCheck } from 'lucide-react';
 import { authErrorMessage } from '@/lib/auth-errors';
-import { Eye, EyeOff } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function RegisterPage() {
-  const router = useRouter();
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
   // Email a cui è partita la conferma: al posto del modulo si mostra "Controlla la tua email"
   const [sentTo, setSentTo] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    restaurantName: '',
-    fullName: ''
-  });
+  const [formData, setFormData] = useState({ email: '' });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,78 +46,22 @@ export default function RegisterPage() {
         throw new Error(verifyData.message || 'Verifica reCAPTCHA fallita. Riprova.');
       }
 
-      const supabase = createClient();
-
-      // 1. Sign up with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
+      // Solo l'email: il link porta dentro con l'email già verificata e da lì parte la configurazione guidata
+      // (nome del locale al passaggio 1, password facoltativa). Con un'email già registrata il link fa rientrare.
+      const { error: otpError } = await createClient().auth.signInWithOtp({
+        email: formData.email.trim(),
         options: {
-          emailRedirectTo: `${window.location.origin}/onboarding`,
-          data: {
-            full_name: formData.fullName,
-            restaurant_name: formData.restaurantName
-          }
-        }
+          shouldCreateUser: true,
+          emailRedirectTo: `${window.location.origin}/auth/confirm?next=/onboarding`,
+        },
       });
 
-      if (authError) {
-        console.error('Auth signup error:', authError);
-        throw new Error(authErrorMessage(authError, 'Registrazione non riuscita. Riprova.'));
+      if (otpError) {
+        console.error('Auth signup error:', otpError);
+        throw new Error(authErrorMessage(otpError, 'Registrazione non riuscita. Riprova.'));
       }
 
-      if (!authData.user) {
-        throw new Error('Registrazione fallita. Riprova.');
-      }
-
-      console.log('✓ User created:', authData.user.id);
-      console.log('✓ Profile created automatically by trigger');
-
-      // Verifica se l'utente deve confermare l'email
-      if (authData.session === null) {
-        // Email confirmation richiesta
-        console.log('⚠️ Email confirmation required - tenant will be created after confirmation');
-
-        setError(null);
-        setSentTo(formData.email);
-        return;
-      }
-
-      // Se arriviamo qui, l'utente è autenticato (email confirmation disabilitata)
-      console.log('✓ User authenticated, proceeding with tenant creation');
-
-      // 3. Create tenant
-      const { data: tenantData, error: tenantError } = await supabase
-        .from('tenants')
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore - Supabase client type inference issue
-        .insert({
-          owner_id: authData.user.id,
-          restaurant_name: formData.restaurantName,
-          slug: null, // Slug is now nullable and assigned on payment
-          onboarding_completed: false,
-          onboarding_step: 1,
-          subscription_tier: 'free',
-          subscription_status: 'active'
-        })
-        .select()
-        .single();
-
-      if (tenantError) {
-        console.error('Tenant creation error:', JSON.stringify(tenantError, null, 2));
-        throw new Error(`Errore creazione ristorante: ${tenantError.message || 'Errore sconosciuto'}`);
-      }
-
-      if (!tenantData) {
-        throw new Error('Errore: Tenant non creato');
-      }
-
-      const tenant = tenantData as { id: string };
-      console.log('✓ Tenant created:', tenant.id);
-      console.log('✓ Registration complete! Redirecting to onboarding...');
-
-      // 4. Redirect to onboarding
-      router.push('/onboarding');
+      setSentTo(formData.email.trim());
     } catch (err) {
       console.error('Registration error:', err);
       setError(err instanceof Error ? err.message : 'Errore durante la registrazione. Riprova.');
@@ -169,20 +104,17 @@ export default function RegisterPage() {
               <CardTitle className="text-2xl font-black text-gray-900">Controlla la tua email</CardTitle>
               <CardDescription className="text-gray-600 text-base">
                 Ti abbiamo mandato un link a <strong className="text-gray-900 break-all">{sentTo}</strong>.
-                Aprilo per confermare l&apos;account: ti porterà direttamente alla creazione del menu.
+                Aprilo per entrare: si parte subito con la creazione del menu.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 pb-10 px-8 text-sm text-gray-600">
               <p>Non la trovi? Guarda nello spam o nella cartella Promozioni. Può arrivare dopo qualche minuto.</p>
               <p>
                 Email sbagliata?{' '}
-                <button type="button" onClick={() => setSentTo(null)} className="font-bold text-orange-600 hover:underline">
-                  Registrati di nuovo
+                <button type="button" onClick={() => { setSentTo(null); setCaptchaToken(null); }} className="font-bold text-orange-600 hover:underline">
+                  Cambia email
                 </button>
               </p>
-              <Link href="/login" className="block pt-2">
-                <Button variant="outline" className="w-full py-6 font-bold">Ho confermato: accedi</Button>
-              </Link>
             </CardContent>
           </Card>
         ) : (
@@ -190,7 +122,7 @@ export default function RegisterPage() {
           <CardHeader className="space-y-1 pt-10 pb-6">
             <CardTitle className="text-3xl font-black text-gray-900 tracking-tight">Registrati</CardTitle>
             <CardDescription className="text-gray-600 text-base">
-              Inserisci i tuoi dati per iniziare
+              Basta la tua email: ti mandiamo un link per entrare
             </CardDescription>
           </CardHeader>
 
@@ -207,42 +139,6 @@ export default function RegisterPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="restaurantName" className="font-bold">Nome Ristorante *</Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-xl">🍽️</span>
-                  </div>
-                  <Input
-                    id="restaurantName"
-                    placeholder="Es. Trattoria da Mario"
-                    type="text"
-                    required
-                    value={formData.restaurantName}
-                    onChange={(e) => setFormData({ ...formData, restaurantName: e.target.value })}
-                    className="pl-10 py-6 text-base"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="font-bold">Nome e Cognome *</Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-xl">👤</span>
-                  </div>
-                  <Input
-                    id="fullName"
-                    placeholder="Mario Rossi"
-                    type="text"
-                    required
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="pl-10 py-6 text-base"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
                 <Label htmlFor="email" className="font-bold">Email *</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -254,43 +150,10 @@ export default function RegisterPage() {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => setFormData({ email: e.target.value })}
                     className="pl-10 py-6 text-base"
                   />
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="font-bold">Password *</Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-xl">🔒</span>
-                  </div>
-                  <Input
-                    id="password"
-                    placeholder="Minimo 6 caratteri"
-                    type={showPassword ? "text" : "password"}
-                    minLength={6}
-                    required
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="pl-10 pr-10 py-6 text-base"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-                <p className="text-[0.8rem] text-muted-foreground ml-1">
-                  La password deve contenere almeno 6 caratteri.
-                </p>
               </div>
 
               <div className="flex justify-center py-2">
@@ -310,11 +173,11 @@ export default function RegisterPage() {
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creazione account...
+                    Invio del link...
                   </>
                 ) : (
                   <>
-                    Inizia Ora <ChevronRight className="ml-2 h-4 w-4" />
+                    Ricevi il link <ChevronRight className="ml-2 h-4 w-4" />
                   </>
                 )}
               </Button>

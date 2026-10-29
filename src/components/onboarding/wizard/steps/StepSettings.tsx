@@ -11,6 +11,8 @@ import { useForm } from "@tanstack/react-form";
 import { zodValidator } from "@tanstack/zod-form-adapter";
 import { z } from "zod";
 import { useEffect } from 'react';
+import { PLACEHOLDER_RESTAURANT_NAME } from "@/hooks/useTenant";
+import { PasswordSetup } from "./PasswordSetup";
 import { Field, FieldLabel, FieldDescription, FieldError, FieldGroup } from "@/components/ui/field";
 
 const locationSchema = z.object({
@@ -51,7 +53,7 @@ export function StepSettings({ data, onUpdate, onValidationChange }: StepSetting
 
     const form = useForm({
         defaultValues: {
-            restaurant_name: data.restaurant_name || '',
+            restaurant_name: data.restaurant_name === PLACEHOLDER_RESTAURANT_NAME ? '' : data.restaurant_name || '',
             contact_email: data.contact_email || '',
             cover_charge: data.cover_charge || 0,
             footer_data: {
@@ -112,6 +114,8 @@ export function StepSettings({ data, onUpdate, onValidationChange }: StepSetting
                     Raccontaci del tuo ristorante. Queste informazioni appariranno nel tuo menu digitale.
                 </p>
             </div>
+
+            <PasswordSetup />
 
             <Accordion type="single" collapsible defaultValue="info" className="w-full space-y-4">
 

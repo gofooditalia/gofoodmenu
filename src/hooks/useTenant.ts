@@ -20,6 +20,9 @@ export interface TenantData extends Tenant {
     tagline?: string;
 }
 
+// Nome provvisorio del locale finché il ristoratore non lo scrive al passaggio 1 (la registrazione chiede solo l'email)
+export const PLACEHOLDER_RESTAURANT_NAME = 'Il Mio Ristorante';
+
 async function fetchTenant() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -39,7 +42,7 @@ async function fetchTenant() {
 
     // 2. Create if not exists
     if (!tenant) {
-        const restaurantName = user.user_metadata?.restaurant_name || 'Il Mio Ristorante';
+        const restaurantName = user.user_metadata?.restaurant_name || PLACEHOLDER_RESTAURANT_NAME;
         const { data: newTenant, error: createError } = await (supabase.from('tenants') as any)
             .insert({
                 owner_id: user.id,
