@@ -21,6 +21,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 ## Convenzioni di lavoro
 - Lavorare su un branch e aprire una pull request verso `main`: l'anteprima Vercel serve per provare
   prima della produzione. Le anteprime sono protette dal login Vercel (le PWA vanno provate in produzione).
+  reCAPTCHA (registrazione): sulle anteprime Vercel usa le chiavi di prova pubbliche di Google (variabili
+  `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` e `RECAPTCHA_SECRET_KEY` del solo ambiente Preview, 29/10/2026), che superano
+  sempre il controllo: i domini `*.vercel.app` non sono registrati sulla chiave vera, usata solo in produzione.
 - Le migrazioni in `supabase/migrations/` si eseguono a mano nel SQL Editor di Supabase.
 - Controllo rapido: `npx tsc --noEmit -p .` (ESLint al momento non parte per un problema di configurazione).
 - Test del menu pubblico (Playwright + axe, anche su GitHub Actions a ogni PR): `npm run build && npm run test:e2e`.
