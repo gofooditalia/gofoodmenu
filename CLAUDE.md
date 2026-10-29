@@ -140,6 +140,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (sottotitolo, descrizioni categorie), anche nell'anteprima. Per i colori che il ristoratore sceglie il Design
   Studio avvisa (`ContrastWarnings` in `VisualEditorPanel.tsx`): i nuovi controlli vanno aggiunti lì. Il
   selettore lingua prende i colori del tema (niente pillola bianca sui temi scuri).
+- **PDF del menu** (pulsante "Scarica PDF" nella pagina Piatti, `src/components/dashboard/MenuPdf.tsx`, 29/10/2026):
+  solo testo, **mai foto dei piatti** (scelta del titolare); l'unica immagine è il logo del locale in testata.
+  Il PDF si genera solo al clic (PR #101): prima si rifaceva a ogni aggiornamento della pagina e la rallentava.
 - **QR code** (PR #44): si scarica dalla card della dashboard (`QRCodeCard.tsx`) disegnato a 1200 px; logo di
   riserva `/logo-gofood-new.svg` (`/logo-gofood.png` non esiste).
 - **Layout del menu pubblico**: deciso il 21/10/2026 di non ridisegnarlo (piace ai ristoratori, test e
