@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/lib/supabase/client";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -31,7 +32,7 @@ const formSchema = z.object({
     cover_charge: z.number().min(0),
     footer_data: z.object({
         brand_description: z.object({
-            it: z.string().min(1, "La descrizione è obbligatoria"),
+            it: z.string(), // facoltativa: senza, il piè di pagina del menu mostra un testo generico
             en: z.string(),
         }),
         locations: z.array(locationSchema),
@@ -79,6 +80,19 @@ export function StepSettings({ data, onUpdate, onValidationChange }: StepSetting
         });
         return () => subscription();
     }, [form, onUpdate]);
+
+    // Email pubblica: di partenza quella usata per registrarsi
+    useEffect(() => {
+        if (form.state.values.contact_email) return;
+        createClient().auth.getUser().then(({ data: { user } }) => {
+            if (user?.email && !form.state.values.contact_email) form.setFieldValue('contact_email', user.email);
+        });
+    }, [form]);
+
+    // Con i campi già compilati (nome dalla registrazione, email) si può proseguire senza toccare niente
+    useEffect(() => {
+        onValidationChange(formSchema.safeParse(form.state.values).success);
+    }, [form, onValidationChange]);
 
     // Sync validation state
     useEffect(() => {
@@ -184,7 +198,7 @@ export function StepSettings({ data, onUpdate, onValidationChange }: StepSetting
                             name="footer_data.brand_description.it"
                             children={(field) => (
                                 <Field>
-                                    <FieldLabel htmlFor={field.name} className="font-bold">Descrizione Brand *</FieldLabel>
+                                    <FieldLabel htmlFor={field.name} className="font-bold">Descrizione del locale (facoltativa)</FieldLabel>
                                     <Textarea
                                         id={field.name}
                                         name={field.name}
@@ -198,7 +212,7 @@ export function StepSettings({ data, onUpdate, onValidationChange }: StepSetting
                                         placeholder="Racconta brevemente la storia del tuo ristorante..."
                                         className="min-h-[100px]"
                                     />
-                                    <FieldDescription>Apparirà nel footer del menu.</FieldDescription>
+                                    <FieldDescription>Apparirà in fondo al menu. Puoi scriverla anche dopo, da Account.</FieldDescription>
                                     <FieldError errors={field.state.meta.errors} />
                                 </Field>
                             )}

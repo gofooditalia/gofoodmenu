@@ -4,12 +4,12 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, ChevronRight, AlertCircle } from 'lucide-react';
+import { Loader2, ChevronRight, AlertCircle, MailCheck } from 'lucide-react';
+import { authErrorMessage } from '@/lib/auth-errors';
 import { Eye, EyeOff } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -21,6 +21,8 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  // Email a cui è partita la conferma: al posto del modulo si mostra "Controlla la tua email"
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -70,7 +72,7 @@ export default function RegisterPage() {
 
       if (authError) {
         console.error('Auth signup error:', authError);
-        throw new Error(authError.message || 'Errore durante la registrazione');
+        throw new Error(authErrorMessage(authError, 'Registrazione non riuscita. Riprova.'));
       }
 
       if (!authData.user) {
@@ -85,10 +87,8 @@ export default function RegisterPage() {
         // Email confirmation richiesta
         console.log('⚠️ Email confirmation required - tenant will be created after confirmation');
 
-        // Mostra messaggio all'utente
         setError(null);
-        toast.success('Account creato! Controlla la tua email per confermare la registrazione.', { duration: 6000 });
-        router.push('/login');
+        setSentTo(formData.email);
         return;
       }
 
@@ -162,6 +162,30 @@ export default function RegisterPage() {
           </p>
         </div>
 
+        {sentTo ? (
+          <Card className="shadow-2xl border-orange-100 overflow-hidden">
+            <CardHeader className="space-y-2 pt-10 pb-4 text-center">
+              <MailCheck className="w-12 h-12 text-orange-500 mx-auto" aria-hidden="true" />
+              <CardTitle className="text-2xl font-black text-gray-900">Controlla la tua email</CardTitle>
+              <CardDescription className="text-gray-600 text-base">
+                Ti abbiamo mandato un link a <strong className="text-gray-900 break-all">{sentTo}</strong>.
+                Aprilo per confermare l&apos;account: ti porterà direttamente alla creazione del menu.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 pb-10 px-8 text-sm text-gray-600">
+              <p>Non la trovi? Guarda nello spam o nella cartella Promozioni. Può arrivare dopo qualche minuto.</p>
+              <p>
+                Email sbagliata?{' '}
+                <button type="button" onClick={() => setSentTo(null)} className="font-bold text-orange-600 hover:underline">
+                  Registrati di nuovo
+                </button>
+              </p>
+              <Link href="/login" className="block pt-2">
+                <Button variant="outline" className="w-full py-6 font-bold">Ho confermato: accedi</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        ) : (
         <Card className="shadow-2xl border-orange-100 overflow-hidden">
           <CardHeader className="space-y-1 pt-10 pb-6">
             <CardTitle className="text-3xl font-black text-gray-900 tracking-tight">Registrati</CardTitle>
@@ -324,6 +348,7 @@ export default function RegisterPage() {
             </p>
           </CardFooter>
         </Card>
+        )}
 
         {/* Back to Home */}
         <div className="mt-6 text-center">

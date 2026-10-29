@@ -6,10 +6,9 @@ interface StepPhotosProps {
     tenantId?: string;
     onUpdate: (updates: any) => void;
     onValidationChange: (isValid: boolean) => void;
-    highlightUnassigned?: boolean;
 }
 
-export function StepPhotos({ tenantId, onValidationChange, highlightUnassigned }: StepPhotosProps) {
+export function StepPhotos({ tenantId, onValidationChange }: StepPhotosProps) {
 
     // Always valid, as photos are optional but recommended
     useEffect(() => {
@@ -25,14 +24,14 @@ export function StepPhotos({ tenantId, onValidationChange, highlightUnassigned }
             <div className="text-center md:text-left">
                 <h2 className="text-2xl font-black text-gray-900">Foto Piatti 📸</h2>
                 <p className="text-gray-600 mt-1">
-                    Carica e assegna le foto ai tuoi piatti.
+                    Carica e assegna le foto ai tuoi piatti. Puoi anche farlo dopo: le foto non assegnate restano
+                    nella tua galleria.
                 </p>
             </div>
 
             <PhotoManager
                 tenantId={tenantId}
                 onValidationChange={onValidationChange}
-                highlightUnassigned={highlightUnassigned}
             />
         </div>
     );

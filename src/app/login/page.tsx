@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { authErrorMessage } from '@/lib/auth-errors';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,11 +73,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error('Login error:', err);
-      if (err instanceof Error && err.message.includes('Invalid login credentials')) {
-        setError('Email o password non validi. Riprova.');
-      } else {
-        setError(err instanceof Error ? err.message : 'Errore durante il login. Riprova.');
-      }
+      setError(authErrorMessage(err, 'Accesso non riuscito. Riprova.'));
     } finally {
       setLoading(false);
     }
