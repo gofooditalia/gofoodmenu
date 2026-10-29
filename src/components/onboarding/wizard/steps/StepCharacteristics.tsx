@@ -15,6 +15,6 @@ export function StepCharacteristics({ tenantId, onValidationChange }: StepCharac
     }, [onValidationChange]);
 
     return (
-        <CharacteristicsManager tenantId={tenantId} />
+        <CharacteristicsManager tenantId={tenantId} listAfterScan />
     );
 }

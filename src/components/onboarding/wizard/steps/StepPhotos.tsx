@@ -32,6 +32,7 @@ export function StepPhotos({ tenantId, onValidationChange }: StepPhotosProps) {
             <PhotoManager
                 tenantId={tenantId}
                 onValidationChange={onValidationChange}
+                listOnlyWithPhotos
             />
         </div>
     );

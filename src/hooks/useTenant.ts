@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Tenant } from '@/types/menu';
 import { toast } from 'sonner';
 import { revalidatePublicMenu } from '@/app/actions/revalidate-menu';
+import { ONBOARDING_STEPS } from '@/lib/onboarding';
 
 export interface TenantData extends Tenant {
     tenant_locations?: any[];
@@ -156,9 +157,9 @@ export function useUpdateTenant() {
 
             if (nextStep) {
                 updateData.onboarding_step = nextStep;
-                updateData.onboarding_completed = nextStep > 6;
+                updateData.onboarding_completed = nextStep > ONBOARDING_STEPS;
             } else if (updates.onboarding_step) {
-                updateData.onboarding_completed = updates.onboarding_step > 6;
+                updateData.onboarding_completed = updates.onboarding_step > ONBOARDING_STEPS;
             }
 
             // Slug Logic
