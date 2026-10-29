@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, GripVertical, Trash2, Info } from 'lucide-react';
+import { Loader2, Plus, GripVertical, Trash2, Sparkles } from 'lucide-react';
+import MenuImportModal from '@/components/dashboard/MenuImportModal';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import {
     DndContext,
@@ -112,6 +114,8 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
     const [categories, setCategories] = useState<Category[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
+    const [importOpen, setImportOpen] = useState(false);
+    const queryClient = useQueryClient();
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -218,18 +222,32 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
             <div className="text-center md:text-left">
                 <h2 className="text-2xl font-black text-gray-900">Il Tuo Menu 🍔</h2>
-                <div className="mt-2 text-gray-600">
-                    <p>Crea le categorie per il tuo menu.</p>
-                    <div className="mt-3 flex gap-3 p-3 bg-orange-50 border border-orange-100 rounded-md text-sm text-orange-800">
-                        <Info className="w-5 h-5 shrink-0 text-orange-500" />
-                        <div>
-                            <span className="font-medium">Consiglio:</span> Usa le stesse categorie del menu cartaceo per facilitare l'importazione AI.
-                            <br />
-                            <span className="opacity-75">Es: Antipasti, Primi, Pizze.</span>
-                        </div>
-                    </div>
-                </div>
+                <p className="mt-2 text-gray-600">
+                    Hai già un menu? Caricalo: leggiamo noi piatti, prezzi e categorie.
+                </p>
             </div>
+
+            {/* Importazione dal menu: prima scelta. Crea categorie e piatti, che il ristoratore rivede prima di salvare */}
+            {tenantId && (
+                <Card className="border-2 border-orange-200 bg-orange-50/60 shadow-sm">
+                    <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+                        <Sparkles className="w-8 h-8 text-orange-500 shrink-0" aria-hidden="true" />
+                        <div className="flex-1">
+                            <p className="font-bold text-gray-900">Carica le foto o il PDF del tuo menu</p>
+                            <p className="text-sm text-gray-600">
+                                Le categorie si creano dalle sezioni del menu, i piatti finiscono già al loro posto. Prima di salvare controlli tutto tu.
+                            </p>
+                        </div>
+                        <Button onClick={() => setImportOpen(true)} className="bg-orange-600 hover:bg-orange-700 text-white font-bold shrink-0">
+                            Importa il menu
+                        </Button>
+                    </CardContent>
+                </Card>
+            )}
+
+            <p className="text-sm font-semibold text-gray-500">
+                {categories.length > 0 ? 'Le tue categorie (trascinale per cambiare l\'ordine):' : 'Oppure crea le categorie a mano:'}
+            </p>
 
             {/* Suggested Chips */}
             <div className="flex flex-wrap gap-2">
@@ -304,6 +322,19 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
                     </DndContext>
                 )}
             </div>
+
+            {tenantId && (
+                <MenuImportModal
+                    isOpen={importOpen}
+                    onClose={() => setImportOpen(false)}
+                    onSuccess={() => {
+                        queryClient.invalidateQueries({ queryKey: ['categories', tenantId] });
+                        queryClient.invalidateQueries({ queryKey: ['dishes', tenantId] });
+                    }}
+                    tenantId={tenantId}
+                    categories={categories}
+                />
+            )}
 
             <AlertDialog open={!!categoryToDelete} onOpenChange={(open) => !open && setCategoryToDelete(null)}>
                 <AlertDialogContent>

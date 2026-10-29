@@ -57,6 +57,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (`PasswordSetup`, metadato `password_set`). Il login ha anche "mandami un link" (`shouldCreateUser: false`).
   `/auth/confirm` accetta `token_hash` (modelli email con `{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=email`,
   funziona anche su un altro dispositivo) o `code` (modelli predefiniti, solo nello stesso browser).
+- **Importazione AI con categorie** (29/10/2026): l'AI (`/api/ai/analyze-menu`) copia per ogni piatto l'intestazione del
+  menu in `section` (mai inventata: vuota se non c'è) e usa `categoryId` solo per categorie già create. `proposeCategories`
+  (`src/lib/menu-import-categories.ts`) riusa quelle con lo stesso nome e propone le altre (`new:<slug>`), che il
+  ristoratore rinomina o toglie nella revisione di `MenuImportModal`: si creano solo all'importazione. Al passaggio 2
+  dell'onboarding "Importa il menu" è la prima scelta, le categorie a mano restano.
 - Temi modificati direttamente nel database: il menu pubblico è in cache ISR fino a 24 h; salvando dalla
   dashboard (o con un nuovo deploy) si aggiorna subito.
 - Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).
