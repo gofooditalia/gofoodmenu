@@ -64,9 +64,14 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   dell'onboarding "Importa il menu" è la prima scelta, le categorie a mano restano.
 - Temi modificati direttamente nel database: il menu pubblico è in cache ISR fino a 24 h; salvando dalla
   dashboard (o con un nuovo deploy) si aggiorna subito.
-- Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`, modello di default `google/gemini-2.5-flash`).
-
-## Decisioni prese
+- Le funzioni AI usano OpenRouter (`OPENROUTER_API_KEY`). Modelli predefiniti in `AI_MODELS` (`src/lib/ai-models.ts`,
+  29/10/2026): allergeni `google/gemini-3.8-flash`; importazione menu, traduzioni e risposte alle recensioni
+  `anthropic/claude-haiku-5.5` con ragionamento minimo. Ognuno si cambia da Vercel (`OPENROUTER_ALLERGEN_MODEL`,
+  `_IMPORT_`, `_TRANSLATE_`, `_REVIEW_`). `reasoningFor` spegne il ragionamento solo sui Gemini 2.5 (dai Gemini 3.5 è
+  obbligatorio: spegnerlo dà errore 400), altrimenti `low`. Haiku ignora `temperature`. Scelta fatta con prove su un
+  menu di 10 pagine, 30 piatti (allergeni) e 16 piatti × 8 lingue: 2.5 Flash-Lite non segnava come certi noci,
+  pistacchi, pinoli, sesamo; 3.5 Flash-Lite traduceva mandorle e noci con "nuts"; GLM 5.3 Flash e Gemma 4 scartati.
+  Un nuovo modello si prova prima su dati veri.
 - **PWA**: un'app per ogni ristorante dalla pagina del menu (`/[slug]/manifest.webmanifest`,
   icone `/[slug]/app-icon/{any|maskable}/{192|512}`), nome/logo/colori del locale, avvio su `/[slug]`.
   L'app dei ristoratori è `public/app.webmanifest`, collegata solo dalla dashboard (start `/dashboard`).

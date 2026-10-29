@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { createClient } from '@/lib/supabase/server';
 import { SITE_URL } from '@/lib/site';
+import { AI_MODELS, reasoningFor } from '@/lib/ai-models';
 
 // Client OpenAI (via OpenRouter) creato alla richiesta e non al caricamento del modulo:
 // durante la build la chiave può mancare (es. deploy di anteprima) e il build non deve fallire.
@@ -82,7 +83,7 @@ function toIdList(value: unknown, allergens: AllergenRow[]): string[] {
     return Array.from(new Set(ids));
 }
 
-const DEFAULT_MODEL = 'google/gemini-2.5-flash';
+const DEFAULT_MODEL = AI_MODELS.allergens;
 
 export async function POST(req: NextRequest) {
     try {
@@ -174,9 +175,10 @@ Rispondi SOLO con JSON in questo formato:
 }
 `;
 
+        // Modello configurabile da Vercel (OPENROUTER_ALLERGEN_MODEL); predefinito in src/lib/ai-models.ts
+        const model = process.env.OPENROUTER_ALLERGEN_MODEL || DEFAULT_MODEL;
         const completion = await getOpenAI().chat.completions.create({
-            // Modello configurabile da Vercel (OPENROUTER_ALLERGEN_MODEL); predefinito Gemini 2.5 Flash
-            model: process.env.OPENROUTER_ALLERGEN_MODEL || DEFAULT_MODEL,
+            model,
             messages: [
                 {
                     role: 'user',
@@ -185,9 +187,8 @@ Rispondi SOLO con JSON in questo formato:
             ],
             temperature: 0, // risposte il più possibile stabili tra una scansione e l'altra
             response_format: { type: 'json_object' },
-            // OpenRouter: disattiva il ragionamento interno, fatturato come token di output
-            reasoning: { enabled: false },
-        } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: { enabled: boolean } });
+            reasoning: reasoningFor(model),
+        } as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming & { reasoning: ReturnType<typeof reasoningFor> });
 
         const content = completion.choices[0]?.message?.content;
 
