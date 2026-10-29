@@ -249,7 +249,7 @@ export default function LoginPage() {
               disabled={sendingLink}
               className="w-full mt-3 py-6 font-bold text-orange-600 hover:text-orange-700 hover:bg-orange-50"
             >
-              {sendingLink ? 'Invio del link...' : 'Accedi senza password: mandami un link'}
+              {sendingLink ? 'Invio del link...' : 'Mandami un link di accesso via email'}
             </Button>
           </CardContent>
           <CardFooter className="flex flex-col space-y-5 pt-4 pb-10 px-8">
