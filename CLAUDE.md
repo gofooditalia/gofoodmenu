@@ -12,7 +12,8 @@ La ditta è **GO!Food Italia**: "GO" maiuscolo, senza spazio tra "!" e "Food" (m
 Email pubblica della ditta: **info@gofood.it** (sui siti sostituisce italiagofood@gmail.com, che resta l'account Google).
 **Account di prova** (non sono locali reali): `belleepoquepalermo` (email di Gabriele), `accademia` (piano free) e
 `gofood` (italiagofood@gmail.com, usato dal test del Design Studio); `ristorante-marina` non esiste più (22/10/2026).
-Anche `oza` (email di Gabriele, registrazione senza slug) è una prova. Elenco nel codice: `TEST_TENANT_SLUGS` e,
+Anche `oza` (email di Gabriele, registrazione senza slug) è una prova. E `demo` (italiagofood+prova1@gmail.com, 29/10/2026, prova
+registrazione con la sola email e importazione AI). Elenco nel codice: `TEST_TENANT_SLUGS` e,
 per chi non ha slug, `TEST_TENANT_IDS` in `src/lib/admin.ts`, da aggiornare se ne nasce uno nuovo.
 Non trattarli come clienti in controlli, prove e statistiche. Locali reali che usano il menu (21/10/2026):
 `magnaromatrattoria`, `osteria-cilea`, `bistrot107`, `spaghetteria-da-emanuele`, `scjavuru`, `sunset-barcarello`,
