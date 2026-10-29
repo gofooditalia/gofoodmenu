@@ -70,6 +70,7 @@ function getPageTitle(pathname: string): string {
   if (pathname.includes('/dashboard/dishes')) return 'Piatti';
   if (pathname.includes('/dashboard/media')) return 'Immagini';
   if (pathname.includes('/dashboard/allergens')) return 'Allergeni';
+  if (pathname.includes('/dashboard/translations')) return 'Traduzioni';
   if (pathname.includes('/dashboard/reviews')) return 'Recensioni';
   if (pathname.includes('/dashboard/design-studio')) return 'Design Studio';
   if (pathname.includes('/dashboard/support')) return 'Assistenza';
