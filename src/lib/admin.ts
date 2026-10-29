@@ -29,6 +29,7 @@ export const TEST_TENANT_SLUGS = ['ristorante-marina', 'belleepoquepalermo', 'ac
 // Account di prova senza slug (registrazione mai completata), riconosciuti dall'id del tenant
 export const TEST_TENANT_IDS = [
     'da1f52b7-4d2c-4e09-acef-f0a18df353c8', // "oza", prova di Gabriele
+    '50a8762e-0867-498a-8a59-a2407738547b', // "demo" (italiagofood+prova1), prova della registrazione con la sola email
 ];
 
 export function isTestTenant(t: { id: string; slug: string | null }): boolean {
