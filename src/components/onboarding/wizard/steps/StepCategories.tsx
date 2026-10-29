@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, GripVertical, Trash2, Sparkles } from 'lucide-react';
+import { Loader2, Plus, GripVertical, Trash2, Sparkles, CheckCircle2 } from 'lucide-react';
 import MenuImportModal from '@/components/dashboard/MenuImportModal';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -103,10 +103,11 @@ function SortableCategoryItem({
 }
 
 // --- Main Component ---
-import { useCategories, useAddCategory, useDeleteCategory, useReorderCategories, Category } from '@/hooks/useMenu';
+import { useCategories, useDishes, useAddCategory, useDeleteCategory, useReorderCategories, Category } from '@/hooks/useMenu';
 
 export function StepCategories({ tenantId, onValidationChange }: StepCategoriesProps) {
     const { data: serverCategories = [], isLoading } = useCategories(tenantId);
+    const { data: dishes = [] } = useDishes(tenantId);
     const addMutation = useAddCategory();
     const deleteMutation = useDeleteCategory();
     const reorderMutation = useReorderCategories();
@@ -227,8 +228,20 @@ export function StepCategories({ tenantId, onValidationChange }: StepCategoriesP
                 </p>
             </div>
 
-            {/* Importazione dal menu: prima scelta. Crea categorie e piatti, che il ristoratore rivede prima di salvare */}
-            {tenantId && (
+            {/* Menu già importato: si va avanti a controllare i piatti; altrimenti l'importazione è la prima scelta */}
+            {tenantId && dishes.length > 0 ? (
+                <div role="status" className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-xl border-2 border-green-200 bg-green-50">
+                    <CheckCircle2 className="w-7 h-7 text-green-600 shrink-0" aria-hidden="true" />
+                    <p className="flex-1 text-sm text-green-900">
+                        <span className="font-bold">Menu importato:</span>{' '}
+                        {categories.length === 1 ? '1 categoria' : `${categories.length} categorie`} e{' '}
+                        {dishes.length === 1 ? '1 piatto' : `${dishes.length} piatti`}. Premi <span className="font-bold">Continua</span> per controllarli.
+                    </p>
+                    <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="shrink-0">
+                        Importa altre pagine
+                    </Button>
+                </div>
+            ) : tenantId && (
                 <Card className="border-2 border-orange-200 bg-orange-50/60 shadow-sm">
                     <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                         <Sparkles className="w-8 h-8 text-orange-500 shrink-0" aria-hidden="true" />

@@ -164,21 +164,29 @@ export function StepDishes({ tenantId, onValidationChange }: StepDishesProps) {
     }
 
     const loading = catsLoading || dishesLoading;
+    // Piatti già importati al passaggio 2: qui si controllano, l'importazione diventa secondaria
+    const totalDishes = categories.reduce((acc, cat) => acc + (cat.dishes?.length || 0), 0);
+    const reviewing = totalDishes > 0;
 
     return (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
             <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
-                    <h2 className="text-2xl font-black text-gray-900">I Tuoi Piatti 🍝</h2>
+                    <h2 className="text-2xl font-black text-gray-900">{reviewing ? 'Controlla i tuoi piatti 🍝' : 'I Tuoi Piatti 🍝'}</h2>
                     <p className="text-gray-600 mt-1">
-                        Aggiungi i piatti al tuo menu. Usa l'AI per fare prima!
+                        {reviewing
+                            ? `Il tuo menu ha ${totalDishes === 1 ? '1 piatto' : `${totalDishes} piatti`}. Apri una categoria per correggere nomi, prezzi e descrizioni, o aggiungi quello che manca. Puoi farlo anche più tardi dal pannello.`
+                            : "Aggiungi i piatti al tuo menu. Usa l'AI per fare prima!"}
                     </p>
                 </div>
                 <Button
                     onClick={() => setIsAiModalOpen(true)}
-                    className="w-full md:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg border-0"
+                    variant={reviewing ? 'outline' : 'default'}
+                    className={reviewing
+                        ? 'w-full md:w-auto shrink-0'
+                        : 'w-full md:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg border-0'}
                 >
-                    <Sparkles className="w-4 h-4 mr-2" /> Importa con AI
+                    <Sparkles className="w-4 h-4 mr-2" /> {reviewing ? 'Importa altri piatti' : 'Importa con AI'}
                 </Button>
             </div>
 
@@ -192,7 +200,8 @@ export function StepDishes({ tenantId, onValidationChange }: StepDishesProps) {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <Accordion type="multiple" defaultValue={categories.map(c => c.id)} className="space-y-4">
+                    {/* Menu grande: categorie chiuse, si vede subito l'elenco con il numero di piatti */}
+                    <Accordion type="multiple" defaultValue={totalDishes > 20 ? [] : categories.map(c => c.id)} className="space-y-4">
                         {categories.map(category => (
                             <AccordionItem key={category.id} value={category.id} className="border border-gray-100 bg-white rounded-xl shadow-sm px-4">
                                 <AccordionTrigger className="hover:no-underline py-4">
