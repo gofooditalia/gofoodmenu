@@ -7,6 +7,8 @@
  * coincide più con `translations.source`; altrimenti solo nelle lingue mancanti (es. una lingua appena aggiunta),
  * senza toccare quelle già fatte. Gli allergeni non passano di qui (nomi fissi in src/lib/menu-i18n.ts).
  * La chiamano il pulsante "Traduci menu" in /admin e la traduzione automatica (src/lib/menu-translation-jobs.ts).
+ * Le lingue corrette a mano dal ristoratore (`translations.manual`, /dashboard/translations) non si ritraducono
+ * finché il testo italiano resta lo stesso.
  */
 
 import OpenAI from 'openai';
@@ -27,7 +29,8 @@ export interface TextPair {
     description: string;
 }
 
-export type Translations = Partial<Record<TranslatedLang, TextPair>> & { source?: TextPair };
+// manual: lingue corrette a mano dal ristoratore (src/lib/translation-edits.ts), da non ritradurre
+export type Translations = Partial<Record<TranslatedLang, TextPair>> & { source?: TextPair; manual?: TranslatedLang[] };
 
 interface Item {
     key: string; // "d:<id>", "c:<id>", "t:tagline"
@@ -162,9 +165,12 @@ function plausibleDescription(source: string, translated: string, lang: Translat
  */
 function missingLangs(t: Translations | null | undefined, source: TextPair, langs: TranslatedLang[]): TranslatedLang[] {
     if (!t || !sameSource(t.source, source)) return [...langs];
+    const manual = Array.isArray(t.manual) ? t.manual : [];
     return langs.filter((lang) => {
         const pair = t[lang];
-        return !pair?.name || !plausibleDescription(source.description, pair.description, lang);
+        if (!pair?.name) return true;
+        // Una correzione del ristoratore vale così com'è, anche se più corta o più lunga del previsto
+        return !manual.includes(lang) && !plausibleDescription(source.description, pair.description, lang);
     });
 }
 

@@ -251,7 +251,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   La traduzione automatica **non attiva mai le lingue**: un locale nuovo si attiva solo con "Traduci menu" in `/admin`
   (che usa lo stesso lucchetto e risponde "già in corso" se serve). I salvataggi fuori dal pannello (SQL, script) li
   recupera il cron. Una voce scartata ogni volta dal controllo di plausibilità viene ritentata a ogni cron.
-  Da fare: linguette di correzione nel pannello del ristoratore.
+  **Correzioni del ristoratore** (29/10/2026): pagina `/dashboard/translations` (voce "Traduzioni" nel menu del pannello,
+  solo con `menu_languages` non vuoto), una linguetta per lingua con categorie e piatti, italiano accanto alla traduzione.
+  Una lingua corretta finisce in `translations.manual` (`src/lib/translation-edits.ts`) e la traduzione automatica non
+  la rifà; se cambia il testo italiano decade come le altre. "Torna alla traduzione automatica" la toglie e la fa
+  rifare. Sottotitolo e descrizione del locale non sono ancora correggibili da lì.
   **Cinese (semplificato) e arabo** (27/10/2026): `zh` e `ar` in `TRANSLATED_LANGS`, ma **le lingue sono scelte per
   locale**: in `/admin` "Traduci menu" ha una casella per lingua (di default le sei europee, `DEFAULT_TRANSLATED_LANGS`;
   per un locale già tradotto quelle attive) e imposta `menu_languages` esattamente sulle lingue scelte (togliere una

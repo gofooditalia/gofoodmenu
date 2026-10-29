@@ -16,7 +16,8 @@ import {
     Image as ImageIcon,
     ShieldAlert,
     CalendarDays,
-    Star
+    Star,
+    Languages
 } from 'lucide-react';
 
 import {
@@ -51,6 +52,8 @@ export function AppSidebar({ tenant }: { tenant: Tenant }) {
         { title: 'Piatti', url: '/dashboard/dishes', icon: UtensilsCrossed },
         { title: 'Immagini', url: '/dashboard/media', icon: ImageIcon },
         { title: 'Allergeni', url: '/dashboard/allergens', icon: ShieldAlert },
+        // Solo per i locali con il menu tradotto (le lingue si attivano da /admin)
+        ...(tenant.menu_languages?.length ? [{ title: 'Traduzioni', url: '/dashboard/translations', icon: Languages }] : []),
         { title: 'Recensioni', url: '/dashboard/reviews', icon: Star },
         // { title: 'Prenotazioni', url: '/dashboard/reservations', icon: CalendarDays },
 
