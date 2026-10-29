@@ -6,6 +6,8 @@ import { Database } from '@/types/database';
 // import { SupabaseClient } from '@supabase/supabase-js';
 import { useImportMenu } from '@/hooks/useImportMenu';
 import imageCompression from 'browser-image-compression';
+import { useQueryClient } from '@tanstack/react-query';
+import { categorySlug, NEW_CATEGORY_PREFIX, proposeCategories, type ImportedDish, type ProposedCategory } from '@/lib/menu-import-categories';
 
 // Define types from Database definition
 // type DbCategoryInsert = Database['public']['Tables']['categories']['Insert'];
@@ -18,13 +20,9 @@ import imageCompression from 'browser-image-compression';
 // Set worker source
 // pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
-interface Dish {
-    name: string;
-    description: string;
-    price: number;
-    categoryId?: string;
-    selected?: boolean;
-}
+type Dish = ImportedDish;
+
+const DRAFT_KEY = 'menu-import-draft';
 
 interface MenuImportModalProps {
     isOpen: boolean;
@@ -39,6 +37,10 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
     const [step, setStep] = useState<'upload' | 'processing' | 'review'>('upload');
     const [previews, setPreviews] = useState<string[]>([]);
     const [analyzedDishes, setAnalyzedDishes] = useState<Dish[]>([]);
+    // Categorie nuove lette dalle intestazioni del menu, create solo alla conferma
+    const [proposed, setProposed] = useState<ProposedCategory[]>([]);
+    const [isSaving, setIsSaving] = useState(false);
+    const queryClient = useQueryClient();
     const [error, setError] = useState<string | null>(null);
     const [isReadingFile, setIsReadingFile] = useState(false); // New state for file reading
     // ... existing state ...
@@ -52,16 +54,17 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
     // Load draft on mount
     useEffect(() => {
         if (isOpen) {
-            const savedDraft = localStorage.getItem('menu-import-draft');
+            const savedDraft = localStorage.getItem(DRAFT_KEY);
             if (savedDraft) {
                 try {
                     const parsed = JSON.parse(savedDraft);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
+                    const draftDishes = Array.isArray(parsed) ? parsed : parsed?.dishes;
+                    if (Array.isArray(draftDishes) && draftDishes.length > 0) {
                         setDraftFound(true);
                     }
                 } catch (e) {
                     console.error('Failed to parse draft', e);
-                    localStorage.removeItem('menu-import-draft');
+                    localStorage.removeItem(DRAFT_KEY);
                 }
             } else {
                 setDraftFound(false);
@@ -71,6 +74,7 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
             setStep('upload');
             setPreviews([]);
             setAnalyzedDishes([]);
+            setProposed([]);
             setError(null);
             setProcessingProgress({ current: 0, total: 0 });
             setIsReadingFile(false);
@@ -81,16 +85,20 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
     // Auto-save analyzed dishes
     useEffect(() => {
         if (analyzedDishes.length > 0) {
-            localStorage.setItem('menu-import-draft', JSON.stringify(analyzedDishes));
+            localStorage.setItem(DRAFT_KEY, JSON.stringify({ dishes: analyzedDishes, proposed }));
         }
-    }, [analyzedDishes]);
+    }, [analyzedDishes, proposed]);
 
     const handleRestoreDraft = () => {
         try {
-            const savedDraft = localStorage.getItem('menu-import-draft');
+            const savedDraft = localStorage.getItem(DRAFT_KEY);
             if (savedDraft) {
                 const parsed = JSON.parse(savedDraft);
-                setAnalyzedDishes(parsed);
+                // Bozze vecchie: solo l'elenco dei piatti
+                const draft = Array.isArray(parsed) ? { dishes: parsed, proposed: [] } : parsed;
+                const restored = proposeCategories(draft.dishes ?? [], categories, draft.proposed ?? []);
+                setAnalyzedDishes(restored.dishes);
+                setProposed(restored.proposed);
                 setStep('review');
                 setDraftFound(false); // Hide prompt
             }
@@ -101,7 +109,7 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
     };
 
     const handleDiscardDraft = () => {
-        localStorage.removeItem('menu-import-draft');
+        localStorage.removeItem(DRAFT_KEY);
         setDraftFound(false);
     };
 
@@ -244,11 +252,7 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                         const data = await response.json();
                         if (data.dishes && Array.isArray(data.dishes)) {
                             // Map dishes from this batch
-                            const batchDishes = data.dishes.map((dish: Dish) => ({
-                                ...dish,
-                                selected: true,
-                                categoryId: categories.find(c => c.id === dish.categoryId)?.id || categories[0]?.id || ''
-                            }));
+                            const batchDishes = data.dishes.map((dish: Dish) => ({ ...dish, selected: true }));
                             allProcessedDishes.push(...batchDishes);
                         }
                     }
@@ -264,7 +268,9 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                 throw new Error('Non è stato possibile estrarre nessun piatto. Riprova con immagini più chiare o meno pagine.');
             }
 
-            setAnalyzedDishes(allProcessedDishes);
+            const result = proposeCategories(allProcessedDishes, categories);
+            setAnalyzedDishes(result.dishes);
+            setProposed(result.proposed);
             setStep('review');
         } catch (err: any) {
             console.error(err);
@@ -276,31 +282,79 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
     // Moved hook to top level
     // const { mutateAsync: importMenu, isPending: isImporting } = useImportMenu();
 
-    const handleSave = async () => {
-        try {
-            // Check for valid dishes
-            const dishesToImport = analyzedDishes.filter(d => d.selected && d.categoryId);
+    // Categoria proposta rinominata o tolta: i piatti senza categoria li sceglie il ristoratore
+    const renameProposed = (key: string, name: string) => {
+        setProposed(prev => prev.map(p => (p.key === key ? { ...p, name } : p)));
+    };
+    const removeProposed = (key: string) => {
+        setProposed(prev => prev.filter(p => p.key !== key));
+        setAnalyzedDishes(prev => prev.map(d => (d.categoryId === key ? { ...d, categoryId: '' } : d)));
+    };
 
-            if (dishesToImport.length > 0) {
-                await importMenu({
-                    tenantId,
-                    dishes: dishesToImport.map(d => ({
-                        ...d,
-                        // Fix potential undefined slug if simple mapping is needed
-                        // The hook generates the slug again but we can pass it if we want
-                        // The hook logic does simpler: slug: name...
-                        // Let's rely on the hook's mapping
-                    }))
-                });
+    const selectedDishes = analyzedDishes.filter(d => d.selected);
+    const withoutCategory = selectedDishes.filter(d => !d.categoryId).length;
+
+    const handleSave = async () => {
+        if (withoutCategory > 0) {
+            setError(`Scegli la categoria per ${withoutCategory === 1 ? '1 piatto' : `${withoutCategory} piatti`} prima di importare.`);
+            return;
+        }
+        setError(null);
+        setIsSaving(true);
+        try {
+            // 1. Crea solo le categorie nuove usate dai piatti scelti, dopo quelle esistenti e nell'ordine del menu
+            const usedKeys = new Set(selectedDishes.map(d => d.categoryId).filter(id => id?.startsWith(NEW_CATEGORY_PREFIX)));
+            const toCreate = proposed.filter(p => usedKeys.has(p.key) && p.name.trim());
+            const idByKey = new Map<string, string>();
+            if (toCreate.length > 0) {
+                const supabase = createClient();
+                const existingBySlug = new Map(categories.map(c => [categorySlug(String(c.name)), c.id as string]));
+                const rows: { tenant_id: string; name: string; slug: string; display_order: number; is_visible: boolean }[] = [];
+                const keysBySlug = new Map<string, string[]>();
+                let order = categories.reduce((max, c) => Math.max(max, c.display_order ?? 0), -1) + 1;
+                for (const p of toCreate) {
+                    const name = p.name.trim();
+                    const slug = categorySlug(name);
+                    const existingId = existingBySlug.get(slug);
+                    if (existingId) {
+                        idByKey.set(p.key, existingId); // rinominata come una già esistente
+                        continue;
+                    }
+                    if (!keysBySlug.has(slug)) {
+                        keysBySlug.set(slug, []);
+                        rows.push({ tenant_id: tenantId, name, slug, display_order: order++, is_visible: true });
+                    }
+                    keysBySlug.get(slug)!.push(p.key); // due proposte con lo stesso nome diventano una categoria
+                }
+                if (rows.length > 0) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const { data, error: insertError } = await (supabase.from('categories') as any)
+                        .insert(rows)
+                        .select('id, slug');
+                    if (insertError) throw insertError;
+                    for (const row of data as { id: string; slug: string }[]) {
+                        for (const key of keysBySlug.get(row.slug) ?? []) idByKey.set(key, row.id);
+                    }
+                }
+                queryClient.invalidateQueries({ queryKey: ['categories', tenantId] });
             }
 
-            // Clear draft on success
-            localStorage.removeItem('menu-import-draft');
+            // 2. Piatti, con gli id veri delle categorie
+            const dishesToImport = selectedDishes
+                .map(d => ({ ...d, categoryId: d.categoryId?.startsWith(NEW_CATEGORY_PREFIX) ? idByKey.get(d.categoryId) : d.categoryId }))
+                .filter(d => d.categoryId);
+            if (dishesToImport.length > 0) {
+                await importMenu({ tenantId, dishes: dishesToImport });
+            }
+
+            localStorage.removeItem(DRAFT_KEY);
             onSuccess();
             onClose();
         } catch (err) {
             console.error(err);
-            // Toast is handled by the hook
+            setError('Importazione non riuscita. Riprova: i piatti restano qui.');
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -353,16 +407,11 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                             )}
 
                             <div className="mb-8 max-w-md mx-auto">
-                                <p className="text-gray-600 mb-6">
-                                    Carica il file PDF o le foto del tuo menu intero. Il sistema assegnerà automaticamente i piatti alle categorie che hai già creato ({categories.map(c => c.name).slice(0, 3).join(', ')}{categories.length > 3 ? '...' : ''}).
-                                </p>
-
                                 <h3 className="text-xl font-bold text-gray-900 mb-2">Carica Menu Completo</h3>
-                                {categories.length === 0 && (
-                                    <div className="mb-4 p-3 bg-yellow-50 text-yellow-800 rounded text-sm">
-                                        ⚠️ Attenzione: Non hai ancora creato categorie. Crea prima le categorie (Antipasti, Primi, ecc.) per ottenere risultati migliori.
-                                    </div>
-                                )}
+                                <p className="text-gray-600 mb-6">
+                                    Carica il PDF o le foto del tuo menu intero. Leggiamo piatti, prezzi e sezioni
+                                    (Antipasti, Primi…): le categorie nuove le controlli tu prima di importare.
+                                </p>
                             </div>
 
                             <input
@@ -500,8 +549,43 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                     {step === 'review' && (
                         <div className="space-y-8">
                             <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 text-blue-800 text-sm">
-                                Controlla i piatti estratti. L&apos;AI li ha assegnati automaticamente alle tue categorie, ma puoi cambiarle qui se necessario.
+                                Controlla i piatti trovati: nome, prezzo e categoria si possono cambiare qui. Togli la spunta a quelli da non importare.
                             </div>
+
+                            {proposed.length > 0 && (
+                                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                                    <div className="bg-gray-50 p-4 border-b border-gray-200">
+                                        <h3 className="font-bold text-lg text-gray-900">Categorie nuove</h3>
+                                        <p className="text-sm text-gray-600 mt-1">
+                                            Prese dalle sezioni del tuo menu. Puoi rinominarle o toglierle: vengono create solo quando importi.
+                                        </p>
+                                    </div>
+                                    <ul className="p-4 space-y-2">
+                                        {proposed.map(p => {
+                                            const count = analyzedDishes.filter(d => d.categoryId === p.key).length;
+                                            return (
+                                                <li key={p.key} className="flex items-center gap-3">
+                                                    <input
+                                                        type="text"
+                                                        value={p.name}
+                                                        aria-label="Nome della categoria"
+                                                        onChange={(e) => renameProposed(p.key, e.target.value)}
+                                                        className="flex-1 font-semibold bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+                                                    />
+                                                    <span className="text-xs text-gray-500 w-16 shrink-0">{count === 1 ? '1 piatto' : `${count} piatti`}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeProposed(p.key)}
+                                                        className="text-sm font-semibold text-red-600 hover:underline shrink-0"
+                                                    >
+                                                        Togli
+                                                    </button>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            )}
 
                             <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
                                 <div className="bg-gray-50 p-4 border-b border-gray-200">
@@ -570,6 +654,7 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                                                     </label>
                                                     <select
                                                         value={dish.categoryId || ''}
+                                                        aria-invalid={dish.selected && !dish.categoryId}
                                                         onChange={(e) => {
                                                             const newData = [...analyzedDishes];
                                                             newData[index].categoryId = e.target.value;
@@ -578,8 +663,12 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                                                         className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-orange-500 outline-none transition-shadow cursor-pointer appearance-none"
                                                         style={{ backgroundImage: 'linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%)', backgroundPosition: 'calc(100% - 15px) calc(1em + 2px), calc(100% - 10px) calc(1em + 2px)', backgroundSize: '5px 5px, 5px 5px', backgroundRepeat: 'no-repeat' }}
                                                     >
+                                                        {!dish.categoryId && <option value="">Scegli la categoria…</option>}
                                                         {categories.map(c => (
                                                             <option key={c.id} value={c.id}>{c.name}</option>
+                                                        ))}
+                                                        {proposed.map(p => (
+                                                            <option key={p.key} value={p.key}>{p.name || 'Senza nome'} (nuova)</option>
                                                         ))}
                                                     </select>
                                                 </div>
@@ -612,7 +701,12 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
 
                 {/* Footer */}
                 {step === 'review' && (
-                    <div className="p-6 border-t border-gray-200 bg-gray-50 flex justify-end gap-3 sticky bottom-0">
+                    <div className="p-6 border-t border-gray-200 bg-gray-50 flex flex-wrap items-center justify-end gap-3 sticky bottom-0">
+                        {withoutCategory > 0 && (
+                            <p role="status" className="text-sm font-medium text-red-700 me-auto">
+                                {withoutCategory === 1 ? '1 piatto' : `${withoutCategory} piatti`} senza categoria: sceglila nell&apos;elenco.
+                            </p>
+                        )}
                         <button
                             onClick={() => setStep('upload')}
                             className="px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-white transition-all"
@@ -621,9 +715,10 @@ export default function MenuImportModal({ isOpen, onClose, onSuccess, tenantId, 
                         </button>
                         <button
                             onClick={handleSave}
-                            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-3 rounded-xl font-bold hover:from-orange-600 hover:to-amber-600 transition-all shadow-lg"
+                            disabled={isSaving || isImporting || selectedDishes.length === 0}
+                            className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-3 rounded-xl font-bold hover:from-orange-600 hover:to-amber-600 transition-all shadow-lg disabled:opacity-50"
                         >
-                            Importa Selezionati
+                            {isSaving || isImporting ? 'Importazione...' : `Importa ${selectedDishes.length} piatti`}
                         </button>
                     </div>
                 )}

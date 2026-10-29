@@ -37,34 +37,33 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const categoryContext = categories && Array.isArray(categories) && categories.length > 0
-            ? `
-Le categorie disponibili sono:
-${categories.map((c: any) => `- ${c.name} (ID: ${c.id})`).join('\n')}
+        const existing = Array.isArray(categories) ? categories : [];
+        const categoryContext = existing.length > 0
+            ? `Categorie già create dal ristoratore:
+${existing.map((c: any) => `- ${c.name} (ID: ${c.id})`).join('\n')}`
+            : 'Il ristoratore non ha ancora creato categorie.';
 
-Per ogni piatto, DEVI assegnarlo alla categoria corretta usando il suo ID esatto.
-Se un piatto non sembra appartenere a nessuna categoria specifica, assegnalo alla categoria più generica o appropriata.`
-            : 'Non ci sono categorie specifiche fornite.';
-
+        // Le categorie del menu digitale nascono dalle intestazioni del menu (campo "section"): il ristoratore le
+        // rivede prima dell'importazione. Mai inventarle: senza un'intestazione visibile "section" resta vuoto.
         const prompt = `
       Sei un esperto ristoratore digitale. Il tuo compito è digitalizzare un menu fisico (foto) in dati strutturati.
-      
-      IMPORTANTE: L'utente ha GIÀ creato le seguenti categorie nel suo gestionale. 
-      DEVI categorizzare ogni piatto che trovi nell'immagine assegnandolo ESCLUSIVAMENTE a una di queste categorie (usando l'ID corretto).
-      
+
       ${categoryContext}
-      
+
       Istruzioni per l'estrazione:
-      1. **Analisi Struttura**: Prima di tutto, individua le SEZIONI o INTESTAZIONI nel menu fisico (es. "Antipasti", "Primi Piatti", "Vini").
-      2. **Mapping Categoria**: 
-         - Se trovi un piatto sotto l'intestazione "Antipasti", DEVI assegnarlo all'ID della categoria digitale che corrisponde a "Antipasti" (vedi lista sopra).
-         - Se i nomi non sono identici (es. Foto: "Le Nostre Paste" -> Digitale: "Primi"), usa il buon senso per collegarli.
-         - Se un piatto non ha una sezione chiara, deducila dagli ingredienti.
-      3. **Estrazione Dati Piatto**:
-         - **Nome**: Esatto come sul menu.
-         - **Ingredienti**: Tutto il testo descrittivo. IMPORTANTE: NON includere il prezzo qui. Se c'è solo il prezzo come descrizione, lascia vuoto.
-         - **Prezzo**: Numero (usa 0 se manca).
-      
+      1. **Sezioni**: individua le SEZIONI o INTESTAZIONI scritte nel menu (es. "Antipasti", "Le nostre paste", "Vini rossi").
+         - Per ogni piatto scrivi in "section" l'intestazione sotto cui compare, copiata esattamente come è scritta
+           (stesse parole, iniziale maiuscola e resto minuscolo se nel menu è tutto in maiuscolo).
+         - NON inventare sezioni, NON tradurle, NON unirle, NON dedurle dagli ingredienti: se un piatto non ha
+           un'intestazione visibile sopra di sé, lascia "section" vuoto ("").
+         - Se l'intestazione corrisponde chiaramente a una categoria già creata (stesso significato, es. "Le nostre paste"
+           e "Primi"), metti anche il suo ID in "categoryId"; altrimenti lascia "categoryId" vuoto ("").
+      2. **Piatto**:
+         - **Nome**: esatto come sul menu.
+         - **Ingredienti**: tutto il testo descrittivo. NON includere il prezzo. Se c'è solo il prezzo, lascia vuoto.
+         - **Prezzo**: numero (usa 0 se manca).
+      3. Restituisci i piatti nello stesso ordine in cui compaiono nel menu.
+
       Restituisci SOLO un oggetto JSON valido con questa struttura esatta:
         {
             "dishes": [
@@ -72,15 +71,15 @@ Se un piatto non sembra appartenere a nessuna categoria specifica, assegnalo all
                     "name": "Nome Piatto",
                     "description": "Ingredienti o descrizione trovata (SENZA PREZZO)",
                     "price": 12.50,
-                    "categoryId": "ID_ESATTO_DELLA_CATEGORIA_SCELTA"
+                    "section": "Intestazione del menu",
+                    "categoryId": "ID di una categoria già creata oppure stringa vuota"
                 }
             ]
         }
 
       Regole di Validazione:
-      - **CRUCIALE**: Usa SOLO gli ID forniti lista "Categorie disponibili". Non inventare ID.
-      - Se l'immagine contiene categorie che l'utente non ha creato (es. "Amaro"), assegna quei piatti alla categoria "Altro" o quella più simile.
-      - **CRUCIALE**: La descrizione NON deve contenere cifre di prezzo (es. "€12" o "12.00"). Solo ingredienti.
+      - **CRUCIALE**: in "categoryId" usa SOLO gli ID dell'elenco sopra. Non inventare ID.
+      - **CRUCIALE**: la descrizione NON deve contenere cifre di prezzo (es. "€12" o "12.00"). Solo ingredienti.
     `;
 
         const contentParts = [
