@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { authErrorMessage } from '@/lib/auth-errors';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,42 @@ export default function LoginPage() {
     email: '',
     password: ''
   });
+  // Accesso senza password: email a cui è partito il link
+  const [linkSentTo, setLinkSentTo] = useState<string | null>(null);
+  const [sendingLink, setSendingLink] = useState(false);
+
+  // Ritorno da /auth/confirm con un link scaduto, già usato o aperto in un altro browser
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('error') === 'link') {
+      setError('Il link non è più valido: forse è scaduto o è già stato usato. Chiedine uno nuovo qui sotto.');
+    }
+  }, []);
+
+  async function sendLoginLink() {
+    const email = formData.email.trim();
+    if (!email) {
+      setError('Scrivi la tua email, poi chiedi il link di accesso.');
+      return;
+    }
+    setSendingLink(true);
+    setError(null);
+    try {
+      const { error: otpError } = await createClient().auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${window.location.origin}/auth/confirm?next=/dashboard`,
+        },
+      });
+      if (otpError) throw otpError;
+      setLinkSentTo(email);
+    } catch (err) {
+      console.error('Login link error:', err);
+      setError(authErrorMessage(err, 'Non è stato possibile mandare il link. Riprova.'));
+    } finally {
+      setSendingLink(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -72,11 +109,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error('Login error:', err);
-      if (err instanceof Error && err.message.includes('Invalid login credentials')) {
-        setError('Email o password non validi. Riprova.');
-      } else {
-        setError(err instanceof Error ? err.message : 'Errore durante il login. Riprova.');
-      }
+      setError(authErrorMessage(err, 'Accesso non riuscito. Riprova.'));
     } finally {
       setLoading(false);
     }
@@ -178,6 +211,13 @@ export default function LoginPage() {
                 </Link>
               </div>
 
+              {linkSentTo && (
+                <div role="status" className="bg-orange-50 border-2 border-orange-100 text-gray-800 rounded-xl p-4 text-sm">
+                  Ti abbiamo mandato un link di accesso a <strong className="break-all">{linkSentTo}</strong>.
+                  Aprilo per entrare (guarda anche nello spam).
+                </div>
+              )}
+
               <Button
                 type="submit"
                 disabled={loading}
@@ -201,6 +241,16 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
+
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={sendLoginLink}
+              disabled={sendingLink}
+              className="w-full mt-3 py-6 font-bold text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+            >
+              {sendingLink ? 'Invio del link...' : 'Mandami un link di accesso via email'}
+            </Button>
           </CardContent>
           <CardFooter className="flex flex-col space-y-5 pt-4 pb-10 px-8">
             <div className="relative w-full text-center">

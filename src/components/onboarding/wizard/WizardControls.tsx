@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Save, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Save, Loader2, LogOut } from "lucide-react";
 
 interface WizardControlsProps {
     currentStep: number;
@@ -35,8 +35,9 @@ export function WizardControls({
                     disabled={isSaving} // Allow "Esci" on step 1
                     className="gap-2"
                 >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span className="hidden md:inline">{isFirstStep ? "Esci" : "Indietro"}</span>
+                    {isFirstStep ? <LogOut className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
+                    {/* "Esci" chiude la sessione: la scritta resta visibile anche su telefono */}
+                    <span className={isFirstStep ? undefined : "hidden md:inline"}>{isFirstStep ? "Esci" : "Indietro"}</span>
                 </Button>
 
 
