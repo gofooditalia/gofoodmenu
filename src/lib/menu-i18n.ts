@@ -26,6 +26,8 @@ interface MenuStrings {
     information: string;
     allergens: string;
     followUs: string;
+    /** Piatti con foto in testa alla categoria (impaginazioni su misura, src/lib/menu-layouts.ts) */
+    featured: string;
 }
 
 const STRINGS: Record<MenuLang, MenuStrings> = {
@@ -45,6 +47,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Informazioni',
         allergens: 'Allergeni',
         followUs: 'Seguici',
+        featured: 'In evidenza',
     },
     en: {
         outOfSeason: 'Out of season',
@@ -62,6 +65,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Information',
         allergens: 'Allergens',
         followUs: 'Follow Us',
+        featured: 'Featured',
     },
     fr: {
         outOfSeason: 'Hors saison',
@@ -79,6 +83,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Informations',
         allergens: 'Allergènes',
         followUs: 'Suivez-nous',
+        featured: 'À la une',
     },
     de: {
         outOfSeason: 'Nicht in der Saison',
@@ -96,6 +101,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Informationen',
         allergens: 'Allergene',
         followUs: 'Folgen Sie uns',
+        featured: 'Empfehlungen',
     },
     es: {
         outOfSeason: 'Fuera de temporada',
@@ -113,6 +119,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Información',
         allergens: 'Alérgenos',
         followUs: 'Síguenos',
+        featured: 'Destacados',
     },
     pl: {
         outOfSeason: 'Poza sezonem',
@@ -130,6 +137,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Informacje',
         allergens: 'Alergeny',
         followUs: 'Obserwuj nas',
+        featured: 'Polecane',
     },
     pt: {
         outOfSeason: 'Fora de época',
@@ -147,6 +155,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'Informações',
         allergens: 'Alergénios',
         followUs: 'Siga-nos',
+        featured: 'Em destaque',
     },
     zh: {
         outOfSeason: '非当季',
@@ -164,6 +173,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: '信息',
         allergens: '过敏原',
         followUs: '关注我们',
+        featured: '精选',
     },
     ar: {
         outOfSeason: 'خارج الموسم',
@@ -181,6 +191,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         information: 'معلومات',
         allergens: 'مسببات الحساسية',
         followUs: 'تابعونا',
+        featured: 'مميز',
     },
 };
 

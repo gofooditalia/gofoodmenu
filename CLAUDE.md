@@ -143,7 +143,24 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - **QR code** (PR #44): si scarica dalla card della dashboard (`QRCodeCard.tsx`) disegnato a 1200 px; logo di
   riserva `/logo-gofood-new.svg` (`/logo-gofood.png` non esiste).
 - **Layout del menu pubblico**: deciso il 21/10/2026 di non ridisegnarlo (piace ai ristoratori, test e
-  accessibilità a posto). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
+  accessibilità a posto). Eccezione (31/10/2026): **menu su misura per singolo locale**, scelto per slug in
+  `src/lib/menu-layouts.ts` (`menuLayoutFor`); tutti gli altri locali restano su `MenuPageClient` e sul Design Studio.
+  Primo e unico per ora: **Sunset Barcarello** (`src/components/sunset/`). Carta tipografica: ogni piatto è una riga
+  (nome, prezzo con i puntini, ingredienti, allergeni e avvisi in testo), la foto se c'è è una miniatura accanto; in
+  testa a ogni categoria "In evidenza" con i piatti che hanno la foto (tocco = va alla riga). Niente segnaposto per i
+  piatti senza foto; categorie vuote nascoste; vini "X (Calice)" + "X (Bottiglia)" uniti su una riga con due prezzi
+  solo se per il resto identici (e solo in italiano). Logo del locale (bianco su trasparente) ricolorato con
+  `mask-image` (proporzioni del ritaglio `1920 / 800` scritte nel componente: se il locale cambia logo vanno riviste).
+  Skyline al tratto dell'Isola delle Femmine in SVG. **Tema chiaro di giorno, scuro dal tramonto all'alba** a
+  Barcarello: `src/lib/sun-times.ts` (algoritmo NOAA, scarto < 20 s dalla libreria astral su tutto il 2026, test in
+  `e2e/sun-times.spec.ts`). Il tema sta in `<html data-sunset="light|dark">`: lo imposta prima della pagina uno
+  script inline (`sunsetThemeScript` in `src/lib/sunset-theme.ts`, con gli intervalli di notte di 15 giorni calcolati
+  dal server, perché la pagina è in cache ISR) e poi `useSunsetTheme`, che al tramonto (o al ritorno sulla pagina)
+  fa il passaggio animato: colori in 2,5 s, il sole scende sotto l'orizzonte (niente animazioni con "riduci
+  movimento"). Prove e dimostrazioni: `?tema=chiaro`, `?tema=scuro`, `?tema=tramonto` (passaggio dopo 1,5 s).
+  Palette con contrasti AA verificati in `sunset-menu.css`; test axe per entrambi i temi in `accessibilita.spec.ts`.
+  Il Design Studio di Sunset non cambia questo menu (colori e font sono nel CSS); pagina allergeni, app e anteprima
+  dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
   Bilingue dal 24/10/2026: `/` in italiano e `/en` in inglese scritto apposta,

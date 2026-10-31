@@ -83,3 +83,33 @@ test('la scheda contatti dei locali non in prova non esiste', async ({ page }) =
   const res = await page.goto(`/${altro}/info`);
   expect(res?.status()).toBe(404);
 });
+
+// Menu su misura di Sunset: tema scelto prima che la pagina si veda, passaggio allo scuro al tramonto
+test.describe('sunset-barcarello: tema del tramonto', () => {
+  test('il tema si può forzare e non resta sul sito uscendo dal menu', async ({ page }) => {
+    await page.goto('/sunset-barcarello?tema=scuro');
+    await expect(page.locator('html')).toHaveAttribute('data-sunset', 'dark');
+    await page.goto('/sunset-barcarello?tema=chiaro');
+    await expect(page.locator('html')).toHaveAttribute('data-sunset', 'light');
+  });
+
+  test('con ?tema=tramonto il menu passa da chiaro a scuro', async ({ page }) => {
+    await page.goto('/sunset-barcarello?tema=tramonto');
+    await expect(page.locator('html')).toHaveAttribute('data-sunset', 'light');
+    await expect(page.locator('html')).toHaveAttribute('data-sunset', 'dark', { timeout: 5000 });
+  });
+
+  test('nessuna categoria vuota e nessuna foto segnaposto', async ({ page }) => {
+    await page.goto('/sunset-barcarello');
+    for (const section of await page.locator('main section').all()) {
+      await expect(section.locator('h3').first()).toBeAttached();
+    }
+    await expect(page.locator('img[src*="no-image"]')).toHaveCount(0);
+  });
+
+  test('gli altri locali restano sul menu standard', async ({ page }) => {
+    await page.goto('/villa-pensabene-ristorante-pizzeria');
+    await expect(page.locator('.sunset-menu')).toHaveCount(0);
+    await expect(page.locator('html')).not.toHaveAttribute('data-sunset', /.*/);
+  });
+});
