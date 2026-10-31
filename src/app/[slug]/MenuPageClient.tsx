@@ -23,6 +23,7 @@ interface Tenant {
   slug: string;
   tagline?: string;
   footer_data?: FooterData;
+  cover_charge?: number | string;
 }
 
 // Altezza occupata da header fisso (72px) + barra categorie: le sezioni si fermano qui sotto

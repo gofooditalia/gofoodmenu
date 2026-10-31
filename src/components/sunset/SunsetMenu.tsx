@@ -16,6 +16,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { ALLERGEN_PAGE } from '@/lib/allergens-i18n';
+import { formatCoverCharge } from './cover-charge';
 import ScrollToTop from '@/components/ScrollToTop';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
@@ -60,6 +62,7 @@ interface Tenant {
   slug: string;
   tagline?: string;
   footer_data?: FooterData;
+  cover_charge?: number | string;
 }
 
 interface Serving {
@@ -247,6 +250,7 @@ export default function SunsetMenu({
 }) {
   useSunsetTheme(layout.place);
   const strings = useMenuStrings();
+  const coverCharge = formatCoverCharge(tenant.cover_charge, lang);
   const { isGlutenFree, toggleGlutenFilter } = useGlutenFilter();
 
   // Categorie senza piatti visibili: fuori dal menu e dalla barra
@@ -440,7 +444,12 @@ export default function SunsetMenu({
             </section>
           ))}
 
-          <p className="mt-10 text-center text-base">
+          {coverCharge && (
+            <p className="mt-10 text-center text-base text-[var(--sm-ink-2)]">
+              {ALLERGEN_PAGE[lang].coverCharge}: <span className="font-semibold text-[var(--sm-ink)]">{coverCharge}</span>
+            </p>
+          )}
+          <p className={`${coverCharge ? 'mt-4' : 'mt-10'} text-center text-base`}>
             <Link
               href={menuLangPath(tenant.slug, lang, '/allergeni')}
               prefetch={false}
