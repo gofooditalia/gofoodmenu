@@ -18,7 +18,6 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import NativeLanguageSwitcher from '@/components/NativeLanguageSwitcher';
 import { useGlutenFilter } from '@/contexts/GlutenFilterContext';
 import { useCategoryScroll } from '@/hooks/useCategoryScroll';
 import { useMenuStrings } from '@/lib/menu-i18n';
@@ -29,6 +28,7 @@ import { parseIngredients } from '@/utils/ingredientParser';
 import type { FooterData } from '@/types/menu';
 import { SunsetSkyline, SunsetWave } from './SunsetSkyline';
 import { useSunsetTheme } from './useSunsetTheme';
+import { SunsetLanguageMenu } from './SunsetLanguageMenu';
 
 interface Dish {
   id: string;
@@ -309,13 +309,6 @@ export default function SunsetMenu({
   useEffect(() => () => clearTimeout(highlightTimer.current), []);
 
   const name = tenant.restaurant_name.replace(/\s+/g, ' ').trim();
-  const switcher =
-    languages.length > 1 ? (
-      <NativeLanguageSwitcher slug={tenant.slug} current={lang} languages={languages} compact />
-    ) : (
-      <LanguageSwitcher compact />
-    );
-
   return (
     <div
       lang={menuLangTag(lang)}
@@ -323,19 +316,9 @@ export default function SunsetMenu({
       className="sunset-menu min-h-screen select-none overflow-x-hidden"
       style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
     >
-      {/* Barra in alto: filtro senza glutine, mini logo, lingua */}
+      {/* Barra in alto: mini logo a sinistra (compare scorrendo), filtro senza glutine e lingua a destra */}
       <header className="fixed top-0 inset-x-0 z-50 h-14 bg-[var(--sm-bg)]">
         <div className="mx-auto max-w-2xl h-full px-3 flex items-center justify-between gap-2">
-          <button
-            type="button"
-            onClick={toggleGlutenFilter}
-            aria-label={strings.glutenFilter}
-            aria-pressed={isGlutenFree}
-            className={`p-2 rounded-lg text-[var(--sm-heading)] ${isGlutenFree ? 'bg-[var(--sm-highlight)] ring-1 ring-[var(--sm-accent)]' : ''}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true"><path d="m2 22 10-10m4-4-1.17 1.17M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94M8 8l-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97m-.6-6.24c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4" /><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0M16 16l-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 1.97-.98m6.24.6c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28M2 2l20 20" /></svg>
-          </button>
-
           <div className={`transition-opacity duration-300 ${heroVisible ? 'opacity-0' : 'opacity-100'}`}>
             {tenant.logo_url ? (
               <Logo url={tenant.logo_url} style={{ width: 96, aspectRatio: '1920 / 800' }} />
@@ -344,7 +327,27 @@ export default function SunsetMenu({
             )}
           </div>
 
-          {switcher}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleGlutenFilter}
+              title={strings.glutenFilter}
+              aria-pressed={isGlutenFree}
+              className={`flex items-center gap-1.5 h-9 px-3 rounded-full border text-[13px] font-semibold touch-manipulation ${isGlutenFree
+                ? 'bg-[var(--sm-pill-bg)] text-[var(--sm-pill-text)] border-transparent'
+                : 'border-[var(--sm-pill-border)] text-[var(--sm-ink)]'
+                }`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true"><path d="m2 22 10-10m4-4-1.17 1.17M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94M8 8l-.53.53a3.5 3.5 0 0 0 0 4.94L9 15l1.53-1.53c.55-.55.88-1.25.98-1.97m-.6-6.24c.15-.26.34-.51.56-.73L13 3l1.53 1.53a3.5 3.5 0 0 1 .28 4.62M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4" /><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0M16 16l-.53.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 1.97-.98m6.24.6c.26-.15.51-.34.73-.56L21 11l-1.53-1.53a3.5 3.5 0 0 0-4.62-.28M2 2l20 20" /></svg>
+              <span>{strings.glutenFreeShort}</span>
+            </button>
+
+            {languages.length > 1 ? (
+              <SunsetLanguageMenu slug={tenant.slug} current={lang} languages={languages} />
+            ) : (
+              <LanguageSwitcher compact />
+            )}
+          </div>
         </div>
       </header>
 

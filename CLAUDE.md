@@ -160,7 +160,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   movimento"). Prove e dimostrazioni: `?tema=chiaro`, `?tema=scuro`, `?tema=tramonto` (passaggio dopo 1,5 s).
   Palette con contrasti AA verificati in `sunset-menu.css`; test axe per entrambi i temi in `accessibilita.spec.ts`.
   Il Design Studio di Sunset non cambia questo menu (colori e font sono nel CSS); pagina allergeni, app e anteprima
-  dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
+  dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
+  sinistra (compare quando il logo grande esce dallo schermo), a destra il filtro con etichetta "Senza glutine"
+  (`glutenFreeShort` in `menu-i18n.ts`) e la lingua in tendina (`SunsetLanguageMenu`: bandiera + codice, elenco con
+  tutte le lingue, `modal={false}` perché axe non segnali la pagina nascosta ai lettori di schermo). Gli altri locali
+  hanno ancora la pillola IT/EN di `NativeLanguageSwitcher`. taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
   Bilingue dal 24/10/2026: `/` in italiano e `/en` in inglese scritto apposta,

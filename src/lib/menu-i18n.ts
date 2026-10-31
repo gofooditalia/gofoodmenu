@@ -20,6 +20,8 @@ interface MenuStrings {
     vegan: string;
     allergenInfo: string;
     glutenFilter: string;
+    /** Etichetta breve del filtro, accanto all'icona (impaginazioni su misura) */
+    glutenFreeShort: string;
     backToTop: string;
     languageLabel: string;
     ourLocations: string;
@@ -41,6 +43,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Vegano',
         allergenInfo: 'Vedi info allergeni',
         glutenFilter: 'Filtro senza glutine',
+        glutenFreeShort: 'Senza glutine',
         backToTop: 'Torna su',
         languageLabel: 'Lingua del menu',
         ourLocations: 'Le Nostre Sedi',
@@ -59,6 +62,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Vegan',
         allergenInfo: 'Allergen information',
         glutenFilter: 'Gluten-free filter',
+        glutenFreeShort: 'Gluten-free',
         backToTop: 'Back to top',
         languageLabel: 'Menu language',
         ourLocations: 'Our Locations',
@@ -77,6 +81,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Végan',
         allergenInfo: 'Informations sur les allergènes',
         glutenFilter: 'Filtre sans gluten',
+        glutenFreeShort: 'Sans gluten',
         backToTop: 'Haut de page',
         languageLabel: 'Langue du menu',
         ourLocations: 'Nos adresses',
@@ -95,6 +100,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Vegan',
         allergenInfo: 'Informationen zu Allergenen',
         glutenFilter: 'Glutenfrei-Filter',
+        glutenFreeShort: 'Glutenfrei',
         backToTop: 'Nach oben',
         languageLabel: 'Sprache der Speisekarte',
         ourLocations: 'Unsere Standorte',
@@ -113,6 +119,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Vegano',
         allergenInfo: 'Información sobre alérgenos',
         glutenFilter: 'Filtro sin gluten',
+        glutenFreeShort: 'Sin gluten',
         backToTop: 'Volver arriba',
         languageLabel: 'Idioma del menú',
         ourLocations: 'Nuestros locales',
@@ -131,6 +138,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Wegańskie',
         allergenInfo: 'Informacje o alergenach',
         glutenFilter: 'Filtr bezglutenowy',
+        glutenFreeShort: 'Bez glutenu',
         backToTop: 'Do góry',
         languageLabel: 'Język menu',
         ourLocations: 'Nasze lokale',
@@ -149,6 +157,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'Vegano',
         allergenInfo: 'Informação sobre alergénios',
         glutenFilter: 'Filtro sem glúten',
+        glutenFreeShort: 'Sem glúten',
         backToTop: 'Voltar ao topo',
         languageLabel: 'Idioma do menu',
         ourLocations: 'Os nossos espaços',
@@ -167,6 +176,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: '纯素',
         allergenInfo: '过敏原信息',
         glutenFilter: '无麸质筛选',
+        glutenFreeShort: '无麸质',
         backToTop: '返回顶部',
         languageLabel: '菜单语言',
         ourLocations: '我们的门店',
@@ -185,6 +195,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegan: 'نباتي صرف',
         allergenInfo: 'معلومات مسببات الحساسية',
         glutenFilter: 'تصفية: خالٍ من الغلوتين',
+        glutenFreeShort: 'خالٍ من الغلوتين',
         backToTop: 'العودة إلى الأعلى',
         languageLabel: 'لغة القائمة',
         ourLocations: 'فروعنا',
