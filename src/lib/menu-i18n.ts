@@ -21,6 +21,8 @@ interface MenuStrings {
     vegetarian: string;
     vegan: string;
     allergenInfo: string;
+    // Pulsante "i" del menu Sunset che mostra i nomi accanto alle icone degli allergeni
+    allergenNames: string;
     glutenFilter: string;
     /** Etichetta breve del filtro, accanto all'icona (impaginazioni su misura) */
     glutenFreeShort: string;
@@ -45,6 +47,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Vegetariano',
         vegan: 'Vegano',
         allergenInfo: 'Vedi info allergeni',
+        allergenNames: 'Nomi degli allergeni',
         glutenFilter: 'Filtro senza glutine',
         glutenFreeShort: 'Senza glutine',
         backToTop: 'Torna su',
@@ -65,6 +68,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Vegetarian',
         vegan: 'Vegan',
         allergenInfo: 'Allergen information',
+        allergenNames: 'Allergen names',
         glutenFilter: 'Gluten-free filter',
         glutenFreeShort: 'Gluten-free',
         backToTop: 'Back to top',
@@ -85,6 +89,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Végétarien',
         vegan: 'Végan',
         allergenInfo: 'Informations sur les allergènes',
+        allergenNames: 'Noms des allergènes',
         glutenFilter: 'Filtre sans gluten',
         glutenFreeShort: 'Sans gluten',
         backToTop: 'Haut de page',
@@ -105,6 +110,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Vegetarisch',
         vegan: 'Vegan',
         allergenInfo: 'Informationen zu Allergenen',
+        allergenNames: 'Namen der Allergene',
         glutenFilter: 'Glutenfrei-Filter',
         glutenFreeShort: 'Glutenfrei',
         backToTop: 'Nach oben',
@@ -125,6 +131,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Vegetariano',
         vegan: 'Vegano',
         allergenInfo: 'Información sobre alérgenos',
+        allergenNames: 'Nombres de los alérgenos',
         glutenFilter: 'Filtro sin gluten',
         glutenFreeShort: 'Sin gluten',
         backToTop: 'Volver arriba',
@@ -145,6 +152,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Wegetariańskie',
         vegan: 'Wegańskie',
         allergenInfo: 'Informacje o alergenach',
+        allergenNames: 'Nazwy alergenów',
         glutenFilter: 'Filtr bezglutenowy',
         glutenFreeShort: 'Bez glutenu',
         backToTop: 'Do góry',
@@ -165,6 +173,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'Vegetariano',
         vegan: 'Vegano',
         allergenInfo: 'Informação sobre alergénios',
+        allergenNames: 'Nomes dos alergénios',
         glutenFilter: 'Filtro sem glúten',
         glutenFreeShort: 'Sem glúten',
         backToTop: 'Voltar ao topo',
@@ -185,6 +194,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: '素食',
         vegan: '纯素',
         allergenInfo: '过敏原信息',
+        allergenNames: '过敏原名称',
         glutenFilter: '无麸质筛选',
         glutenFreeShort: '无麸质',
         backToTop: '返回顶部',
@@ -205,6 +215,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         vegetarian: 'نباتي',
         vegan: 'نباتي صرف',
         allergenInfo: 'معلومات مسببات الحساسية',
+        allergenNames: 'أسماء مسببات الحساسية',
         glutenFilter: 'تصفية: خالٍ من الغلوتين',
         glutenFreeShort: 'خالٍ من الغلوتين',
         backToTop: 'العودة إلى الأعلى',

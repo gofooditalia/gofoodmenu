@@ -4,7 +4,7 @@
  * Menu su misura di Sunset Barcarello (src/lib/menu-layouts.ts), al posto di MenuPageClient.
  *
  * Carta tipografica pensata per un menu con poche foto: ogni piatto è una riga (nome, prezzo con i puntini,
- * ingredienti, allergeni) e la foto, se c'è, è una miniatura accanto. In testa a ogni categoria i piatti con
+ * ingredienti, icone degli allergeni con la "i" che ne mostra i nomi) e la foto, se c'è, è una miniatura accanto. In testa a ogni categoria i piatti con
  * la foto diventano "In evidenza". Nessun riquadro vuoto per i piatti senza foto.
  * Vini con calice e bottiglia (due voci nel pannello) su una sola riga con due prezzi.
  * Tema chiaro di giorno e scuro dopo il tramonto: useSunsetTheme.ts.
@@ -165,7 +165,18 @@ function DishPhoto({ dish, sizes, className }: { dish: Dish; sizes: string; clas
   );
 }
 
-function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlighted: boolean }) {
+/** "i" in un cerchio: pieno quando i nomi degli allergeni sono aperti. */
+function InfoIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+      <circle cx="12" cy="12" r="9" fill={filled ? 'currentColor' : 'none'} />
+      <path d="M12 11v5.5" stroke={filled ? 'var(--sm-bg)' : 'currentColor'} strokeWidth={1.75} />
+      <path d="M12 7.6h.01" stroke={filled ? 'var(--sm-bg)' : 'currentColor'} strokeWidth={2.25} />
+    </svg>
+  );
+}
+
+function DishRow({ row, lang, slug, highlighted }: { row: Row; lang: MenuLang; slug: string; highlighted: boolean }) {
   const strings = useMenuStrings();
   const { isGlutenFree } = useGlutenFilter();
   // Filtro glutine: spento se contiene glutine, attenuato con l'avviso se gli allergeni non sono inseriti
@@ -173,6 +184,8 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
   const disabled = gluten === 'contains';
   const unknown = gluten === 'unknown';
   const photo = hasPhoto(row) && !row.is_seasonal;
+  const [showNames, setShowNames] = useState(false);
+  const namesId = `allergeni-${row.id}`;
 
   const notes: string[] = [];
   if (row.is_seasonal) notes.push(strings.outOfSeason);
@@ -216,19 +229,46 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
           <p className="mt-1 text-base leading-relaxed text-[var(--sm-ink-2)]">{parseIngredients(row.description)}</p>
         )}
 
+        {/* Avvisi in testo, poi gli allergeni solo come icone; la "i" mostra i nomi qui sotto (senza lasciare il menu).
+            I lettori di schermo leggono sempre i nomi (sr-only accanto a ogni icona). */}
         {(notes.length > 0 || row.allergens.length > 0 || disabled || unknown) && (
-          <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-relaxed text-[var(--sm-ink-2)]">
+          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm leading-relaxed">
             {disabled && <span className="font-semibold text-[var(--sm-accent)]">{strings.containsGluten}</span>}
             {unknown && <span className="font-semibold text-[var(--sm-accent)]">{strings.allergensUnknown}</span>}
-            {notes.length > 0 && <span className="font-medium text-[var(--sm-ink)]">{notes.join(' · ')}</span>}
-            {/* Icona + nome: l'icona da colore alla riga, il nome resta perché l'icona da sola non basta */}
+            {notes.length > 0 && <span className="font-medium text-[var(--sm-ink)] me-0.5">{notes.join(' · ')}</span>}
             {row.allergens.map((a) => (
-              <span key={a} className="inline-flex items-center gap-1 whitespace-nowrap">
-                <AllergenIcon id={a} className="w-[1.125rem] h-[1.125rem] shrink-0 text-[var(--sm-accent)]" />
-                {strings.allergenName(a)}
+              <span key={a} className="inline-flex text-[var(--sm-accent)]">
+                <AllergenIcon id={a} className="w-5 h-5" />
+                <span className="sr-only">{strings.allergenName(a)}</span>
               </span>
             ))}
-          </p>
+            {row.allergens.length > 0 && (
+              <button
+                type="button"
+                aria-expanded={showNames}
+                aria-controls={namesId}
+                aria-label={strings.allergenNames}
+                onClick={() => setShowNames((v) => !v)}
+                className={`-m-1 p-1 rounded-full touch-manipulation ${showNames ? 'text-[var(--sm-ink)]' : 'text-[var(--sm-ink-2)]'}`}
+              >
+                <InfoIcon filled={showNames} />
+              </button>
+            )}
+          </div>
+        )}
+        {row.allergens.length > 0 && (
+          <>
+            <div id={namesId} hidden={!showNames} className="mt-1 text-sm leading-relaxed text-[var(--sm-ink-2)]">
+              <span aria-hidden="true">{row.allergens.map((a) => strings.allergenName(a)).join(' · ')}</span>{' '}
+              <Link
+                href={menuLangPath(slug, lang, '/allergeni')}
+                prefetch={false}
+                className="whitespace-nowrap font-medium text-[var(--sm-heading)] underline underline-offset-4 decoration-[var(--sm-dots)]"
+              >
+                {strings.allergenInfo}
+              </Link>
+            </div>
+          </>
         )}
       </div>
 
@@ -444,7 +484,7 @@ export default function SunsetMenu({
 
               <div className="mt-4">
                 {section.rows.map((row) => (
-                  <DishRow key={row.id} row={row} lang={lang} highlighted={highlighted === row.id} />
+                  <DishRow key={row.id} row={row} lang={lang} slug={tenant.slug} highlighted={highlighted === row.id} />
                 ))}
               </div>
             </section>

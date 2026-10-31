@@ -166,8 +166,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   fondo al menu Sunset (solo se maggiore di zero: `formatCoverCharge`, Supabase dà il DECIMAL come testo); negli altri
   locali il menu pubblico non lo mostra ancora. **Icone degli allergeni** (31/10/2026): `AllergenIcon`
   (`src/components/AllergenIcon.tsx`), 14 icone al tratto in `currentColor`, una diversa per allergene (le emoji di
-  `ALLERGEN_LIST` avevano soia e lupini uguali); nel menu Sunset icona + nome (mai l'icona da sola) e nella pagina
-  allergeni come legenda. Gli altri locali usano ancora solo il testo. App e anteprima dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
+  `ALLERGEN_LIST` avevano soia e lupini uguali); nel menu Sunset (deciso col titolare il 31/10/2026) nelle righe
+  solo le icone, seguite da una "i" in un cerchio che mostra i nomi sotto la riga con il link alla pagina allergeni
+  (`allergenNames` in `menu-i18n.ts` per l'etichetta); i nomi sono sempre letti dai lettori di schermo (sr-only).
+  Gli avvisi ("Contiene glutine", "chiedi al personale", surgelato…) restano in testo. Nella pagina allergeni le
+  icone fanno da legenda. Gli altri locali usano ancora solo il testo. App e anteprima dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
   sinistra (compare quando il logo grande esce dallo schermo), a destra il filtro con etichetta "Senza glutine"
   (`glutenFreeShort` in `menu-i18n.ts`) e la lingua in tendina (`SunsetLanguageMenu`: bandiera + codice, elenco con
   tutte le lingue, `modal={false}` perché axe non segnali la pagina nascosta ai lettori di schermo). Gli altri locali
