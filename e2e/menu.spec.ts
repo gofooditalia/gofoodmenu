@@ -93,6 +93,14 @@ test.describe('sunset-barcarello: tema del tramonto', () => {
     await expect(page.locator('html')).toHaveAttribute('data-sunset', 'light');
   });
 
+  test('la barra del browser prende il colore del tema', async ({ page }) => {
+    const themeColor = page.locator('meta[name="theme-color"]').first();
+    await page.goto('/sunset-barcarello?tema=scuro');
+    await expect(themeColor).toHaveAttribute('content', '#0F1B2D');
+    await page.goto('/sunset-barcarello?tema=chiaro');
+    await expect(themeColor).toHaveAttribute('content', '#FBF4EA');
+  });
+
   test('con ?tema=tramonto il menu passa da chiaro a scuro', async ({ page }) => {
     await page.goto('/sunset-barcarello?tema=tramonto');
     await expect(page.locator('html')).toHaveAttribute('data-sunset', 'light');

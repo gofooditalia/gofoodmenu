@@ -15,6 +15,14 @@ export const PUBLIC_TENANT_COLUMNS =
   'id, restaurant_name, slug, country, currency, cover_charge, footer_data, logo_url, translations, menu_languages';
 
 /**
+ * Nome del locale come va mostrato: spazi doppi, a capo e spazi in testa o in coda tolti. Nel pannello il nome
+ * si scrive a mano e spesso resta "Nome  Locale " (si vedeva nel titolo della scheda e nelle anteprime dei link).
+ */
+export function cleanTenantName<T extends string | null | undefined>(name: T): T {
+  return (typeof name === 'string' ? name.replace(/\s+/g, ' ').trim() : name) as T;
+}
+
+/**
  * Locale per slug con le colonne pubbliche (più `embed`, es. 'tenant_locations(*)') e `menu_public`.
  * null se il locale non esiste.
  */
@@ -31,7 +39,14 @@ export async function getPublicTenant(slug: string, embed?: string): Promise<any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: menuPublic } = await (supabase as any).rpc('is_menu_public', { p_tenant_id: tenant.id });
   // Senza risposta il menu non si mostra: meglio la pagina neutra che un menu sospeso
-  return { ...tenant, menu_public: menuPublic === true };
+  return {
+    ...tenant,
+    restaurant_name: cleanTenantName(tenant.restaurant_name),
+    footer_data: tenant.footer_data
+      ? { ...tenant.footer_data, public_name: cleanTenantName(tenant.footer_data.public_name) }
+      : tenant.footer_data,
+    menu_public: menuPublic === true,
+  };
 }
 
 /** Locali con il menu pubblico, per la sitemap. */

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { dayPhase, type Place } from '@/lib/sun-times';
-import { SUNSET_ATTR, type SunsetMode } from '@/lib/sunset-theme';
+import { SUNSET_ATTR, SUNSET_THEME_COLOR, type SunsetMode } from '@/lib/sunset-theme';
 
 /**
  * Tema del menu Sunset: chiaro di giorno, scuro dal tramonto all'alba nel luogo del locale.
@@ -20,15 +20,21 @@ import { SUNSET_ATTR, type SunsetMode } from '@/lib/sunset-theme';
 const FADE_CLASS = 'sunset-fade';
 // Deve coprire la transizione più lunga in sunset-menu.css
 const FADE_MS = 4500;
-// Colore della barra del browser e dello stato del telefono, uguale allo sfondo del menu
-const THEME_COLOR: Record<SunsetMode, string> = { light: '#FBF4EA', dark: '#0F1B2D' };
-
 function applyMode(mode: SunsetMode, fade: boolean) {
   const root = document.documentElement;
-  if (root.getAttribute(SUNSET_ATTR) === mode) return;
+  // Tutti i theme-color: possono essercene più d'uno (layout e pagina, o uno per media query)
+  const setThemeColor = () =>
+    document
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((meta) => meta.setAttribute('content', SUNSET_THEME_COLOR[mode]));
+  // Tema già giusto (lo imposta lo script inline): resta da allineare la barra del browser
+  if (root.getAttribute(SUNSET_ATTR) === mode) {
+    setThemeColor();
+    return;
+  }
   const set = () => {
     root.setAttribute(SUNSET_ATTR, mode);
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[mode]);
+    setThemeColor();
   };
   if (!fade) {
     set();
