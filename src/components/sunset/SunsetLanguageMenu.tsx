@@ -28,7 +28,7 @@ export function SunsetLanguageMenu({ slug, current, languages }: { slug: string;
         <button
           type="button"
           aria-label={`${strings.languageLabel}: ${currentLabel.label}`}
-          className="flex items-center gap-1.5 h-9 ps-2.5 pe-2 rounded-full border border-[var(--sm-pill-border)] text-[13px] font-semibold text-[var(--sm-ink)] touch-manipulation notranslate"
+          className="flex items-center gap-1.5 h-9 ps-2.5 pe-2 rounded-full border border-[var(--sm-pill-border)] text-sm font-semibold text-[var(--sm-ink)] touch-manipulation notranslate"
         >
           <span className="text-base leading-none" aria-hidden="true">{currentLabel.flag}</span>
           <span aria-hidden="true">{current.toUpperCase()}</span>
@@ -41,7 +41,7 @@ export function SunsetLanguageMenu({ slug, current, languages }: { slug: string;
           <DropdownMenuItem
             key={lang}
             asChild
-            className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2 text-sm text-[var(--sm-ink)] focus:bg-[var(--sm-highlight)] focus:text-[var(--sm-ink)]"
+            className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2.5 text-base text-[var(--sm-ink)] focus:bg-[var(--sm-highlight)] focus:text-[var(--sm-ink)]"
           >
             <a
               href={menuLangPath(slug, lang)}

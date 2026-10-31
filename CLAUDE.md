@@ -164,7 +164,10 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   sinistra (compare quando il logo grande esce dallo schermo), a destra il filtro con etichetta "Senza glutine"
   (`glutenFreeShort` in `menu-i18n.ts`) e la lingua in tendina (`SunsetLanguageMenu`: bandiera + codice, elenco con
   tutte le lingue, `modal={false}` perché axe non segnali la pagina nascosta ai lettori di schermo). Gli altri locali
-  hanno ancora la pillola IT/EN di `NativeLanguageSwitcher`. taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
+  hanno ancora la pillola IT/EN di `NativeLanguageSwitcher`. Righe dei piatti (31/10/2026): altezza minima uguale per tutte
+  (`min-h-[7.75rem]`, come un piatto con nome, una riga di ingredienti e una di allergeni), per un ritmo regolare anche
+  quando mancano descrizione o allergeni; testi ingranditi per chi vede poco (nome e prezzo 17 px, ingredienti 16,
+  allergeni 14, misure in rem così seguono la dimensione del testo scelta sul telefono). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
   Bilingue dal 24/10/2026: `/` in italiano e `/en` in inglese scritto apposta,

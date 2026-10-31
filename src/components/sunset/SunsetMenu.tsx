@@ -186,23 +186,23 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
   return (
     <article
       id={`piatto-${row.id}`}
-      className={`flex gap-3 py-4 px-2 -mx-2 border-t border-[var(--sm-line)] first:border-t-0 ${highlighted ? 'sm-row-highlight' : ''} ${disabled ? 'opacity-45' : ''}`}
+      className={`flex gap-3 py-5 px-2 -mx-2 min-h-[7.75rem] border-t border-[var(--sm-line)] first:border-t-0 ${highlighted ? 'sm-row-highlight' : ''} ${disabled ? 'opacity-45' : ''}`}
     >
       <div className="flex-1 min-w-0">
         {row.servings ? (
-          <h3 className="sm-dish-name text-[15px] leading-snug font-semibold text-[var(--sm-ink)]">{row.name}</h3>
+          <h3 className="sm-dish-name text-[1.0625rem] leading-snug font-semibold text-[var(--sm-ink)]">{row.name}</h3>
         ) : (
           <div className="flex items-end gap-2">
-            <h3 className="sm-dish-name text-[15px] leading-snug font-semibold text-[var(--sm-ink)] min-w-0">{row.name}</h3>
+            <h3 className="sm-dish-name text-[1.0625rem] leading-snug font-semibold text-[var(--sm-ink)] min-w-0">{row.name}</h3>
             <span className="sm-leader" aria-hidden="true" />
-            <span className="shrink-0 text-[15px] font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
+            <span className="shrink-0 text-[1.0625rem] font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
               € {formatPrice(row.price, lang)}
             </span>
           </div>
         )}
 
         {row.servings && (
-          <p className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-sm text-[var(--sm-ink-2)]">
+          <p className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-base text-[var(--sm-ink-2)]">
             {row.servings.map((s) => (
               <span key={s.label}>
                 {s.label}{' '}
@@ -215,11 +215,11 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
         )}
 
         {row.description?.trim() && (
-          <p className="mt-1 text-sm leading-relaxed text-[var(--sm-ink-2)]">{parseIngredients(row.description)}</p>
+          <p className="mt-1 text-base leading-relaxed text-[var(--sm-ink-2)]">{parseIngredients(row.description)}</p>
         )}
 
         {(notes.length > 0 || row.allergens.length > 0 || disabled) && (
-          <p className="mt-1.5 text-xs leading-relaxed text-[var(--sm-ink-2)]">
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--sm-ink-2)]">
             {disabled && <span className="font-semibold text-[var(--sm-accent)]">{strings.containsGluten} · </span>}
             {notes.length > 0 && <span className="font-medium text-[var(--sm-ink)]">{notes.join(' · ')}</span>}
             {notes.length > 0 && row.allergens.length > 0 && ' · '}
@@ -229,8 +229,8 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
       </div>
 
       {photo && (
-        <div className="relative shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-[var(--sm-nav)] self-start mt-0.5">
-          <DishPhoto dish={row} sizes="64px" />
+        <div className="relative shrink-0 w-[4.5rem] h-[4.5rem] rounded-lg overflow-hidden bg-[var(--sm-nav)] self-start mt-0.5">
+          <DishPhoto dish={row} sizes="72px" />
         </div>
       )}
     </article>
@@ -333,7 +333,7 @@ export default function SunsetMenu({
               onClick={toggleGlutenFilter}
               title={strings.glutenFilter}
               aria-pressed={isGlutenFree}
-              className={`flex items-center gap-1.5 h-9 px-3 rounded-full border text-[13px] font-semibold touch-manipulation ${isGlutenFree
+              className={`flex items-center gap-1.5 h-9 px-3 rounded-full border text-sm font-semibold touch-manipulation ${isGlutenFree
                 ? 'bg-[var(--sm-pill-bg)] text-[var(--sm-pill-text)] border-transparent'
                 : 'border-[var(--sm-pill-border)] text-[var(--sm-ink)]'
                 }`}
@@ -364,7 +364,7 @@ export default function SunsetMenu({
                   data-cat={section.id}
                   onClick={() => scrollToCategory(section.id)}
                   aria-current={active ? 'true' : undefined}
-                  className={`px-3.5 py-1.5 rounded-full text-[13px] font-medium whitespace-nowrap touch-manipulation border ${active
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap touch-manipulation border ${active
                     ? 'bg-[var(--sm-pill-bg)] text-[var(--sm-pill-text)] border-transparent'
                     : 'text-[var(--sm-ink)] border-[var(--sm-pill-border)]'
                     }`}
@@ -388,7 +388,7 @@ export default function SunsetMenu({
               <span aria-hidden="true" className="sm-serif text-4xl text-[var(--sm-heading)]">{name}</span>
             )}
           </h1>
-          <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--sm-accent)]">{layout.placeLabel}</p>
+          <p className="mt-2 text-xs font-medium uppercase tracking-[0.22em] text-[var(--sm-accent)]">{layout.placeLabel}</p>
           <div className="mt-3 -mx-4 sm:mx-0">
             <SunsetSkyline />
           </div>
@@ -397,19 +397,19 @@ export default function SunsetMenu({
         <div className="mx-auto max-w-2xl px-4 pb-6">
           {sections.map((section) => (
             <section key={section.id} id={section.id} className="pt-9">
-              <h2 className="text-center sm-serif text-[26px] leading-tight text-[var(--sm-heading)]">
+              <h2 className="text-center sm-serif text-[1.75rem] leading-tight text-[var(--sm-heading)]">
                 {section.name.trim()}
               </h2>
               <SunsetWave />
               {section.description?.trim() && (
-                <p className="mt-3 text-center text-sm italic leading-relaxed text-[var(--sm-ink-2)] sm-serif">
+                <p className="mt-3 text-center text-base italic leading-relaxed text-[var(--sm-ink-2)] sm-serif">
                   {section.description}
                 </p>
               )}
 
               {section.featured.length > 0 && (
                 <div className="mt-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--sm-accent)]">{strings.featured}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--sm-accent)]">{strings.featured}</p>
                   <div className="sm-scroll-x mt-2 -mx-4 px-4 overflow-x-auto">
                     <div className="flex gap-3 pb-1 min-w-max">
                       {section.featured.map((dish) => (
@@ -423,10 +423,10 @@ export default function SunsetMenu({
                             <DishPhoto dish={dish} sizes="160px" />
                           </span>
                           <span className="block px-2.5 py-2">
-                            <span className="sm-dish-name block text-[13px] leading-snug font-semibold text-[var(--sm-ink)] line-clamp-2">
+                            <span className="sm-dish-name block text-sm leading-snug font-semibold text-[var(--sm-ink)] line-clamp-2">
                               {dish.name}
                             </span>
-                            <span className="block mt-0.5 text-[13px] font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
+                            <span className="block mt-0.5 text-sm font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
                               € {formatPrice(dish.price, lang)}
                             </span>
                           </span>
@@ -445,7 +445,7 @@ export default function SunsetMenu({
             </section>
           ))}
 
-          <p className="mt-10 text-center text-sm">
+          <p className="mt-10 text-center text-base">
             <Link
               href={menuLangPath(tenant.slug, lang, '/allergeni')}
               prefetch={false}
