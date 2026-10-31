@@ -16,6 +16,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { AllergenIcon } from '@/components/AllergenIcon';
 import { ALLERGEN_PAGE } from '@/lib/allergens-i18n';
 import { formatCoverCharge } from './cover-charge';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -216,12 +217,17 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
         )}
 
         {(notes.length > 0 || row.allergens.length > 0 || disabled || unknown) && (
-          <p className="mt-1.5 text-sm leading-relaxed text-[var(--sm-ink-2)]">
-            {disabled && <span className="font-semibold text-[var(--sm-accent)]">{strings.containsGluten} · </span>}
+          <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-relaxed text-[var(--sm-ink-2)]">
+            {disabled && <span className="font-semibold text-[var(--sm-accent)]">{strings.containsGluten}</span>}
             {unknown && <span className="font-semibold text-[var(--sm-accent)]">{strings.allergensUnknown}</span>}
             {notes.length > 0 && <span className="font-medium text-[var(--sm-ink)]">{notes.join(' · ')}</span>}
-            {notes.length > 0 && row.allergens.length > 0 && ' · '}
-            {row.allergens.map((a) => strings.allergenName(a)).join(' · ')}
+            {/* Icona + nome: l'icona da colore alla riga, il nome resta perché l'icona da sola non basta */}
+            {row.allergens.map((a) => (
+              <span key={a} className="inline-flex items-center gap-1 whitespace-nowrap">
+                <AllergenIcon id={a} className="w-[1.125rem] h-[1.125rem] shrink-0 text-[var(--sm-accent)]" />
+                {strings.allergenName(a)}
+              </span>
+            ))}
           </p>
         )}
       </div>

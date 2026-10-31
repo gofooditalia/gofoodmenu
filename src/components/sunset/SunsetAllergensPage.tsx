@@ -4,12 +4,13 @@
  * Pagina allergeni del menu Sunset (/sunset-barcarello/allergeni e /sunset-barcarello/{lingua}/allergeni), al
  * posto di AllergensPageClient: stessi testi fissi (src/lib/allergens-i18n.ts), con l'aspetto e il tema chiaro/scuro
  * del menu Sunset. Una sola pagina, senza schede: l'elenco dei 14 allergeni con le descrizioni e sotto le note legali
- * (asterischi, regolamento, coperto). La scheda "Info legali" del menu standard ripeteva solo i nomi degli allergeni.
+ * (asterischi, regolamento, coperto), con le stesse icone al tratto del menu (AllergenIcon). La scheda "Info legali" del menu standard ripeteva solo i nomi degli allergeni.
  */
 
 import './sunset-menu.css';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { AllergenIcon } from '@/components/AllergenIcon';
 import ScrollToTop from '@/components/ScrollToTop';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { ALLERGEN_LIST, ALLERGEN_PAGE } from '@/lib/allergens-i18n';
@@ -107,11 +108,8 @@ function SunsetAllergensContent({
           <ol className="mt-6">
             {ALLERGEN_LIST.map((allergen) => (
               <li key={allergen.id} className="flex gap-4 py-5 border-t border-[var(--sm-line)] first:border-t-0">
-                <span
-                  aria-hidden="true"
-                  className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-xl bg-[var(--sm-nav)] border border-[var(--sm-line)]"
-                >
-                  {allergen.icon}
+                <span className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center bg-[var(--sm-nav)] border border-[var(--sm-line)] text-[var(--sm-accent)]">
+                  <AllergenIcon id={allergen.id} className="w-6 h-6" />
                 </span>
                 <div className="min-w-0">
                   <h3 className="text-[1.0625rem] font-semibold leading-snug text-[var(--sm-ink)]">
