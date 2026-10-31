@@ -180,6 +180,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   funzioni; chiusura "Il tuo menu online in giornata". Promessa: "Il tuo menu digitale. Lo fai tu, in pochi minuti."
   Pilastri: Lo fai tu · Allergeni seri · Il menu è tuo · Ti risponde una persona. Tono: concreto, niente superlativi,
   niente numeri o prove inventate. Go!Food Menù non è un sito web del locale (niente chi siamo / gallery).
+- **Filtro senza glutine** (31/10/2026): regola unica `glutenStatus` in `src/lib/gluten-filter.ts`, usata da `DishCard` e
+  dal menu Sunset. Con il filtro attivo: piatto con "glutine" tra gli allergeni spento ("Contiene glutine"); piatto
+  **senza nessun allergene inserito** e non segnato "senza glutine" attenuato con "Allergeni non indicati: chiedi al
+  personale" (`allergensUnknown` in `menu-i18n.ts`). Prima un piatto mai compilato (es. una pizza) restava acceso come
+  se fosse adatto ai celiaci. Effetto voluto: anche acqua e bibite senza allergeni compaiono con l'avviso.
 - **Foto dei Piatti: Con foto / Solo testo** (Design Studio, 24/10/2026): `dishPhotos: 'hide'` in `theme_config`
   (nessuna migrazione), `DishCard` senza riquadro foto e prezzo accanto al nome, due colonne su schermo largo, nessuna
   immagine scaricata. Applicare uno stile pronto NON cambia questa scelta (`applyPreset` in `ThemeContext.tsx`). Le

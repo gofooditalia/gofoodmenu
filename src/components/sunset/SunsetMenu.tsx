@@ -24,6 +24,7 @@ import { useMenuStrings } from '@/lib/menu-i18n';
 import { menuLangDir, menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import type { SunsetLayout } from '@/lib/menu-layouts';
 import { dishThumbUrl } from '@/lib/dish-thumbs';
+import { glutenStatus } from '@/lib/gluten-filter';
 import { parseIngredients } from '@/utils/ingredientParser';
 import type { FooterData } from '@/types/menu';
 import { SunsetSkyline, SunsetWave } from './SunsetSkyline';
@@ -173,7 +174,10 @@ function Logo({ url, className, style }: { url: string; className?: string; styl
 function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlighted: boolean }) {
   const strings = useMenuStrings();
   const { isGlutenFree } = useGlutenFilter();
-  const disabled = isGlutenFree && row.allergens.includes('glutine');
+  // Filtro glutine: spento se contiene glutine, attenuato con l'avviso se gli allergeni non sono inseriti
+  const gluten = glutenStatus(row, isGlutenFree);
+  const disabled = gluten === 'contains';
+  const unknown = gluten === 'unknown';
   const photo = hasPhoto(row) && !row.is_seasonal;
 
   const notes: string[] = [];
@@ -186,7 +190,7 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
   return (
     <article
       id={`piatto-${row.id}`}
-      className={`flex gap-3 py-5 px-2 -mx-2 min-h-[7.75rem] border-t border-[var(--sm-line)] first:border-t-0 ${highlighted ? 'sm-row-highlight' : ''} ${disabled ? 'opacity-45' : ''}`}
+      className={`flex gap-3 py-5 px-2 -mx-2 min-h-[7.75rem] border-t border-[var(--sm-line)] first:border-t-0 ${highlighted ? 'sm-row-highlight' : ''} ${disabled ? 'opacity-45' : unknown ? 'opacity-70' : ''}`}
     >
       <div className="flex-1 min-w-0">
         {row.servings ? (
@@ -218,9 +222,10 @@ function DishRow({ row, lang, highlighted }: { row: Row; lang: MenuLang; highlig
           <p className="mt-1 text-base leading-relaxed text-[var(--sm-ink-2)]">{parseIngredients(row.description)}</p>
         )}
 
-        {(notes.length > 0 || row.allergens.length > 0 || disabled) && (
+        {(notes.length > 0 || row.allergens.length > 0 || disabled || unknown) && (
           <p className="mt-1.5 text-sm leading-relaxed text-[var(--sm-ink-2)]">
             {disabled && <span className="font-semibold text-[var(--sm-accent)]">{strings.containsGluten} · </span>}
+            {unknown && <span className="font-semibold text-[var(--sm-accent)]">{strings.allergensUnknown}</span>}
             {notes.length > 0 && <span className="font-medium text-[var(--sm-ink)]">{notes.join(' · ')}</span>}
             {notes.length > 0 && row.allergens.length > 0 && ' · '}
             {row.allergens.map((a) => strings.allergenName(a)).join(' · ')}
@@ -417,7 +422,7 @@ export default function SunsetMenu({
                           key={dish.id}
                           type="button"
                           onClick={() => goToDish(section.id, dish.id)}
-                          className="w-40 text-start rounded-xl overflow-hidden bg-[var(--sm-surface)] border border-[var(--sm-line)]"
+                          className={`w-40 text-start rounded-xl overflow-hidden bg-[var(--sm-surface)] border border-[var(--sm-line)] ${glutenStatus(dish, isGlutenFree) === 'contains' ? 'opacity-45' : glutenStatus(dish, isGlutenFree) === 'unknown' ? 'opacity-70' : ''}`}
                         >
                           <span className="relative block aspect-[4/3] bg-[var(--sm-nav)]">
                             <DishPhoto dish={dish} sizes="160px" />

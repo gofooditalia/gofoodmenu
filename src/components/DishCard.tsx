@@ -11,6 +11,7 @@ import { Leaf, Home, Snowflake } from 'lucide-react';
 import { useMenuLang, useMenuStrings } from '@/lib/menu-i18n';
 import { menuLangPath } from '@/lib/menu-languages';
 import { dishThumbUrl } from '@/lib/dish-thumbs';
+import { glutenStatus } from '@/lib/gluten-filter';
 
 interface DishCardProps {
   dish: Dish & {
@@ -34,11 +35,11 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
   const [imageError, setImageError] = useState(false);
   const placeholderImage = '/no-image.svg';
 
-  // Verifica se il piatto contiene glutine
-  const containsGluten = dish.allergens?.includes('glutine') || false;
-
-  // Il piatto è disabilitato se il filtro glutine è attivo E contiene glutine
-  const isDisabled = isGlutenFree && containsGluten;
+  // Filtro glutine attivo: piatto con glutine spento, piatto senza allergeni inseriti attenuato con l'avviso
+  // (src/lib/gluten-filter.ts): non deve sembrare sicuro solo perché nessuno ha scritto "glutine"
+  const gluten = glutenStatus(dish, isGlutenFree);
+  const isDisabled = gluten === 'contains';
+  const allergensUnknown = gluten === 'unknown';
 
   // Piatti stagionali che mostrano "fuori stagione" invece dell'immagine
   const isSeasonalDish = dish.is_seasonal || false;
@@ -56,7 +57,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
   return (
     <div className={`bg-[var(--tenant-surface,#FFFFFF)] rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${isDisabled
       ? 'opacity-50 pointer-events-none'
-      : 'hover:shadow-2xl hover:-translate-y-1'
+      : allergensUnknown ? 'opacity-75' : 'hover:shadow-2xl hover:-translate-y-1'
       }`}>
       {showPhoto && (
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[var(--tenant-background,#FFF8E7)]">
@@ -97,6 +98,11 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
         </div>
 
         {/* Badge glutine quando filtro attivo */}
+        {allergensUnknown && (
+          <div className="absolute bottom-4 start-4 end-4 bg-amber-100 text-amber-900 px-3 py-1.5 rounded-xl shadow-lg">
+            <span className="font-semibold text-xs">⚠️ {strings.allergensUnknown}</span>
+          </div>
+        )}
         {isDisabled && (
           <div className="absolute top-4 start-4 bg-red-600 text-white px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm">
             <span className="font-semibold text-xs flex items-center gap-1">
@@ -165,6 +171,11 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
           {!showPhoto && isSeasonalDish && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200">
               🌿 {strings.outOfSeason}
+            </span>
+          )}
+          {!showPhoto && allergensUnknown && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900">
+              ⚠️ {strings.allergensUnknown}
             </span>
           )}
           {!showPhoto && isDisabled && (

@@ -14,6 +14,8 @@ interface MenuStrings {
     outOfSeason: string;
     seasonalOnly: string;
     containsGluten: string;
+    /** Filtro senza glutine attivo su un piatto senza allergeni inseriti: non va presentato come sicuro */
+    allergensUnknown: string;
     homemade: string;
     frozen: string;
     vegetarian: string;
@@ -37,6 +39,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Fuori stagione',
         seasonalOnly: 'Disponibile solo nel periodo stagionale',
         containsGluten: 'Contiene glutine',
+        allergensUnknown: 'Allergeni non indicati: chiedi al personale',
         homemade: 'Fatto in casa',
         frozen: 'Surgelato',
         vegetarian: 'Vegetariano',
@@ -56,6 +59,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Out of season',
         seasonalOnly: 'Available only in season',
         containsGluten: 'Contains gluten',
+        allergensUnknown: 'Allergens not listed: please ask our staff',
         homemade: 'Homemade',
         frozen: 'Frozen',
         vegetarian: 'Vegetarian',
@@ -75,6 +79,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Hors saison',
         seasonalOnly: 'Disponible uniquement en saison',
         containsGluten: 'Contient du gluten',
+        allergensUnknown: 'Allergènes non indiqués : demandez au personnel',
         homemade: 'Fait maison',
         frozen: 'Surgelé',
         vegetarian: 'Végétarien',
@@ -94,6 +99,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Nicht in der Saison',
         seasonalOnly: 'Nur in der Saison erhältlich',
         containsGluten: 'Enthält Gluten',
+        allergensUnknown: 'Allergene nicht angegeben: bitte beim Personal nachfragen',
         homemade: 'Hausgemacht',
         frozen: 'Tiefgekühlt',
         vegetarian: 'Vegetarisch',
@@ -113,6 +119,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Fuera de temporada',
         seasonalOnly: 'Disponible solo en temporada',
         containsGluten: 'Contiene gluten',
+        allergensUnknown: 'Alérgenos no indicados: pregunte al personal',
         homemade: 'Casero',
         frozen: 'Congelado',
         vegetarian: 'Vegetariano',
@@ -132,6 +139,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Poza sezonem',
         seasonalOnly: 'Dostępne tylko w sezonie',
         containsGluten: 'Zawiera gluten',
+        allergensUnknown: 'Alergeny nie zostały podane: zapytaj obsługę',
         homemade: 'Domowej roboty',
         frozen: 'Mrożone',
         vegetarian: 'Wegetariańskie',
@@ -151,6 +159,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'Fora de época',
         seasonalOnly: 'Disponível apenas na época',
         containsGluten: 'Contém glúten',
+        allergensUnknown: 'Alergénios não indicados: pergunte ao pessoal',
         homemade: 'Caseiro',
         frozen: 'Congelado',
         vegetarian: 'Vegetariano',
@@ -170,6 +179,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: '非当季',
         seasonalOnly: '仅在当季供应',
         containsGluten: '含麸质',
+        allergensUnknown: '未标注过敏原：请咨询工作人员',
         homemade: '自制',
         frozen: '冷冻',
         vegetarian: '素食',
@@ -189,6 +199,7 @@ const STRINGS: Record<MenuLang, MenuStrings> = {
         outOfSeason: 'خارج الموسم',
         seasonalOnly: 'متوفر في موسمه فقط',
         containsGluten: 'يحتوي على الغلوتين',
+        allergensUnknown: 'لم تُذكر مسببات الحساسية: يُرجى سؤال الموظفين',
         homemade: 'من صنعنا',
         frozen: 'مجمّد',
         vegetarian: 'نباتي',
