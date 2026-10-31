@@ -143,7 +143,31 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
 - **QR code** (PR #44): si scarica dalla card della dashboard (`QRCodeCard.tsx`) disegnato a 1200 px; logo di
   riserva `/logo-gofood-new.svg` (`/logo-gofood.png` non esiste).
 - **Layout del menu pubblico**: deciso il 21/10/2026 di non ridisegnarlo (piace ai ristoratori, test e
-  accessibilità a posto). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
+  accessibilità a posto). Eccezione (31/10/2026): **menu su misura per singolo locale**, scelto per slug in
+  `src/lib/menu-layouts.ts` (`menuLayoutFor`); tutti gli altri locali restano su `MenuPageClient` e sul Design Studio.
+  Primo e unico per ora: **Sunset Barcarello** (`src/components/sunset/`). Carta tipografica: ogni piatto è una riga
+  (nome, prezzo con i puntini, ingredienti, allergeni e avvisi in testo), la foto se c'è è una miniatura accanto; in
+  testa a ogni categoria "In evidenza" con i piatti che hanno la foto (tocco = va alla riga). Niente segnaposto per i
+  piatti senza foto; categorie vuote nascoste; vini "X (Calice)" + "X (Bottiglia)" uniti su una riga con due prezzi
+  solo se per il resto identici (e solo in italiano). Logo del locale (bianco su trasparente) ricolorato con
+  `mask-image` (proporzioni del ritaglio `1920 / 800` scritte nel componente: se il locale cambia logo vanno riviste).
+  Skyline al tratto dell'Isola delle Femmine in SVG. **Tema chiaro di giorno, scuro dal tramonto all'alba** a
+  Barcarello: `src/lib/sun-times.ts` (algoritmo NOAA, scarto < 20 s dalla libreria astral su tutto il 2026, test in
+  `e2e/sun-times.spec.ts`). Il tema sta in `<html data-sunset="light|dark">`: lo imposta prima della pagina uno
+  script inline (`sunsetThemeScript` in `src/lib/sunset-theme.ts`, con gli intervalli di notte di 15 giorni calcolati
+  dal server, perché la pagina è in cache ISR) e poi `useSunsetTheme`, che al tramonto (o al ritorno sulla pagina)
+  fa il passaggio animato: colori in 2,5 s, il sole scende sotto l'orizzonte (niente animazioni con "riduci
+  movimento"). Prove e dimostrazioni: `?tema=chiaro`, `?tema=scuro`, `?tema=tramonto` (passaggio dopo 1,5 s).
+  Palette con contrasti AA verificati in `sunset-menu.css`; test axe per entrambi i temi in `accessibilita.spec.ts`.
+  Il Design Studio di Sunset non cambia questo menu (colori e font sono nel CSS); pagina allergeni, app e anteprima
+  dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
+  sinistra (compare quando il logo grande esce dallo schermo), a destra il filtro con etichetta "Senza glutine"
+  (`glutenFreeShort` in `menu-i18n.ts`) e la lingua in tendina (`SunsetLanguageMenu`: bandiera + codice, elenco con
+  tutte le lingue, `modal={false}` perché axe non segnali la pagina nascosta ai lettori di schermo). Gli altri locali
+  hanno ancora la pillola IT/EN di `NativeLanguageSwitcher`. Righe dei piatti (31/10/2026): altezza minima uguale per tutte
+  (`min-h-[7.75rem]`, come un piatto con nome, una riga di ingredienti e una di allergeni), per un ritmo regolare anche
+  quando mancano descrizione o allergeni; testi ingranditi per chi vede poco (nome e prezzo 17 px, ingredienti 16,
+  allergeni 14, misure in rem così seguono la dimensione del testo scelta sul telefono). taste-skill (Leonxlnx/taste-skill) valutata: utile come controllo della landing, non
   per il menu né come guida di stile; non installata nel repo.
 - **Landing**: niente numeri o prove inventate (tolta "Usata da centinaia di ristoranti", PR #54).
   Bilingue dal 24/10/2026: `/` in italiano e `/en` in inglese scritto apposta,
@@ -156,6 +180,11 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   funzioni; chiusura "Il tuo menu online in giornata". Promessa: "Il tuo menu digitale. Lo fai tu, in pochi minuti."
   Pilastri: Lo fai tu · Allergeni seri · Il menu è tuo · Ti risponde una persona. Tono: concreto, niente superlativi,
   niente numeri o prove inventate. Go!Food Menù non è un sito web del locale (niente chi siamo / gallery).
+- **Filtro senza glutine** (31/10/2026): regola unica `glutenStatus` in `src/lib/gluten-filter.ts`, usata da `DishCard` e
+  dal menu Sunset. Con il filtro attivo: piatto con "glutine" tra gli allergeni spento ("Contiene glutine"); piatto
+  **senza nessun allergene inserito** e non segnato "senza glutine" attenuato con "Allergeni non indicati: chiedi al
+  personale" (`allergensUnknown` in `menu-i18n.ts`). Prima un piatto mai compilato (es. una pizza) restava acceso come
+  se fosse adatto ai celiaci. Effetto voluto: anche acqua e bibite senza allergeni compaiono con l'avviso.
 - **Foto dei Piatti: Con foto / Solo testo** (Design Studio, 24/10/2026): `dishPhotos: 'hide'` in `theme_config`
   (nessuna migrazione), `DishCard` senza riquadro foto e prezzo accanto al nome, due colonne su schermo largo, nessuna
   immagine scaricata. Applicare uno stile pronto NON cambia questa scelta (`applyPreset` in `ThemeContext.tsx`). Le

@@ -14,6 +14,8 @@ import { readableTextOn } from '@/lib/theme-engine/contrast';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { MenuLangProvider } from '@/lib/menu-i18n';
 import { menuLangTag, type MenuLang } from '@/lib/menu-languages';
+import type { MenuLayout } from '@/lib/menu-layouts';
+import SunsetMenu from '@/components/sunset/SunsetMenu';
 
 interface Tenant {
   restaurant_name: string;
@@ -243,7 +245,18 @@ function MenuContent({ tenant, categories, lang, languages }: { tenant: Tenant, 
   );
 }
 
-export default function MenuPageClient({ tenant, categories, initialTheme, lang = 'it', languages = ['it'] }: { tenant: Tenant, categories: Category[], initialTheme?: ThemeConfig, lang?: MenuLang, languages?: MenuLang[] }) {
+export default function MenuPageClient({ tenant, categories, initialTheme, lang = 'it', languages = ['it'], layout = null }: { tenant: Tenant, categories: Category[], initialTheme?: ThemeConfig, lang?: MenuLang, languages?: MenuLang[], layout?: MenuLayout | null }) {
+  // Impaginazione su misura (src/lib/menu-layouts.ts): non usa il tema del Design Studio
+  if (layout?.kind === 'sunset') {
+    return (
+      <MenuLangProvider value={lang}>
+        <LanguageProvider initialLanguage={lang}>
+          <SunsetMenu tenant={tenant} categories={categories} lang={lang} languages={languages} layout={layout} />
+        </LanguageProvider>
+      </MenuLangProvider>
+    );
+  }
+
   return (
     <MenuLangProvider value={lang}>
       <LanguageProvider initialLanguage={lang}>

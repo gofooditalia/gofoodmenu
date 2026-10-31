@@ -54,3 +54,14 @@ for (const slug of INFO_PAGE_SLUGS) {
     expect(await violazioni(page)).toEqual([]);
   });
 }
+
+// Menu su misura di Sunset (src/lib/menu-layouts.ts): tema chiaro di giorno e scuro dopo il tramonto.
+// Il test sopra controlla il tema dell'ora in cui gira; qui entrambi, forzati con ?tema=
+for (const tema of ['chiaro', 'scuro']) {
+  test(`sunset-barcarello: menu col tema ${tema} senza violazioni WCAG`, async ({ page }) => {
+    await page.goto(`/sunset-barcarello?tema=${tema}`);
+    await expect(page.locator('main h1')).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-sunset', tema === 'scuro' ? 'dark' : 'light');
+    expect(await violazioni(page)).toEqual([]);
+  });
+}

@@ -24,7 +24,7 @@ interface NativeLanguageSwitcherProps {
   pathSuffix?: string;
 }
 
-function rememberChoice(lang: MenuLang) {
+export function rememberChoice(lang: MenuLang) {
   document.cookie = `${MENU_LANG_COOKIE}=${lang}; path=/; max-age=31536000; samesite=lax`;
   // Una vecchia scelta fatta con Google Translate non deve ritradurre la pagina già tradotta
   document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';

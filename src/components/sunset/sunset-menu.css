@@ -1,0 +1,219 @@
+/*
+ * Menu su misura di Sunset Barcarello (src/lib/menu-layouts.ts). Due palette, chiara e scura, entrambe con
+ * contrasti WCAG AA verificati (testo, prezzi, testi secondari su sfondo, schede e barra categorie).
+ * Il tema scuro vale quando <html data-sunset="dark"> (dal tramonto all'alba, useSunsetTheme.ts).
+ * Le variabili --tenant-* servono ai componenti in comune col menu standard (piè di pagina, selettore lingua,
+ * torna su).
+ */
+
+.sunset-menu {
+  --sm-bg: #fbf4ea;
+  --sm-surface: #ffffff;
+  --sm-nav: #f4e8d8;
+  --sm-ink: #1b2b44;
+  --sm-ink-2: #4a5a70;
+  --sm-accent: #a8492a;
+  --sm-heading: #1f3a5f;
+  --sm-on-heading: #ffffff;
+  --sm-line: #e4d3bd;
+  --sm-dots: #c2ae92;
+  --sm-pill-bg: #1f3a5f;
+  --sm-pill-text: #ffffff;
+  --sm-pill-border: #cdb89c;
+  --sm-highlight: #f6dfc9;
+
+  /* Skyline */
+  --sm-sun: #e07a4f;
+  --sm-sun-fill: #e8734a;
+  --sm-sun-fill-opacity: 0.28;
+  --sm-sun-glow-opacity: 0;
+  --sm-sun-shift: 0px;
+  --sm-island-stroke: #1f3a5f;
+  --sm-island-fill: #1f3a5f;
+  --sm-island-fill-opacity: 0.16;
+  --sm-sea: #1f3a5f;
+  --sm-sea-opacity: 0.45;
+  --sm-stars-opacity: 0;
+
+  --tenant-primary: var(--sm-heading);
+  --tenant-on-primary: var(--sm-on-heading);
+  --tenant-secondary: var(--sm-line);
+  --tenant-background: var(--sm-bg);
+  --tenant-surface: var(--sm-surface);
+  --tenant-text: var(--sm-ink);
+  --tenant-text-secondary: var(--sm-ink-2);
+  --tenant-footer-bg: var(--sm-nav);
+  --tenant-footer-text: var(--sm-ink-2);
+
+  background-color: var(--sm-bg);
+  color: var(--sm-ink);
+}
+
+html[data-sunset='dark'] .sunset-menu {
+  --sm-bg: #0f1b2d;
+  --sm-surface: #172840;
+  --sm-nav: #132238;
+  --sm-ink: #f3e9da;
+  --sm-ink-2: #b4bfcf;
+  --sm-accent: #f2956a;
+  --sm-heading: #f7eedf;
+  --sm-on-heading: #0f1b2d;
+  --sm-line: #24344d;
+  --sm-dots: #4a5c78;
+  --sm-pill-bg: #f08a5d;
+  --sm-pill-text: #1a0f08;
+  --sm-pill-border: #3a4c68;
+  --sm-highlight: #24344d;
+
+  --sm-sun: #f2956a;
+  --sm-sun-fill: #f08a5d;
+  --sm-sun-fill-opacity: 0.6;
+  --sm-sun-glow-opacity: 0.08;
+  --sm-sun-shift: 11px;
+  --sm-island-stroke: #c9d3e2;
+  --sm-island-fill: #060d18;
+  --sm-island-fill-opacity: 0.92;
+  --sm-sea: #c9d3e2;
+  --sm-sea-opacity: 0.35;
+  --sm-stars-opacity: 0.55;
+}
+
+/* Rimbalzo dello scroll su iPhone: niente striscia del colore di fondo del sito */
+html[data-sunset='light'] body {
+  background-color: #fbf4ea;
+}
+html[data-sunset='dark'] body {
+  background-color: #0f1b2d;
+}
+html[data-sunset='dark'] {
+  color-scheme: dark;
+}
+
+/* Passaggio da chiaro a scuro sotto gli occhi del cliente: solo durante il cambio, non a ogni caricamento */
+html.sunset-fade .sunset-menu,
+html.sunset-fade .sunset-menu * {
+  transition:
+    background-color 2.5s ease,
+    color 2.5s ease,
+    border-color 2.5s ease,
+    fill 2.5s ease,
+    stroke 2.5s ease,
+    fill-opacity 2.5s ease,
+    stroke-opacity 2.5s ease,
+    opacity 2.5s ease !important;
+}
+html.sunset-fade .sunset-menu .sm-sun {
+  transition: transform 4s ease-in !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.sunset-fade .sunset-menu,
+  html.sunset-fade .sunset-menu *,
+  html.sunset-fade .sunset-menu .sm-sun {
+    transition: none !important;
+  }
+}
+
+/* Skyline */
+.sm-skyline {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.sm-stars {
+  fill: var(--sm-ink);
+  opacity: var(--sm-stars-opacity);
+}
+.sm-sun {
+  transform: translateY(var(--sm-sun-shift));
+}
+.sm-sun-glow {
+  fill: var(--sm-sun-fill);
+  fill-opacity: var(--sm-sun-glow-opacity);
+}
+.sm-sun-ray {
+  fill: none;
+  stroke: var(--sm-sun);
+  stroke-width: 1;
+  stroke-opacity: 0.45;
+}
+.sm-sun-disc {
+  fill: var(--sm-sun-fill);
+  fill-opacity: var(--sm-sun-fill-opacity);
+  stroke: var(--sm-sun);
+  stroke-width: 1.1;
+}
+.sm-island {
+  fill: var(--sm-island-fill);
+  fill-opacity: var(--sm-island-fill-opacity);
+  stroke: var(--sm-island-stroke);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  stroke-opacity: 0.75;
+}
+.sm-sea {
+  fill: none;
+  stroke: var(--sm-sea);
+  stroke-width: 1;
+  stroke-opacity: var(--sm-sea-opacity);
+}
+.sm-sun-reflex {
+  fill: none;
+  stroke: var(--sm-sun);
+  stroke-width: 1.1;
+  stroke-opacity: 0.55;
+}
+.sm-wave {
+  display: block;
+  width: 140px;
+  height: 10px;
+  margin: 8px auto 0;
+  fill: none;
+  stroke: var(--sm-accent);
+  stroke-width: 1;
+  stroke-opacity: 0.8;
+}
+
+/* Logo del locale ricolorato col colore del tema: il file è un logo bianco su fondo trasparente */
+.sm-logo {
+  background-color: var(--sm-heading);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% auto;
+  mask-size: 100% auto;
+}
+
+/* Titoli in Playfair Display, già caricato dal sito (next/font, src/app/layout.tsx) */
+.sm-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Logo nel piè di pagina: il file è bianco, di giorno lo si scurisce per vederlo sul fondo chiaro */
+html:not([data-sunset='dark']) .sunset-menu footer img {
+  filter: brightness(0);
+  opacity: 0.85;
+}
+
+/* Nome del piatto: maiuscoletto spaziato, come nelle carte stampate (i nomi arrivano sia in maiuscolo sia no) */
+.sm-dish-name {
+  font-family: var(--font-playfair), Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.sm-leader {
+  flex: 1 1 auto;
+  min-width: 12px;
+  border-bottom: 1px dotted var(--sm-dots);
+  transform: translateY(-4px);
+}
+.sm-row-highlight {
+  background-color: var(--sm-highlight);
+  transition: background-color 0.4s ease;
+}
+.sm-scroll-x {
+  scrollbar-width: none;
+}
+.sm-scroll-x::-webkit-scrollbar {
+  display: none;
+}

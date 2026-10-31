@@ -14,6 +14,9 @@ import { SITE_URL } from '@/lib/site';
 import { getTenantPwaData } from '@/lib/tenant-pwa';
 import { isTranslatedLang, menuLangTag, TRANSLATED_LANGS, type MenuLang, type TranslatedLang } from '@/lib/menu-languages';
 import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
+import { menuLayoutFor } from '@/lib/menu-layouts';
+import { nightIntervals } from '@/lib/sun-times';
+import { sunsetThemeScript } from '@/lib/sunset-theme';
 
 type TextPair = { name: string; description: string };
 type StoredTranslations = Partial<Record<TranslatedLang, TextPair>> & { source?: TextPair };
@@ -222,8 +225,16 @@ export async function MenuPage({ slug, lang }: { slug: string; lang: MenuLang })
     logo_url: tenant.logo_url || undefined,
   };
 
+  // Impaginazione su misura del locale, se c'è (src/lib/menu-layouts.ts); gli altri restano sul menu standard
+  const layout = menuLayoutFor(slug);
+
   return (
     <>
+      {layout?.kind === 'sunset' && (
+        // Tema chiaro o scuro scelto prima che la pagina si veda (di sera niente lampo bianco). Intervalli
+        // di notte per 15 giorni: la pagina in cache viene rigenerata almeno ogni 24 ore
+        <script dangerouslySetInnerHTML={{ __html: sunsetThemeScript(nightIntervals(new Date(), 15, layout.place)) }} />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -251,6 +262,7 @@ export async function MenuPage({ slug, lang }: { slug: string; lang: MenuLang })
         initialTheme={themeConfig}
         lang={lang}
         languages={languages}
+        layout={layout}
       />
     </>
   );
