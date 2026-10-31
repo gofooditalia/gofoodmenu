@@ -4,6 +4,7 @@
  * Usati da /[slug]/manifest.webmanifest, /[slug]/app-icon/[size] e /[slug]/opengraph-image.
  */
 
+import { cleanTenantName } from '@/lib/public-tenant';
 import { createPublicClient } from '@/lib/supabase/public';
 import { resolveTheme } from '@/lib/theme-engine/presets';
 import type { ThemeConfig } from '@/lib/theme-engine/types';
@@ -54,7 +55,7 @@ export async function getTenantPwaData(slug: string): Promise<TenantPwaData | nu
 
   return {
     slug,
-    name: tenant.restaurant_name,
+    name: cleanTenantName(tenant.restaurant_name),
     logoUrl: tenant.logo_url || null,
     appColor: pickAppColor(theme),
     theme,

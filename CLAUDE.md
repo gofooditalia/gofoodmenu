@@ -155,7 +155,8 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Barcarello: `src/lib/sun-times.ts` (algoritmo NOAA, scarto < 20 s dalla libreria astral su tutto il 2026, test in
   `e2e/sun-times.spec.ts`). Il tema sta in `<html data-sunset="light|dark">`: lo imposta prima della pagina uno
   script inline (`sunsetThemeScript` in `src/lib/sunset-theme.ts`, con gli intervalli di notte di 15 giorni calcolati
-  dal server, perché la pagina è in cache ISR) e poi `useSunsetTheme`, che al tramonto (o al ritorno sulla pagina)
+  dal server, perché la pagina è in cache ISR), che imposta anche il `theme-color` (barra del browser, `SUNSET_THEME_COLOR`;
+  prima restava quello del tema salvato) e poi `useSunsetTheme`, che al tramonto (o al ritorno sulla pagina)
   fa il passaggio animato: colori in 2,5 s, il sole scende sotto l'orizzonte (niente animazioni con "riduci
   movimento"). Prove e dimostrazioni: `?tema=chiaro`, `?tema=scuro`, `?tema=tramonto` (passaggio dopo 1,5 s).
   Palette con contrasti AA verificati in `sunset-menu.css`; test axe per entrambi i temi in `accessibilita.spec.ts`.
@@ -195,6 +196,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   **senza nessun allergene inserito** e non segnato "senza glutine" attenuato con "Allergeni non indicati: chiedi al
   personale" (`allergensUnknown` in `menu-i18n.ts`). Prima un piatto mai compilato (es. una pizza) restava acceso come
   se fosse adatto ai celiaci. Effetto voluto: anche acqua e bibite senza allergeni compaiono con l'avviso.
+- **Nome del locale nelle pagine pubbliche** (31/10/2026): `cleanTenantName` in `src/lib/public-tenant.ts` toglie spazi
+  doppi e in coda da `restaurant_name` e `footer_data.public_name` (in `getPublicTenant`, PWA e anteprima dei link):
+  nel pannello il nome si scrive a mano e Sunset era salvato come "Sunset  Barcarello ".
 - **Foto dei Piatti: Con foto / Solo testo** (Design Studio, 24/10/2026): `dishPhotos: 'hide'` in `theme_config`
   (nessuna migrazione), `DishCard` senza riquadro foto e prezzo accanto al nome, due colonne su schermo largo, nessuna
   immagine scaricata. Applicare uno stile pronto NON cambia questa scelta (`applyPreset` in `ThemeContext.tsx`). Le

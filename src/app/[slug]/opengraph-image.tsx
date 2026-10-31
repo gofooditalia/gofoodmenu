@@ -2,6 +2,7 @@ import { ImageResponse } from 'next/og';
 import { getTenantPwaData } from '@/lib/tenant-pwa';
 import { loadImageDataUrl, loadOgAssets } from '@/lib/og-image';
 import { createPublicClient } from '@/lib/supabase/public';
+import { cleanTenantName } from '@/lib/public-tenant';
 
 // Anteprima per la condivisione del menu (WhatsApp, Facebook, Telegram...): 1200×630 con
 // logo, nome e colori del locale. Il logo sta sullo sfondo dell'intestazione del menu,
@@ -21,7 +22,7 @@ async function getShareInfo(slug: string): Promise<{ city: string | null; public
     .single();
   return {
     city: data?.tenant_locations?.[0]?.city?.trim() || null,
-    publicName: data?.footer_data?.public_name?.trim() || null,
+    publicName: cleanTenantName(data?.footer_data?.public_name) || null,
   };
 }
 
@@ -33,7 +34,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     loadOgAssets(),
   ]);
 
-  const name = publicName || pwa?.name.trim() || 'Menu digitale';
+  const name = publicName || pwa?.name || 'Menu digitale';
   const colors = pwa?.theme.colors;
   const background = colors?.background || '#FFF8E7';
   const panel = colors?.headerBackground || colors?.surface || '#FFFFFF';
