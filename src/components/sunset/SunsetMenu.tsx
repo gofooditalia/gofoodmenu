@@ -30,6 +30,7 @@ import type { FooterData } from '@/types/menu';
 import { SunsetSkyline, SunsetWave } from './SunsetSkyline';
 import { useSunsetTheme } from './useSunsetTheme';
 import { SunsetLanguageMenu } from './SunsetLanguageMenu';
+import { SunsetLogo as Logo } from './SunsetLogo';
 
 interface Dish {
   id: string;
@@ -156,17 +157,6 @@ function DishPhoto({ dish, sizes, className }: { dish: Dish; sizes: string; clas
       unoptimized={useThumb}
       className={`object-cover ${className ?? ''}`}
       onError={() => (useThumb ? setThumbError(true) : setError(true))}
-    />
-  );
-}
-
-function Logo({ url, className, style }: { url: string; className?: string; style?: React.CSSProperties }) {
-  const mask = `url("${url.replace(/"/g, '%22')}")`;
-  return (
-    <div
-      aria-hidden="true"
-      className={`sm-logo ${className ?? ''}`}
-      style={{ WebkitMaskImage: mask, maskImage: mask, ...style }}
     />
   );
 }

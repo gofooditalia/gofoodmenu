@@ -159,8 +159,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   fa il passaggio animato: colori in 2,5 s, il sole scende sotto l'orizzonte (niente animazioni con "riduci
   movimento"). Prove e dimostrazioni: `?tema=chiaro`, `?tema=scuro`, `?tema=tramonto` (passaggio dopo 1,5 s).
   Palette con contrasti AA verificati in `sunset-menu.css`; test axe per entrambi i temi in `accessibilita.spec.ts`.
-  Il Design Studio di Sunset non cambia questo menu (colori e font sono nel CSS); pagina allergeni, app e anteprima
-  dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
+  Il Design Studio di Sunset non cambia questo menu (colori e font sono nel CSS). Anche la pagina allergeni ha
+  l'aspetto e il tema Sunset (`SunsetAllergensPage`, scelta in `allergens-page.tsx`, stessi testi fissi di
+  `allergens-i18n.ts`); app e anteprima dei link usano ancora il tema salvato. Barra categorie: `useCategoryScroll` (stessa logica di MenuPageClient). Barra in alto (31/10/2026): mini logo a
   sinistra (compare quando il logo grande esce dallo schermo), a destra il filtro con etichetta "Senza glutine"
   (`glutenFreeShort` in `menu-i18n.ts`) e la lingua in tendina (`SunsetLanguageMenu`: bandiera + codice, elenco con
   tutte le lingue, `modal={false}` perché axe non segnali la pagina nascosta ai lettori di schermo). Gli altri locali

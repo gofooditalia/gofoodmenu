@@ -12,6 +12,10 @@ import { menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import { getMenuData, tenantLanguages } from './menu-page';
 import AllergensPageClient from './allergeni/AllergensPageClient';
 import MenuUnavailable, { menuUnavailableMetadata } from './MenuUnavailable';
+import { menuLayoutFor } from '@/lib/menu-layouts';
+import { nightIntervals } from '@/lib/sun-times';
+import { sunsetThemeScript } from '@/lib/sunset-theme';
+import SunsetAllergensPage from '@/components/sunset/SunsetAllergensPage';
 
 const ALLERGENS_SUFFIX = '/allergeni';
 
@@ -24,6 +28,17 @@ export async function AllergensPage({ slug, lang }: { slug: string; lang: MenuLa
     return <MenuUnavailable name={menuData.unavailable.name} logoUrl={menuData.unavailable.logoUrl} />;
   }
   const { tenant, themeConfig, languages } = menuData;
+
+  // Menu su misura (src/lib/menu-layouts.ts): anche la pagina allergeni prende il suo aspetto e il suo tema
+  const layout = menuLayoutFor(slug);
+  if (layout?.kind === 'sunset') {
+    return (
+      <>
+        <script dangerouslySetInnerHTML={{ __html: sunsetThemeScript(nightIntervals(new Date(), 15, layout.place)) }} />
+        <SunsetAllergensPage tenant={tenant} lang={lang} languages={languages} layout={layout} />
+      </>
+    );
+  }
 
   return (
     <AllergensPageClient

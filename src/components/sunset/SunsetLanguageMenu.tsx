@@ -17,7 +17,8 @@ import { rememberChoice } from '@/components/NativeLanguageSwitcher';
 import { MENU_LANG_LABELS, menuLangPath, menuLangTag, type MenuLang } from '@/lib/menu-languages';
 import { useMenuStrings } from '@/lib/menu-i18n';
 
-export function SunsetLanguageMenu({ slug, current, languages }: { slug: string; current: MenuLang; languages: MenuLang[] }) {
+// pathSuffix: pagina oltre al menu (es. '/allergeni'), il selettore porta alla stessa pagina nell'altra lingua
+export function SunsetLanguageMenu({ slug, current, languages, pathSuffix = '' }: { slug: string; current: MenuLang; languages: MenuLang[]; pathSuffix?: string }) {
   const strings = useMenuStrings();
   const currentLabel = MENU_LANG_LABELS[current];
 
@@ -44,7 +45,7 @@ export function SunsetLanguageMenu({ slug, current, languages }: { slug: string;
             className="cursor-pointer gap-2.5 rounded-lg px-2.5 py-2.5 text-base text-[var(--sm-ink)] focus:bg-[var(--sm-highlight)] focus:text-[var(--sm-ink)]"
           >
             <a
-              href={menuLangPath(slug, lang)}
+              href={menuLangPath(slug, lang, pathSuffix)}
               hrefLang={menuLangTag(lang)}
               lang={menuLangTag(lang)}
               onClick={() => rememberChoice(lang)}
