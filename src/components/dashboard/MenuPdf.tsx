@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Database } from '@/types/database';
+import { priceUnitSuffix } from '@/lib/price-unit';
 
 // Types
 type Dish = Database['public']['Tables']['dishes']['Row'] & {
@@ -289,7 +290,7 @@ const MenuDocument = ({
                                         <View style={styles.dishHeader}>
                                             <Text style={styles.dishName}>{resolveJson(dish.name)}</Text>
                                             <View style={styles.dishLeader} />
-                                            <Text style={styles.dishPrice}>€{(dish.price || 0).toFixed(2)}</Text>
+                                            <Text style={styles.dishPrice}>€{(dish.price || 0).toFixed(2)}{priceUnitSuffix(dish.price_unit) ? ` ${priceUnitSuffix(dish.price_unit)}` : ''}</Text>
                                         </View>
 
                                         <Text style={styles.dishDesc}>

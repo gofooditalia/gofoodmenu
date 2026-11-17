@@ -28,6 +28,7 @@ import { menuLangDir, menuLangPath, menuLangTag, type MenuLang } from '@/lib/men
 import type { SunsetLayout } from '@/lib/menu-layouts';
 import { dishThumbUrl } from '@/lib/dish-thumbs';
 import { glutenStatus } from '@/lib/gluten-filter';
+import { priceUnitSuffix } from '@/lib/price-unit';
 import { parseIngredients } from '@/utils/ingredientParser';
 import type { FooterData } from '@/types/menu';
 import { SunsetSkyline, SunsetWave } from './SunsetSkyline';
@@ -40,6 +41,7 @@ interface Dish {
   name: string;
   description: string;
   price: string;
+  price_unit?: string | null;
   image: string;
   allergens: string[];
   is_seasonal?: boolean;
@@ -208,6 +210,9 @@ function DishRow({ row, lang, slug, highlighted }: { row: Row; lang: MenuLang; s
             <span className="sm-leader" aria-hidden="true" />
             <span className="shrink-0 text-[1.0625rem] font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
               € {formatPrice(row.price, lang)}
+              {priceUnitSuffix(row.price_unit, lang) && (
+                <span className="text-[0.9375rem] font-normal"> {priceUnitSuffix(row.price_unit, lang)}</span>
+              )}
             </span>
           </div>
         )}
@@ -473,6 +478,7 @@ export default function SunsetMenu({
                             </span>
                             <span className="block mt-0.5 text-sm font-semibold text-[var(--sm-accent)] tabular-nums" dir="ltr">
                               € {formatPrice(dish.price, lang)}
+                              {priceUnitSuffix(dish.price_unit, lang) && ` ${priceUnitSuffix(dish.price_unit, lang)}`}
                             </span>
                           </span>
                         </button>

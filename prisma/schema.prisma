@@ -445,6 +445,7 @@ model dishes {
   category_id    String     @db.Uuid
   slug           String
   price          Decimal    @db.Decimal(10, 2)
+  price_unit     String?
   image_url      String?
   is_visible     Boolean    @default(true)
   is_seasonal    Boolean    @default(false)
