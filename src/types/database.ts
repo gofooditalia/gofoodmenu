@@ -197,6 +197,7 @@ export interface Database {
           description: Json;
           slug: string;
           price: number;
+          price_unit: string | null;
           image_url: string | null;
           is_visible: boolean;
           is_seasonal: boolean;
@@ -218,6 +219,7 @@ export interface Database {
           description: Json;
           slug: string;
           price: number;
+          price_unit?: string | null;
           image_url?: string | null;
           is_visible?: boolean;
           is_seasonal?: boolean;
@@ -239,6 +241,7 @@ export interface Database {
           description?: Json;
           slug?: string;
           price?: number;
+          price_unit?: string | null;
           image_url?: string | null;
           is_visible?: boolean;
           is_seasonal?: boolean;

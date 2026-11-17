@@ -12,6 +12,7 @@ import { useMenuLang, useMenuStrings } from '@/lib/menu-i18n';
 import { menuLangPath } from '@/lib/menu-languages';
 import { dishThumbUrl } from '@/lib/dish-thumbs';
 import { glutenStatus } from '@/lib/gluten-filter';
+import { priceUnitSuffix } from '@/lib/price-unit';
 
 interface DishCardProps {
   dish: Dish & {
@@ -38,6 +39,8 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
   // Filtro glutine attivo: piatto con glutine spento, piatto senza allergeni inseriti attenuato con l'avviso
   // (src/lib/gluten-filter.ts): non deve sembrare sicuro solo perché nessuno ha scritto "glutine"
   const gluten = glutenStatus(dish, isGlutenFree);
+  // Prezzo al peso: "all'etto", "/ 100 g"… accanto al prezzo (vuoto per il prezzo a porzione)
+  const unit = priceUnitSuffix(dish.price_unit, menuLang);
   const isDisabled = gluten === 'contains';
   const allergensUnknown = gluten === 'unknown';
 
@@ -94,7 +97,10 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
           className="absolute top-4 end-4 text-[var(--tenant-price,#171717)] px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm"
           style={{ backgroundColor: 'var(--tenant-price-bg, var(--tenant-secondary, #D4AF37))' }}
         >
-          <span className="font-bold text-base" dir="ltr">€{dish.price}</span>
+          <span className="font-bold text-base" dir="ltr">
+            €{dish.price}
+            {unit && <span className="font-semibold text-sm"> {unit}</span>}
+          </span>
         </div>
 
         {/* Badge glutine quando filtro attivo */}
@@ -157,6 +163,7 @@ export default function DishCard({ dish, tenantSlug, priority = false, showPhoto
               dir="ltr"
             >
               €{dish.price}
+              {unit && <span className="font-semibold text-sm"> {unit}</span>}
             </span>
           </div>
         )}

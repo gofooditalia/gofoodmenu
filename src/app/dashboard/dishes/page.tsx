@@ -33,6 +33,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Loader2, Plus, GripVertical, Trash2, Edit, Image as ImageIcon, Check } from 'lucide-react';
 import { uploadDishPhoto } from '@/lib/image-upload';
 import { dishThumbPath, dishThumbUrl } from '@/lib/dish-thumbs';
+import { PRICE_UNIT_OPTIONS, priceUnitSuffix, toPriceUnit } from '@/lib/price-unit';
 
 // Shadcn Imports
 import { Button } from '@/components/ui/button';
@@ -95,6 +96,7 @@ interface Dish {
   name: string;
   description?: string | null;
   price: number;
+  price_unit?: string | null;
   category_id: string;
   image_url?: string | null;
   slug: string;
@@ -259,7 +261,12 @@ const SortableDishCard = memo(function SortableDishCard({
                   </p>
 
                   <div className="flex items-center gap-3 text-sm">
-                    <span className="font-bold text-orange-600 text-base">€{dish.price.toFixed(2)}</span>
+                    <span className="font-bold text-orange-600 text-base">
+                      €{dish.price.toFixed(2)}
+                      {priceUnitSuffix(dish.price_unit) && (
+                        <span className="font-medium text-sm"> {priceUnitSuffix(dish.price_unit)}</span>
+                      )}
+                    </span>
                     {category && (
                       <span className="text-muted-foreground font-medium">• {category.name}</span>
                     )}
@@ -386,6 +393,7 @@ export default function DishesPage() {
     name: '',
     description: '',
     price: '',
+    priceUnit: '' as string,
     categoryId: '',
     slug: '',
     isVisible: true,
@@ -652,6 +660,12 @@ export default function DishesPage() {
         imageUrl = await uploadImage(formData.image, tenantData.restaurant_name, tenantId);
       }
 
+      // Prezzo al peso (migrazione 045): la colonna si scrive solo se serve (unità scelta ora o prima),
+      // così i piatti a porzione si salvano anche se la migrazione non fosse ancora applicata
+      const priceUnit = toPriceUnit(formData.priceUnit);
+      const priceUnitField =
+        priceUnit || editingDish?.price_unit ? { price_unit: priceUnit } : {};
+
       if (editingDish) {
         // Update
         const dishData = {
@@ -660,6 +674,7 @@ export default function DishesPage() {
           name: formData.name,
           description: formData.description,
           price: parseFloat(formData.price),
+          ...priceUnitField,
           image_url: imageUrl,
           slug: formData.slug || generateSlug(formData.name),
           is_visible: formData.isVisible,
@@ -687,6 +702,7 @@ export default function DishesPage() {
           name: formData.name,
           description: formData.description,
           price: parseFloat(formData.price),
+          ...priceUnitField,
           image_url: imageUrl,
           slug: formData.slug || generateSlug(formData.name),
           is_visible: formData.isVisible,
@@ -763,6 +779,7 @@ export default function DishesPage() {
       name: dish.name,
       description: dish.description || '',
       price: dish.price.toString(),
+      priceUnit: toPriceUnit(dish.price_unit) ?? '',
       categoryId: dish.category_id,
       slug: '',
       isVisible: dish.is_visible,
@@ -783,6 +800,7 @@ export default function DishesPage() {
       name: '',
       description: '',
       price: '',
+      priceUnit: '',
       categoryId: '',
       slug: '',
       isVisible: true,
@@ -1317,6 +1335,31 @@ export default function DishesPage() {
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                   placeholder="12.50"
                 />
+              </div>
+
+              {/* Unità del prezzo: a porzione o al peso */}
+              <div className="space-y-2">
+                <Label>Il prezzo è</Label>
+                <Select
+                  value={formData.priceUnit || 'portion'}
+                  onValueChange={(val) => setFormData({ ...formData, priceUnit: val === 'portion' ? '' : val })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRICE_UNIT_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value || 'portion'} value={opt.value || 'portion'}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {formData.priceUnit && (
+                  <p className="text-xs text-muted-foreground">
+                    Nel menu: €{(parseFloat(formData.price) || 0).toFixed(2)} {priceUnitSuffix(formData.priceUnit)}
+                  </p>
+                )}
               </div>
 
 

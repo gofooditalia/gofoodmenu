@@ -54,6 +54,7 @@ interface DbDish {
   name: string;
   description: string;
   price: number;
+  price_unit?: string | null;
   image_url?: string;
   is_visible: boolean;
   is_seasonal: boolean;
@@ -179,6 +180,7 @@ export async function getMenuData(slug: string, lang: MenuLang = 'it') {
         id: dish.slug,
         ...localize(dish, dish.translations, lang),
         price: dish.price.toFixed(2),
+        price_unit: dish.price_unit ?? null,
         image: dish.image_url || '/icon.svg',
         allergens: dish.allergen_ids || [],
         is_seasonal: dish.is_seasonal,

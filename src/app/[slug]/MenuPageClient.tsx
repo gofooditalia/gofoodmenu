@@ -34,6 +34,7 @@ interface Dish {
   name: string;
   description: string;
   price: string;
+  price_unit?: string | null;
   image: string;
   allergens: string[];
   is_seasonal?: boolean;

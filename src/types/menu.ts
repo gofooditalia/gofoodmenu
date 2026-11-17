@@ -12,6 +12,7 @@ export interface Dish {
   name: string;
   description: string;
   price: string;
+  price_unit?: string | null; // NULL a porzione, 'hg' all'etto, 'kg' al chilo (src/lib/price-unit.ts)
   image: string;
   allergens?: string[];
   is_seasonal?: boolean;
@@ -189,6 +190,7 @@ export interface DishDB {
   slug: string;
 
   price: number; // DECIMAL(10,2)
+  price_unit?: string | null; // NULL a porzione, 'hg' all'etto, 'kg' al chilo
   image_url: string | null; // Supabase Storage URL
 
   is_visible: boolean;
