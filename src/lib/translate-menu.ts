@@ -130,6 +130,8 @@ Regole:
   latini, come in italiano (es. "Carbonara", "guanciale"), dentro il testo tradotto. Numeri in cifre arabe
   occidentali (0-9). "Frutta secca" (a guscio): cinese "坚果", arabo "المكسرات". "Noccioline" (arachidi): cinese
   "花生", arabo "الفول السوداني" (anche "granella di noccioline": arabo "فول سوداني مجروش", mai "مكسرات").
+  "Nocciole" (anche "granella di nocciole") NON sono arachidi: cinese "榛子" ("碎榛子"), arabo "بندق" ("بندق مجروش"),
+  mai "فول سوداني" (29/10/2026, Bistrot 107: "granella di nocciole" tradotta come arachidi in arabo).
 - Cinese e arabo, nomi dei piatti: un nome di fantasia (nome proprio, aggettivo o parola che non descrive il piatto,
   es. "GOLOSO", "SFIZIOSO", "MAX", "IL SAPORITO", nomi di cocktail o di marchi) resta IDENTICO, in caratteri latini
   e con le stesse maiuscole: non tradurlo, non traslitterarlo, anche se ha un significato in italiano. Il cliente

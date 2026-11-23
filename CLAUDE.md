@@ -140,6 +140,9 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   (sottotitolo, descrizioni categorie), anche nell'anteprima. Per i colori che il ristoratore sceglie il Design
   Studio avvisa (`ContrastWarnings` in `VisualEditorPanel.tsx`): i nuovi controlli vanno aggiunti lì. Il
   selettore lingua prende i colori del tema (niente pillola bianca sui temi scuri).
+- **PDF del menu** (pulsante "Scarica PDF" nella pagina Piatti, `src/components/dashboard/MenuPdf.tsx`, 29/10/2026):
+  solo testo, **mai foto dei piatti** (scelta del titolare); l'unica immagine è il logo del locale in testata.
+  Il PDF si genera solo al clic (PR #101): prima si rifaceva a ogni aggiornamento della pagina e la rallentava.
 - **QR code** (PR #44): si scarica dalla card della dashboard (`QRCodeCard.tsx`) disegnato a 1200 px; logo di
   riserva `/logo-gofood-new.svg` (`/logo-gofood.png` non esiste).
 - **Layout del menu pubblico**: deciso il 21/10/2026 di non ridisegnarlo (piace ai ristoratori, test e
@@ -286,7 +289,7 @@ Non trattarli come clienti in controlli, prove e statistiche. Locali reali che u
   Gemini 2.5 Flash): traduce solo le voci nuove o cambiate e poi attiva le lingue. Regole del prompt: i nomi dei piatti
   tipici restano in italiano, ingredienti tradotti fedelmente, niente ingredienti aggiunti, "frutta secca" = frutta a
   guscio (nuts, Nüsse…), mai frutta essiccata (27/10/2026, Osteria Cilea);
-  "noccioline" = arachidi, mai nocciole (27/10/2026, Bistrot 107). **Sicurezza**: ogni traduzione
+  "noccioline" = arachidi, mai nocciole (27/10/2026, Bistrot 107); e al contrario "nocciole" mai arachidi (in arabo "بندق", 29/10/2026). **Sicurezza**: ogni traduzione
   tiene il testo italiano di partenza (`source`); se il ristoratore cambia nome o descrizione, il menu tradotto mostra
   l'italiano per quel piatto finché non viene ritradotto. Allergeni ed etichette hanno testi fissi scritti a mano
   (`src/lib/menu-i18n.ts`), mai dall'AI. Pagine `/{slug}/{lingua}` (`src/app/[slug]/[lang]`, codice comune in
